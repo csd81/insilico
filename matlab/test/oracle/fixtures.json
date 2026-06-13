@@ -3103,5 +3103,185 @@
         0.4
       ]
     }
+  },
+  "val_schur": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.9670441090031967e-15
+    },
+    "orth": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.547628876886679e-16
+    },
+    "ev": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        1.8548973087995775,
+        3.4760236029181333,
+        6.669079088282289
+      ]
+    }
+  },
+  "val_hess": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "val_polyeig": {
+    "ev": {
+      "class": "double",
+      "size": [
+        4,
+        1
+      ],
+      "real": [
+        -1,
+        -0.5,
+        0.5000000000000001,
+        1.0000000000000002
+      ]
+    }
+  },
+  "val_sqrtm": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.9603046130236982e-15
+    }
+  },
+  "val_logm": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "val_kron": {
+    "K": {
+      "class": "double",
+      "size": [
+        4,
+        4
+      ],
+      "real": [
+        1,
+        3,
+        0,
+        0,
+        2,
+        4,
+        0,
+        0,
+        0,
+        0,
+        1,
+        3,
+        0,
+        0,
+        2,
+        4
+      ]
+    }
+  },
+  "val_gmres": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.440892098500626e-16
+    }
+  },
+  "val_minres": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.965068306494546e-16
+    }
+  },
+  "val_bicg": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "val_normpdf_cdf": {
+    "p1": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3989422804014327
+    },
+    "p2": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9750021048517795
+    }
+  },
+  "val_binopdf": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3125
+    }
+  },
+  "val_poisspdf": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.22404180765538775
+    }
+  },
+  "val_icdf_normal": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.959963984540054
+    }
   }
 }

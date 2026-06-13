@@ -353,4 +353,27 @@ export const CASES: OracleCase[] = [
   // ══════════ graph / network ══════════
   { name: 'graph-adjacency-powers', src: 'A = [0 1 1; 1 0 1; 1 1 0]; W = A^3;', vars: ['W'], tol: 1e-9, level: 'undergrad', domain: 'graph', tags: ['adjacency', 'walk-counts'] },
   { name: 'graph-pagerank', src: 'A = [0 0 1; 1 0 0; 1 1 0]; M = A ./ sum(A, 1); r = ones(3,1)/3; for k = 1:100, r = M*r; end', vars: ['r'], tol: 1e-6, level: 'graduate', domain: 'graph', tags: ['pagerank', 'power-iteration'] },
+
+  // ══════════ validation of already-implemented advanced functions ══════════
+
+  // advanced decompositions (reconstruction + orthonormality invariants)
+  { name: 'val-schur', src: "A = [4 1 2; 1 3 0; 2 0 5]; [U, T] = schur(A); rr = norm(U*T*U' - A); orth = norm(U'*U - eye(3)); ev = sort(diag(T));", vars: ['rr', 'orth', 'ev'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['schur', 'oracle-validation'] },
+  { name: 'val-hess', src: "A = [4 1 2; 1 3 0; 2 0 5]; [P, H] = hess(A); rr = norm(P*H*P' - A);", vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['hessenberg', 'oracle-validation'] },
+  { name: 'val-polyeig', src: 'ev = sort(polyeig([1 0; 0 1], [0 0; 0 0], [-1 0; 0 -4]));', vars: ['ev'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['polyeig', 'oracle-validation'] },
+
+  // matrix functions (defining-identity residuals)
+  { name: 'val-sqrtm', src: 'A = [4 1; 1 3]; S = sqrtm(A); rr = norm(S*S - A);', vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['sqrtm', 'matrix-functions', 'oracle-validation'] },
+  { name: 'val-logm', src: 'A = [2 0; 0 3]; L = logm(A); rr = norm(expm(L) - A);', vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['logm', 'matrix-functions', 'oracle-validation'] },
+  { name: 'val-kron', src: 'K = kron([1 0; 0 1], [1 2; 3 4]);', vars: ['K'], tol: 1e-9, level: 'undergrad', domain: 'numerical-linear-algebra', tags: ['kron', 'oracle-validation'] },
+
+  // sparse / iterative solvers (residual norm ≈ 0)
+  { name: 'val-gmres', src: 'A = [4 1; 1 3]; b = [1; 2]; x = gmres(A, b); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-8, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['gmres', 'iterative-solver', 'oracle-validation'] },
+  { name: 'val-minres', src: 'A = [4 1; 1 3]; b = [1; 2]; x = minres(A, b); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-8, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['minres', 'iterative-solver', 'oracle-validation'] },
+  { name: 'val-bicg', src: 'A = [4 1; 1 3]; b = [1; 2]; x = bicg(A, b); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-8, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['bicg', 'iterative-solver', 'oracle-validation'] },
+
+  // distribution functions
+  { name: 'val-normpdf-cdf', src: 'p1 = normpdf(0); p2 = normcdf(1.96);', vars: ['p1', 'p2'], tol: 1e-6, level: 'undergrad', domain: 'statistics', tags: ['normal-distribution', 'oracle-validation'] },
+  { name: 'val-binopdf', src: 'p = binopdf(2, 5, 0.5);', vars: ['p'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['binomial-distribution', 'oracle-validation'] },
+  { name: 'val-poisspdf', src: 'p = poisspdf(2, 3);', vars: ['p'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['poisson-distribution', 'oracle-validation'] },
+  { name: 'val-icdf-normal', src: "x = icdf('Normal', 0.975, 0, 1);", vars: ['x'], tol: 1e-6, level: 'undergrad', domain: 'statistics', tags: ['inverse-cdf', 'oracle-validation'] },
 ];

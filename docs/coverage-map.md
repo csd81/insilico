@@ -51,7 +51,11 @@ pnpm exec tsc -p tsconfig.test.json && node matlab/test/oracle/coverage.mjs
 | Spectral methods / Fourier (`fft`/`ifft`, convolution, freq detect) | ✓ |
 | Graph computation (adjacency powers, Laplacian, PageRank) | ✓ |
 | Approximation (Lagrange, Chebyshev nodes) | ✓ |
-| GMRES / preconditioned Krylov | |
+| Advanced decompositions (`schur`, `hess`, `polyeig`) | ✓ |
+| Matrix functions (`sqrtm`, `logm`, `expm`) | ✓ |
+| Krylov solvers (`gmres`, `minres`, `bicg`) | ✓ |
+| Distribution functions (`normpdf/cdf`, `binopdf`, `poisspdf`, `icdf`) | ✓ |
+| Preconditioned Krylov | ~ |
 | Stiff ODE / stability regions | |
 | Crank–Nicolson / implicit PDE | |
 | Monte Carlo (RNG — not deterministically oracle-checkable) | n/a |
