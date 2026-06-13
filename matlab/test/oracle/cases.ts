@@ -7,6 +7,9 @@ export interface OracleCase {
   name: string;
   src: string;
   vars: string[];
+  /** Absolute tolerance for numeric comparison (default 1e-6). Tighten for exact
+   *  arithmetic, loosen for least-squares / decomposition / ill-conditioned cases. */
+  tol?: number;
 }
 
 export const CASES: OracleCase[] = [
@@ -93,4 +96,39 @@ export const CASES: OracleCase[] = [
   { name: 'copy-cell-element', src: 'c = {5, 6}; d = c; d{1} = 9; x = c{1};', vars: ['x'] },
   { name: 'map-handle-semantics', src: "m = containers.Map('KeyType','char','ValueType','double'); m('a') = 1; n = m; n('a') = 2; x = m('a');", vars: ['x'] },
   { name: 'dict-value-semantics', src: 'd = dictionary("a", 1); e = d; e("a") = 2; x = d("a");', vars: ['x'] },
+
+  // ── empty-matrix algebra ──
+  { name: 'empty-sum', src: 's = sum([]);', vars: ['s'] },
+  { name: 'empty-prod', src: 'p = prod([]);', vars: ['p'] },
+  { name: 'empty-size', src: 'sz = size([]);', vars: ['sz'] },
+  { name: 'empty-concat-drop-row', src: 'A = [1 2 3]; B = [A, []];', vars: ['B'] },
+  { name: 'empty-concat-drop-col', src: 'A = [1; 2]; B = [A; []];', vars: ['B'] },
+  { name: 'empty-length', src: 'n = length([]); m = numel([]);', vars: ['n', 'm'] },
+  { name: 'empty-max', src: 'M = max([]);', vars: ['M'] },
+
+  // ── complex elementary functions (domain transitions) ──
+  { name: 'sqrt-negative', src: 'z = sqrt(-1);', vars: ['z'] },
+  { name: 'sqrt-negative-real', src: 'z = sqrt(-4);', vars: ['z'] },
+  { name: 'log-negative', src: 'z = log(-1);', vars: ['z'], tol: 1e-9 },
+  { name: 'asin-gt1', src: 'z = asin(2);', vars: ['z'], tol: 1e-9 },
+  { name: 'acos-gt1', src: 'z = acos(2);', vars: ['z'], tol: 1e-9 },
+  { name: 'cube-root-negative', src: 'z = (-8)^(1/3);', vars: ['z'], tol: 1e-9 },
+  { name: 'complex-matvec', src: 'y = [1+2i 3-4i] * [2; 5i];', vars: ['y'] },
+  { name: 'complex-exp', src: 'z = exp(1i*pi);', vars: ['z'], tol: 1e-9 },
+
+  // ── mldivide polymorphism (results, not algorithm choice) ──
+  { name: 'mldivide-triangular', src: 'A = [2 1 1; 0 3 2; 0 0 4]; b = [5; 6; 8]; x = A\\b;', vars: ['x'], tol: 1e-9 },
+  { name: 'mldivide-spd', src: 'A = [4 2; 2 3]; b = [6; 5]; x = A\\b;', vars: ['x'], tol: 1e-9 },
+  { name: 'mldivide-overdetermined', src: 'A = [1 1; 1 2; 1 3]; b = [6; 0; 0]; x = A\\b;', vars: ['x'], tol: 1e-6 },
+  { name: 'mldivide-multi-rhs', src: 'A = [2 1; 1 3]; B = [1 0; 0 1]; X = A\\B;', vars: ['X'], tol: 1e-9 },
+
+  // ── decomposition invariants (convention-independent) ──
+  { name: 'chol-factor', src: 'A = [4 2; 2 3]; R = chol(A);', vars: ['R'], tol: 1e-9 },
+  { name: 'svd-values', src: 's = svd([1 2; 3 4; 5 6]);', vars: ['s'], tol: 1e-6 },
+  { name: 'eig-values-sorted', src: 'e = sort(eig([2 -1 0; -1 2 -1; 0 -1 2]));', vars: ['e'], tol: 1e-6 },
+
+  // ── implicit expansion (broadcasting) ──
+  { name: 'broadcast-sub-colvec', src: 'A = [1 2 3; 4 5 6; 7 8 9] - [10; 20; 30];', vars: ['A'] },
+  { name: 'broadcast-mul-rowcol', src: 'P = [1; 2; 3] .* [10 20];', vars: ['P'] },
+  { name: 'broadcast-compare', src: 'B = [1 2 3] > [2; 2; 2];', vars: ['B'] },
 ];

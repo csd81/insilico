@@ -474,6 +474,7 @@ function minmax(args: Value[], nargout: number, pick: (a: number, b: number) => 
     const { v, idx } = reduceAlongDim(A, dimGiven ?? firstNonSingleton(ndSize(A)), reduceVec);
     return nargout >= 2 ? [v, idx] : [v];
   }
+  if (A.rows === 0 && A.cols === 0) return [zeros(0, 0), zeros(0, 0)];   // max([])/min([]) → [] (0×0)
   if (A.rows === 1 || A.cols === 1) {
     if (numel(A) === 0) return [zeros(0, 0), zeros(0, 0)];
     const [v, idx] = reduceVec(toArray(A));
