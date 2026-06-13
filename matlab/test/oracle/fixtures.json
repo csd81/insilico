@@ -4477,5 +4477,75 @@
       ],
       "real": 0.5
     }
+  },
+  "cal_int_partfrac": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.2876820724517809
+    }
+  },
+  "cal_int_partfrac_num": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.380898121294083
+    }
+  },
+  "cal_int_partfrac_diffsq": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.2027325540540822
+    }
+  },
+  "cal_limit_derivative": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5403023058681398
+    }
+  },
+  "cal_solve_linear": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -3
+    }
+  },
+  "cal_solve_kinematics": {
+    "val": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_diff_partial": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
   }
 }

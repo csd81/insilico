@@ -521,4 +521,17 @@ export const CASES: OracleCase[] = [
   { name: 'cal-int-byparts-log', src: 'syms x; v = double(int(x*log(x), 1, 2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'by-parts', 'logarithm'] },
   { name: 'cal-int-arctan', src: 'syms x; v = double(int(1/(1+x^2), 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'arctan-form'] },
   { name: 'cal-limit-lhopital', src: 'syms x; v = double(limit((1-cos(x))/x^2, x, 0));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['limit', 'lhopital'] },
+
+  // ── partial fractions (rational integrands via the existing decomposition engine) ──
+  { name: 'cal-int-partfrac', src: 'syms x; v = double(int(1/((x-1)*(x-2)), 3, 4));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'partial-fractions'] },
+  { name: 'cal-int-partfrac-num', src: 'syms x; v = double(int((3*x+5)/((x-1)*(x-2)), 3, 4));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'partial-fractions'] },
+  { name: 'cal-int-partfrac-diffsq', src: 'syms x; v = double(int(1/(x^2-1), 2, 3));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'partial-fractions'] },
+
+  // ── symbolic limits (difference quotient → derivative, evaluated at a point) ──
+  { name: 'cal-limit-derivative', src: 'syms x h; D = limit((sin(x+h)-sin(x))/h, h, 0); v = double(subs(D, x, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['limit', 'derivative-definition', 'symbolic'] },
+
+  // ── symbolic equation solving (literal/parametric — diff/solve variable-selection fix) ──
+  { name: 'cal-solve-linear', src: 'syms a b x; s = solve(a*x + b == 0, x); v = double(subs(subs(s, a, 2), b, 6));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['solve', 'symbolic-linear'] },
+  { name: 'cal-solve-kinematics', src: 'syms u a t v0; s = solve(v0 == u + a*t, t); val = double(subs(subs(subs(s, v0, 10), u, 2), a, 4));', vars: ['val'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['solve', 'literal-equation'] },
+  { name: 'cal-diff-partial', src: 'syms a b x; d = diff(a*x + b, x); v = double(subs(d, a, 5));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['diff', 'variable-selection'] },
 ];

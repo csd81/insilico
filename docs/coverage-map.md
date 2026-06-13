@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 456 tests green · 321 MATLAB oracle fixtures ·
-321/321 cases classified · 216 undergrad / 105 graduate across 16 domains.
+**Status (as of this revision):** 463 tests green · 328 MATLAB oracle fixtures ·
+328/328 cases classified · 223 undergrad / 105 graduate across 16 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 

@@ -366,6 +366,14 @@ export function integrate(e: SymExpr, x: string): SymExpr {
     if (consts.length && rest.length) return sMul(sMul(...consts), integrate(rest.length === 1 ? rest[0] : sMul(...rest), x));
     const bp = integrateByParts(e, x); if (bp) return simplifyExpr(bp);   // Step 4
   }
+  // rational function → partial fractions, then integrate the (simpler) terms. Real-pole
+  // terms A/(x-r)^k integrate via the linear-base power/log rule; irreducible quadratics
+  // fall through to the arctan handler.
+  { const { num: rn, den: rd } = numDen(e);
+    if (rd.t !== 'n' && symVars(rd).indexOf(x) >= 0 && symVars(rn).every((s) => s === x) && symVars(rd).every((s) => s === x)) {
+      const pf = partfracExpr(e, x);
+      if (exprToStr(simplifyExpr(pf)) !== exprToStr(e)) return integrate(pf, x);
+    } }
   const at = arctanPattern(e, x); if (at) return simplifyExpr(at);          // Step 4 (1/(x²+a²))
   if (symVars(e).indexOf(x) < 0) return sMul(e, sV(x));                                  // constant → c·x
   if (e.t === 'v' && e.name === x) return sMul(sN(0.5), sPow(sV(x), sN(2)));
@@ -390,6 +398,28 @@ export function limitAt(e: SymExpr, x: string, pt: SymExpr): SymExpr {
   // direct substitution
   const v = symEval(e, new Map([[x, p]]));
   if (Number.isFinite(v)) return sN(v);
+
+  // symbolic L'Hôpital: handles 0/0 whose limit is an EXPRESSION in another free variable
+  // (e.g. the derivative-definition difference quotient (sin(x+h)-sin(x))/h → cos(x)).
+  // Substitute the limit point symbolically; while 0/0, differentiate numerator & denominator.
+  {
+    let f = numDen(e).num, g = numDen(e).den;
+    const subPt = (z: SymExpr) => simplifyExpr(subsExpr(z, x, pt));
+    const isZ = (z: SymExpr) => z.t === 'n' && Math.abs((z as { v: number }).v) < 1e-12;
+    for (let round = 0; round < 4; round++) {
+      const fz = subPt(f), gz = subPt(g);
+      if (!(isZ(fz) && isZ(gz))) {
+        if (!isZ(gz)) {
+          const ratio = simplifyExpr(sDiv(fz, gz)); const vars = symVars(ratio);
+          if (vars.length === 0) { const nv = symEval(ratio, new Map()); if (Number.isFinite(nv)) return sN(snap(nv)); }
+          else if (vars.indexOf(x) < 0) return ratio;
+        }
+        break;
+      }
+      f = simplifyExpr(diffExpr(f, x));
+      g = simplifyExpr(diffExpr(g, x));
+    }
+  }
 
   // multi-round L'Hôpital: differentiate f/g until the ratio at p is determinate (e.g.
   // (1-cos x)/x^2 needs two rounds → cos(x)/2 → 1/2). numDen splits the denominator correctly.
@@ -423,6 +453,20 @@ export function limitAt(e: SymExpr, x: string, pt: SymExpr): SymExpr {
 }
 /** Solve p(x)=0 for polynomials up to degree 4 (numeric roots → symbolic numbers). */
 export function solveExpr(e: SymExpr, x: string): SymExpr[] {
+  // symbolic linear solve: A·x + B = 0 with A,B free of x  →  -B/A. Used when the
+  // coefficients are themselves symbolic (e.g. solve(a*x+b==0, x) → -b/a); numeric
+  // polynomials fall through to the Durand–Kerner root finder below.
+  {
+    const A = simplifyExpr(diffExpr(e, x));               // dE/dx = A (constant in x ⇔ linear)
+    if (symVars(A).indexOf(x) < 0) {
+      const B = simplifyExpr(subsExpr(e, x, sN(0)));       // E(0) = B
+      const symbolic = symVars(A).length > 0 || symVars(B).length > 0;
+      const Anum = symVars(A).length === 0 ? symEval(A, new Map()) : NaN;
+      if (symbolic && (symVars(A).length > 0 || (Number.isFinite(Anum) && Math.abs(Anum) > 1e-12))) {
+        return [simplifyExpr(sDiv(sNeg(B), A))];
+      }
+    }
+  }
   // extract polynomial coefficients via Taylor at 0: c_k = p^(k)(0)/k!
   const coeffs: number[] = []; let term = e; let fact = 1; let deg = -1;
   for (let k = 0; k <= 8; k++) { const c = symEval(term, new Map([[x, 0]])); if (!Number.isFinite(c)) return [sFn('solve', e)]; coeffs[k] = c / fact; if (Math.abs(coeffs[k]) > 1e-12) deg = k; term = simplifyExpr(diffExpr(term, x)); fact *= (k + 1); }

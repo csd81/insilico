@@ -1125,7 +1125,7 @@ export const BUILTINS: Record<string, Builtin> = {
     return ret(makeND(dims, Float64Array.from(A.data), { idata: A.idata ? Float64Array.from(A.idata) : null, isChar: A.isChar }));
   },
   diff: async (a) => {
-    if (isSym(a[0])) { const s = a[0]; const vr = a.length >= 2 && (isStr(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar)) ? asString(a[1]) : (symVarsOf(s)[0] ?? 'x'); const order = a.length >= 3 ? Math.round(asScalar(a[2])) : (a.length >= 2 && isMat(a[1]) && !(a[1] as Mat).isChar ? Math.round(asScalar(a[1])) : 1); const out = makeSym(s.rows, s.cols, s.exprs.map((e) => { let d = e; for (let k = 0; k < order; k++) d = simplifyExpr(diffExpr(d, vr)); return d; })); if (s.fnArgs) out.fnArgs = s.fnArgs; return ret(out); }
+    if (isSym(a[0])) { const s = a[0]; const vr = a.length >= 2 && (isStr(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar) || isSym(a[1])) ? (isSym(a[1]) ? (symVarsOf(a[1] as Sym)[0] ?? 'x') : asString(a[1])) : (symVarsOf(s)[0] ?? 'x'); const order = a.length >= 3 ? Math.round(asScalar(a[2])) : (a.length >= 2 && isMat(a[1]) && !(a[1] as Mat).isChar ? Math.round(asScalar(a[1])) : 1); const out = makeSym(s.rows, s.cols, s.exprs.map((e) => { let d = e; for (let k = 0; k < order; k++) d = simplifyExpr(diffExpr(d, vr)); return d; })); if (s.fnArgs) out.fnArgs = s.fnArgs; return ret(out); }
     const A0 = m(a[0]);
     const order = a.length >= 2 && isMat(a[1]) && !(a[1] as Mat).isChar && numel(a[1]) > 0 ? Math.round(asScalar(a[1])) : 1;
     const dim = a.length >= 3 ? Math.round(asScalar(a[2])) : (A0.rows === 1 ? 2 : 1);
@@ -3779,7 +3779,7 @@ export const BUILTINS: Record<string, Builtin> = {
   solve: async (a, _n, env) => {
     if (a.length && isStruct(a[0]) && (a[0] as StructV).fields.has('Q')) return ret(quboSolveResult(a[0] as StructV));
     if (a.length && isStruct(a[0]) && (a[0] as StructV).fields.has('ODEFcn')) return solveOde(a, env);   // OO ode object
-    const s = symArg(a[0]); const v = a.length >= 2 && (isStr(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar)) ? asString(a[1]) : (symVarsOf(s)[0] ?? 'x'); const roots = solveExpr(s.exprs[0], v); return ret(makeSym(roots.length, 1, roots));
+    const s = symArg(a[0]); const v = a.length >= 2 && (isStr(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar) || isSym(a[1])) ? (isSym(a[1]) ? (symVarsOf(a[1] as Sym)[0] ?? 'x') : asString(a[1])) : (symVarsOf(s)[0] ?? 'x'); const roots = solveExpr(s.exprs[0], v); return ret(makeSym(roots.length, 1, roots));
   },
   ode: async (a) => {
     const f = new Map<string, Value[]>([['Solver', [str('ode45')]], ['InitialTime', [scalar(0)]]]);
