@@ -5924,6 +5924,122 @@
       "real": 1.7182818284590453
     }
   },
+  "mateq_sylvester": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mateq_lyapunov": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mateq_riccati_care": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.676833230216817e-15
+    }
+  },
+  "geig_pencil": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.4999999999999999,
+        2
+      ]
+    }
+  },
+  "geig_sturm_liouville": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 9.646170927520425
+    }
+  },
+  "fem_1d_galerkin_solve": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.12500000000000008
+    }
+  },
+  "ode_symplectic_verlet": {
+    "E": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.49971273371475067
+    }
+  },
+  "spectral_chebyshev_diff": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.909521395506488e-7
+    }
+  },
+  "pde_strang_splitting": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.6064270805530192,
+        -0.6625981444499104
+      ]
+    }
+  },
+  "pde_varcoef_diffusion": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.09316724934773803
+    }
+  },
+  "qmc_van_der_corput": {
+    "I": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.33138276636600494
+    }
+  },
   "geom_convhull_area": {
     "v": {
       "class": "double",
