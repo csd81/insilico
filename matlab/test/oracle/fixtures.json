@@ -3283,5 +3283,296 @@
       ],
       "real": 1.959963984540054
     }
+  },
+  "val_ode45": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.718281834797091
+    }
+  },
+  "val_fminbnd": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "val_fminsearch": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.9999730728660298,
+        2.000033824752417
+      ]
+    }
+  },
+  "val_fsolve": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.4142135623746874
+    }
+  },
+  "val_quadprog": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.9999999999749976,
+        1.999999999949995
+      ]
+    }
+  },
+  "val_lsqlin": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.6666666666666679,
+        0.49999999999999967
+      ]
+    }
+  },
+  "val_interp2": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "val_ppval": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.25
+    }
+  },
+  "val_polyvalm": {
+    "M": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        3,
+        0,
+        0,
+        8
+      ]
+    }
+  },
+  "val_fft2": {
+    "Y": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        10,
+        -4,
+        -2,
+        0
+      ]
+    }
+  },
+  "val_fftshift": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        3,
+        4,
+        1,
+        2
+      ]
+    }
+  },
+  "val_hilbert_abs": {
+    "a": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1.4142135623730951,
+        2.23606797749979,
+        3.1622776601683795,
+        4.123105625617661
+      ]
+    }
+  },
+  "val_findpeaks": {
+    "pks": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "val_lsqr": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6.280369834735101e-16
+    }
+  },
+  "val_bicgstab": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.440892098500626e-16
+    }
+  },
+  "val_eigs": {
+    "ev": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        2,
+        3,
+        6
+      ]
+    }
+  },
+  "val_svds": {
+    "s": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        3
+      ]
+    }
+  },
+  "val_orth": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.440892098500626e-16
+    }
+  },
+  "val_graph_shortestpath": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "val_graph_conncomp": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        2,
+        2
+      ]
+    }
+  },
+  "val_graph_distances": {
+    "D": {
+      "class": "double",
+      "size": [
+        4,
+        4
+      ],
+      "real": [
+        0,
+        1,
+        2,
+        3,
+        1,
+        0,
+        1,
+        2,
+        2,
+        1,
+        0,
+        1,
+        3,
+        2,
+        1,
+        0
+      ]
+    }
+  },
+  "val_graph_toposort": {
+    "o": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3
+      ]
+    }
   }
 }

@@ -376,4 +376,38 @@ export const CASES: OracleCase[] = [
   { name: 'val-binopdf', src: 'p = binopdf(2, 5, 0.5);', vars: ['p'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['binomial-distribution', 'oracle-validation'] },
   { name: 'val-poisspdf', src: 'p = poisspdf(2, 3);', vars: ['p'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['poisson-distribution', 'oracle-validation'] },
   { name: 'val-icdf-normal', src: "x = icdf('Normal', 0.975, 0, 1);", vars: ['x'], tol: 1e-6, level: 'undergrad', domain: 'statistics', tags: ['inverse-cdf', 'oracle-validation'] },
+
+  // ── validation: ODE solvers (adaptive — loose tol absorbs step-control differences) ──
+  { name: 'val-ode45', src: '[t, y] = ode45(@(t, y) y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, level: 'graduate', domain: 'numerical-ode', tags: ['ode45', 'oracle-validation'] },
+
+  // ── validation: optimization (unique minimizers; iterative tol) ──
+  { name: 'val-fminbnd', src: 'x = fminbnd(@(x)(x-2).^2, 0, 5);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fminbnd', 'oracle-validation'] },
+  { name: 'val-fminsearch', src: 'x = fminsearch(@(v)(v(1)-1)^2 + (v(2)-2)^2, [0 0]);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fminsearch', 'nelder-mead', 'oracle-validation'] },
+  { name: 'val-fsolve', src: 'x = fsolve(@(x) x^2 - 2, 1);', vars: ['x'], tol: 1e-6, level: 'graduate', domain: 'optimization', tags: ['fsolve', 'oracle-validation'] },
+  { name: 'val-quadprog', src: 'x = quadprog([2 0; 0 2], [-2; -4]);', vars: ['x'], tol: 1e-5, level: 'graduate', domain: 'optimization', tags: ['quadprog', 'oracle-validation'] },
+  { name: 'val-lsqlin', src: 'x = lsqlin([1 1; 1 2; 1 3], [1; 2; 2]);', vars: ['x'], tol: 1e-6, level: 'graduate', domain: 'optimization', tags: ['lsqlin', 'least-squares', 'oracle-validation'] },
+
+  // ── validation: interpolation / polynomials ──
+  { name: 'val-interp2', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X + Y; q = interp2(X, Y, Z, 1.5, 2.5);', vars: ['q'], tol: 1e-9, level: 'undergrad', domain: 'approximation', tags: ['interp2', 'oracle-validation'] },
+  { name: 'val-ppval', src: 'pp = spline([0 1 2 3], [0 1 4 9]); q = ppval(pp, 1.5);', vars: ['q'], tol: 1e-6, level: 'undergrad', domain: 'approximation', tags: ['ppval', 'spline', 'oracle-validation'] },
+  { name: 'val-polyvalm', src: 'M = polyvalm([1 0 -1], [2 0; 0 3]);', vars: ['M'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['polyvalm', 'oracle-validation'] },
+
+  // ── validation: Fourier / signal ──
+  { name: 'val-fft2', src: 'Y = fft2([1 2; 3 4]);', vars: ['Y'], tol: 1e-9, level: 'graduate', domain: 'fourier', tags: ['fft2', 'oracle-validation'] },
+  { name: 'val-fftshift', src: 'y = fftshift([1 2 3 4]);', vars: ['y'], tol: 1e-9, level: 'undergrad', domain: 'fourier', tags: ['fftshift', 'oracle-validation'] },
+  { name: 'val-hilbert-abs', src: 'a = abs(hilbert([1 2 3 4]));', vars: ['a'], tol: 1e-6, level: 'graduate', domain: 'fourier', tags: ['hilbert', 'oracle-validation'] },
+  { name: 'val-findpeaks', src: 'pks = findpeaks([0 2 0 3 1 4 0]);', vars: ['pks'], tol: 1e-9, level: 'undergrad', domain: 'fourier', tags: ['findpeaks', 'oracle-validation'] },
+
+  // ── validation: sparse / iterative solvers + decompositions ──
+  { name: 'val-lsqr', src: 'A = [4 1; 1 3]; b = [1; 2]; x = lsqr(A, b); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['lsqr', 'iterative-solver', 'oracle-validation'] },
+  { name: 'val-bicgstab', src: 'A = [4 1; 1 3]; b = [1; 2]; x = bicgstab(A, b); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['bicgstab', 'iterative-solver', 'oracle-validation'] },
+  { name: 'val-eigs', src: 'ev = sort(eigs([2 0 0; 0 3 0; 0 0 6], 3));', vars: ['ev'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['eigs', 'oracle-validation'] },
+  { name: 'val-svds', src: 's = sort(svds([2 0; 0 3], 2));', vars: ['s'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['svds', 'oracle-validation'] },
+  { name: 'val-orth', src: "Q = orth([1 0; 1 0; 0 1]); rr = norm(Q'*Q - eye(size(Q,2)));", vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['orth', 'oracle-validation'] },
+
+  // ── validation: graph / network ──
+  { name: 'val-graph-shortestpath', src: 'G = graph([1 2 3], [2 3 4]); p = shortestpath(G, 1, 4);', vars: ['p'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['shortestpath', 'oracle-validation'] },
+  { name: 'val-graph-conncomp', src: 'G = graph([1 3], [2 4]); c = conncomp(G);', vars: ['c'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['conncomp', 'oracle-validation'] },
+  { name: 'val-graph-distances', src: 'G = graph([1 2 3], [2 3 4]); D = distances(G);', vars: ['D'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['distances', 'oracle-validation'] },
+  { name: 'val-graph-toposort', src: 'G = digraph([1 2 1], [2 3 3]); o = toposort(G);', vars: ['o'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['toposort', 'oracle-validation'] },
 ];

@@ -42,10 +42,11 @@ pnpm exec tsc -p tsconfig.test.json && node matlab/test/oracle/coverage.mjs
 | Spectral graph theory (Laplacian, Fiedler value) | ✓ |
 | Markov chains / steady state | ✓ |
 | Low-rank / SVD subspaces | ~ |
-| Optimization (golden-section, gradient descent, Newton min) | ✓ |
+| Optimization (golden-section, GD, Newton min; `fminbnd`/`fminsearch`/`fsolve`/`quadprog`/`lsqlin`) | ✓ |
 | Nonlinear systems (Newton + Jacobian) | ✓ |
-| Numerical ODEs (Euler, Heun, RK4, systems) | ✓ |
+| Numerical ODEs (Euler, Heun, RK4, systems; `ode45` adaptive) | ✓ |
 | PDE finite-difference (Poisson 1-D, heat 1-D) | ✓ |
+| Graph algorithms (`shortestpath`, `conncomp`, `distances`, `toposort`) | ✓ |
 | Finite-element toy assembly (1-D stiffness) | ✓ |
 | Dynamical systems (fixed-point, logistic map, stability) | ✓ |
 | Spectral methods / Fourier (`fft`/`ifft`, convolution, freq detect) | ✓ |
