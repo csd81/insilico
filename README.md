@@ -52,7 +52,9 @@ value equality.
 ## Scope
 
 See **[docs/supported-subset.md](docs/supported-subset.md)** (the language/feature
-contract) and **[docs/coverage-map.md](docs/coverage-map.md)** (domain coverage +
-backlog). Proof-based pure math, host-API I/O, RNG-output parity, and full
+contract), **[docs/coverage-map.md](docs/coverage-map.md)** (domain coverage +
+backlog), and **[docs/symbolic-boundary.md](docs/symbolic-boundary.md)** (the CAS
+domain of validity — exactly what `int`/`limit`/`solve` compute vs. return
+unevaluated). Proof-based pure math, host-API I/O, RNG-output parity, and full
 language-runtime features (`classdef`, `arguments`, path model) are explicitly
 out of scope.
