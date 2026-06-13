@@ -1399,6 +1399,49 @@
       "real": 2.7182682371744953
     }
   },
+  "secant_sqrt2": {
+    "root": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.414213562373095
+    }
+  },
+  "cholesky_solve": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        0.9999999999999999
+      ]
+    }
+  },
+  "newton_interp": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 9
+    }
+  },
+  "rk4_exp": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.718281828234404
+    }
+  },
   "sprintf_int": {
     "s": {
       "class": "char",

@@ -145,6 +145,10 @@ export const CASES: OracleCase[] = [
   { name: 'gaussian-elimination', src: 'A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; x = A\\b;', vars: ['x'], tol: 1e-9 },
   { name: 'simpson-sin', src: 'n = 100; a = 0; b = pi; h = (b-a)/n; x = a:h:b; y = sin(x); S = y(1) + y(end) + 4*sum(y(2:2:end-1)) + 2*sum(y(3:2:end-2)); I = S*h/3;', vars: ['I'], tol: 1e-6 },
   { name: 'euler-exp', src: 'n = 100000; h = 1/n; y = 1; for k = 1:n, y = y + h*y; end', vars: ['y'], tol: 1e-3 },
+  { name: 'secant-sqrt2', src: 'f = @(x) x.^2 - 2; x0 = 1; x1 = 2; for k = 1:30, fx0 = f(x0); fx1 = f(x1); if fx1 == fx0, break; end, x2 = x1 - fx1*(x1-x0)/(fx1-fx0); x0 = x1; x1 = x2; end; root = x1;', vars: ['root'], tol: 1e-9 },
+  { name: 'cholesky-solve', src: "A = [4 2; 2 3]; b = [6; 5]; R = chol(A); y = R.'\\b; x = R\\y;", vars: ['x'], tol: 1e-9 },
+  { name: 'newton-interp', src: 'x = [1 2 4]; y = [1 4 16]; n = numel(x); c = y; for j = 2:n, for i = n:-1:j, c(i) = (c(i)-c(i-1))/(x(i)-x(i-j+1)); end, end; t = 3; p = c(n); for i = n-1:-1:1, p = p*(t-x(i)) + c(i); end', vars: ['p'], tol: 1e-9 },
+  { name: 'rk4-exp', src: 'f = @(t, y) y; h = 0.01; y = 1; t = 0; for k = 1:100, k1 = f(t,y); k2 = f(t+h/2, y+h/2*k1); k3 = f(t+h/2, y+h/2*k2); k4 = f(t+h, y+h*k3); y = y + h/6*(k1+2*k2+2*k3+k4); t = t + h; end', vars: ['y'], tol: 1e-6 },
 
   // ── fundamentals: string / char operations (char-row & string outputs) ──
   { name: 'sprintf-int', src: "s = sprintf('%d/%d', 3, 4);", vars: ['s'] },

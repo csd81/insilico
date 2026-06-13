@@ -72,6 +72,13 @@ Behavior is mechanically verified against **real MATLAB** via the oracle suite
 **File I/O** (browser VFS)
 - `readmatrix`/`writematrix`, `readtable`, `fopen`/`fgetl`/`fclose`, CSV, `.mlx` parse
 
+**Numerical-methods backbone** (end-to-end course scripts, oracle-verified vs MATLAB)
+- Root finding: bisection, secant, Newton
+- Linear systems: Gaussian elimination (`\`), LU solve, Cholesky solve
+- Interpolation: Newton divided-difference
+- Quadrature: trapezoid, Simpson
+- ODE integration: explicit Euler, classical RK4
+
 ---
 
 ## Partially supported
