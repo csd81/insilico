@@ -7,7 +7,7 @@ intentionally out of scope. It is a contract, not a bug list — items under
 "Intentionally unsupported" are deliberate scope decisions, not defects.
 
 Behavior is mechanically verified against **real MATLAB** via the oracle suite
-(`matlab/test/oracle/`, 285 committed fixtures) plus TS-only tests — 420 total,
+(`matlab/test/oracle/`, 296 committed fixtures) plus TS-only tests — 431 total,
 all green. See `pnpm test`.
 
 ---
@@ -87,7 +87,7 @@ all green. See `pnpm test`.
 | Area | Status |
 |---|---|
 | Toolboxes | 15 registered (`matlab/tb/`); only oracle-checked functions. Many per-toolbox functions are stubs and not registered. |
-| Symbolic math (`sym`) | Useful subset: `diff`, `int`, `solve`, `simplify`, `taylor`, `subs`, transforms. Not full Symbolic Toolbox. |
+| Symbolic math (`sym`) | Useful subset: `diff` (all rules), `taylor`, `subs`, `solve`, `simplify`, `jacobian`/`hessian`, `laplace`, transforms. `int` handles polynomials and standard antiderivatives but **not** arbitrary integration-by-parts / substitution (e.g. `int(x*exp(x))` is unevaluated); `limit` is partial (difference-quotient limits unevaluated). Not full Symbolic Toolbox. |
 | Tables / timetables | Construction, variable access, CSV import. Not the full join/groupby surface. |
 | `datetime` / `duration` | Present; not exhaustively covered. |
 | `categorical` | Present; basic operations. |

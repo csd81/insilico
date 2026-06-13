@@ -4041,5 +4041,115 @@
         1.0001
       ]
     }
+  },
+  "cal_power_rule": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 80
+    }
+  },
+  "cal_product_rule": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.2232442754839328
+    }
+  },
+  "cal_quotient_rule": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -0.3011686789397568
+    }
+  },
+  "cal_chain_rule": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.0806046117362795
+    }
+  },
+  "cal_transcendental": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8.816231451438373
+    }
+  },
+  "cal_second_derivative": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 108
+    }
+  },
+  "cal_taylor_cos": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5416666666666666
+    }
+  },
+  "cal_antiderivative_poly": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "cal_definite_integral": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 9
+    }
+  },
+  "cal_fundamental_theorem": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8.666666666666666
+    }
+  },
+  "cal_riemann_midpoint": {
+    "S": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3333332499999999
+    }
   }
 }

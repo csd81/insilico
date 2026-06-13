@@ -469,4 +469,18 @@ export const CASES: OracleCase[] = [
   { name: 'stress-jordan-eig', src: 'ev = sort(eig([1 1; 0 1]));', vars: ['ev'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['defective', 'jordan-block', 'repeated-eigenvalues', 'stress'] },
   { name: 'stress-repeated-eig', src: 'ev = sort(eig(diag([2 2 5])));', vars: ['ev'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['repeated-eigenvalues', 'stress'] },
   { name: 'stress-near-defective-eig', src: 'ev = sort(eig([1 1000; 0 1.0001]));', vars: ['ev'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['near-defective', 'stress'] },
+
+  // ══════════ calculus — differentiation, Taylor, integration, Riemann ══════════
+  // (symbolic finals via double(subs(...)); see supported-subset.md for int by-parts/limit limits)
+  { name: 'cal-power-rule', src: 'syms x; d = diff(x^5); v = double(subs(d, x, 2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['differentiation', 'power-rule'] },
+  { name: 'cal-product-rule', src: 'syms x; d = diff(x^2*sin(x)); v = double(subs(d, x, 1));', vars: ['v'], tol: 1e-6, level: 'undergrad', domain: 'calculus', tags: ['differentiation', 'product-rule'] },
+  { name: 'cal-quotient-rule', src: 'syms x; d = diff(sin(x)/x); v = double(subs(d, x, 1));', vars: ['v'], tol: 1e-6, level: 'undergrad', domain: 'calculus', tags: ['differentiation', 'quotient-rule'] },
+  { name: 'cal-chain-rule', src: 'syms x; d = diff(sin(x^2)); v = double(subs(d, x, 1));', vars: ['v'], tol: 1e-6, level: 'undergrad', domain: 'calculus', tags: ['differentiation', 'chain-rule'] },
+  { name: 'cal-transcendental', src: 'syms x; d = diff(exp(x)*log(x)); v = double(subs(d, x, 2));', vars: ['v'], tol: 1e-6, level: 'undergrad', domain: 'calculus', tags: ['differentiation', 'transcendental'] },
+  { name: 'cal-second-derivative', src: 'syms x; d2 = diff(x^4, 2); v = double(subs(d2, x, 3));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['differentiation', 'higher-order'] },
+  { name: 'cal-taylor-cos', src: "syms x; T = taylor(cos(x), x, 'Order', 6); v = double(subs(T, x, 1));", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['taylor-series'] },
+  { name: 'cal-antiderivative-poly', src: 'syms x; F = int(x^3); v = double(subs(F, x, 2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'antiderivative'] },
+  { name: 'cal-definite-integral', src: 'syms x; v = double(int(x^2, 0, 3));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'definite'] },
+  { name: 'cal-fundamental-theorem', src: 'syms x; F = int(x^2); v = double(subs(F, x, 3) - subs(F, x, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'fundamental-theorem'] },
+  { name: 'cal-riemann-midpoint', src: 'n = 1000; a = 0; b = 1; h = (b-a)/n; xm = (a+h/2):h:b; S = sum(xm.^2)*h;', vars: ['S'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'riemann-sum'] },
 ];
