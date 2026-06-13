@@ -87,13 +87,18 @@ workflows — not 100% of all graduate mathematics.*
 The backlog is bucketed so it does not accidentally reintroduce MATLAB-clone
 ambitions. The computational contract is the target; runtime/IO breadth is not.
 
-### Required (genuinely missing + aligned)
-*(none currently)* — a probe of the proposed backlog found the supposed gaps were
-either already implemented or not real MATLAB functions:
-- **`khatriRao`** — **not a MATLAB function** (R2026a `exist==0`; it's a
-  third-party / Tensor-Toolbox name). No oracle ground truth → not implemented.
-- **`gammapdf`** — MATLAB's function is **`gampdf`** (no `gammapdf` exists);
-  already implemented and oracle-validated.
+### Required
+
+None currently.
+
+The previous proposed gaps were rechecked against MATLAB R2026a and the sandbox
+registry. They were either already implemented, intentionally out of scope, or
+not MATLAB function names.
+
+- `khatriRao`: not a MATLAB R2026a function (`exist("khatriRao") == 0`). Do not
+  implement as part of MATLAB-compatible coverage.
+- `gammapdf`: incorrect name. MATLAB uses `gampdf`, which is already implemented
+  and oracle-validated.
 
 ### Validate existing (implemented; lock with oracle cases)
 Implemented and **already oracle-validated**: `eig`/`svd`/`qr`/`lu`/`chol`,
@@ -106,6 +111,10 @@ Implemented, validation still pending: `ode23`/`ode113`/`ode15s`/`deval`,
 `linprog` (non-unique vertex — needs objective-value framing), `residue`
 (pole-order convention), `centrality`/`maxflow`/`minspantree`, `interpn`/`makima`,
 symbolic `jacobian`/`hessian`/`taylor`/`laplace`/`dsolve`/`vpasolve`.
+
+Functions with non-unique outputs are validated by invariants rather than raw
+value equality (e.g. `linprog` objective value, `residue` sorted poles, `eig`
+reconstruction residual, `svd`/`qr` sign conventions, graph path length).
 
 ### Deferred (real, but only if course-driven)
 Large model-object families (`fitlm`/`fitglm`/`fitcsvm`/`fitctree`/`fitrgp`),
