@@ -3314,6 +3314,24 @@
       "real": 0.7639320225002108
     }
   },
+  "pde_cfl_monotonicity": {
+    "pk": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    },
+    "over": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
   "dyn_fixed_point": {
     "x": {
       "class": "double",
@@ -3846,6 +3864,29 @@
       ]
     }
   },
+  "val_fmincon_bounds_nonlcon": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.49999905359719254,
+        0.8660255501888402
+      ]
+    }
+  },
+  "opt_lsqnonlin_inverse": {
+    "rfit": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8.780543029780221e-10
+    }
+  },
   "val_interp2": {
     "q": {
       "class": "double",
@@ -4098,6 +4139,49 @@
         1
       ],
       "real": 0.00009985368988618675
+    }
+  },
+  "robust_rankdef_sparse_lsqr": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.440892098500626e-16
+    }
+  },
+  "robust_illcond_sparse_solve": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "robust_hilbert_residual": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.797546735911271e-13
+    }
+  },
+  "robust_rankdef_pinv_minnorm": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.19999999999999993,
+        0.39999999999999986
+      ]
     }
   },
   "val_eigs": {
@@ -5505,6 +5589,16 @@
         1
       ],
       "real": 1
+    }
+  },
+  "cal_simplify_rational_cancel": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6
     }
   },
   "cal_trig_double_angle": {
