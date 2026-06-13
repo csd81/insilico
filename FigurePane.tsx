@@ -1,10 +1,8 @@
-/** Figure pane: lazily loads Plotly only once a plot exists. */
-import { Suspense, lazy, useState } from 'react';
+/** Figure pane: SVG renderer (no external dependency). */
+import { useState } from 'react';
 import { useTheme } from '../shared/providers/ThemeProvider';
 import type { FigureSpec } from './matlab/graphics';
-import type { ScaleOverride } from './PlotlyFigure';
-
-const PlotlyFigure = lazy(() => import('./PlotlyFigure'));
+import SvgFigure, { type ScaleOverride } from './PlotlyFigure';
 
 export default function FigurePane({ fig }: { fig: FigureSpec }) {
   const { theme } = useTheme();
@@ -41,9 +39,7 @@ export default function FigurePane({ fig }: { fig: FigureSpec }) {
         </div>
       )}
       <div style={{ flex: '1 1 auto', minHeight: 0, position: 'relative' }}>
-        <Suspense fallback={<div className="mlab__fig-empty">Loading figure…</div>}>
-          <PlotlyFigure fig={fig} dark={dark} xScale={xScale} yScale={yScale} />
-        </Suspense>
+        <SvgFigure fig={fig} dark={dark} xScale={xScale} yScale={yScale} />
       </div>
     </div>
   );
