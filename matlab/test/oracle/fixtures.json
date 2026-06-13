@@ -2962,6 +2962,158 @@
       ]
     }
   },
+  "pde_heat_ftcs_multistep": {
+    "u": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0,
+        0.059126271999999994,
+        0.0835994624,
+        0.059126271999999994,
+        0
+      ]
+    }
+  },
+  "pde_heat_backward_euler": {
+    "u": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0.4152650644043107,
+        0.6787189602081609,
+        0.7641011210542843,
+        0.6787189602081609,
+        0.41526506440431066
+      ]
+    }
+  },
+  "pde_heat_crank_nicolson": {
+    "u": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0.39156303973176515,
+        0.6648376356659205,
+        0.7600476990350785,
+        0.6648376356659206,
+        0.39156303973176526
+      ]
+    }
+  },
+  "pde_laplace_2d_stencil": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        9
+      ],
+      "real": [
+        0,
+        1,
+        0,
+        1,
+        -4,
+        1,
+        0,
+        1,
+        0
+      ]
+    }
+  },
+  "pde_poisson_2d_residual": {
+    "res": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.2412670766236366e-15
+    }
+  },
+  "pde_reaction_diffusion_step": {
+    "un": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0.1,
+        0.36000000000000004,
+        0.44999999999999996,
+        0.36,
+        0.1
+      ]
+    }
+  },
+  "pde_advection_upwind": {
+    "u": {
+      "class": "double",
+      "size": [
+        8,
+        1
+      ],
+      "real": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    }
+  },
+  "pde_parabolic_stability": {
+    "rho": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.8928203230275511
+    }
+  },
+  "pde_distributed_consensus": {
+    "x": {
+      "class": "double",
+      "size": [
+        4,
+        1
+      ],
+      "real": [
+        2.5,
+        2.5,
+        2.500000000000001,
+        2.500000000000001
+      ]
+    }
+  },
+  "pde_fd_hamiltonian_eig": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        4.925605634718173,
+        19.5923926483119,
+        43.67272925503311
+      ]
+    }
+  },
   "dyn_fixed_point": {
     "x": {
       "class": "double",
