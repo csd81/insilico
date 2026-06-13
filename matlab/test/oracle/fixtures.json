@@ -1258,5 +1258,145 @@
         1
       ]
     }
+  },
+  "sparse_construct": {
+    "S": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        10,
+        0,
+        0,
+        0,
+        20,
+        0,
+        0,
+        0,
+        30
+      ]
+    }
+  },
+  "sparse_nnz": {
+    "n": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "sparse_speye": {
+    "F": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "sparse_matvec": {
+    "y": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        3,
+        8
+      ]
+    }
+  },
+  "sparse_solve": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.8,
+        1.4
+      ]
+    }
+  },
+  "sparse_spdiags": {
+    "D": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        3
+      ]
+    }
+  },
+  "bisection_sqrt2": {
+    "root": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.414213562373095
+    }
+  },
+  "gaussian_elimination": {
+    "x": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        2,
+        3.0000000000000004,
+        -0.9999999999999999
+      ]
+    }
+  },
+  "simpson_sin": {
+    "I": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.0000000108245044
+    }
+  },
+  "euler_exp": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.7182682371744953
+    }
   }
 }

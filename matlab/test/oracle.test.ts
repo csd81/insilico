@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { run } from './harness';
 import { CASES } from './oracle/cases';
-import { type Value, type Mat, isMat, isStr } from '../values';
+import { type Value, type Mat, isMat, isStr, isSparse, sparseToDense } from '../values';
 
 // Committed ground truth from real MATLAB (see oracle/generate.mjs).
 type Fix = { class: string; size: [number, number]; real?: number | number[]; imag?: number | number[]; value?: string; error?: string };
@@ -19,6 +19,7 @@ const key = (name: string) => name.replace(/-/g, '_');
 
 /** TS Value → the same shape MATLAB serialized. */
 function describeValue(v: Value): { class: string; size: [number, number]; real: number[]; imag: number[] } {
+  if (isSparse(v)) v = sparseToDense(v);   // MATLAB side densifies via full(); class(sparse) is 'double'
   if (isMat(v)) {
     const m = v as Mat;
     const cls = m.isChar ? 'char' : m.isBool ? 'logical' : (m.itype ?? 'double');

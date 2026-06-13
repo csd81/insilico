@@ -58,6 +58,7 @@ function out = capture(src, vs)
     out = struct();
     for o__k = 1:numel(vs)
       o__v = o__vals{o__k};
+      if issparse(o__v), o__v = full(o__v); end   % compare against the dense equivalent
       o__s = struct();
       o__s.class = class(o__v);
       o__s.size = size(o__v);
