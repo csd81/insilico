@@ -376,6 +376,8 @@ export const CASES: OracleCase[] = [
   { name: 'val-binopdf', src: 'p = binopdf(2, 5, 0.5);', vars: ['p'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['binomial-distribution', 'oracle-validation'] },
   { name: 'val-poisspdf', src: 'p = poisspdf(2, 3);', vars: ['p'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['poisson-distribution', 'oracle-validation'] },
   { name: 'val-icdf-normal', src: "x = icdf('Normal', 0.975, 0, 1);", vars: ['x'], tol: 1e-6, level: 'undergrad', domain: 'statistics', tags: ['inverse-cdf', 'oracle-validation'] },
+  // gamma PDF — MATLAB's function is `gampdf` (there is no `gammapdf`); already implemented.
+  { name: 'val-gampdf', src: 'p = gampdf(2, 3, 1);', vars: ['p'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['gamma-distribution', 'oracle-validation'] },
 
   // ── validation: ODE solvers (adaptive — loose tol absorbs step-control differences) ──
   { name: 'val-ode45', src: '[t, y] = ode45(@(t, y) y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, level: 'graduate', domain: 'numerical-ode', tags: ['ode45', 'oracle-validation'] },

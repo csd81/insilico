@@ -3284,6 +3284,16 @@
       "real": 1.959963984540054
     }
   },
+  "val_gampdf": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.2706705664732254
+    }
+  },
   "val_ode45": {
     "yf": {
       "class": "double",

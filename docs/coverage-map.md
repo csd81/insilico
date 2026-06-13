@@ -79,3 +79,47 @@ not numeric/CAS execution parity.
 
 **Scope statement:** *100% coverage of declared graduate computational-math
 workflows — not 100% of all graduate mathematics.*
+
+---
+
+## Backlog status
+
+The backlog is bucketed so it does not accidentally reintroduce MATLAB-clone
+ambitions. The computational contract is the target; runtime/IO breadth is not.
+
+### Required (genuinely missing + aligned)
+*(none currently)* — a probe of the proposed backlog found the supposed gaps were
+either already implemented or not real MATLAB functions:
+- **`khatriRao`** — **not a MATLAB function** (R2026a `exist==0`; it's a
+  third-party / Tensor-Toolbox name). No oracle ground truth → not implemented.
+- **`gammapdf`** — MATLAB's function is **`gampdf`** (no `gammapdf` exists);
+  already implemented and oracle-validated.
+
+### Validate existing (implemented; lock with oracle cases)
+Implemented and **already oracle-validated**: `eig`/`svd`/`qr`/`lu`/`chol`,
+`schur`/`hess`/`polyeig`, `pinv`/`rank`/`null`/`orth`/`rref`/`cond`,
+`expm`/`sqrtm`/`logm`, `gmres`/`minres`/`bicg`/`bicgstab`/`lsqr`, `eigs`/`svds`,
+`ode45`, `fminbnd`/`fminsearch`/`fsolve`/`quadprog`/`lsqlin`,
+`interp2`/`ppval`/`polyvalm`, `fft2`/`fftshift`/`hilbert`/`findpeaks`,
+`shortestpath`/`conncomp`/`distances`/`toposort`, distribution `*pdf`/`*cdf`/`icdf`.
+Implemented, validation still pending: `ode23`/`ode113`/`ode15s`/`deval`,
+`linprog` (non-unique vertex — needs objective-value framing), `residue`
+(pole-order convention), `centrality`/`maxflow`/`minspantree`, `interpn`/`makima`,
+symbolic `jacobian`/`hessian`/`taylor`/`laplace`/`dsolve`/`vpasolve`.
+
+### Deferred (real, but only if course-driven)
+Large model-object families (`fitlm`/`fitglm`/`fitcsvm`/`fitctree`/`fitrgp`),
+full table/timetable ecosystem (`retime`/`synchronize`/`stack`/`unstack`),
+hypothesis tests (`kstest`/`chi2gof`/`anova`), `pca`/`kmeans`/`knnsearch`,
+missing sparse helpers (`pcg`/`ldl`/`ilu`/`cgs`).
+
+### Out of scope (clone ambitions — explicitly not requirements)
+- Language runtime: `classdef`, `arguments`, real `global`/`persistent`,
+  `evalin`/`assignin`, path model (`addpath`/`rmpath`/`path`/`genpath`).
+- I/O needing host APIs: `webread`/`webwrite`, `imread`/`imwrite`,
+  `audioread`/`audiowrite`, `matfile`, `savefig`/`openfig`, `xmlread`.
+- RNG output parity: `mvnrnd`/`bootstrp`/`datasample` and any exact
+  random-output oracle comparison (`rng`-fixing won't reproduce MATLAB's stream).
+- Proof-based pure mathematics (see above).
+
+**Claim:** *validated graduate computational subset* — not MATLAB parity.
