@@ -3256,6 +3256,24 @@
       "real": 1.9952278211820682
     }
   },
+  "pde_advection_lax_wendroff": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.17724441948741437
+    },
+    "peak": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9678824355078883
+    }
+  },
   "pde_heat_cn_spdiags": {
     "energy": {
       "class": "double",
@@ -3923,6 +3941,40 @@
         0,
         1.9199999999999997
       ]
+    }
+  },
+  "opt_admm_lasso_small": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0,
+        1.9199999999999995
+      ]
+    }
+  },
+  "opt_projected_gradient_simplex": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0,
+        1
+      ]
+    },
+    "s": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
     }
   },
   "val_fmincon_bounds_nonlcon": {
