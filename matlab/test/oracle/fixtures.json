@@ -3202,6 +3202,62 @@
       "real": 0.25000000000000006
     }
   },
+  "pde_advection_upwind_periodic": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.17724441948741437
+    },
+    "peak": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5767072072021943
+    }
+  },
+  "pde_advection_lax_friedrichs": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.23333333333333336
+    },
+    "tv": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.9952278211820682
+    }
+  },
+  "pde_heat_cn_spdiags": {
+    "energy": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.6665612526431095
+    }
+  },
+  "pde_poisson_2d_kron": {
+    "resid": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6.385471637914544e-15
+    }
+  },
   "dyn_fixed_point": {
     "x": {
       "class": "double",
@@ -3652,6 +3708,32 @@
       "real": 2
     }
   },
+  "val_fminunc_quadratic": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2.000000034795861,
+        -0.9999999299527098
+      ]
+    }
+  },
+  "val_lsqnonlin_circle": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.7071067827406002,
+        0.7071067827406001
+      ]
+    }
+  },
   "val_interp2": {
     "q": {
       "class": "double",
@@ -3710,6 +3792,16 @@
         1
       ],
       "real": 1.5
+    }
+  },
+  "val_griddedInterpolant_1d": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.5
     }
   },
   "val_polyvalm": {
@@ -3854,6 +3946,16 @@
         1
       ],
       "real": 0
+    }
+  },
+  "sparse_pcg_ichol_residual": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.0852715702514386e-8
     }
   },
   "val_eigs": {
@@ -5318,6 +5420,16 @@
         1
       ],
       "real": 3
+    }
+  },
+  "cal_charpoly_det_lambda": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
     }
   },
   "cal_eig_sym_2x2": {

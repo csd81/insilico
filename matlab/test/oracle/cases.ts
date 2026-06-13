@@ -353,6 +353,12 @@ export const CASES: OracleCase[] = [
   { name: 'pde-separation-of-variables', src: 'x = 0.5; t = 0.05; u = 0; for nn = 1:2:11, bn = 4/(nn*pi); u = u + bn*sin(nn*pi*x)*exp(-(nn*pi)^2*t); end;', vars: ['u'], tol: 1e-7, level: 'graduate', domain: 'numerical-pde', tags: ['separation-of-variables', 'fourier-series', 'heat-equation'] },
   { name: 'pde-steady-heat-2d', src: 'n = 3; e = ones(n,1); T = spdiags([e -2*e e], [-1 0 1], n, n); I = speye(n); L = kron(I, T) + kron(T, I); b = zeros(n^2, 1); b(n^2-n+1:n^2) = -1; u = L\\b; uc = u(5);', vars: ['uc'], tol: 1e-7, level: 'graduate', domain: 'numerical-pde', tags: ['laplace-2d', 'steady-heat', 'dirichlet', 'sparse-solve'] },
 
+  // ── advection (periodic BC via circshift) + sparse Crank-Nicolson + larger 2-D Poisson ──
+  { name: 'pde-advection-upwind-periodic', src: 'N = 50; x = linspace(0,1,N+1); x(end) = []; dx = 1/N; c = 1; dt = 0.5*dx; nt = round(1/dt); u = exp(-100*(x-0.3).^2); for n = 1:nt, u = u - c*dt/dx*(u - circshift(u,1)); end; mass = sum(u)*dx; peak = max(u);', vars: ['mass', 'peak'], tol: 1e-6, level: 'graduate', domain: 'numerical-pde', tags: ['advection', 'upwind', 'periodic', 'cfl'] },
+  { name: 'pde-advection-lax-friedrichs', src: 'N = 60; x = linspace(0,1,N+1); x(end) = []; dx = 1/N; dt = 0.8*dx; u = double(x>0.25 & x<0.5); for n = 1:20, u = 0.5*(circshift(u,-1)+circshift(u,1)) - dt/(2*dx)*(circshift(u,-1)-circshift(u,1)); end; mass = sum(u)*dx; tv = sum(abs(diff([u u(1)])));', vars: ['mass', 'tv'], tol: 1e-6, level: 'graduate', domain: 'numerical-pde', tags: ['advection', 'lax-friedrichs', 'total-variation'] },
+  { name: 'pde-heat-cn-spdiags', src: "n = 8; h = 1/(n+1); r = 0.4; e = ones(n,1); T = spdiags([e -2*e e], -1:1, n, n); A = speye(n) - r/2*T; B = speye(n) + r/2*T; u = sin(pi*(1:n)'*h); for k = 1:5, u = A\\(B*u); end; energy = norm(u);", vars: ['energy'], tol: 1e-6, level: 'graduate', domain: 'numerical-pde', tags: ['heat-equation', 'crank-nicolson', 'spdiags', 'sparse'] },
+  { name: 'pde-poisson-2d-kron', src: 'n = 5; e = ones(n,1); T = spdiags([e -2*e e], -1:1, n, n); A = kron(speye(n), T) + kron(T, speye(n)); b = ones(n*n, 1); u = A\\b; resid = norm(A*u - b);', vars: ['resid'], tol: 1e-9, level: 'graduate', domain: 'numerical-pde', tags: ['poisson', 'finite-difference', 'kron', 'sparse'] },
+
   // ══════════ dynamical systems ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, level: 'undergrad', domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },
   { name: 'dyn-logistic-map', src: 'x = 0.5; r = 3.2; for k = 1:200, x = r*x*(1-x); end', vars: ['x'], tol: 1e-6, level: 'graduate', domain: 'dynamical-systems', tags: ['logistic-map', 'period-2'] },
@@ -412,6 +418,8 @@ export const CASES: OracleCase[] = [
   { name: 'val-fmincon-bounds', src: 'x = fmincon(@(z)(z(1)-2)^2 + (z(2)-3)^2, [0; 0], [], [], [], [], [0; 0], [1; 1]);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fmincon', 'bound-constrained', 'oracle-validation'] },
   { name: 'val-lsqnonlin', src: 'x = lsqnonlin(@(z)[z(1)-1; z(2)-2], [0; 0]);', vars: ['x'], tol: 1e-5, level: 'graduate', domain: 'optimization', tags: ['lsqnonlin', 'least-squares', 'oracle-validation'] },
   { name: 'val-lsqcurvefit', src: 'c = lsqcurvefit(@(c, xd) c*xd, 1, [1 2 3], [2 4 6]);', vars: ['c'], tol: 1e-5, level: 'graduate', domain: 'optimization', tags: ['lsqcurvefit', 'least-squares', 'oracle-validation'] },
+  { name: 'val-fminunc-quadratic', src: 'x = fminunc(@(v)(v(1)-2)^2 + 3*(v(2)+1)^2, [0 0]);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fminunc', 'anisotropic', 'oracle-validation'] },
+  { name: 'val-lsqnonlin-circle', src: 'x = lsqnonlin(@(v)[v(1)^2+v(2)^2-1; v(1)-v(2)], [1 0]);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['lsqnonlin', 'nonlinear-least-squares', 'oracle-validation'] },
 
   // ── validation: interpolation / polynomials ──
   { name: 'val-interp2', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X + Y; q = interp2(X, Y, Z, 1.5, 2.5);', vars: ['q'], tol: 1e-9, level: 'undergrad', domain: 'approximation', tags: ['interp2', 'oracle-validation'] },
@@ -421,6 +429,7 @@ export const CASES: OracleCase[] = [
   // scattered interpolation on a PLANAR field z=x+2y → exact regardless of triangulation (convention-independent)
   { name: 'val-scattered-interpolant', src: 'F = scatteredInterpolant([0; 1; 0; 1], [0; 0; 1; 1], [0; 1; 2; 3]); q = F(0.5, 0.5);', vars: ['q'], tol: 1e-6, level: 'graduate', domain: 'approximation', tags: ['scatteredInterpolant', 'planar-invariant', 'oracle-validation'] },
   { name: 'val-griddata', src: 'q = griddata([0 1 0 1], [0 0 1 1], [0 1 2 3], 0.5, 0.5);', vars: ['q'], tol: 1e-6, level: 'graduate', domain: 'approximation', tags: ['griddata', 'planar-invariant', 'oracle-validation'] },
+  { name: 'val-griddedInterpolant-1d', src: 'F = griddedInterpolant(0:3, [0 1 4 9]); q = F(1.5);', vars: ['q'], tol: 1e-9, level: 'graduate', domain: 'approximation', tags: ['griddedInterpolant', 'oracle-validation'] },
   { name: 'val-polyvalm', src: 'M = polyvalm([1 0 -1], [2 0; 0 3]);', vars: ['M'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['polyvalm', 'oracle-validation'] },
 
   // ── validation: Fourier / signal ──
@@ -438,6 +447,7 @@ export const CASES: OracleCase[] = [
   { name: 'val-ilu', src: 'A = sparse([4 1; 1 3]); [L, U] = ilu(A); rr = norm(full(L*U) - full(A));', vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ilu', 'preconditioner', 'reconstruction', 'oracle-validation'] },
   { name: 'val-ichol', src: 'A = sparse([4 1; 1 3]); L = ichol(A); rr = norm(full(L*L.\x27) - full(A));', vars: ['rr'], tol: 1e-7, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ichol', 'preconditioner', 'reconstruction', 'oracle-validation'] },
   { name: 'val-ldl', src: 'A = [4 1; 1 3]; [L, D] = ldl(A); rr = norm(L*D*L.\x27 - A);', vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ldl', 'factorization', 'reconstruction', 'oracle-validation'] },
+  { name: 'sparse-pcg-ichol-residual', src: "n = 5; e = ones(n,1); T = spdiags([e -2*e e], -1:1, n, n); A = -(kron(speye(n), T) + kron(T, speye(n))); b = ones(n*n, 1); L = ichol(A); x = pcg(A, b, 1e-8, 200, L, L'); rr = norm(A*x - b);", vars: ['rr'], tol: 1e-5, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['pcg', 'ichol', 'preconditioner', 'sparse', 'oracle-validation'] },
   { name: 'val-eigs', src: 'ev = sort(eigs([2 0 0; 0 3 0; 0 0 6], 3));', vars: ['ev'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['eigs', 'oracle-validation'] },
   { name: 'val-svds', src: 's = sort(svds([2 0; 0 3], 2));', vars: ['s'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['svds', 'oracle-validation'] },
   { name: 'val-orth', src: "Q = orth([1 0; 1 0; 0 1]); rr = norm(Q'*Q - eye(size(Q,2)));", vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['orth', 'oracle-validation'] },
@@ -618,6 +628,7 @@ export const CASES: OracleCase[] = [
   // ── symbolic matrix algebra batch: charpoly / eig (2x2 + triangular) / generic rank ──
   { name: 'cal-charpoly-sym', src: 'syms a; p = charpoly([a 1; 0 a]); v = double(subs(p, a, 5));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['charpoly', 'symbolic-matrix', 'oracle-validation'] },
   { name: 'cal-charpoly-symvar', src: 'syms x; A = [2 1; 1 2]; p = charpoly(A, x); v = double(subs(p, x, 0));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['charpoly', 'symbolic-matrix', 'oracle-validation'] },
+  { name: 'cal-charpoly-det-lambda', src: 'syms l; A = [2 1; 1 2]; p = det(l*eye(2) - A); v = double(subs(p, l, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['charpoly', 'symbolic-det', 'symbolic-matrix', 'oracle-validation'] },
   { name: 'cal-eig-sym-2x2', src: 'v = sort(double(eig(sym([2 1; 1 2]))));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['eig', 'symbolic-matrix', 'oracle-validation'] },
   { name: 'cal-eig-sym-triangular', src: 'syms a; e = eig([a 1; 0 a]); v = double(subs(e, a, 5));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['eig', 'symbolic-matrix', 'oracle-validation'] },
   { name: 'cal-eig-sym-param', src: 'syms a; v = sort(double(subs(eig([a 1; 1 a]), a, 3)));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['eig', 'symbolic-matrix', 'oracle-validation'] },
