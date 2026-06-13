@@ -548,5 +548,385 @@
         2
       ]
     }
+  },
+  "colmajor_flatten": {
+    "x": {
+      "class": "double",
+      "size": [
+        6,
+        1
+      ],
+      "real": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6
+      ]
+    }
+  },
+  "linear_index_2d": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        8,
+        5,
+        2
+      ]
+    }
+  },
+  "mask_row_orient": {
+    "m": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        20,
+        30,
+        40
+      ]
+    }
+  },
+  "mask_col_orient": {
+    "m": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        3,
+        4
+      ]
+    }
+  },
+  "mask_matrix_colmajor": {
+    "m": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        3,
+        2,
+        4
+      ]
+    }
+  },
+  "end_2d": {
+    "a": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    },
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        4,
+        14,
+        15,
+        1
+      ]
+    },
+    "c": {
+      "class": "double",
+      "size": [
+        4,
+        1
+      ],
+      "real": [
+        13,
+        8,
+        12,
+        1
+      ]
+    }
+  },
+  "end_arith": {
+    "w": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        8,
+        9,
+        10
+      ]
+    }
+  },
+  "orient_row_slice": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        3,
+        5,
+        7
+      ]
+    }
+  },
+  "orient_col_slice": {
+    "c": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        1,
+        5,
+        9
+      ]
+    }
+  },
+  "reverse_range": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        10,
+        8,
+        6,
+        4,
+        2,
+        0
+      ]
+    }
+  },
+  "delete_column": {
+    "A": {
+      "class": "double",
+      "size": [
+        4,
+        3
+      ],
+      "real": [
+        16,
+        5,
+        9,
+        4,
+        3,
+        10,
+        6,
+        15,
+        13,
+        8,
+        12,
+        1
+      ]
+    }
+  },
+  "delete_elements": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        3,
+        5,
+        6
+      ]
+    }
+  },
+  "grow_2d": {
+    "A": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        9
+      ]
+    }
+  },
+  "grow_from_empty": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0,
+        0,
+        5
+      ]
+    }
+  },
+  "scalar_expand_colon": {
+    "A": {
+      "class": "double",
+      "size": [
+        2,
+        3
+      ],
+      "real": [
+        7,
+        7,
+        7,
+        7,
+        7,
+        7
+      ]
+    }
+  },
+  "nd_page_slice": {
+    "s": {
+      "class": "double",
+      "size": [
+        2,
+        3
+      ],
+      "real": [
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ]
+    }
+  },
+  "nd_size": {
+    "sz": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "nd_element": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 15
+    }
+  },
+  "nd_permute": {
+    "B": {
+      "class": "double",
+      "size": [
+        3,
+        2
+      ],
+      "real": [
+        1,
+        3,
+        5,
+        2,
+        4,
+        6
+      ]
+    }
+  },
+  "copy_matrix": {
+    "A": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3
+      ]
+    },
+    "B": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        9,
+        2,
+        3
+      ]
+    }
+  },
+  "copy_struct_field": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "copy_cell_element": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "map_handle_semantics": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "dict_value_semantics": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
   }
 }

@@ -61,4 +61,36 @@ export const CASES: OracleCase[] = [
   { name: 'newton-sqrt2', src: 'x = 1; for k = 1:20, x = x - (x^2 - 2)/(2*x); end', vars: ['x'] },
   { name: 'trapz', src: 'x = linspace(0,1,1001); y = x.^2; I = trapz(x, y);', vars: ['I'] },
   { name: 'lu-solve', src: 'A = [4 3; 6 3]; b = [10; 12]; [L,U,P] = lu(A); y = L\\(P*b); x = U\\y;', vars: ['x'] },
+
+  // ── indexing & orientation edge cases ──
+  { name: 'colmajor-flatten', src: 'A = [1 2 3; 4 5 6]; x = A(:);', vars: ['x'] },
+  { name: 'linear-index-2d', src: 'A = magic(3); v = A([1 5 9]);', vars: ['v'] },
+  { name: 'mask-row-orient', src: 'v = [10 20 30 40]; m = v(v > 15);', vars: ['m'] },
+  { name: 'mask-col-orient', src: 'c = [1; 2; 3; 4]; m = c(c > 2);', vars: ['m'] },
+  { name: 'mask-matrix-colmajor', src: 'A = [1 2; 3 4]; m = A(A > 1);', vars: ['m'] },
+  { name: 'end-2d', src: 'A = magic(4); a = A(end, end); r = A(end, :); c = A(:, end);', vars: ['a', 'r', 'c'] },
+  { name: 'end-arith', src: 'v = 1:10; w = v(end-2:end);', vars: ['w'] },
+  { name: 'orient-row-slice', src: 'A = magic(3); r = A(2, :);', vars: ['r'] },
+  { name: 'orient-col-slice', src: 'A = magic(3); c = A(:, 2);', vars: ['c'] },
+  { name: 'reverse-range', src: 'v = 10:-2:0;', vars: ['v'] },
+
+  // ── deletion & growth ──
+  { name: 'delete-column', src: 'A = magic(4); A(:, 2) = [];', vars: ['A'] },
+  { name: 'delete-elements', src: 'v = 1:6; v([2 4]) = [];', vars: ['v'] },
+  { name: 'grow-2d', src: 'A = zeros(2, 2); A(3, 3) = 9;', vars: ['A'] },
+  { name: 'grow-from-empty', src: 'v = []; v(3) = 5;', vars: ['v'] },
+  { name: 'scalar-expand-colon', src: 'A = zeros(2, 3); A(:) = 7;', vars: ['A'] },
+
+  // ── N-D arrays ──
+  { name: 'nd-page-slice', src: 'A = reshape(1:24, 2, 3, 4); s = A(:, :, 2);', vars: ['s'] },
+  { name: 'nd-size', src: 'A = reshape(1:24, 2, 3, 4); sz = size(A);', vars: ['sz'] },
+  { name: 'nd-element', src: 'A = reshape(1:24, 2, 3, 4); x = A(1, 2, 3);', vars: ['x'] },
+  { name: 'nd-permute', src: 'A = reshape(1:6, 2, 3); B = permute(A, [2 1]);', vars: ['B'] },
+
+  // ── value-copy semantics (eval-safe; no function defs) ──
+  { name: 'copy-matrix', src: 'A = [1 2 3]; B = A; B(1) = 9;', vars: ['A', 'B'] },
+  { name: 'copy-struct-field', src: 's.a = 1; t = s; t.a = 2; x = s.a;', vars: ['x'] },
+  { name: 'copy-cell-element', src: 'c = {5, 6}; d = c; d{1} = 9; x = c{1};', vars: ['x'] },
+  { name: 'map-handle-semantics', src: "m = containers.Map('KeyType','char','ValueType','double'); m('a') = 1; n = m; n('a') = 2; x = m('a');", vars: ['x'] },
+  { name: 'dict-value-semantics', src: 'd = dictionary("a", 1); e = d; e("a") = 2; x = d("a");', vars: ['x'] },
 ];
