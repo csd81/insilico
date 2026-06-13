@@ -125,7 +125,7 @@
       ]
     }
   },
-  "val_interp2": {
+  "approx_interp2": {
     "q": {
       "class": "double",
       "size": [
@@ -135,7 +135,7 @@
       "real": 4
     }
   },
-  "val_ppval": {
+  "approx_ppval": {
     "q": {
       "class": "double",
       "size": [
@@ -145,7 +145,7 @@
       "real": 2.25
     }
   },
-  "val_gridded_interpolant": {
+  "approx_gridded_interpolant": {
     "q": {
       "class": "double",
       "size": [
@@ -155,7 +155,7 @@
       "real": 5
     }
   },
-  "val_interp3": {
+  "approx_interp3": {
     "q": {
       "class": "double",
       "size": [
@@ -165,7 +165,7 @@
       "real": 4.5
     }
   },
-  "val_scattered_interpolant": {
+  "approx_scattered_interpolant": {
     "q": {
       "class": "double",
       "size": [
@@ -175,7 +175,7 @@
       "real": 1.5
     }
   },
-  "val_griddata": {
+  "approx_griddata": {
     "q": {
       "class": "double",
       "size": [
@@ -185,7 +185,7 @@
       "real": 1.5
     }
   },
-  "val_griddedInterpolant_1d": {
+  "approx_griddedInterpolant_1d": {
     "q": {
       "class": "double",
       "size": [
@@ -195,7 +195,7 @@
       "real": 2.5
     }
   },
-  "val_residue": {
+  "approx_residue": {
     "ps": {
       "class": "double",
       "size": [
@@ -219,7 +219,7 @@
       ]
     }
   },
-  "val_interpn": {
+  "approx_interpn": {
     "q": {
       "class": "double",
       "size": [
@@ -229,7 +229,7 @@
       "real": 4
     }
   },
-  "val_makima": {
+  "approx_makima": {
     "q": {
       "class": "double",
       "size": [
@@ -239,7 +239,7 @@
       "real": 2.229166666666667
     }
   },
-  "adv_runge_spline": {
+  "approx_runge_spline": {
     "yq": {
       "class": "double",
       "size": [
@@ -249,7 +249,7 @@
       "real": 0.042516165428920304
     }
   },
-  "adv_runge_pchip": {
+  "approx_runge_pchip": {
     "yq": {
       "class": "double",
       "size": [
@@ -2637,7 +2637,7 @@
       "real": 1
     }
   },
-  "adv_catastrophic_cancellation": {
+  "lang_catastrophic_cancellation": {
     "q": {
       "class": "double",
       "size": [
@@ -2663,7 +2663,7 @@
       "real": 1.00000000005e-10
     }
   },
-  "adv_eps_rounding": {
+  "lang_eps_rounding": {
     "a": {
       "class": "double",
       "size": [
@@ -2681,7 +2681,7 @@
       "real": 0
     }
   },
-  "adv_ieee_flags": {
+  "lang_ieee_flags": {
     "f": {
       "class": "logical",
       "size": [
@@ -2697,7 +2697,7 @@
       ]
     }
   },
-  "adv_nan_propagation": {
+  "lang_nan_propagation": {
     "flags": {
       "class": "logical",
       "size": [
@@ -2999,7 +2999,7 @@
       ]
     }
   },
-  "grad_fft": {
+  "dsp_fft": {
     "Y": {
       "class": "double",
       "size": [
@@ -3020,7 +3020,7 @@
       ]
     }
   },
-  "grad_conv": {
+  "dsp_conv": {
     "c": {
       "class": "double",
       "size": [
@@ -3060,7 +3060,7 @@
       "real": 3
     }
   },
-  "val_fft2": {
+  "dsp_fft2": {
     "Y": {
       "class": "double",
       "size": [
@@ -3075,7 +3075,7 @@
       ]
     }
   },
-  "val_fftshift": {
+  "dsp_fftshift": {
     "y": {
       "class": "double",
       "size": [
@@ -3090,7 +3090,7 @@
       ]
     }
   },
-  "val_hilbert_abs": {
+  "dsp_hilbert_abs": {
     "a": {
       "class": "double",
       "size": [
@@ -3105,7 +3105,7 @@
       ]
     }
   },
-  "val_findpeaks": {
+  "dsp_findpeaks": {
     "pks": {
       "class": "double",
       "size": [
@@ -3266,7 +3266,7 @@
       "real": 5
     }
   },
-  "grad_graph_laplacian": {
+  "graph_laplacian": {
     "ev": {
       "class": "double",
       "size": [
@@ -3329,7 +3329,7 @@
       ]
     }
   },
-  "val_graph_shortestpath": {
+  "graph_shortestpath": {
     "p": {
       "class": "double",
       "size": [
@@ -3344,7 +3344,7 @@
       ]
     }
   },
-  "val_graph_conncomp": {
+  "graph_conncomp": {
     "c": {
       "class": "double",
       "size": [
@@ -3359,7 +3359,7 @@
       ]
     }
   },
-  "val_graph_distances": {
+  "graph_distances": {
     "D": {
       "class": "double",
       "size": [
@@ -3386,7 +3386,7 @@
       ]
     }
   },
-  "val_graph_toposort": {
+  "graph_toposort": {
     "o": {
       "class": "double",
       "size": [
@@ -3400,7 +3400,7 @@
       ]
     }
   },
-  "val_centrality": {
+  "graph_centrality": {
     "c": {
       "class": "double",
       "size": [
@@ -3414,7 +3414,7 @@
       ]
     }
   },
-  "val_maxflow": {
+  "graph_maxflow": {
     "f": {
       "class": "double",
       "size": [
@@ -3424,7 +3424,7 @@
       "real": 5
     }
   },
-  "val_minspantree": {
+  "graph_minspantree": {
     "w": {
       "class": "double",
       "size": [
@@ -3624,7 +3624,7 @@
       "real": 792
     }
   },
-  "apla_chemical_balance": {
+  "la_chemical_balance": {
     "coeffs": {
       "class": "double",
       "size": [
@@ -3639,7 +3639,7 @@
       ]
     }
   },
-  "apla_static_forces": {
+  "la_static_forces": {
     "T": {
       "class": "double",
       "size": [
@@ -3652,7 +3652,7 @@
       ]
     }
   },
-  "apla_moments": {
+  "la_moments": {
     "M": {
       "class": "double",
       "size": [
@@ -3666,7 +3666,7 @@
       ]
     }
   },
-  "apla_markov_weather": {
+  "la_markov_weather": {
     "s7": {
       "class": "double",
       "size": [
@@ -3679,7 +3679,7 @@
       ]
     }
   },
-  "apla_robotics_rotation": {
+  "la_robotics_rotation": {
     "R90": {
       "class": "double",
       "size": [
@@ -3857,6 +3857,156 @@
       "real": -5.9999999999999964
     }
   },
+  "mat_hadamard": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_pascal": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.9999999999999991,
+        20
+      ]
+    }
+  },
+  "mat_companion": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        1.0000000000000002,
+        1.999999999999998,
+        3.0000000000000018
+      ]
+    }
+  },
+  "mat_dftmtx": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_lehmer": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        9
+      ],
+      "real": [
+        1,
+        0.5,
+        0.3333333333333333,
+        0.5,
+        1,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        1
+      ]
+    }
+  },
+  "mat_permutation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_exchange": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_projection_idempotent": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_involutory": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_nilpotent": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_normal": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_rotation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        1
+      ]
+    }
+  },
+  "mat_gram_psd": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
   "ml_kmeans_lloyd": {
     "v": {
       "class": "double",
@@ -3904,7 +4054,7 @@
       "real": 1.22
     }
   },
-  "grad_newton_system": {
+  "nls_newton_system": {
     "x": {
       "class": "double",
       "size": [
@@ -4511,7 +4661,7 @@
       "real": 1.1102230246251565e-16
     }
   },
-  "grad_cond_hilbert": {
+  "nla_cond_hilbert": {
     "c": {
       "class": "double",
       "size": [
@@ -4521,7 +4671,7 @@
       "real": 476607.25024100044
     }
   },
-  "grad_rref": {
+  "nla_rref": {
     "R": {
       "class": "double",
       "size": [
@@ -4541,7 +4691,7 @@
       ]
     }
   },
-  "grad_projection": {
+  "nla_projection": {
     "proj": {
       "class": "double",
       "size": [
@@ -4555,7 +4705,7 @@
       ]
     }
   },
-  "grad_qr_orthonormal": {
+  "nla_qr_orthonormal": {
     "orth": {
       "class": "double",
       "size": [
@@ -4570,7 +4720,7 @@
       ]
     }
   },
-  "grad_svd_values_3x3": {
+  "nla_svd_values_3x3": {
     "s": {
       "class": "double",
       "size": [
@@ -4584,7 +4734,7 @@
       ]
     }
   },
-  "grad_jacobi": {
+  "nla_jacobi": {
     "x": {
       "class": "double",
       "size": [
@@ -4597,7 +4747,7 @@
       ]
     }
   },
-  "grad_gauss_seidel": {
+  "nla_gauss_seidel": {
     "x": {
       "class": "double",
       "size": [
@@ -4610,7 +4760,7 @@
       ]
     }
   },
-  "grad_conjugate_gradient": {
+  "nla_conjugate_gradient": {
     "x": {
       "class": "double",
       "size": [
@@ -4623,7 +4773,7 @@
       ]
     }
   },
-  "grad_expm": {
+  "nla_expm": {
     "E": {
       "class": "double",
       "size": [
@@ -4638,7 +4788,7 @@
       ]
     }
   },
-  "val_schur": {
+  "nla_schur": {
     "rr": {
       "class": "double",
       "size": [
@@ -4668,7 +4818,7 @@
       ]
     }
   },
-  "val_hess": {
+  "nla_hess": {
     "rr": {
       "class": "double",
       "size": [
@@ -4678,7 +4828,7 @@
       "real": 0
     }
   },
-  "val_polyeig": {
+  "nla_polyeig": {
     "ev": {
       "class": "double",
       "size": [
@@ -4693,7 +4843,7 @@
       ]
     }
   },
-  "val_sqrtm": {
+  "nla_sqrtm": {
     "rr": {
       "class": "double",
       "size": [
@@ -4703,7 +4853,7 @@
       "real": 1.9603046130236982e-15
     }
   },
-  "val_logm": {
+  "nla_logm": {
     "rr": {
       "class": "double",
       "size": [
@@ -4713,7 +4863,7 @@
       "real": 0
     }
   },
-  "val_kron": {
+  "nla_kron": {
     "K": {
       "class": "double",
       "size": [
@@ -4740,7 +4890,7 @@
       ]
     }
   },
-  "val_gmres": {
+  "nla_gmres": {
     "rr": {
       "class": "double",
       "size": [
@@ -4750,7 +4900,7 @@
       "real": 4.440892098500626e-16
     }
   },
-  "val_minres": {
+  "nla_minres": {
     "rr": {
       "class": "double",
       "size": [
@@ -4760,7 +4910,7 @@
       "real": 4.965068306494546e-16
     }
   },
-  "val_bicg": {
+  "nla_bicg": {
     "rr": {
       "class": "double",
       "size": [
@@ -4770,7 +4920,7 @@
       "real": 0
     }
   },
-  "val_polyvalm": {
+  "nla_polyvalm": {
     "M": {
       "class": "double",
       "size": [
@@ -4785,7 +4935,7 @@
       ]
     }
   },
-  "val_lsqr": {
+  "nla_lsqr": {
     "rr": {
       "class": "double",
       "size": [
@@ -4795,7 +4945,7 @@
       "real": 6.280369834735101e-16
     }
   },
-  "val_bicgstab": {
+  "nla_bicgstab": {
     "rr": {
       "class": "double",
       "size": [
@@ -4805,7 +4955,7 @@
       "real": 4.440892098500626e-16
     }
   },
-  "val_pcg": {
+  "nla_pcg": {
     "rr": {
       "class": "double",
       "size": [
@@ -4815,7 +4965,7 @@
       "real": 0
     }
   },
-  "val_cgs": {
+  "nla_cgs": {
     "rr": {
       "class": "double",
       "size": [
@@ -4825,7 +4975,7 @@
       "real": 0
     }
   },
-  "val_ilu": {
+  "nla_ilu": {
     "rr": {
       "class": "double",
       "size": [
@@ -4835,7 +4985,7 @@
       "real": 0
     }
   },
-  "val_ichol": {
+  "nla_ichol": {
     "rr": {
       "class": "double",
       "size": [
@@ -4845,7 +4995,7 @@
       "real": 0
     }
   },
-  "val_ldl": {
+  "nla_ldl": {
     "rr": {
       "class": "double",
       "size": [
@@ -4895,7 +5045,7 @@
       "real": 0.00009985368988618675
     }
   },
-  "robust_rankdef_sparse_lsqr": {
+  "nla_rankdef_sparse_lsqr": {
     "r": {
       "class": "double",
       "size": [
@@ -4905,7 +5055,7 @@
       "real": 4.440892098500626e-16
     }
   },
-  "robust_illcond_sparse_solve": {
+  "nla_illcond_sparse_solve": {
     "r": {
       "class": "double",
       "size": [
@@ -4915,7 +5065,7 @@
       "real": 0
     }
   },
-  "robust_hilbert_residual": {
+  "nla_hilbert_residual": {
     "r": {
       "class": "double",
       "size": [
@@ -4925,7 +5075,7 @@
       "real": 1.797546735911271e-13
     }
   },
-  "robust_rankdef_pinv_minnorm": {
+  "nla_rankdef_pinv_minnorm": {
     "x": {
       "class": "double",
       "size": [
@@ -4938,7 +5088,7 @@
       ]
     }
   },
-  "val_eigs": {
+  "nla_eigs": {
     "ev": {
       "class": "double",
       "size": [
@@ -4952,7 +5102,7 @@
       ]
     }
   },
-  "val_svds": {
+  "nla_svds": {
     "s": {
       "class": "double",
       "size": [
@@ -4965,7 +5115,7 @@
       ]
     }
   },
-  "val_orth": {
+  "nla_orth": {
     "rr": {
       "class": "double",
       "size": [
@@ -4975,7 +5125,7 @@
       "real": 4.440892098500626e-16
     }
   },
-  "mm_diagonalization_power": {
+  "nla_diagonalization_power": {
     "A5": {
       "class": "double",
       "size": [
@@ -4998,7 +5148,7 @@
       "real": 2.0097183471152322e-14
     }
   },
-  "mm_markov_power": {
+  "nla_markov_power": {
     "pic": {
       "class": "double",
       "size": [
@@ -5020,7 +5170,7 @@
       "real": 5.551115123125783e-17
     }
   },
-  "mm_markov_null": {
+  "nla_markov_null": {
     "pin": {
       "class": "double",
       "size": [
@@ -5034,7 +5184,7 @@
       ]
     }
   },
-  "mm_eig_identities": {
+  "nla_eig_identities": {
     "ev": {
       "class": "double",
       "size": [
@@ -5064,7 +5214,7 @@
       "real": 2.1316282072803006e-14
     }
   },
-  "mm_matrix_chain": {
+  "nla_matrix_chain": {
     "s": {
       "class": "double",
       "size": [
@@ -5074,7 +5224,7 @@
       "real": 146.94427190999915
     }
   },
-  "mm_lsq_twoways": {
+  "nla_lsq_twoways": {
     "c": {
       "class": "double",
       "size": [
@@ -5095,7 +5245,7 @@
       "real": 1.3506446028928519e-15
     }
   },
-  "mm_diag_recon": {
+  "nla_diag_recon": {
     "rr": {
       "class": "double",
       "size": [
@@ -5116,7 +5266,7 @@
       ]
     }
   },
-  "stress_hilbert_resid": {
+  "nla_hilbert_resid": {
     "resid": {
       "class": "double",
       "size": [
@@ -5126,7 +5276,7 @@
       "real": 4.577566798522237e-16
     }
   },
-  "stress_hilbert_solve": {
+  "nla_hilbert_solve": {
     "x": {
       "class": "double",
       "size": [
@@ -5143,7 +5293,7 @@
       ]
     }
   },
-  "stress_rankdef_consistent": {
+  "nla_rankdef_consistent": {
     "resid": {
       "class": "double",
       "size": [
@@ -5161,7 +5311,7 @@
       "real": 1
     }
   },
-  "stress_rankdef_inconsistent": {
+  "nla_rankdef_inconsistent": {
     "resid": {
       "class": "double",
       "size": [
@@ -5171,7 +5321,7 @@
       "real": 0.6546536707079772
     }
   },
-  "stress_vandermonde_resid": {
+  "nla_vandermonde_resid": {
     "rn": {
       "class": "double",
       "size": [
@@ -5181,7 +5331,7 @@
       "real": 0.0005246383849488545
     }
   },
-  "stress_backslash_vs_pinv": {
+  "nla_backslash_vs_pinv": {
     "err": {
       "class": "double",
       "size": [
@@ -5191,7 +5341,7 @@
       "real": 4.210086317136976e-15
     }
   },
-  "stress_jordan_eig": {
+  "nla_jordan_eig": {
     "ev": {
       "class": "double",
       "size": [
@@ -5204,7 +5354,7 @@
       ]
     }
   },
-  "stress_repeated_eig": {
+  "nla_repeated_eig": {
     "ev": {
       "class": "double",
       "size": [
@@ -5218,7 +5368,7 @@
       ]
     }
   },
-  "stress_near_defective_eig": {
+  "nla_near_defective_eig": {
     "ev": {
       "class": "double",
       "size": [
@@ -5231,7 +5381,7 @@
       ]
     }
   },
-  "adv_wilkinson_eig": {
+  "nla_wilkinson_eig": {
     "rr": {
       "class": "double",
       "size": [
@@ -5241,7 +5391,7 @@
       "real": 5.783977902978075e-15
     }
   },
-  "adv_collinear_leastsq": {
+  "nla_collinear_leastsq": {
     "rr": {
       "class": "double",
       "size": [
@@ -5251,7 +5401,7 @@
       "real": 0.000006877043295791605
     }
   },
-  "adv_vander_cond": {
+  "nla_vander_cond": {
     "c": {
       "class": "double",
       "size": [
@@ -5261,7 +5411,7 @@
       "real": 267816.7009078718
     }
   },
-  "adv_empty_decomp": {
+  "nla_empty_decomp": {
     "szs": {
       "class": "double",
       "size": [
@@ -5293,7 +5443,7 @@
       ]
     }
   },
-  "apla_svd_lowrank": {
+  "nla_svd_lowrank": {
     "err": {
       "class": "double",
       "size": [
@@ -5751,6 +5901,26 @@
       "real": 1
     }
   },
+  "mat_hurwitz_stable": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "mat_convergent": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
   "newton_sqrt2": {
     "x": {
       "class": "double",
@@ -6087,7 +6257,7 @@
       ]
     }
   },
-  "val_ode45": {
+  "ode_ode45": {
     "yf": {
       "class": "double",
       "size": [
@@ -6097,7 +6267,7 @@
       "real": 2.718281834797091
     }
   },
-  "val_bvp4c_sine": {
+  "ode_bvp4c_sine": {
     "v": {
       "class": "double",
       "size": [
@@ -6107,7 +6277,7 @@
       "real": 0.5697446182937784
     }
   },
-  "val_dde23": {
+  "ode_dde23": {
     "v": {
       "class": "double",
       "size": [
@@ -6188,7 +6358,7 @@
       ]
     }
   },
-  "val_ode23": {
+  "ode_ode23": {
     "yf": {
       "class": "double",
       "size": [
@@ -6198,7 +6368,7 @@
       "real": 2.7181833492485543
     }
   },
-  "val_ode113": {
+  "ode_ode113": {
     "yf": {
       "class": "double",
       "size": [
@@ -6208,7 +6378,7 @@
       "real": 2.71828097235354
     }
   },
-  "val_ode15s": {
+  "ode_ode15s": {
     "yf": {
       "class": "double",
       "size": [
@@ -6218,7 +6388,7 @@
       "real": 0.3682957321509729
     }
   },
-  "val_deval": {
+  "ode_deval": {
     "yf": {
       "class": "double",
       "size": [
@@ -6876,7 +7046,7 @@
       "real": 2
     }
   },
-  "val_fminbnd": {
+  "opt_fminbnd": {
     "x": {
       "class": "double",
       "size": [
@@ -6886,7 +7056,7 @@
       "real": 2
     }
   },
-  "val_fminsearch": {
+  "opt_fminsearch": {
     "x": {
       "class": "double",
       "size": [
@@ -6899,7 +7069,7 @@
       ]
     }
   },
-  "val_fsolve": {
+  "opt_fsolve": {
     "x": {
       "class": "double",
       "size": [
@@ -6909,7 +7079,7 @@
       "real": 1.4142135623746874
     }
   },
-  "val_quadprog": {
+  "opt_quadprog": {
     "x": {
       "class": "double",
       "size": [
@@ -6922,7 +7092,7 @@
       ]
     }
   },
-  "val_lsqlin": {
+  "opt_lsqlin": {
     "x": {
       "class": "double",
       "size": [
@@ -6935,7 +7105,7 @@
       ]
     }
   },
-  "val_fminunc": {
+  "opt_fminunc": {
     "x": {
       "class": "double",
       "size": [
@@ -6948,7 +7118,7 @@
       ]
     }
   },
-  "val_fmincon_bounds": {
+  "opt_fmincon_bounds": {
     "x": {
       "class": "double",
       "size": [
@@ -6961,7 +7131,7 @@
       ]
     }
   },
-  "val_lsqnonlin": {
+  "opt_lsqnonlin": {
     "x": {
       "class": "double",
       "size": [
@@ -6974,7 +7144,7 @@
       ]
     }
   },
-  "val_lsqcurvefit": {
+  "opt_lsqcurvefit": {
     "c": {
       "class": "double",
       "size": [
@@ -6984,7 +7154,7 @@
       "real": 2
     }
   },
-  "val_fminunc_quadratic": {
+  "opt_fminunc_quadratic": {
     "x": {
       "class": "double",
       "size": [
@@ -6997,7 +7167,7 @@
       ]
     }
   },
-  "val_lsqnonlin_circle": {
+  "opt_lsqnonlin_circle": {
     "x": {
       "class": "double",
       "size": [
@@ -7010,7 +7180,7 @@
       ]
     }
   },
-  "val_fmincon_nonlcon": {
+  "opt_fmincon_nonlcon": {
     "v": {
       "class": "double",
       "size": [
@@ -7070,7 +7240,7 @@
       "real": 1
     }
   },
-  "val_fmincon_bounds_nonlcon": {
+  "opt_fmincon_bounds_nonlcon": {
     "v": {
       "class": "double",
       "size": [
@@ -7093,7 +7263,7 @@
       "real": 8.780543029780221e-10
     }
   },
-  "val_linprog_fval": {
+  "opt_linprog_fval": {
     "fval": {
       "class": "double",
       "size": [
@@ -7226,7 +7396,7 @@
       ]
     }
   },
-  "grad_ridge": {
+  "stat_ridge": {
     "x": {
       "class": "double",
       "size": [
@@ -7239,7 +7409,7 @@
       ]
     }
   },
-  "grad_var_std": {
+  "stat_var_std": {
     "v": {
       "class": "double",
       "size": [
@@ -7257,7 +7427,7 @@
       "real": 2.581988897471611
     }
   },
-  "grad_corrcoef": {
+  "stat_corrcoef": {
     "R": {
       "class": "double",
       "size": [
@@ -7290,7 +7460,7 @@
       "real": 0.25
     }
   },
-  "val_normpdf_cdf": {
+  "stat_normpdf_cdf": {
     "p1": {
       "class": "double",
       "size": [
@@ -7308,7 +7478,7 @@
       "real": 0.9750021048517795
     }
   },
-  "val_binopdf": {
+  "stat_binopdf": {
     "p": {
       "class": "double",
       "size": [
@@ -7318,7 +7488,7 @@
       "real": 0.3125
     }
   },
-  "val_poisspdf": {
+  "stat_poisspdf": {
     "p": {
       "class": "double",
       "size": [
@@ -7328,7 +7498,7 @@
       "real": 0.22404180765538775
     }
   },
-  "val_icdf_normal": {
+  "stat_icdf_normal": {
     "x": {
       "class": "double",
       "size": [
@@ -7338,7 +7508,7 @@
       "real": 1.959963984540054
     }
   },
-  "val_gampdf": {
+  "stat_gampdf": {
     "p": {
       "class": "double",
       "size": [
@@ -7498,7 +7668,27 @@
       "real": 0
     }
   },
-  "val_sym_jacobian": {
+  "mat_hat_matrix": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.1570953281997524e-16
+    }
+  },
+  "mat_centering": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "sym_jacobian": {
     "v": {
       "class": "double",
       "size": [
@@ -7513,7 +7703,7 @@
       ]
     }
   },
-  "val_sym_hessian": {
+  "sym_hessian": {
     "v": {
       "class": "double",
       "size": [
@@ -7528,7 +7718,7 @@
       ]
     }
   },
-  "val_sym_taylor": {
+  "sym_taylor": {
     "c": {
       "class": "double",
       "size": [
@@ -7538,7 +7728,7 @@
       "real": 2.6666666666666665
     }
   },
-  "val_sym_laplace": {
+  "sym_laplace": {
     "v": {
       "class": "double",
       "size": [
@@ -7548,7 +7738,7 @@
       "real": 0.2
     }
   },
-  "val_sym_dsolve": {
+  "sym_dsolve": {
     "v": {
       "class": "double",
       "size": [
@@ -7558,7 +7748,7 @@
       "real": 2.718281828459045
     }
   },
-  "val_sym_vpasolve": {
+  "sym_vpasolve": {
     "v": {
       "class": "double",
       "size": [
@@ -7571,7 +7761,7 @@
       ]
     }
   },
-  "val_sym_solve_quadratic": {
+  "sym_solve_quadratic": {
     "v": {
       "class": "double",
       "size": [
@@ -7584,7 +7774,7 @@
       ]
     }
   },
-  "val_sym_solve_quadratic_monic": {
+  "sym_solve_quadratic_monic": {
     "v": {
       "class": "double",
       "size": [
@@ -7597,7 +7787,7 @@
       ]
     }
   },
-  "val_sym_solve_quadratic_nob": {
+  "sym_solve_quadratic_nob": {
     "v": {
       "class": "double",
       "size": [
@@ -8071,196 +8261,6 @@
         1
       ],
       "real": 1
-    }
-  },
-  "mat_hadamard": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mat_pascal": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        0.9999999999999991,
-        20
-      ]
-    }
-  },
-  "mat_companion": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        1.0000000000000002,
-        1.999999999999998,
-        3.0000000000000018
-      ]
-    }
-  },
-  "mat_dftmtx": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mat_lehmer": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        9
-      ],
-      "real": [
-        1,
-        0.5,
-        0.3333333333333333,
-        0.5,
-        1,
-        0.6666666666666666,
-        0.3333333333333333,
-        0.6666666666666666,
-        1
-      ]
-    }
-  },
-  "mat_permutation": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mat_exchange": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mat_projection_idempotent": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mat_involutory": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mat_nilpotent": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mat_normal": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mat_rotation": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        0,
-        1
-      ]
-    }
-  },
-  "mat_gram_psd": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "mat_hurwitz_stable": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "mat_convergent": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "mat_hat_matrix": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4.1570953281997524e-16
-    }
-  },
-  "mat_centering": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
     }
   }
 }
