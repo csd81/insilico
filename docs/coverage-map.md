@@ -10,7 +10,7 @@ pnpm oracle:coverage
 ```
 
 **Status (as of this revision):** 776 tests green · 641 MATLAB oracle fixtures ·
-641/641 cases classified · 312 undergrad / 329 graduate across 22 domains.
+641/641 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
