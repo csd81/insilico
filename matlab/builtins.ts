@@ -34,7 +34,7 @@ import { dispValue, sprintf, symTexLines, setFormatMode, fmtTemporal, HELP_OPEN,
 import { parseCsv, csvToTable, csvToMatrix, matrixToCsv, xlsxToCsv, parseMat, type Csv } from './io';
 import type { Graphics } from './graphics';
 import {
-  polyCoeffs, numDen, symDet, symInv, symCharpolyCoeffs, symArg, symToExpr, symVarsOf,
+  polyCoeffs, numDen, symDet, symInv, symCharpolyCoeffs, symCharpolyExpr, symEig, symArg, symToExpr, symVarsOf,
   transformVars, symNames, integrate, limitAt, solveExpr, expandExpr,
   laplaceExpr, ztransExpr, ilaplaceExpr, iztransExpr, fourierExpr, ifourierExpr,
   simplifyAssume,
@@ -1258,7 +1258,16 @@ export const BUILTINS: Record<string, Builtin> = {
     if (w) env.output('Warning: ' + w + '\n');
     return ret(x);
   },
-  charpoly: async (a) => { if (isSym(a[0])) { const c = symCharpolyCoeffs(a[0].exprs, a[0].rows); return ret(makeSym(1, c.length, c)); } const A = m(a[0]); return ret(rowVec(charpolyC(A))); },
+  charpoly: async (a) => {
+    // charpoly(A) → coefficient row vector; charpoly(A, x) → characteristic polynomial in x.
+    const xvar = a.length >= 2 ? (isSym(a[1]) ? (symVarsOf(a[1] as Sym)[0] ?? 'x') : asString(a[1])) : null;
+    if (isSym(a[0]) || xvar) {
+      const s = isSym(a[0]) ? (a[0] as Sym) : symArg(a[0]);
+      const c = symCharpolyCoeffs(s.exprs, s.rows);
+      return ret(xvar ? makeSym(1, 1, [symCharpolyExpr(c, xvar)]) : makeSym(1, c.length, c));
+    }
+    const A = m(a[0]); return ret(rowVec(charpolyC(A)));
+  },
   minpoly: async (a) => {
     // Minimal polynomial = monic product over DISTINCT eigenvalues (exact for diagonalizable A).
     const A = m(a[0]); const { D } = generalEig(A, false);
@@ -1426,7 +1435,7 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   mrdivide: async (a) => ret(ctransposeFn(mldivide(ctransposeFn(m(a[1])), ctransposeFn(m(a[0]))))),
   pinv: async (a) => ret(pinvFn(m(a[0]), a.length >= 2 ? asScalar(a[1]) : undefined)),
-  rank: async (a) => ret(scalar(rankOf(m(a[0]), a.length >= 2 ? asScalar(a[1]) : undefined))),
+  rank: async (a) => { if (isSym(a[0])) return ret(scalar(symRankGeneric(a[0] as Sym))); return ret(scalar(rankOf(m(a[0]), a.length >= 2 ? asScalar(a[1]) : undefined))); },
   rref: async (a) => ret(rrefFn(m(a[0]))),
   cond: async (a) => {
     const A = m(a[0]);
@@ -1552,6 +1561,7 @@ export const BUILTINS: Record<string, Builtin> = {
     return [Uout, S, Vout];
   },
   eig: async (a, n) => {
+    if (isSym(a[0])) { const ev = symEig(a[0] as Sym); return ret(makeSym(ev.length, 1, ev)); }
     let A = m(a[0]);
     // Option strings: 'vector'/'matrix' shape D; 'balance'/'nobalance'/'chol'/'qz' are accepted
     // algorithm hints (the single dense path here serves all of them).
@@ -7144,6 +7154,22 @@ function charpolyC(A: Mat): number[] {
   const n = A.rows; const c = [1]; let M = zeros(n, n); for (let i = 0; i < n; i++) M.data[i + i * n] = 1;
   for (let k = 1; k <= n; k++) { const AM = matmul(A, M); let tr = 0; for (let i = 0; i < n; i++) tr += AM.data[i + i * n]; const ck = -tr / k; c.push(ck); M = mat(n, n, Float64Array.from(AM.data)); for (let i = 0; i < n; i++) M.data[i + i * n] += ck; }
   return c;
+}
+
+/** Generic (symbolic) rank: evaluate the symbolic matrix at a few non-degenerate substitutions
+ *  and take the maximum numeric rank — equal to the generic rank (degenerate points have measure
+ *  zero), matching MATLAB's symbolic `rank`. e.g. rank([1 a; a a^2]) → 1, rank([a 1; 1 b]) → 2. */
+function symRankGeneric(s: Sym): number {
+  const vars = symVarsOf(s); const N = s.rows, C = s.cols;
+  const seeds = [0.7237, 1.3719, 2.1131, 0.4391, 1.8053];
+  let best = 0;
+  for (let t = 0; t < (vars.length === 0 ? 1 : 3); t++) {
+    const map = new Map<string, number>(); vars.forEach((v, i) => map.set(v, seeds[(i + t) % seeds.length] + t * 0.911));
+    const data = new Float64Array(N * C); let finite = true;
+    for (let i = 0; i < N * C; i++) { const val = symEval(s.exprs[i], map); if (!Number.isFinite(val)) { finite = false; break; } data[i] = val; }
+    if (finite) best = Math.max(best, rankOf(mat(N, C, data)));
+  }
+  return best;
 }
 
 // ── Signal / preprocessing helpers ────────────────────────────────────────

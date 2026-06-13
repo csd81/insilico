@@ -388,10 +388,19 @@ export const CASES: OracleCase[] = [
   { name: 'val-fsolve', src: 'x = fsolve(@(x) x^2 - 2, 1);', vars: ['x'], tol: 1e-6, level: 'graduate', domain: 'optimization', tags: ['fsolve', 'oracle-validation'] },
   { name: 'val-quadprog', src: 'x = quadprog([2 0; 0 2], [-2; -4]);', vars: ['x'], tol: 1e-5, level: 'graduate', domain: 'optimization', tags: ['quadprog', 'oracle-validation'] },
   { name: 'val-lsqlin', src: 'x = lsqlin([1 1; 1 2; 1 3], [1; 2; 2]);', vars: ['x'], tol: 1e-6, level: 'graduate', domain: 'optimization', tags: ['lsqlin', 'least-squares', 'oracle-validation'] },
+  { name: 'val-fminunc', src: 'x = fminunc(@(z)(z(1)-2)^2 + (z(2)-3)^2, [0; 0]);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fminunc', 'unconstrained', 'oracle-validation'] },
+  { name: 'val-fmincon-bounds', src: 'x = fmincon(@(z)(z(1)-2)^2 + (z(2)-3)^2, [0; 0], [], [], [], [], [0; 0], [1; 1]);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fmincon', 'bound-constrained', 'oracle-validation'] },
+  { name: 'val-lsqnonlin', src: 'x = lsqnonlin(@(z)[z(1)-1; z(2)-2], [0; 0]);', vars: ['x'], tol: 1e-5, level: 'graduate', domain: 'optimization', tags: ['lsqnonlin', 'least-squares', 'oracle-validation'] },
+  { name: 'val-lsqcurvefit', src: 'c = lsqcurvefit(@(c, xd) c*xd, 1, [1 2 3], [2 4 6]);', vars: ['c'], tol: 1e-5, level: 'graduate', domain: 'optimization', tags: ['lsqcurvefit', 'least-squares', 'oracle-validation'] },
 
   // ── validation: interpolation / polynomials ──
   { name: 'val-interp2', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X + Y; q = interp2(X, Y, Z, 1.5, 2.5);', vars: ['q'], tol: 1e-9, level: 'undergrad', domain: 'approximation', tags: ['interp2', 'oracle-validation'] },
   { name: 'val-ppval', src: 'pp = spline([0 1 2 3], [0 1 4 9]); q = ppval(pp, 1.5);', vars: ['q'], tol: 1e-6, level: 'undergrad', domain: 'approximation', tags: ['ppval', 'spline', 'oracle-validation'] },
+  { name: 'val-gridded-interpolant', src: 'F = griddedInterpolant([1 2 3], [2 4 6]); q = F(2.5);', vars: ['q'], tol: 1e-9, level: 'undergrad', domain: 'approximation', tags: ['griddedInterpolant', 'oracle-validation'] },
+  { name: 'val-interp3', src: 'q = interp3(reshape(1:8, 2, 2, 2), 1.5, 1.5, 1.5);', vars: ['q'], tol: 1e-9, level: 'undergrad', domain: 'approximation', tags: ['interp3', 'oracle-validation'] },
+  // scattered interpolation on a PLANAR field z=x+2y → exact regardless of triangulation (convention-independent)
+  { name: 'val-scattered-interpolant', src: 'F = scatteredInterpolant([0; 1; 0; 1], [0; 0; 1; 1], [0; 1; 2; 3]); q = F(0.5, 0.5);', vars: ['q'], tol: 1e-6, level: 'graduate', domain: 'approximation', tags: ['scatteredInterpolant', 'planar-invariant', 'oracle-validation'] },
+  { name: 'val-griddata', src: 'q = griddata([0 1 0 1], [0 0 1 1], [0 1 2 3], 0.5, 0.5);', vars: ['q'], tol: 1e-6, level: 'graduate', domain: 'approximation', tags: ['griddata', 'planar-invariant', 'oracle-validation'] },
   { name: 'val-polyvalm', src: 'M = polyvalm([1 0 -1], [2 0; 0 3]);', vars: ['M'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['polyvalm', 'oracle-validation'] },
 
   // ── validation: Fourier / signal ──
@@ -403,6 +412,12 @@ export const CASES: OracleCase[] = [
   // ── validation: sparse / iterative solvers + decompositions ──
   { name: 'val-lsqr', src: 'A = [4 1; 1 3]; b = [1; 2]; x = lsqr(A, b); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['lsqr', 'iterative-solver', 'oracle-validation'] },
   { name: 'val-bicgstab', src: 'A = [4 1; 1 3]; b = [1; 2]; x = bicgstab(A, b); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['bicgstab', 'iterative-solver', 'oracle-validation'] },
+  { name: 'val-pcg', src: 'A = [4 1; 1 3]; b = [1; 2]; x = pcg(A, b, 1e-10, 50); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-7, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['pcg', 'iterative-solver', 'oracle-validation'] },
+  { name: 'val-cgs', src: 'A = [4 1; 1 3]; b = [1; 2]; x = cgs(A, b, 1e-10, 50); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-7, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['cgs', 'iterative-solver', 'oracle-validation'] },
+  // preconditioners / factorizations validated by reconstruction norm, not raw factors
+  { name: 'val-ilu', src: 'A = sparse([4 1; 1 3]); [L, U] = ilu(A); rr = norm(full(L*U) - full(A));', vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ilu', 'preconditioner', 'reconstruction', 'oracle-validation'] },
+  { name: 'val-ichol', src: 'A = sparse([4 1; 1 3]); L = ichol(A); rr = norm(full(L*L.\x27) - full(A));', vars: ['rr'], tol: 1e-7, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ichol', 'preconditioner', 'reconstruction', 'oracle-validation'] },
+  { name: 'val-ldl', src: 'A = [4 1; 1 3]; [L, D] = ldl(A); rr = norm(L*D*L.\x27 - A);', vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ldl', 'factorization', 'reconstruction', 'oracle-validation'] },
   { name: 'val-eigs', src: 'ev = sort(eigs([2 0 0; 0 3 0; 0 0 6], 3));', vars: ['ev'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['eigs', 'oracle-validation'] },
   { name: 'val-svds', src: 's = sort(svds([2 0; 0 3], 2));', vars: ['s'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['svds', 'oracle-validation'] },
   { name: 'val-orth', src: "Q = orth([1 0; 1 0; 0 1]); rr = norm(Q'*Q - eye(size(Q,2)));", vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['orth', 'oracle-validation'] },
@@ -441,6 +456,35 @@ export const CASES: OracleCase[] = [
   { name: 'val-sym-laplace', src: 'syms t s; L = laplace(exp(-2*t)); v = double(subs(L, s, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['laplace', 'oracle-validation'] },
   { name: 'val-sym-dsolve', src: 'syms y(t); S = dsolve(diff(y, t) == y, y(0) == 1); v = double(subs(S, t, 1));', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'symbolic', tags: ['dsolve', 'oracle-validation'] },
   { name: 'val-sym-vpasolve', src: 'syms x; v = sort(double(vpasolve(x^2 - 2 == 0, x)));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['vpasolve', 'oracle-validation'] },
+  { name: 'val-sym-solve-quadratic', src: 'syms a b c x; r = solve(a*x^2 + b*x + c == 0, x); v = sort(double(subs(r, [a b c], [1 -5 6])));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['solve', 'quadratic-formula', 'oracle-validation'] },
+  { name: 'val-sym-solve-quadratic-monic', src: 'syms b c x; r = solve(x^2 + b*x + c == 0, x); v = sort(double(subs(r, [b c], [-3 2])));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['solve', 'quadratic-formula', 'oracle-validation'] },
+  { name: 'val-sym-solve-quadratic-nob', src: 'syms a c x; r = solve(a*x^2 + c == 0, x); v = sort(double(subs(r, [a c], [1 -4])));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['solve', 'quadratic-formula', 'oracle-validation'] },
+
+  // ── symbolic edge-case batch: defect regressions + previously-untested working functions ──
+  // one-sided & infinite limits (defect fix: 'left'/'right' direction was ignored → NaN)
+  { name: 'cal-limit-oneside-right', src: "syms x; v = sign(double(limit(1/x, x, 0, 'right')));", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['limit', 'one-sided', 'oracle-validation'] },
+  { name: 'cal-limit-oneside-left', src: "syms x; v = sign(double(limit(1/x, x, 0, 'left')));", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['limit', 'one-sided', 'oracle-validation'] },
+  { name: 'cal-limit-removable-oneside', src: "syms x; v = double(limit((x^2-1)/(x-1), x, 1, 'left'));", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['limit', 'one-sided', 'oracle-validation'] },
+  { name: 'cal-limit-at-infinity', src: 'syms x; v = double(limit((2*x+1)/(x-3), x, inf));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['limit', 'at-infinity', 'oracle-validation'] },
+  // symsum / symprod default-variable (3-arg) form (defect fix: 3-arg threw "expected a string")
+  { name: 'cal-symsum-default-var', src: 'syms k n; s = symsum(k, 1, n); v = double(subs(s, n, 10));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['symsum', 'oracle-validation'] },
+  { name: 'cal-symsum-square', src: 'syms k; v = double(symsum(k^2, 1, 4));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['symsum', 'oracle-validation'] },
+  { name: 'cal-symprod-default', src: 'syms k; v = double(symprod(k, 1, 5));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['symprod', 'oracle-validation'] },
+  // previously-untested but working symbolic functions
+  { name: 'cal-expand-cube', src: 'syms x; e = expand((x+1)^3); v = double(subs(e, x, 2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['expand', 'oracle-validation'] },
+  { name: 'cal-collect', src: 'syms x; e = collect(x*(x+1) + x, x); v = double(subs(e, x, 3));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['collect', 'oracle-validation'] },
+  { name: 'cal-ilaplace', src: 'syms s t; f = ilaplace(1/(s+2)); v = double(subs(f, t, 1));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['ilaplace', 'oracle-validation'] },
+  { name: 'cal-taylor-order', src: "syms x; e = taylor(exp(x), x, 0, 'Order', 4); v = double(subs(e, x, 1));", vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['taylor', 'oracle-validation'] },
+  { name: 'cal-sym-curl', src: 'syms x y z; c = curl([y; -x; 0], [x y z]); v = double(c);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['curl', 'vector-calculus', 'oracle-validation'] },
+  { name: 'cal-sym-divergence', src: 'syms x y z; d = divergence([x; y; z], [x y z]); v = double(d);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['divergence', 'vector-calculus', 'oracle-validation'] },
+  { name: 'cal-sym-gradient', src: 'syms x y; g = gradient(x^2*y, [x y]); v = double(subs(subs(g, x, 2), y, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['gradient', 'vector-calculus', 'oracle-validation'] },
+  { name: 'cal-coeffs', src: 'syms x; c = coeffs(3*x^2 + 2*x + 1, x); v = double(c);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['coeffs', 'oracle-validation'] },
+  { name: 'cal-numden', src: 'syms x; [n, d] = numden((x+1)/(x-1)); v = [double(subs(n, x, 2)); double(subs(d, x, 2))];', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['numden', 'oracle-validation'] },
+  { name: 'cal-finverse', src: 'syms x; g = finverse(2*x + 1); v = double(subs(g, x, 5));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['finverse', 'oracle-validation'] },
+  { name: 'cal-equations-to-matrix', src: 'syms x y; [A, b] = equationsToMatrix([x + y == 3, x - y == 1], [x y]); v = double(A\\b);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['equationsToMatrix', 'oracle-validation'] },
+  { name: 'cal-assume-simplify', src: 'syms x; assume(x > 0); e = simplify(sqrt(x^2)); v = double(subs(e, x, 5)); assume(x, "clear");', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['assume', 'simplify', 'oracle-validation'] },
+  { name: 'cal-fourier', src: 'syms t w; F = fourier(exp(-abs(t)), t, w); v = double(subs(F, w, 0));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['fourier', 'oracle-validation'] },
+  { name: 'cal-ztrans', src: 'syms n z; Z = ztrans(2^n, n, z); v = double(subs(Z, z, 4));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['ztrans', 'oracle-validation'] },
 
   // ══════════ Matrix Methods — end-to-end workflows (chain validated primitives) ══════════
   { name: 'mm-diagonalization-power', src: 'A = [2 1; 1 2]; [V, D] = eig(A); A5 = A^5; err = norm(A^5 - V*D^5/V);', vars: ['A5', 'err'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['diagonalization', 'matrix-power', 'end-to-end'] },
@@ -550,6 +594,17 @@ export const CASES: OracleCase[] = [
   { name: 'cal-trig-double-angle', src: 'syms x; s = simplify(diff(sin(x)*cos(x))); v = double(subs(s, x, 0.3));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['simplify', 'trig-identity'] },
   { name: 'cal-factor', src: 'syms x; v = sort(double(subs(factor(x^2 - 5*x + 6), x, 5)));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['factor', 'polynomial'] },
   { name: 'cal-symbolic-inv', src: 'syms a b; I = inv([a 0; 0 b]); v = double(subs(subs(I(1,1), a, 2), b, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['inverse', 'symbolic-matrix'] },
+
+  // ── symbolic matrix algebra batch: charpoly / eig (2x2 + triangular) / generic rank ──
+  { name: 'cal-charpoly-sym', src: 'syms a; p = charpoly([a 1; 0 a]); v = double(subs(p, a, 5));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['charpoly', 'symbolic-matrix', 'oracle-validation'] },
+  { name: 'cal-charpoly-symvar', src: 'syms x; A = [2 1; 1 2]; p = charpoly(A, x); v = double(subs(p, x, 0));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['charpoly', 'symbolic-matrix', 'oracle-validation'] },
+  { name: 'cal-eig-sym-2x2', src: 'v = sort(double(eig(sym([2 1; 1 2]))));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['eig', 'symbolic-matrix', 'oracle-validation'] },
+  { name: 'cal-eig-sym-triangular', src: 'syms a; e = eig([a 1; 0 a]); v = double(subs(e, a, 5));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['eig', 'symbolic-matrix', 'oracle-validation'] },
+  { name: 'cal-eig-sym-param', src: 'syms a; v = sort(double(subs(eig([a 1; 1 a]), a, 3)));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['eig', 'symbolic-matrix', 'oracle-validation'] },
+  { name: 'cal-eig-sym-diag3', src: 'v = sort(double(eig(sym([2 0 0; 0 3 0; 0 0 6]))));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['eig', 'symbolic-matrix', 'oracle-validation'] },
+  { name: 'cal-rank-sym-deficient', src: 'syms a; v = rank([1 a; a a^2]);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['rank', 'symbolic-matrix', 'oracle-validation'] },
+  { name: 'cal-rank-sym-full', src: 'syms a b; v = rank([a 1; 1 b]);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['rank', 'symbolic-matrix', 'oracle-validation'] },
+  { name: 'cal-rank-sym-numeric', src: 'v = rank(sym([1 2; 2 4]));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['rank', 'symbolic-matrix', 'oracle-validation'] },
 
   // ── derivative-divides substitution (bounded nonlinear u-substitution) ──
   { name: 'cal-subst-gaussian', src: 'syms x; v = double(int(2*x*exp(x^2), 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },

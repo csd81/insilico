@@ -267,13 +267,38 @@ export function symInv(s: Sym): Sym {
   for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) out[i + j * n] = simplifyExpr(sMul(sN((i + j) % 2 === 0 ? 1 : -1), minorDet(j, i), sPow(d, sN(-1))));   // adjugate transpose / det
   return makeSym(n, n, out);
 }
-/** Characteristic-polynomial coefficients (highest power first) of a symbolic matrix. */
+/** Characteristic-polynomial coefficients (highest power first, monic) of a symbolic matrix.
+ *  Coefficients are extracted SYMBOLICALLY (c_k = (1/k!)·∂λᵏ det(λI−A)|λ=0), so the result is
+ *  exact for symbolic entries too — e.g. charpoly([a 1;0 a]) → [1, -2a, a²]. */
 export function symCharpolyCoeffs(e: SymExpr[], n: number): SymExpr[] {
   const L = '__l'; const M: SymExpr[] = e.map((x, i) => { const r = i % n, c = Math.floor(i / n); return r === c ? sSub(sV(L), x) : sNeg(x); });
   const detL = simplifyExpr(symDet(M, n));
-  const c = polyCoeffs(detL, L);   // ascending numeric coeffs (works for numeric matrices)
-  if (c.some((x) => !Number.isFinite(x))) return [detL];   // symbolic entries → return the polynomial expression
-  return c.slice().reverse().map(sN);
+  const asc: SymExpr[] = []; let term = detL; let fact = 1;
+  for (let k = 0; k <= n; k++) { asc[k] = simplifyExpr(sMul(sN(1 / fact), subsExpr(term, L, sN(0)))); term = simplifyExpr(diffExpr(term, L)); fact *= (k + 1); }
+  return asc.reverse();   // [1, c_{n-1}, …, c_0]
+}
+/** Characteristic polynomial as an expression in `xvar` from descending-coefficient list. */
+export function symCharpolyExpr(coeffsDesc: SymExpr[], xvar: string): SymExpr {
+  const deg = coeffsDesc.length - 1; let acc: SymExpr = sN(0);
+  for (let k = 0; k < coeffsDesc.length; k++) acc = sAdd(acc, sMul(coeffsDesc[k], sPow(sV(xvar), sN(deg - k))));
+  return simplifyExpr(acc);
+}
+/** Symbolic eigenvalues — bounded to the cases that stay clean: triangular/diagonal matrices
+ *  (eigenvalues = diagonal) of any size, and the 2×2 closed form λ = (tr ± √(tr²−4·det))/2.
+ *  Larger non-triangular symbolic matrices are out of scope (cubic+ radical forms explode). */
+export function symEig(s: Sym): SymExpr[] {
+  const n = s.rows; const e = s.exprs;
+  if (s.rows !== s.cols) throw new MatError('eig: matrix must be square');
+  const isZ = (x: SymExpr): boolean => { const t = simplifyExpr(x); return t.t === 'n' && Math.abs(t.v) < 1e-12; };
+  let upper = true, lower = true;
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) { if (r > c && !isZ(e[r + c * n])) upper = false; if (r < c && !isZ(e[r + c * n])) lower = false; }
+  if (upper || lower) { const out: SymExpr[] = []; for (let i = 0; i < n; i++) out.push(simplifyExpr(e[i + i * n])); return out; }
+  if (n === 2) {
+    const tr = sAdd(e[0], e[3]); const det = sSub(sMul(e[0], e[3]), sMul(e[1], e[2]));
+    const disc = simplifyExpr(sSub(sPow(tr, sN(2)), sMul(sN(4), det))); const root = sFn('sqrt', disc);
+    return [simplifyExpr(sDiv(sSub(tr, root), sN(2))), simplifyExpr(sDiv(sAdd(tr, root), sN(2)))];
+  }
+  throw new MatError('eig: symbolic eigenvalues are supported only for 2x2 or triangular matrices');
 }
 export function symArg(v: Value): Sym { if (isSym(v)) return v; const M = m(v); return makeSym(M.rows, M.cols, Array.from(M.data, (x) => sN(x))); }
 export function symToExpr(v: Value): SymExpr { if (isSym(v)) return v.exprs[0]; if (isStr(v) || (isMat(v) && (v as Mat).isChar)) { const t = asString(v).trim(); const num = Number(t); return Number.isFinite(num) && /^[-\d.]+$/.test(t) ? sN(num) : sV(t); } return sN(asScalar(v)); }
@@ -428,10 +453,26 @@ export function integrate(e: SymExpr, x: string): SymExpr {
 }
 /** Limit by substitution; multi-round L'Hôpital for 0/0 and ∞/∞, then a cancellation-safe
  *  numeric fallback. Returns an unevaluated `limit(...)` when the result isn't a number. */
-export function limitAt(e: SymExpr, x: string, pt: SymExpr): SymExpr {
+export function limitAt(e: SymExpr, x: string, pt: SymExpr, dir?: 'left' | 'right'): SymExpr {
   const p = symEval(pt, new Map());
   const snap = (val: number) => (Math.abs(val - Math.round(val)) < 1e-7 ? Math.round(val) : val);
   const at = (xv: number) => symEval(e, new Map([[x, xv]]));
+
+  // one-sided limit at a finite point: approach p from the requested side only. Resolves a
+  // finite one-sided value, or ±Inf when the function blows up monotonically (e.g. 1/x at 0).
+  if (Number.isFinite(p) && dir) {
+    const sgn = dir === 'left' ? -1 : 1;
+    let prev = NaN, conv = NaN, finite = false; const samples: number[] = [];
+    for (const eps of [1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6]) {
+      const sv = at(p + sgn * eps); samples.push(sv);
+      if (Number.isFinite(sv)) { if (Number.isFinite(prev) && Math.abs(sv - prev) < 1e-7 * (1 + Math.abs(sv))) { conv = sv; finite = true; } prev = sv; }
+    }
+    if (finite) return sN(snap(conv));
+    const fin = samples.filter(Number.isFinite);
+    if (fin.length >= 2 && Math.abs(fin[fin.length - 1]) > Math.abs(fin[0]) * 10 && fin[fin.length - 1] !== 0) {
+      return sN(fin[fin.length - 1] > 0 ? Infinity : -Infinity);
+    }
+  }
 
   // direct substitution
   const v = symEval(e, new Map([[x, p]]));
@@ -502,6 +543,28 @@ export function solveExpr(e: SymExpr, x: string): SymExpr[] {
       const Anum = symVars(A).length === 0 ? symEval(A, new Map()) : NaN;
       if (symbolic && (symVars(A).length > 0 || (Number.isFinite(Anum) && Math.abs(Anum) > 1e-12))) {
         return [simplifyExpr(sDiv(sNeg(B), A))];
+      }
+    }
+  }
+  // symbolic quadratic: a·x² + b·x + c = 0 with one or more *symbolic* coefficients
+  // → the exact quadratic formula. Engaged only when a coefficient is itself symbolic;
+  // numeric polynomials fall through to Durand–Kerner below (which keeps clean integer roots).
+  {
+    const d1 = simplifyExpr(diffExpr(e, x));                  // E'  = 2a·x + b
+    const d2 = simplifyExpr(diffExpr(d1, x));                 // E'' = 2a
+    const d3 = simplifyExpr(diffExpr(d2, x));                 // E''' = 0 ⇔ degree ≤ 2
+    if (d3.t === 'n' && Math.abs(d3.v) < 1e-12 && symVars(d2).indexOf(x) < 0) {
+      const a = simplifyExpr(sDiv(d2, sN(2)));                // ½·E''  = a
+      const b = simplifyExpr(subsExpr(d1, x, sN(0)));         // E'(0)  = b
+      const c = simplifyExpr(subsExpr(e, x, sN(0)));          // E(0)   = c
+      const anySym = symVars(a).length > 0 || symVars(b).length > 0 || symVars(c).length > 0;
+      const aZero = a.t === 'n' && Math.abs(a.v) < 1e-12;
+      if (anySym && !aZero) {
+        const disc = simplifyExpr(sSub(sPow(b, sN(2)), sMul(sN(4), a, c)));   // b² − 4ac
+        const root = sFn('sqrt', disc);
+        const den = sMul(sN(2), a);
+        return [simplifyExpr(sDiv(sSub(sNeg(b), root), den)),                 // (−b − √Δ)/2a
+                simplifyExpr(sDiv(sAdd(sNeg(b), root), den))];                // (−b + √Δ)/2a
       }
     }
   }

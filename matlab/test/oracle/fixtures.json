@@ -3363,6 +3363,55 @@
       ]
     }
   },
+  "val_fminunc": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2.0000000298023224,
+        3
+      ]
+    }
+  },
+  "val_fmincon_bounds": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.9999999499448299,
+        0.99999997499032
+      ]
+    }
+  },
+  "val_lsqnonlin": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1.0000000000000002,
+        2.0000000000000004
+      ]
+    }
+  },
+  "val_lsqcurvefit": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
   "val_interp2": {
     "q": {
       "class": "double",
@@ -3381,6 +3430,46 @@
         1
       ],
       "real": 2.25
+    }
+  },
+  "val_gridded_interpolant": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "val_interp3": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.5
+    }
+  },
+  "val_scattered_interpolant": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.5
+    }
+  },
+  "val_griddata": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.5
     }
   },
   "val_polyvalm": {
@@ -3475,6 +3564,56 @@
         1
       ],
       "real": 4.440892098500626e-16
+    }
+  },
+  "val_pcg": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "val_cgs": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "val_ilu": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "val_ichol": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "val_ldl": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
     }
   },
   "val_eigs": {
@@ -3784,6 +3923,272 @@
         -1.4142135623730951,
         1.4142135623730951
       ]
+    }
+  },
+  "val_sym_solve_quadratic": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        3
+      ]
+    }
+  },
+  "val_sym_solve_quadratic_monic": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        2
+      ]
+    }
+  },
+  "val_sym_solve_quadratic_nob": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -2,
+        2
+      ]
+    }
+  },
+  "cal_limit_oneside_right": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_limit_oneside_left": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -1
+    }
+  },
+  "cal_limit_removable_oneside": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_limit_at_infinity": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_symsum_default_var": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 55
+    }
+  },
+  "cal_symsum_square": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 30
+    }
+  },
+  "cal_symprod_default": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 120
+    }
+  },
+  "cal_expand_cube": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 27
+    }
+  },
+  "cal_collect": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 15
+    }
+  },
+  "cal_ilaplace": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.1353352832366127
+    }
+  },
+  "cal_taylor_order": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.6666666666666665
+    }
+  },
+  "cal_sym_curl": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0,
+        0,
+        -2
+      ]
+    }
+  },
+  "cal_sym_divergence": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "cal_sym_gradient": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        12,
+        4
+      ]
+    }
+  },
+  "cal_coeffs": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "cal_numden": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        3,
+        1
+      ]
+    }
+  },
+  "cal_finverse": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_equations_to_matrix": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        1
+      ]
+    }
+  },
+  "cal_assume_simplify": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "cal_fourier": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_ztrans": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
     }
   },
   "mm_diagonalization_power": {
@@ -4649,6 +5054,113 @@
         1
       ],
       "real": 0.5
+    }
+  },
+  "cal_charpoly_sym": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        -10,
+        25
+      ]
+    }
+  },
+  "cal_charpoly_symvar": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "cal_eig_sym_2x2": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        3
+      ]
+    }
+  },
+  "cal_eig_sym_triangular": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        5,
+        5
+      ]
+    }
+  },
+  "cal_eig_sym_param": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        4
+      ]
+    }
+  },
+  "cal_eig_sym_diag3": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        2,
+        3,
+        6
+      ]
+    }
+  },
+  "cal_rank_sym_deficient": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_rank_sym_full": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_rank_sym_numeric": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
     }
   },
   "cal_subst_gaussian": {

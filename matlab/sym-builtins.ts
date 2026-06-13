@@ -82,7 +82,18 @@ export const SYM_BUILTINS: Record<string, Builtin> = {
     if (lim) { const lo = symToExpr(lim[0]), hi = symToExpr(lim[1]); return ret(makeSym(s.rows, s.cols, F.map((Fe) => { const d = simplifyExpr(sAdd(subsExpr(Fe, v, hi), sNeg(subsExpr(Fe, v, lo)))); const num = symEval(d, new Map()); return Number.isFinite(num) ? sN(num) : d; }))); }
     return ret(makeSym(s.rows, s.cols, F.map(simplifyExpr)));
   },
-  limit: async (a) => { const s = symArg(a[0]); const v = a.length >= 3 ? (isSym(a[1]) ? symNames(a[1])[0] : asString(a[1])) : (symVarsOf(s)[0] ?? 'x'); const pt = symToExpr(a[a.length - 1]); const exprs = s.exprs.map((e) => limitAt(e, v, pt)); return ret(makeSym(s.rows, s.cols, exprs)); },
+  limit: async (a) => {
+    const s = symArg(a[0]);
+    // optional trailing direction string: limit(f, x, p, 'left'|'right'|'-'|'+')
+    let args = a; let dir: 'left' | 'right' | undefined;
+    const last = a[a.length - 1];
+    const ls = (isStr(last) || (isMat(last) && (last as Mat).isChar)) ? asString(last).toLowerCase() : '';
+    if (ls === 'left' || ls === '-' || ls === 'right' || ls === '+') { dir = (ls === 'left' || ls === '-') ? 'left' : 'right'; args = a.slice(0, -1); }
+    const v = args.length >= 3 ? (isSym(args[1]) ? symNames(args[1])[0] : asString(args[1])) : (symVarsOf(s)[0] ?? 'x');
+    const pt = symToExpr(args[args.length - 1]);
+    const exprs = s.exprs.map((e) => limitAt(e, v, pt, dir));
+    return ret(makeSym(s.rows, s.cols, exprs));
+  },
   jacobian: async (a) => { const s = symArg(a[0]); const vars = a.length >= 2 ? symNames(a[1]) : symVarsOf(s); const J: SymExpr[] = []; const nf = s.exprs.length; for (let c = 0; c < vars.length; c++) for (let r = 0; r < nf; r++) J[r + c * nf] = simplifyExpr(diffExpr(s.exprs[r], vars[c])); return ret(makeSym(nf, vars.length, J)); },
   hessian: async (a) => { const s = symArg(a[0]); const vars = a.length >= 2 ? symNames(a[1]) : symVarsOf(s); const nv = vars.length; const H: SymExpr[] = []; for (let i = 0; i < nv; i++) for (let j = 0; j < nv; j++) H[i + j * nv] = simplifyExpr(diffExpr(diffExpr(s.exprs[0], vars[i]), vars[j])); return ret(makeSym(nv, nv, H)); },
   taylor: async (a) => {
@@ -229,9 +240,13 @@ export const SYM_BUILTINS: Record<string, Builtin> = {
     return n >= 2 ? [A, b] : [A];
   },
   symsum: async (a) => {
-    const s = symArg(a[0]); const k = isSym(a[1]) ? symVarsOf(a[1] as Sym)[0] : asString(a[1]);
-    const loE = isSym(a[2]) ? (a[2] as Sym).exprs[0] : sN(asScalar(a[2]));
-    const hiE = isSym(a[3]) ? (a[3] as Sym).exprs[0] : sN(asScalar(a[3]));
+    const s = symArg(a[0]);
+    // accept both symsum(f, k, lo, hi) and the default-variable form symsum(f, lo, hi)
+    const fourArg = a.length >= 4;
+    const k = fourArg ? (isSym(a[1]) ? symVarsOf(a[1] as Sym)[0] : asString(a[1])) : (symVarsOf(s)[0] ?? 'k');
+    const loA = fourArg ? a[2] : a[1]; const hiA = fourArg ? a[3] : a[2];
+    const loE = isSym(loA) ? (loA as Sym).exprs[0] : sN(asScalar(loA));
+    const hiE = isSym(hiA) ? (hiA as Sym).exprs[0] : sN(asScalar(hiA));
     const loN = constVal(loE), hiN = constVal(hiE); const f = s.exprs[0];
     if (loN !== null && hiN !== null) { let acc: SymExpr = sN(0); for (let i = Math.round(loN); i <= Math.round(hiN); i++) acc = sAdd(acc, subsExpr(f, k, sN(i))); return ret(makeSym(1, 1, [simplifyExpr(acc)])); }
     const isZero = (e: SymExpr) => e.t === 'n' && Math.abs(e.v) < 1e-12;
@@ -257,9 +272,12 @@ export const SYM_BUILTINS: Record<string, Builtin> = {
     return ret(makeSym(1, 1, [simplifyExpr(acc)]));
   },
   symprod: async (a) => {
-    const s = symArg(a[0]); const k = isSym(a[1]) ? symVarsOf(a[1] as Sym)[0] : asString(a[1]);
-    const loE = isSym(a[2]) ? (a[2] as Sym).exprs[0] : sN(asScalar(a[2]));
-    const hiE = isSym(a[3]) ? (a[3] as Sym).exprs[0] : sN(asScalar(a[3]));
+    const s = symArg(a[0]);
+    const fourArg = a.length >= 4;
+    const k = fourArg ? (isSym(a[1]) ? symVarsOf(a[1] as Sym)[0] : asString(a[1])) : (symVarsOf(s)[0] ?? 'k');
+    const loA = fourArg ? a[2] : a[1]; const hiA = fourArg ? a[3] : a[2];
+    const loE = isSym(loA) ? (loA as Sym).exprs[0] : sN(asScalar(loA));
+    const hiE = isSym(hiA) ? (hiA as Sym).exprs[0] : sN(asScalar(hiA));
     const loN = constVal(loE), hiN = constVal(hiE);
     if (loN !== null && hiN !== null) { let acc: SymExpr = sN(1); for (let i = Math.round(loN); i <= Math.round(hiN); i++) acc = sMul(acc, subsExpr(s.exprs[0], k, sN(i))); return ret(makeSym(1, 1, [simplifyExpr(acc)])); }
     // Symbolic limit: ∏ k = hi!/(lo-1)! when the summand is the index variable itself.

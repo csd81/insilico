@@ -72,6 +72,10 @@ sin, cos, (·)^n, 1/(·)}` and the remaining factors are a constant multiple of 
 - **Symbolic L'Hôpital** — results that are *expressions in another free variable*:
   the derivative definition `limit((sin(x+h)-sin(x))/h, h, 0)` → `cos(x)`
 - **Multi-round numeric L'Hôpital** for `0/0` and `∞/∞`: `limit((1-cos(x))/x^2, x, 0)` → `1/2`
+- **Limits at infinity:** `limit((2*x+1)/(x-3), x, inf)` → `2`
+- **One-sided limits:** `limit(1/x, x, 0, 'right')` → `+Inf`, `limit(1/x, x, 0, 'left')` → `-Inf`
+  (the `'left'`/`'right'` direction approaches the point from one side; resolves finite
+  one-sided values or ±Inf divergence)
 - A **cancellation-safe numeric fallback** (moderate `eps`, cross-scale agreement)
 
 **Unevaluated:** competing symbolic infinities and other forms needing a
@@ -81,9 +85,14 @@ generalized series expansion (the Gruntz algorithm) — out of scope.
 
 ## Equation solving
 
-- **Polynomial roots** via Durand–Kerner: `solve(x^2-4==0, x)` → `[-2, 2]`
+- **Polynomial roots** (numeric coefficients) via Durand–Kerner: `solve(x^2-4==0, x)` → `[-2, 2]`
 - **Linear symbolic / literal equations:** `solve(a*x+b==0, x)` → `-b/a`,
   `solve(v==u+a*t, t)` → `(v-u)/a`
+- **Quadratic formula with symbolic coefficients:** `solve(a*x^2+b*x+c==0, x)` →
+  `(-b ± sqrt(b^2-4ac))/(2a)` — engaged only when a coefficient is itself symbolic
+  (numeric quadratics keep clean Durand–Kerner roots). Degree ≥ 3 with symbolic
+  coefficients is **not** attempted (cubic/quartic radical forms balloon; quintic+
+  has no radical solution — Abel–Ruffini): returned unevaluated.
 - `vpasolve`, `isolate`, `finverse` build on the same root finder.
 
 ---
@@ -92,6 +101,14 @@ generalized series expansion (the Gruntz algorithm) — out of scope.
 
 - `det` (Laplace ≤ 8×8, Bareiss fraction-free beyond), `inv` (adjugate),
   `*` (matrix product), `\` (**Cramer's rule** `x_i = det(A_i)/det(A)`)
+- `charpoly` — exact symbolic coefficients (`charpoly([a 1;0 a])` → `[1, -2a, a²]`);
+  `charpoly(A, x)` returns the polynomial in `x`
+- `eig` — **bounded** to the cases that stay clean: triangular/diagonal matrices of any
+  size (eigenvalues = the diagonal) and the **2×2 closed form** `λ = (tr ± √(tr²−4·det))/2`.
+  Non-triangular symbolic matrices ≥ 3×3 are returned as an explicit error (cubic+ radical
+  forms balloon — same boundary as the symbolic quadratic solver)
+- `rank` — generic (symbolic) rank for small matrices via non-degenerate sampling
+  (`rank([1 a; a a²])` → `1`, `rank([a 1; 1 b])` → `2`)
 
 ```
 syms a b;  A = [a 1; 1 b];  x = A\[1; 0]   % exact: x1 = b/(a*b-1)
@@ -103,8 +120,12 @@ syms a b;  A = [a 1; 1 b];  x = A\[1; 0]   % exact: x1 = b/(a*b-1)
 
 `subs`, `simplify` (incl. trig identities — `sin(x)^2+cos(x)^2` → `1`), `expand`
 (incl. angle-sum `sin(a+b)`), `collect`, `factor`, `partfrac`, `coeffs`/`degree`,
-`laplace`/`ilaplace`/`fourier`, `dsolve` (common linear/separable cases),
-`matlabFunction` (compiles a `SymExpr` to a fast numeric handle), assumptions.
+`numden`, `laplace`/`ilaplace`/`fourier`/`ztrans`, `dsolve` (common linear/separable
+cases), `symsum`/`symprod` (polynomial-Faulhaber & geometric closed forms; both the
+explicit `(f,k,lo,hi)` and default-variable `(f,lo,hi)` forms), `finverse`,
+`equationsToMatrix`, symbolic vector calculus (`gradient`/`divergence`/`curl`/`laplacian`),
+`matlabFunction` (compiles a `SymExpr` to a fast numeric handle), assumptions
+(`assume(x>0)` drives `simplify`, e.g. `sqrt(x^2)` → `x`).
 
 ---
 
