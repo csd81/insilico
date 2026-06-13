@@ -1,0 +1,18 @@
+{
+  "name": "insilico-matlab",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "pnpm@11.6.0",
+  "type": "module",
+  "scripts": {
+    "test": "tsc -p tsconfig.test.json && echo '{\"type\":\"commonjs\"}' > .test-dist/package.json && node --test '.test-dist/**/*.test.js'",
+    "clean": "rm -rf .test-dist"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3"
+  }
+}

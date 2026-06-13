@@ -1,0 +1,1034 @@
+# 1000 Implementable Functions — curated from candidates.md
+
+Numeric / algorithmic MATLAB functions implementable from scratch or portable from a readable `.m`
+and validated against live MATLAB. **Excludes** UI/plotting, hardware/IO, file/DB, web, parallel/GPU,
+code-gen, object-method/namespaced entries, and object-framework constructors. The noisy
+`core_referencelist` section is additionally allowlisted to numeric/math/data/string/date purposes.
+Kept the `sym.` symbolic family. Picked by rank-preserving round-robin across toolboxes.
+
+Total: 1000.
+
+
+## core_referencelist (72)
+
+- [ ] **odejacobian** — ODE Jacobian matrix
+- [ ] **islocalmin2** — Find local minima in 2-D data
+- [ ] **islocalmax2** — Find local maxima in 2-D data
+- [ ] **ischange** — Find abrupt changes in data
+- [ ] **odemassmatrix** — ODE mass matrix
+- [ ] **makehgtform** — Create 4-by-4 transform matrix
+- [ ] **fillmissing2** — Fill missing entries in 2-D data
+- [ ] **odeevent** — ODE event definition
+- [ ] **standardizemissing** — Insert standard missing values
+- [ ] **odesensitivity** — ODE sensitivity analysis
+- [ ] **calendarduration** — Lengths of time in variable-length calendar units
+- [ ] **nweekdate** — (Not recommended; use dateshift) Date of specific occurrence of weekday in month
+- [ ] **cosh** — Hyperbolic cosine
+- [ ] **calendar** — Calendar for specified month
+- [ ] **lweekdate** — (Not recommended; use dateshift) Date of last occurrence of weekday in month
+- [ ] **formatteddisplaytext** — Capture display output as string
+- [ ] **convertstringstochars** — Convert string arrays to character arrays, leaving other arrays unaltered
+- [ ] **convertcontainedstringstochars** — Convert string arrays at any level of cell array or structure
+- [ ] **convertcharstostrings** — Convert character arrays to string arrays, leaving other arrays unaltered
+- [ ] **smooth3** — Smooth 3-D data
+- [ ] **eomdate** — (Not recommended; use dateshift) Last date of month
+- [ ] **csc** — Cosecant of input angle in radians
+- [ ] **atanh** — Inverse hyperbolic tangent
+- [ ] **asec** — Inverse secant in radians
+- [ ] **acsch** — Inverse hyperbolic cosecant
+- [ ] **acsc** — Inverse cosecant in radians
+- [ ] **acosh** — Inverse hyperbolic cosine
+- [ ] **shortcircuitand** — Short-Circuit AND - Logical AND with short-circuiting
+- [ ] **sech** — Hyperbolic secant
+- [ ] **demo** — Access product examples
+- [ ] **csch** — Hyperbolic cosecant
+- [ ] **asech** — Inverse hyperbolic secant
+- [ ] **tabusearchresult** — Result of solve for Tabu search algorithm
+- [ ] **im2double** — Convert image to double precision
+- [ ] **tabusearch** — Tabu search algorithm for QUBO solve
+- [ ] **mustbeinteger** — Validate that value is integer
+- [ ] **asecd** — Inverse secant in degrees
+- [ ] **verlessthan** — Compare toolbox version to specified character vector
+- [ ] **squarebrackets** — square brackets, [ ] - Array creation and concatenation, element deletion, argument assignment
+- [ ] **shortcircuitor** — Short-Circuit OR - Logical OR with short-circuiting
+- [ ] **rad2deg** — Convert angle from radians to degrees
+- [ ] **mustbevector** — Validate that value is vector
+- [ ] **mustbenumericorlogical** — Validate that value is numeric or logical
+- [ ] **mustbenonmissing** — Validate that input does not contain missing values
+- [ ] **isstringscalar** — Determine if input is string array with one element
+- [ ] **viewmtx** — View transformation matrices
+- [ ] **underlyingtype** — Type of underlying data determining array behavior
+- [ ] **semicolon** — Command and array separator
+- [ ] **ruler2num** — Convert data from specific ruler to numeric data
+- [ ] **pystringarray** — Convert MATLAB string array to Python NumPy string array
+- [ ] **namedargs2cell** — Convert structure containing name-value pairs to cell array
+- [ ] **mustberow** — Validate that value is row vector
+- [ ] **mustbenumeric** — Validate that value is numeric
+- [ ] **mustbematrix** — Validate that value is matrix
+- [ ] **mustbefloat** — Validate that value is floating-point array
+- [ ] **mustbecolumn** — Validate that value is column vector
+- [ ] **iscalendarduration** — Determine if input is calendar duration array
+- [ ] **curlybraces** — curly braces, { } - Cell array creation, indexing
+- [ ] **turn** — Turn Ryze drone by a specified angle
+- [ ] **resetrotationangle** — Reset rotation angle to zero
+- [ ] **resetrotation** — Reset rotation count to zero
+- [ ] **num2ruler** — Convert numeric data for use with specific ruler
+- [ ] **mustbetext** — Validate that value is string array, character vector, or cell array of character vectors
+- [ ] **matlabdrive** — Root folder of MATLAB Drive
+- [ ] **keyhash** — Generate hash code for dictionary key
+- [ ] **functiontests** — Create array of tests from handles to local functions
+- [ ] **clibarray** — Create MATLAB clib array for C++ library functions
+- [ ] **xslt** — Transform XML document using XSLT engine
+- [ ] **toolboxdir** — Root folder for specified toolbox
+- [ ] **gammaln** — Logarithm of gamma function
+- [ ] **details** — Display array details
+- [ ] **camproj** — Set or query projection type
+
+## stats (198)
+
+- [ ] **fitcauto** — Automatically select classification model with optimized hyperparameters
+- [ ] **fitcnet** — Train neural network classification model
+- [ ] **rocmetrics** — Receiver operating characteristic (ROC) curve and performance metrics for binary and multiclass clas
+- [ ] **fitcecoc** — Fit multiclass models for support vector machines or other classifiers
+- [ ] **fitrnet** — Train neural network regression model
+- [ ] **fitclinear** — Fit binary linear classifier to high-dimensional data
+- [ ] **fitrauto** — Automatically select regression model with optimized hyperparameters
+- [ ] **fitrlinear** — Fit linear regression model to high-dimensional data
+- [ ] **fitrgp** — Fit a Gaussian process regression (GPR) model
+- [ ] **fitcsvm** — Train support vector machine (SVM) classifier for one-class and binary classification
+- [ ] **fitcensemble** — Fit ensemble of learners for classification
+- [ ] **fitctree** — Fit binary decision tree for multiclass classification
+- [ ] **fitcgam** — Fit generalized additive model (GAM) for binary classification
+- [ ] **fitrtree** — Fit binary decision tree for regression
+- [ ] **fitckernel** — Fit binary Gaussian kernel classifier using random feature expansion
+- [ ] **fitrgam** — Fit generalized additive model (GAM) for regression
+- [ ] **treebagger** — Ensemble of bagged decision trees
+- [ ] **incrementaldynamickmeans** — Incremental dynamic k-means clustering
+- [ ] **fitrkernel** — Fit Gaussian kernel regression model using random feature expansion
+- [ ] **lime** — Local interpretable model-agnostic explanations (LIME)
+- [ ] **incrementalclassificationecoc** — Multiclass classification model using binary learners for incremental learning
+- [ ] **fitrqnet** — Train regression quantile neural network
+- [ ] **fitcnb** — Train multiclass naive Bayes model
+- [ ] **fitrsvm** — Fit a support vector machine regression model
+- [ ] **fitrensemble** — Fit ensemble of learners for regression
+- [ ] **fitcknn** — Fit k-nearest neighbor classifier
+- [ ] **counterfactuals** — Generate counterfactual examples for observation
+- [ ] **incrementalclassificationlinear** — Binary classification linear model for incremental learning
+- [ ] **incrementalclassificationkernel** — Binary classification kernel model for incremental learning
+- [ ] **incrementalregressionkernel** — Kernel regression model for incremental learning
+- [ ] **permutationimportance** — Predictor importance by permutation
+- [ ] **incrementalregressionlinear** — Linear regression model for incremental learning
+- [ ] **shapley** — Shapley values
+- [ ] **fitensemble** — Fit ensemble of learners for classification and regression
+- [ ] **incrementalclassificationnaivebayes** — Naive Bayes classification model for incremental learning
+- [ ] **fitcdiscr** — Fit discriminant analysis classifier
+- [ ] **testckfold** — Compare accuracies of two classification models by repeated cross-validation
+- [ ] **incrementalkmeans** — Incremental k-means clustering
+- [ ] **fitrqlinear** — Train quantile linear regression model
+- [ ] **fitlmematrix** — Fit linear mixed-effects model
+- [ ] **classificationsvm** — Support vector machine (SVM) for one-class and binary classification
+- [ ] **generalizedlinearmodel** — Generalized linear regression model class
+- [ ] **fairnessthresholder** — Optimize classification threshold to include fairness
+- [ ] **perfcurve** — Receiver operating characteristic (ROC) curve or other performance curve for classifier output
+- [ ] **nlmefitsa** — Fit nonlinear mixed-effects model with stochastic EM algorithm
+- [ ] **mle** — Maximum likelihood estimates
+- [ ] **linearmodel** — Linear regression model
+- [ ] **fitsemigraph** — Label data using semi-supervised graph-based method
+- [ ] **anova** — Analysis of variance (ANOVA) results
+- [ ] **incrementaloneclasssvm** — One-class support vector machine (SVM) model for incremental anomaly detection
+- [ ] **fsrnca** — Feature selection using neighborhood component analysis for regression
+- [ ] **fitlm** — Fit linear regression model
+- [ ] **fitlme** — Fit linear mixed-effects model
+- [ ] **fairnessmetrics** — Bias and group metrics for a data set or classification model
+- [ ] **synthesizetabulardata** — Synthesize tabular data
+- [ ] **regressiongpcomponent** — Pipeline component for Gaussian process regression (GPR)
+- [ ] **nlmefit** — Fit nonlinear mixed-effects estimation
+- [ ] **classificationtree** — Binary decision tree for multiclass classification
+- [ ] **kmeans** — k-means clustering
+- [ ] **generalizedlinearmixedmodel-class** — Generalized linear mixed-effects model class
+- [ ] **classificationneuralnetwork** — Neural network model for classification
+- [ ] **pca** — Principal component analysis of raw data
+- [ ] **gencfeatures** — Perform automated feature engineering for classification
+- [ ] **classificationlinearcomponent** — Pipeline component for binary classification of high-dimensional data using linear model
+- [ ] **templatelinear** — Linear learner template
+- [ ] **templategp** — Gaussian process template
+- [ ] **mhsample** — Generate Markov chain sample using Metropolis–Hastings sampler
+- [ ] **lasso** — Lasso or elastic net regularization for linear models
+- [ ] **incrementaldriftawarelearner** — Construct drift-aware model for incremental learning
+- [ ] **genrfeatures** — Perform automated feature engineering for regression
+- [ ] **fscnca** — Feature selection using neighborhood component analysis for classification
+- [ ] **classificationecoc** — Multiclass model for support vector machines (SVMs) and other classifiers
+- [ ] **stepwiselm** — Perform stepwise regression
+- [ ] **stepwiseglm** — Create generalized linear regression model by stepwise regression
+- [ ] **multinomialregression** — Multinomial regression model
+- [ ] **manova** — Multivariate analysis of variance (MANOVA) results
+- [ ] **incrementalnormalizer** — Instantiate incremental data normalizer
+- [ ] **fitglme** — Fit generalized linear mixed-effects model
+- [ ] **cvpartition** — Partition data for cross-validation
+- [ ] **regressionlinearcomponent** — Pipeline component for regression of high-dimensional data using a linear model
+- [ ] **optimaldoe** — D-optimal design of experiments (DOE)
+- [ ] **lof** — Create local outlier factor model for anomaly detection
+- [ ] **crossval** — Estimate loss using cross-validation
+- [ ] **classificationnaivebayes** — Naive Bayes classification for multiclass classification
+- [ ] **lassoglm** — Lasso or elastic net regularization for generalized linear models
+- [ ] **ksdensity** — Kernel smoothing function estimate for univariate and bivariate data
+- [ ] **incrementalrobustrandomcutforest** — Robust random cut forest model for incremental anomaly detection
+- [ ] **classificationsvmcomponent** — Pipeline component for one-class and binary classification using SVM classifier
+- [ ] **testcholdout** — Compare predictive accuracies of two classification models
+- [ ] **templatetree** — Create decision tree template
+- [ ] **spectralcluster** — Spectral clustering
+- [ ] **regressiontree** — Regression tree
+- [ ] **regressionneuralnetwork** — Neural network model for regression
+- [ ] **linearmixedmodel** — Linear mixed-effects model
+- [ ] **grpstats** — Summary statistics organized by group
+- [ ] **detectdrift** — Detect drifts between baseline and target data using permutation testing
+- [ ] **sequentialfs** — Sequential feature selection using custom criterion
+- [ ] **fitglm** — Create generalized linear regression model
+- [ ] **ecdf** — Empirical cumulative distribution function
+- [ ] **classificationkernel** — Gaussian kernel classification model using random feature expansion
+- [ ] **classificationgam** — Generalized additive model (GAM) for binary classification
+- [ ] **regressionsvm-class** — Support vector machine regression model
+- [ ] **regressiongp** — Gaussian process regression model
+- [ ] **regressiongam** — Generalized additive model (GAM) for regression
+- [ ] **ocsvm** — Fit one-class support vector machine (SVM) model for anomaly detection
+- [ ] **nonlinearmodel** — Nonlinear regression model
+- [ ] **incrementalpca** — Incremental principal component analysis
+- [ ] **featureselectionregressionncacomponent** — Pipeline component for performing feature selection using neighborhood component analysis (NCA) for 
+- [ ] **featureselectionclassificationncacomponent** — Pipeline component for performing feature selection using neighborhood component analysis (NCA) for 
+- [ ] **classificationensemblecomponent** — Pipeline component for ensemble classification
+- [ ] **censoredlinearmodel** — Censored linear regression model
+- [ ] **taguchidoe** — Taguchi design of experiments (DOE)
+- [ ] **knntest** — Two-sample multivariate hypothesis test using k-nearest neighbors (KNN)
+- [ ] **fitnlm** — Fit nonlinear regression model
+- [ ] **factoran** — Factor analysis
+- [ ] **classificationtreecomponent** — Pipeline component for multiclass classification using binary decision trees
+- [ ] **classificationneuralnetworkcomponent** — Pipeline component for classification using neural network model
+- [ ] **classificationknn** — k-nearest neighbor classification
+- [ ] **binningtabularsynthesizer** — Binning-based synthesizer for tabular data synthesis
+- [ ] **acceleratedlifemodel** — Accelerated life model for lifetime analysis
+- [ ] **templatesvm** — Support vector machine template
+- [ ] **templateensemble** — Ensemble learning template
+- [ ] **smotetabularsynthesizer** — SMOTE-based synthesizer for tabular data synthesis
+- [ ] **regressionsvmcomponent** — Pipeline component for regression using a support vector machine (SVM) model
+- [ ] **nlinfit** — Nonlinear regression
+- [ ] **mvregress** — Multivariate linear regression
+- [ ] **multcompare** — Multiple comparison test
+- [ ] **knnsearch** — Find k-nearest neighbors using input data
+- [ ] **fscmrmr** — Rank features for classification using minimum redundancy maximum relevance (MRMR) algorithm
+- [ ] **fitmnr** — Fit multinomial regression model
+- [ ] **fitlmcens** — Fit censored linear regression model
+- [ ] **stepwisefit** — Fit linear regression model using stepwise regression
+- [ ] **kmedoids** — k-medoids clustering
+- [ ] **generatelearnerdatatypefcn** — Generate function that defines data types for fixed-point code generation
+- [ ] **fsrmrmr** — Rank features for regression using minimum redundancy maximum relevance (MRMR) algorithm
+- [ ] **fractionalfactorialdoe** — Fractional factorial design of experiments (DOE)
+- [ ] **fitrchains** — Multiresponse regression with regression chains
+- [ ] **classificationknncomponent** — Pipeline component for classification using k-nearest neighbor model
+- [ ] **classificationdiscriminant** — Discriminant analysis classification
+- [ ] **templatekernel** — Kernel learner template
+- [ ] **regressionquantileneuralnetwork** — Quantile neural network model for regression
+- [ ] **regressionkernel** — Gaussian kernel regression model using random feature expansion
+- [ ] **localoutlierfactor** — Local outlier factor model for anomaly detection
+- [ ] **fitsemiself** — Label data using semi-supervised self-training method
+- [ ] **disparateimpactremover** — Remove disparate impact of sensitive attribute
+- [ ] **dataset** — (Not Recommended) Arrays for statistical data
+- [ ] **cordexch** — Coordinate-exchange D-optimal design
+- [ ] **classificationkernelcomponent** — Pipeline component for classification using Gaussian kernel with random feature expansion
+- [ ] **umap** — Uniform Manifold Approximation and Projection (UMAP) for dimension reduction
+- [ ] **tsne** — t-Distributed Stochastic Neighbor Embedding
+- [ ] **rrcforest** — Fit robust random cut forest model for anomaly detection
+- [ ] **rowexch** — Row exchange D-optimal design
+- [ ] **robustcov** — Robust multivariate covariance and mean estimate
+- [ ] **regressiontreecomponent** — Pipeline component for regression using binary decision trees
+- [ ] **regressionneuralnetworkcomponent** — Pipeline component for regression using neural network model
+- [ ] **mixturedoe** — Design of experiments (DOE) for mixture experiments
+- [ ] **glmfit** — Fit generalized linear regression model
+- [ ] **gagerr** — Gage repeatability and reproducibility study
+- [ ] **classificationgamcomponent** — Pipeline component for binary classification using generalized additive model (GAM)
+- [ ] **anovan** — N-way analysis of variance
+- [ ] **regressionkernelcomponent** — Pipeline component for regression using Gaussian kernel model
+- [ ] **procrustes** — Procrustes analysis
+- [ ] **mmdtest** — Two-sample multivariate hypothesis test using maximum mean discrepancy (MMD)
+- [ ] **meaneffectsize** — One-sample or two-sample effect size computations
+- [ ] **incrementalconceptdriftdetector** — Instantiate incremental concept drift detector
+- [ ] **fscchi2** — Univariate feature ranking for classification using chi-square tests
+- [ ] **fitgmdist** — Fit Gaussian mixture model to data
+- [ ] **dcovary** — D-optimal design with fixed covariates
+- [ ] **dbscan** — Density-based spatial clustering of applications with noise (DBSCAN)
+- [ ] **classificationlinear-class** — Linear model for binary classification of high-dimensional data
+- [ ] **statset** — Create statistics options structure
+- [ ] **regressionquantilelinear** — Quantile linear regression model
+- [ ] **iforest** — Fit isolation forest for anomaly detection
+- [ ] **gmdistribution** — Create Gaussian mixture model
+- [ ] **glmval** — Generalized linear model values
+- [ ] **fitsvmposterior** — Fit posterior probabilities
+- [ ] **confusionmat** — Compute confusion matrix for classification problem
+- [ ] **classificationnaivebayescomponent** — Pipeline component for multiclass classification using naive Bayes model
+- [ ] **bootci** — Bootstrap confidence interval
+- [ ] **tspartition** — Partition time series data for cross-validation
+- [ ] **relieff** — Rank importance of predictors using ReliefF or RReliefF algorithm
+- [ ] **regressiongamcomponent** — Pipeline component for generalized additive model (GAM) for regression
+- [ ] **rangesearch** — Find all neighbors within specified distance using input data
+- [ ] **nlpredci** — Nonlinear regression prediction confidence intervals
+- [ ] **mlecov** — Asymptotic covariance of maximum likelihood estimators
+- [ ] **fullfactorialdoe** — Full factorial design of experiments (DOE)
+- [ ] **fsrftest** — Univariate feature ranking for regression using F-tests
+- [ ] **daugment** — D-optimal augmentation
+- [ ] **compactcensoredlinearmodel** — Compact censored linear regression model
+- [ ] **classificationecoccomponent** — Pipeline component for multiclass classification using error-correcting output codes (ECOC) model
+- [ ] **classificationdiscriminantcomponent** — Pipeline component for discriminant analysis classification
+- [ ] **bayesianoptimization** — Bayesian optimization results
+- [ ] **regressionensemblecomponent** — Pipeline component for regression using ensemble of learners
+- [ ] **plsregress** — Partial least-squares (PLS) regression
+- [ ] **oneclasssvm** — One-class support vector machine (SVM) for anomaly detection
+- [ ] **mvksdensity** — Kernel smoothing function estimate for multivariate data
+- [ ] **featureselectionncaregression** — Feature selection for regression using neighborhood component analysis (NCA)
+- [ ] **featureselectionncaclassification** — Feature selection for classification using neighborhood component analysis (NCA)
+
+## signal (198)
+
+- [ ] **designfilt** — Design digital filter
+- [ ] **signaltimefrequencyfeatureextractor** — Streamline signal time-frequency feature extraction
+- [ ] **spectrogram** — Spectrogram using short-time Fourier transform
+- [ ] **pspectrum** — Analyze signals in the frequency and time-frequency domains
+- [ ] **periodogram** — Periodogram power spectral density estimate
+- [ ] **pmtm** — Multitaper power spectral density estimate
+- [ ] **refinepeaks** — Refine peak value and location estimates
+- [ ] **pwelch** — Welch’s power spectral density estimate
+- [ ] **signaltimefeatureextractor** — Streamline signal time feature extraction
+- [ ] **signalfrequencyfeatureextractor** — Streamline signal frequency feature extraction
+- [ ] **findpeaks** — Find local maxima
+- [ ] **stftmag2sig** — Signal reconstruction from STFT magnitude
+- [ ] **labelspectrogramoptions** — Spectrogram options for time-frequency label definition
+- [ ] **scalarfeatureoptions** — Store information for converting feature vectors to scalar values
+- [ ] **resample** — Resample uniform or nonuniform data to new fixed rate
+- [ ] **plomb** — Lomb-Scargle periodogram
+- [ ] **filtfilt** — Zero-phase digital filtering
+- [ ] **tfestimate** — Transfer function estimate
+- [ ] **stft** — Short-time Fourier transform
+- [ ] **spectralentropy** — Spectral entropy for signals and spectrograms
+- [ ] **poctave** — Generate octave spectrum
+- [ ] **modalfit** — Modal parameters from frequency-response functions
+- [ ] **labeledsignalset** — Create labeled signal set
+- [ ] **ellip** — Elliptic filter design
+- [ ] **cpsd** — Cross power spectral density
+- [ ] **cheby2** — Chebyshev Type II filter design
+- [ ] **xspectrogram** — Cross-spectrogram using short-time Fourier transforms
+- [ ] **istft** — Inverse short-time Fourier transform
+- [ ] **freqz** — Frequency response of digital filter
+- [ ] **ctffilt** — Cascaded transfer function filtering
+- [ ] **cheby1** — Chebyshev Type I filter design
+- [ ] **butter** — Butterworth filter design
+- [ ] **vmd** — Variational mode decomposition
+- [ ] **mscohere** — Magnitude-squared coherence
+- [ ] **grpdelay** — Average filter delay (group delay)
+- [ ] **emd** — Empirical mode decomposition
+- [ ] **digitalfilter** — Digital filter
+- [ ] **deepsignalanomalydetector** — Create signal anomaly detector
+- [ ] **modalfrf** — Frequency-response functions for modal analysis
+- [ ] **hht** — Hilbert-Huang transform
+- [ ] **fsst** — Fourier synchrosqueezed transform
+- [ ] **findchangepts** — Find abrupt changes in signal
+- [ ] **timefrequencyscalarfeatureoptions** — Store information for converting time-frequency-domain feature vectors to scalar values
+- [ ] **spectralkurtosis** — Spectral kurtosis for signals and spectrograms
+- [ ] **phasez** — Phase response of digital filter
+- [ ] **phasedelay** — Phase delay of digital filter
+- [ ] **pmusic** — Pseudospectrum using MUSIC algorithm
+- [ ] **instfreq** — Estimate instantaneous frequency
+- [ ] **zp2ctf** — Convert zero-pole-gain filter parameters to cascaded transfer function form
+- [ ] **zerophase** — Zero-phase response of digital filter
+- [ ] **impz** — Impulse response of digital filter
+- [ ] **stepz** — Step response of digital filter
+- [ ] **snr** — Signal-to-noise ratio
+- [ ] **dtw** — Distance between signals using dynamic time warping
+- [ ] **zerocrossrate** — Zero-crossing rate
+- [ ] **instbw** — Estimate instantaneous bandwidth
+- [ ] **impzlength** — Impulse response length
+- [ ] **findsignal** — Find signal location using similarity search
+- [ ] **thd** — Total harmonic distortion
+- [ ] **rpmordermap** — Order-RPM map for order analysis
+- [ ] **peig** — Pseudospectrum using eigenvector method
+- [ ] **firpm** — Parks-McClellan optimal FIR filter design
+- [ ] **cfirpm** — Complex and nonlinear-phase equiripple FIR filter design
+- [ ] **alignsignals** — Align two signals by delaying earliest signal
+- [ ] **xwvd** — Cross Wigner-Ville distribution and cross smoothed pseudo Wigner-Ville distribution
+- [ ] **xcorr2** — 2-D cross-correlation
+- [ ] **tfridge** — Time-frequency ridges
+- [ ] **rainflow** — Rainflow counts for fatigue analysis
+- [ ] **islinphase** — Determine whether filter has linear phase
+- [ ] **filtord** — Filter order
+- [ ] **filteranalyzer** — Analyze filters with Filter Analyzer app
+- [ ] **envspectrum** — Envelope spectrum for machinery diagnosis
+- [ ] **dutycycle** — Duty cycle of pulse waveform
+- [ ] **chirp** — Swept-frequency cosine
+- [ ] **timefrequencyfeaturetransformoptions** — Store time-frequency analysis-method information for feature extraction
+- [ ] **signalmask** — Modify and convert signal masks and extract signal regions of interest
+- [ ] **rpmtrack** — Track and extract RPM profile from vibration signal
+- [ ] **rpmfreqmap** — Frequency-RPM map for order analysis
+- [ ] **risetime** — Rise time of positive-going bilevel waveform transitions
+- [ ] **powerbw** — Power bandwidth
+- [ ] **pburg** — Autoregressive power spectral density estimate — Burg’s method
+- [ ] **ismaxphase** — Determine whether filter is maximum phase
+- [ ] **edr** — Edit distance on real signals
+- [ ] **bilinear** — Bilinear transformation method for analog-to-digital filter conversion
+- [ ] **bandstop** — Bandstop-filter signals
+- [ ] **bandpass** — Bandpass-filter signals
+- [ ] **undershoot** — Undershoot metrics of bilevel waveform transitions
+- [ ] **tsa** — Time-synchronous signal average
+- [ ] **toi** — Third-order intercept point
+- [ ] **slewrate** — Slew rate of bilevel waveform
+- [ ] **sigrangebinmask** — Label signal samples with values within a specified range
+- [ ] **pyulear** — Autoregressive power spectral density estimate — Yule-Walker method
+- [ ] **pulstran** — Pulse train
+- [ ] **pmcov** — Autoregressive power spectral density estimate — modified covariance method
+- [ ] **pcov** — Autoregressive power spectral density estimate — covariance method
+- [ ] **ordertrack** — Track and extract order magnitudes from vibration signal
+- [ ] **obw** — Occupied bandwidth
+- [ ] **medfreq** — Median frequency
+- [ ] **meanfreq** — Mean frequency
+- [ ] **lowpass** — Lowpass-filter signals
+- [ ] **isstable** — Determine whether filter is stable
+- [ ] **isminphase** — Determine whether filter is minimum phase
+- [ ] **hampel** — Outlier removal using Hampel identifier
+- [ ] **firls** — Least-squares linear-phase FIR filter design
+- [ ] **falltime** — Fall time of negative-going bilevel waveform transitions
+- [ ] **ctf2zp** — Convert cascaded transfer functions to zero-pole-gain form
+- [ ] **ss2sos** — Convert digital filter state-space parameters to second-order sections form
+- [ ] **spectralskewness** — Spectral skewness for signals and spectrograms
+- [ ] **spectralflatness** — Spectral flatness for signals and spectrograms
+- [ ] **spectralcrest** — Spectral crest for signals and spectrograms
+- [ ] **sfdr** — Spurious free dynamic range
+- [ ] **settlingtime** — Settling time for bilevel waveform
+- [ ] **pulsewidth** — Bilevel waveform pulse width
+- [ ] **pulsesep** — Separation between bilevel waveform pulses
+- [ ] **overshoot** — Overshoot metrics of bilevel waveform transitions
+- [ ] **midcross** — Mid-reference level crossing for bilevel waveform
+- [ ] **highpass** — Highpass-filter signals
+- [ ] **goertzel** — Discrete-Time Fourier transform with second-order Goertzel algorithm
+- [ ] **bandpower** — Band power
+- [ ] **statelevels** — State-level estimation for bilevel waveform with histogram method
+- [ ] **sinad** — Signal to noise and distortion ratio
+- [ ] **sgolay** — Savitzky-Golay filter design
+- [ ] **rlevinson** — Reverse Levinson-Durbin recursion
+- [ ] **pulseperiod** — Period of bilevel pulse
+- [ ] **iscola** — Determine whether window-overlap combination is COLA compliant
+- [ ] **ifsst** — Inverse Fourier synchrosqueezed transform
+- [ ] **frequencyscalarfeatureoptions** — Store information for converting frequency-domain feature vectors to scalar values
+- [ ] **fircls1** — Constrained-least-squares linear-phase FIR lowpass and highpass filter design
+- [ ] **envelope** — Signal envelope
+- [ ] **tf2sos** — Convert digital filter transfer function data to second-order sections form
+- [ ] **sos2ctf** — Convert digital filter second-order section parameters to cascaded transfer function form
+- [ ] **kaiserord** — Kaiser window FIR filter design estimation parameters
+- [ ] **invfreqs** — Identify continuous-time filter parameters from frequency response data
+- [ ] **fir1** — Window-based FIR filter design
+- [ ] **finddelay** — Estimate delay(s) between signals
+- [ ] **fillgaps** — Fill gaps using autoregressive modeling
+- [ ] **fftfilt** — FFT-based FIR filtering using overlap-add method
+- [ ] **cusum** — Detect small changes in mean using cumulative sum
+- [ ] **zp2sos** — Convert zero-pole-gain filter parameters to second-order sections form
+- [ ] **upfirdn** — Upsample, apply FIR filter, and downsample
+- [ ] **residuez** — Z-transform partial-fraction expansion
+- [ ] **orderwaveform** — Extract time-domain order waveforms from vibration signal
+- [ ] **orderspectrum** — Average spectrum versus order for vibration signal
+- [ ] **fir2** — Frequency sampling-based FIR filter design
+- [ ] **extractsigroi** — Extract signal regions of interest
+- [ ] **cconv** — Modulo-n circular convolution
+- [ ] **besself** — Bessel analog filter design
+- [ ] **timescalarfeatureoptions** — Store information for converting time-domain feature vectors to scalar values
+- [ ] **tf2ss** — Convert transfer function filter parameters to state-space form
+- [ ] **stmcb** — Compute linear model using Steiglitz-McBride iteration
+- [ ] **square** — Square wave
+- [ ] **peak2rms** — Peak-magnitude-to-RMS ratio
+- [ ] **modulate** — Modulation for communications simulation
+- [ ] **medfilt1** — 1-D median filtering
+- [ ] **maxflat** — Generalized digital Butterworth filter design
+- [ ] **lp2bp** — Transform lowpass analog filters to bandpass
+- [ ] **levinson** — Levinson-Durbin recursion
+- [ ] **invfreqz** — Identify discrete-time filter parameters from frequency response data
+- [ ] **idct** — Inverse discrete cosine transform
+- [ ] **freqs** — Frequency response of analog filters
+- [ ] **firpmord** — Parks-McClellan optimal FIR filter order estimation
+- [ ] **dpss** — Discrete prolate spheroidal (Slepian) sequences
+- [ ] **decimate** — Decimation — decrease sample rate by integer factor
+- [ ] **corrmtx** — Data matrix for autocorrelation matrix estimation
+- [ ] **cheb2ord** — Chebyshev Type II filter order
+- [ ] **cheb1ord** — Chebyshev Type I filter order
+- [ ] **aryule** — Autoregressive all-pole model parameters — Yule-Walker method
+- [ ] **tachorpm** — Extract RPM signal from tachometer pulses
+- [ ] **sgolayfilt** — Savitzky-Golay filtering
+- [ ] **seqperiod** — Compute period of sequence
+- [ ] **rssq** — Root-sum-of-squares level
+- [ ] **rcosdesign** — Raised cosine FIR pulse-shaping filter design
+- [ ] **peak2peak** — Maximum-to-minimum difference
+- [ ] **modalsd** — Generate stabilization diagram for modal analysis
+- [ ] **lpc** — Linear prediction filter coefficients
+- [ ] **lp2bs** — Transform lowpass analog filters to bandstop
+- [ ] **hilbert** — Discrete-time analytic signal using Hilbert transform
+- [ ] **gausswin** — Gaussian window
+- [ ] **enbw** — Equivalent noise bandwidth
+- [ ] **ellipord** — Minimum order for elliptic filters
+- [ ] **demod** — Demodulation for communications simulation
+- [ ] **buttord** — Butterworth filter order and cutoff frequency
+- [ ] **zp2ss** — Convert zero-pole-gain filter parameters to state-space form
+- [ ] **uencode** — Quantize and encode floating-point inputs to integer outputs
+- [ ] **udecode** — Decode 2n-level quantized integer inputs to floating-point outputs
+- [ ] **tf2zp** — Convert transfer function filter parameters to zero-pole-gain form
+- [ ] **taylorwin** — Taylor window
+- [ ] **ss2zp** — Convert state-space filter parameters to zero-pole-gain form
+- [ ] **sosfilt** — Second-order (biquadratic) IIR digital filtering
+- [ ] **sos2ss** — Convert digital filter second-order section parameters to state-space form
+- [ ] **shiftdata** — Shift data to operate on specified dimension
+- [ ] **scalefiltersections** — Scale cascaded transfer functions with scale values
+- [ ] **rootmusic** — Root MUSIC algorithm
+- [ ] **rooteig** — Frequency and power content using eigenvector method
+- [ ] **lp2lp** — Change cutoff frequency for lowpass analog filter
+- [ ] **latcfilt** — Lattice and lattice-ladder filter implementation
+- [ ] **kaiser** — Kaiser window
+- [ ] **intfilt** — Interpolation FIR filter design
+
+## symbolic (197)
+
+- [ ] **sym.solve** — Equations and systems solver
+- [ ] **sym.qr** — QR decomposition of symbolic matrix
+- [ ] **sym.subs** — Symbolic substitution
+- [ ] **sym.syms** — Create symbolic scalar variables and functions, and matrix variables and functions
+- [ ] **sym.functionalderivative** — Functional derivative (variational derivative)
+- [ ] **sym** — Create symbolic variables, expressions, functions, matrices
+- [ ] **sym.pdecoefficientstodouble** — Convert symbolic PDE coefficients to double format
+- [ ] **sym.rewrite** — Rewrite expression in terms of another function
+- [ ] **sym.piecewise** — Conditionally defined expression or function
+- [ ] **sym.fourier** — Fourier transform of symbolic expression or function
+- [ ] **sym.diff** — Differentiate symbolic expression or function
+- [ ] **sym.pdecoefficients** — Extract coefficients of partial differential equation
+- [ ] **sym.taylor** — Taylor series
+- [ ] **sym.int** — Definite and indefinite integrals
+- [ ] **sym.solverecurrence** — Solve recurrence relations
+- [ ] **sym.simplify** — Algebraic simplification
+- [ ] **sym.sort** — Sort elements of symbolic arrays
+- [ ] **sym.norm** — Norm of symbolic vector or matrix
+- [ ] **sym.min** — Minimum elements of symbolic input
+- [ ] **sym.curl** — Curl of symbolic vector field
+- [ ] **sym.max** — Maximum elements of symbolic input
+- [ ] **sym.finddecoupledblocks** — Search for decoupled blocks in systems of equations
+- [ ] **sym.eig** — Eigenvalues and eigenvectors of symbolic matrix
+- [ ] **sym.divergence** — Divergence of symbolic vector field
+- [ ] **sym.meijerg** — Meijer G-function
+- [ ] **sym.mapsymtype** — Apply function to symbolic subobjects of specific type
+- [ ] **sym.unitconvert** — Convert units to other units of measurement
+- [ ] **sym.reduceredundancies** — Simplify system of first-order differential algebraic equations by eliminating redundant equations a
+- [ ] **sym.inv** — Inverse of symbolic matrix
+- [ ] **sym.gradient** — Gradient vector of symbolic scalar field
+- [ ] **sym.cumsum** — Symbolic cumulative sum
+- [ ] **sym.displayformula** — Display symbolic formula from string
+- [ ] **symmatrix2sym** — Convert symbolic matrix variable to array of scalar variables
+- [ ] **sym.symsum** — Symbolic sum of series
+- [ ] **sym.root** — Represent roots of polynomial
+- [ ] **sym.jacobian** — Jacobian matrix of symbolic function
+- [ ] **sym.changeintegrationvariable** — Integration by substitution
+- [ ] **sym.odetovectorfield** — Reduce order of differential equations to first-order
+- [ ] **sym.gcd** — Greatest common divisor of symbolic numbers and polynomials
+- [ ] **sym.subexpr** — Rewrite symbolic expression in terms of common subexpressions
+- [ ] **sym.double** — Convert symbolic values to MATLAB double precision
+- [ ] **sym.det** — Determinant of symbolic matrix
+- [ ] **sym.ilaplace** — Inverse Laplace transform
+- [ ] **sym.jacobisymbol** — Jacobi symbol
+- [ ] **sym.integratebyparts** — Integration by parts
+- [ ] **sym.ztrans** — Z-transform
+- [ ] **sym.symtrue** — Symbolic logical constant true
+- [ ] **sym.symfalse** — Symbolic logical constant false
+- [ ] **sym.laplace** — Laplace transform
+- [ ] **sym.harmonic** — Harmonic function (harmonic number)
+- [ ] **sym.ellipj** — Jacobi elliptic functions
+- [ ] **sym.besselh** — Bessel function of third kind (Hankel function) for symbolic expressions
+- [ ] **sym.sinc** — Normalized sinc function
+- [ ] **sym.linsolve** — Solve symbolic linear equations in matrix form
+- [ ] **sym.assumptions** — Show assumptions affecting symbolic variable, expression, or function
+- [ ] **sym.latex** — LaTeX form of symbolic expression
+- [ ] **sym.jacobip** — Jacobi polynomials
+- [ ] **sym.hurwitzzeta** — Hurwitz zeta function
+- [ ] **sym.findsymtype** — Find symbolic subobjects of specific type
+- [ ] **sym.digits** — Change variable precision used
+- [ ] **sym.combine** — Combine terms of identical algebraic structure
+- [ ] **sym.poly2sym** — Create symbolic polynomial from vector of coefficients
+- [ ] **sym.ihtrans** — Inverse Hilbert transform
+- [ ] **sym.atan** — Symbolic inverse tangent
+- [ ] **sym.mod** — Symbolic modulus after division
+- [ ] **sym.heaviside** — Heaviside step function
+- [ ] **sym.symunit** — Units of measurement
+- [ ] **sym.release** — Evaluate integrals
+- [ ] **sym.rectangularpulse** — Rectangular pulse function
+- [ ] **sym.logical** — Determine if symbolic equation, inequality, or condition is true
+- [ ] **sym.lcm** — Least common multiple of symbolic numbers and polynomials
+- [ ] **sym.cell2sym** — Convert cell array to symbolic array
+- [ ] **sym.nthroot** — Nth root of symbolic numbers
+- [ ] **sym.limit** — Limit of symbolic expression
+- [ ] **sym.gegenbauerc** — Gegenbauer polynomials
+- [ ] **sym.dirac** — Dirac delta function
+- [ ] **sym.decic** — Find consistent initial conditions for first-order implicit ODE system with algebraic constraints
+- [ ] **symfunmatrix2symfun** — Convert symbolic matrix function to symbolic function
+- [ ] **symfunmatrix** — Create symbolic matrix function
+- [ ] **sym.rhs** — Right side (RHS) of equation
+- [ ] **sym.pade** — Pade approximant
+- [ ] **sym.matlabfunctionblock** — Convert symbolic expression to MATLAB function block
+- [ ] **sym.isalways** — Determine if symbolic conditions are true for all values of variables
+- [ ] **sym.igamma** — Incomplete gamma function
+- [ ] **sym.chebyshevt** — Chebyshev polynomials of the first kind
+- [ ] **sym.toeplitz** — Symbolic Toeplitz matrix
+- [ ] **sym.vpaintegral** — Numerical integration using variable precision
+- [ ] **sym.series** — Puiseux series
+- [ ] **sym.isequal** — Determine if symbolic inputs are equal
+- [ ] **sym.eliminate** — Eliminate variables from rational equations
+- [ ] **sym.chebyshevu** — Chebyshev polynomials of the second kind
+- [ ] **sym.bernstein** — Bernstein polynomials
+- [ ] **sym.symprod** — Product of series
+- [ ] **sym.partfrac** — Partial fraction decomposition
+- [ ] **sym.hessian** — Hessian matrix of symbolic scalar function
+- [ ] **sym.fold** — Combine (fold) vector elements using function
+- [ ] **sym.fibonacci** — Fibonacci numbers
+- [ ] **sym.eq** — Define symbolic equation
+- [ ] **sym.daefunction** — Convert system of differential algebraic equations to MATLAB function handle suitable for ode15i
+- [ ] **sym.checkunits** — Check for compatible dimensions and consistent units
+- [ ] **sym.bessely** — Bessel function of the second kind for symbolic expressions
+- [ ] **sym.besselk** — Modified Bessel function of the second kind for symbolic expressions
+- [ ] **sym.airy** — Airy function
+- [ ] **sym.zeta** — Riemann zeta function
+- [ ] **sym.polylog** — Polylogarithm
+- [ ] **sym.pochhammer** — Pochhammer symbol
+- [ ] **sym.lambertw** — Lambert W function
+- [ ] **sym.frac** — Find fractional part
+- [ ] **sym.chol** — Cholesky factorization
+- [ ] **sym.besseli** — Modified Bessel function of the first kind for symbolic expressions
+- [ ] **sym.bernsteinmatrix** — Bernstein matrix
+- [ ] **sym.argnames** — Input variables of symbolic function or matrix function
+- [ ] **sym.kummeru** — Confluent hypergeometric Kummer U function
+- [ ] **sym.ifourier** — Inverse Fourier transform
+- [ ] **sym.besselj** — Bessel function of the first kind for symbolic expressions
+- [ ] **sym.whittakerw** — Whittaker W function
+- [ ] **sym.whittakerm** — Whittaker M function
+- [ ] **sym.sym2cell** — Convert symbolic array to cell array
+- [ ] **sym.separateunits** — Separate units from expression
+- [ ] **sym.polynomialreduce** — Reduce polynomials by division
+- [ ] **sym.jacobizeta** — Jacobi zeta function
+- [ ] **sym.hermiteh** — Hermite polynomials
+- [ ] **sym.erfc** — Complementary error function
+- [ ] **sym.ellipticpi** — Complete and incomplete elliptic integrals of the third kind
+- [ ] **sym.ellipke** — Complete elliptic integrals of the first and second kinds
+- [ ] **sym.triangularpulse** — Triangular pulse function
+- [ ] **sym.symwritessc** — Create new Simscape component
+- [ ] **sym.str2sym** — Evaluate string representing symbolic expression
+- [ ] **sym.psi** — Digamma function
+- [ ] **sym.potential** — Potential of vector field
+- [ ] **sym.nchoosek** — Binomial coefficient
+- [ ] **sym.jacobidn** — Jacobi DN elliptic function
+- [ ] **sym.iztrans** — Inverse Z-transform
+- [ ] **sym.formula** — Return body of symbolic function or matrix function
+- [ ] **sym.factor** — Factorization
+- [ ] **sym.ellipticnome** — Elliptic nome function
+- [ ] **sym.elliptice** — Complete and incomplete elliptic integrals of the second kind
+- [ ] **sym.dec2hex** — Convert symbolic integer in decimal to hexadecimal representation
+- [ ] **sym.dec2bin** — Convert symbolic integer in decimal to binary representation
+- [ ] **sym.cot** — Symbolic cotangent function
+- [ ] **sym.tan** — Symbolic tangent function
+- [ ] **sym.smithform** — Smith form of matrix
+- [ ] **sym.sin** — Symbolic sine function
+- [ ] **sym.jordan** — Jordan normal form (Jordan canonical form)
+- [ ] **sym.jacobisn** — Jacobi SN elliptic function
+- [ ] **sym.jacobins** — Jacobi NS elliptic function
+- [ ] **sym.jacobind** — Jacobi ND elliptic function
+- [ ] **sym.jacobinc** — Jacobi NC elliptic function
+- [ ] **sym.jacobidc** — Jacobi DC elliptic function
+- [ ] **sym.jacobicn** — Jacobi CN elliptic function
+- [ ] **sym.jacobicd** — Jacobi CD elliptic function
+- [ ] **sym.jacobiam** — Jacobi amplitude function
+- [ ] **sym.has** — Check if expression contains particular subexpression
+- [ ] **sym.findunits** — Find units in input
+- [ ] **sym.expint** — Exponential integral function
+- [ ] **sym.euler** — Euler numbers and polynomials
+- [ ] **sym.ellipticcpi** — Complementary complete elliptic integral of the third kind
+- [ ] **sym.csc** — Symbolic cosecant function
+- [ ] **sym.coshint** — Hyperbolic cosine integral function
+- [ ] **sym.beta** — Beta function
+- [ ] **sym.signim** — Sign of the imaginary part of complex number
+- [ ] **sym.sign** — Sign of real or complex value
+- [ ] **sym.rsums** — Interactive evaluation of Riemann sums
+- [ ] **sym.reshape** — Reshape symbolic array
+- [ ] **sym.quorem** — Quotient and remainder
+- [ ] **sym.poles** — Poles of expression or function
+- [ ] **sym.newunitsystem** — Define unit system
+- [ ] **sym.mtimes** — Symbolic matrix multiplication
+- [ ] **sym.mrdivide** — Symbolic matrix right division
+- [ ] **sym.mathml** — Generate MathML from symbolic expression
+- [ ] **sym.fresnelc** — Fresnel cosine integral function
+- [ ] **sym.erfinv** — Inverse error function
+- [ ] **sym.erfi** — Imaginary error function
+- [ ] **sym.elliptick** — Complete elliptic integral of the first kind
+- [ ] **sym.ellipticf** — Incomplete elliptic integral of the first kind
+- [ ] **sym.ellipticck** — Complementary complete elliptic integral of the first kind
+- [ ] **sym.dilog** — Dilogarithm function
+- [ ] **sym.dawson** — Dawson integral
+- [ ] **sym.cosint** — Cosine integral function
+- [ ] **sym.coeffs** — Coefficients of polynomial
+- [ ] **sym.abs** — Symbolic absolute value (complex modulus or magnitude)
+- [ ] **sym.wrightomega** — Wright omega function
+- [ ] **sym.vectorpotential** — Vector potential of vector field
+- [ ] **sym.unitinfo** — Information on units of measurement
+- [ ] **sym.transpose** — Symbolic matrix transpose
+- [ ] **sym.times** — Symbolic array multiplication
+- [ ] **sym.symvar** — Find symbolic variables in symbolic input
+- [ ] **sym.ssinint** — Shifted sine integral function
+- [ ] **sym.sinint** — Sine integral function
+- [ ] **sym.sinhint** — Hyperbolic sine integral function
+- [ ] **sym.simplifyfraction** — Simplify symbolic rational expressions
+- [ ] **sym.resultant** — Resultant of two polynomials
+- [ ] **sym.rdivide** — Symbolic array right division
+- [ ] **sym.plus** — Symbolic addition
+- [ ] **sym.orth** — Orthonormal basis for range of symbolic matrix
+- [ ] **sym.or** — Logical OR for symbolic expressions
+- [ ] **sym.logint** — Logarithmic integral function
+
+## finance (100)
+
+- [ ] **transprob** — Estimate transition probabilities from credit ratings data
+- [ ] **cfamounts** — Cash flow and time mapping for bond portfolio
+- [ ] **bates** — Bates stochastic volatility model
+- [ ] **bonddefaultbootstrap** — Bootstrap default probability curve from bond prices
+- [ ] **merton** — Merton jump diffusion model
+- [ ] **heston** — Heston model
+- [ ] **gbm** — Geometric Brownian motion (GBM) model
+- [ ] **covariancedenoising** — Estimate covariance matrix using denoising
+- [ ] **sdemrd** — SDE with Mean-Reverting Drift (SDEMRD) model
+- [ ] **creditexposures** — Compute credit exposures from contract values
+- [ ] **rvm** — Rough volatility model (RVM)
+- [ ] **cir** — Cox-Ingersoll-Ross (CIR) mean-reverting square root diffusion model
+- [ ] **sdeld** — SDE with Linear Drift (SDELD) model
+- [ ] **roughheston** — Rough Heston model
+- [ ] **hwv** — Hull-White/Vasicek (HWV) Gaussian Diffusion model
+- [ ] **bndprice** — Price fixed-income security from yield to maturity
+- [ ] **cev** — Constant Elasticity of Variance (CEV) model
+- [ ] **cdsprice** — Determine price for credit default swap
+- [ ] **sde** — Stochastic Differential Equation (SDE) model
+- [ ] **roughbergomi** — Rough Bergomi model
+- [ ] **bndyield** — Yield to maturity for fixed-income security
+- [ ] **sdeddo** — Stochastic Differential Equation (SDEDDO) model from Drift and Diffusion components
+- [ ] **portsim** — Monte Carlo simulation of correlated asset returns
+- [ ] **lifetablegen** — Generate life table series from calibrated mortality model
+- [ ] **lifetablefit** — Calibrate life table from survival data with parametric models
+- [ ] **cdsspread** — Determine spread of credit default swap
+- [ ] **bndtotalreturn** — Total return of fixed-coupon bond
+- [ ] **bndspread** — Static spread over spot curve
+- [ ] **bm** — Brownian motion (BM) models
+- [ ] **ts2func** — Convert time series arrays to functions of time and state
+- [ ] **pyld2zero** — Zero curve given par yield curve
+- [ ] **covarianceshrinkage** — Estimate covariance matrix using shrinkage estimators
+- [ ] **bndkrdur** — Bond key rate duration given zero curve
+- [ ] **ecmmvnrmle** — Multivariate normal regression with missing data
+- [ ] **cdsbootstrap** — Bootstrap default probability curve from credit default swap market quotes
+- [ ] **rollingreturns** — Period-over-period rolling returns or differences from prices
+- [ ] **lifetableconv** — Convert life table series into life tables with forced termination
+- [ ] **bnddury** — Bond duration given yield
+- [ ] **bnddurp** — Bond duration given price
+- [ ] **bndconvy** — Bond convexity given yield
+- [ ] **bndconvp** — Bond convexity given price
+- [ ] **zero2pyld** — Par yield curve given zero curve
+- [ ] **riskbudgetingportfolio** — Compute risk budgeting portfolios
+- [ ] **portfolioriskcontribution** — Compute individual asset risk contribution to overall portfolio volatility
+- [ ] **floatmargin** — Margin measures for floating-rate bond
+- [ ] **floatdiscmargin** — Discount margin for floating-rate bond
+- [ ] **cdsrpv01** — Compute risky present value of a basis point for credit default swap
+- [ ] **yearfrac** — Fraction of year between dates
+- [ ] **cpndatenq** — Next quasi-coupon date for fixed-income security
+- [ ] **cftimes** — Time factors corresponding to bond cash flow dates
+- [ ] **zbtyield** — Zero curve bootstrapping from coupon bond data given yield
+- [ ] **prbyzero** — Price bonds in portfolio by set of zero curves
+- [ ] **mvnrmle** — Multivariate normal regression (ignore missing data)
+- [ ] **movavg** — Moving average of a financial time series
+- [ ] **ecmnmle** — Mean and covariance of incomplete multivariate normal data
+- [ ] **ecmlsrmle** — Least-squares regression with missing data
+- [ ] **cpndatepq** — Previous quasi-coupon date for fixed-income security
+- [ ] **cfdatesq** — Quasi-coupon dates for fixed-income security
+- [ ] **cfdates** — Cash flow dates for fixed-income security
+- [ ] **zero2fwd** — Forward curve given zero curve
+- [ ] **ret2tick** — Convert return series to price series
+- [ ] **maxdrawdown** — Compute maximum drawdown for one or more price series
+- [ ] **geom2arith** — Geometric to arithmetic moments of asset returns
+- [ ] **fwd2zero** — Zero curve given forward curve
+- [ ] **fbusdate** — First business date of month
+- [ ] **ecmnstd** — Standard errors for mean and covariance of incomplete data
+- [ ] **ecmmvnrstd** — Evaluate standard errors for multivariate normal regression model
+- [ ] **diffusion** — Diffusion-rate model component
+- [ ] **cpndatep** — Previous coupon date for fixed-income security
+- [ ] **cpndaten** — Next coupon date for fixed-income security
+- [ ] **cfport** — Portfolio form of cash flow amounts
+- [ ] **blsimpv** — Black-Scholes implied volatility
+- [ ] **arith2geom** — Arithmetic to geometric moments of asset returns
+- [ ] **transprobprep** — Preprocess credit ratings data to estimate transition probabilities
+- [ ] **transprobbytotals** — Estimate transition probabilities using totals structure input
+- [ ] **portalpha** — Compute risk-adjusted alphas and returns for one or more assets
+- [ ] **elpm** — Compute expected lower partial moments for normal asset returns
+- [ ] **drift** — Drift-rate model component
+- [ ] **disc2zero** — Zero curve given discount curve
+- [ ] **cpnpersz** — Number of days in coupon period
+- [ ] **cpndaysp** — Number of days since previous coupon date
+- [ ] **cpndaysn** — Number of days to next coupon date
+- [ ] **cpncount** — Coupon payments remaining until maturity
+- [ ] **blsprice** — Black-Scholes put and call option pricing
+- [ ] **zero2disc** — Discount curve given zero curve
+- [ ] **zbtprice** — Zero curve bootstrapping from coupon bond data given price
+- [ ] **transprobgrouptotals** — Aggregate credit ratings information into fewer rating categories
+- [ ] **tr2bonds** — Term-structure parameters given Treasury bond parameters
+- [ ] **tick2ret** — Convert price series to return series
+- [ ] **prmat** — Price with interest at maturity
+- [ ] **portvrisk** — Portfolio value at risk (VaR)
+- [ ] **ewstats** — Expected return and covariance from return time series
+- [ ] **ecmnhess** — Hessian of negative log-likelihood function
+- [ ] **ecmnfish** — Fisher information matrix
+- [ ] **cfspread** — Compute spread over yield curve for cash flow
+- [ ] **cdprice** — Price of certificate of deposit
+- [ ] **blkimpv** — Implied volatility for futures options from Black model
+- [ ] **adjustedclosingprices** — Adjust closing stock prices for splits and cash dividends
+- [ ] **accrfrac** — Fraction of coupon period before settlement
+- [ ] **abs2active** — Convert constraints from absolute to active format
+
+## images (197)
+
+- [ ] **cyclegangenerator** — Create CycleGAN generator network for image-to-image translation
+- [ ] **imfilter** — N-D filtering of multidimensional images
+- [ ] **addpix2pixhdlocalenhancer** — Add local enhancer network to pix2pixHD generator network
+- [ ] **padarray** — Pad array
+- [ ] **imgaussfilt** — 2-D Gaussian filtering of images
+- [ ] **imgaussfilt3** — 3-D Gaussian filtering of 3-D images
+- [ ] **blockedimage** — Big or multiresolution image made from discrete blocks
+- [ ] **modefilt** — 2-D and 3-D mode filtering
+- [ ] **drawrectangle** — Create customizable rectangular ROI
+- [ ] **drawellipse** — Create customizable elliptical ROI
+- [ ] **imshow** — Display image
+- [ ] **drawcuboid** — Create customizable cuboidal ROI
+- [ ] **drawpolygon** — Create customizable polygonal ROI
+- [ ] **drawfreehand** — Create customizable freehand ROI
+- [ ] **drawcircle** — Create customizable circular ROI
+- [ ] **volshow** — Display volume
+- [ ] **drawpolyline** — Create customizable polyline ROI
+- [ ] **drawline** — Create customizable linear ROI
+- [ ] **spectralmatch** — Identify unknown regions or materials using spectral library
+- [ ] **medfilt3** — 3-D median filtering
+- [ ] **imageshow** — Display image in 2-D viewer
+- [ ] **drawpoint** — Create customizable point ROI
+- [ ] **opticalmaterial** — Create optical material
+- [ ] **drawcrosshair** — Create customizable crosshair ROI
+- [ ] **regionprops** — Measure properties of image regions
+- [ ] **montage** — Display multiple images as rectangular montage
+- [ ] **imsegsam** — Perform automatic full image segmentation using Segment Anything Model 2 (SAM 2)
+- [ ] **ssim** — Structural similarity (SSIM) index for measuring image quality
+- [ ] **simtform3d** — 3-D similarity geometric transformation
+- [ ] **bwferet** — Measure Feret properties
+- [ ] **orthosliceviewer** — Browse orthogonal slices in grayscale or RGB volume
+- [ ] **multissim** — Multiscale structural similarity (MS-SSIM) index for image quality
+- [ ] **affineoutputview** — Create output view for warping images
+- [ ] **rigidtform3d** — 3-D rigid geometric transformation
+- [ ] **imwarp** — Apply geometric transformation to image
+- [ ] **imhistmatch** — Adjust histogram of 2-D image to match histogram of reference image
+- [ ] **imcrop** — Crop image
+- [ ] **viewer3d** — Create viewer for 3-D image display
+- [ ] **lazysnapping** — Segment image into foreground and background using graph-based segmentation
+- [ ] **imdilate** — Dilate image
+- [ ] **fspecial** — Create predefined 2-D filter
+- [ ] **simtform2d** — 2-D similarity geometric transformation
+- [ ] **selectblocklocations** — Select blocks from blocked images
+- [ ] **jmsam** — Measure spectral similarity using Jeffries Matusita-Spectral Angle Mapper method
+- [ ] **imsegkmeans** — K-means clustering based image segmentation
+- [ ] **viewer2d** — Create viewer for 2-D image display
+- [ ] **transltform3d** — 3-D translation geometric transformation
+- [ ] **sidsam** — Measure spectral similarity using spectral information divergence-spectral angle mapper hybrid metho
+- [ ] **obliqueslice** — Extract oblique slice from 3-D volumetric data
+- [ ] **immulticube** — Read multispectral image
+- [ ] **imcolordiff** — Color difference based on CIE94 or CIE2000 standard
+- [ ] **blockproc** — Distinct block processing for image
+- [ ] **samplinggrid** — Create ray sampling grid for entrance surface of optical system
+- [ ] **rigidtform2d** — 2-D rigid geometric transformation
+- [ ] **opticalsystem** — Model components of optical system
+- [ ] **ns3** — Measure normalized spectral similarity score
+- [ ] **multithresh** — Multilevel image thresholds using Otsu’s method
+- [ ] **activecontour** — Segment image into foreground and background using active contours (snakes) region growing technique
+- [ ] **strel** — Morphological structuring element
+- [ ] **makehdr** — Create high dynamic range image
+- [ ] **imref2d** — Reference 2-D image to world coordinates
+- [ ] **imhypercube** — Read hyperspectral image
+- [ ] **imclearborder** — Suppress light structures connected to image border
+- [ ] **watershed** — Watershed transform
+- [ ] **transltform2d** — 2-D translation geometric transformation
+- [ ] **sliceviewer** — Browse image slices
+- [ ] **psnr** — Peak signal-to-noise ratio (PSNR)
+- [ ] **opticalcoating** — Create optical coating for optical system surfaces
+- [ ] **imtranslate** — Translate image
+- [ ] **imsegisodata** — ISODATA clustering based image segmentation
+- [ ] **imresize3** — Resize 3-D volumetric image
+- [ ] **imquantize** — Quantize image using specified quantization levels and output values
+- [ ] **imfindcircles** — Find circles using circular Hough transform
+- [ ] **imblend** — Blend two images
+- [ ] **imbinarize** — Binarize 2-D grayscale image or 3-D volume by thresholding
+- [ ] **ifanbeam** — Inverse fan-beam transform
+- [ ] **histeq** — Enhance contrast using histogram equalization
+- [ ] **graycomatrix** — Create gray-level co-occurrence matrix from image
+- [ ] **grabcut** — Segment image into foreground and background using iterative graph-based segmentation
+- [ ] **fwind1** — 2-D FIR filter using 1-D window method
+- [ ] **bwmorph** — Morphological operations on binary images
+- [ ] **bwdist** — Distance transform of binary image
+- [ ] **affinetform3d** — 3-D affine geometric transformation
+- [ ] **tformarray** — Apply spatial transformation to N-D array
+- [ ] **sam** — Measure spectral similarity using spectral angle mapper
+- [ ] **resamplesignature** — Resample spectral signature to required wavelengths
+- [ ] **regionprops3** — Measure properties of 3-D volumetric image regions
+- [ ] **maketform** — Create N-D spatial transformation structure (TFORM)
+- [ ] **makecform** — Create color transformation structure
+- [ ] **labeloverlay** — Overlay label matrix regions on 2-D image
+- [ ] **integralimage** — Calculate 2-D integral image
+- [ ] **imlincomb** — Linear combination of images
+- [ ] **imfuse** — Composite of two images
+- [ ] **imdiffusefilt** — Anisotropic diffusion filtering of images
+- [ ] **idct2** — 2-D inverse discrete cosine transform
+- [ ] **dct2** — 2-D discrete cosine transform
+- [ ] **sid** — Measure spectral similarity using spectral information divergence
+- [ ] **iradon** — Inverse Radon transform
+- [ ] **inpaintcoherent** — Restore specific image regions using coherence transport based image inpainting
+- [ ] **imregcorr** — Estimate geometric transformation that aligns two 2-D images using cross correlation
+- [ ] **imref3d** — Reference 3-D image to world coordinates
+- [ ] **imreducehaze** — Reduce atmospheric haze
+- [ ] **imnlmfilt** — Non-local means filtering of image
+- [ ] **imfill** — Fill image regions and holes
+- [ ] **imbilatfilt** — Bilateral filtering of images with Gaussian kernels
+- [ ] **encoderdecodernetwork** — Create encoder-decoder network
+- [ ] **edge** — Find edges in 2-D grayscale image
+- [ ] **cpselect** — Control Point Selection tool
+- [ ] **affinetform2d** — 2-D affine geometric transformation
+- [ ] **adaptthresh** — Adaptive image threshold using local first-order statistics
+- [ ] **viscircles** — Create circle
+- [ ] **superpixels3** — 3-D superpixel oversegmentation of 3-D image
+- [ ] **spectralindices** — Compute spectral indices
+- [ ] **sharpencnmf** — Sharpen hyperspectral data using coupled nonnegative matrix factorization (CNMF) method
+- [ ] **roipoly** — Specify polygonal region of interest (ROI)
+- [ ] **ndvi** — Normalized difference vegetation index
+- [ ] **inpaintexemplar** — Restore specific image regions using exemplar-based image inpainting
+- [ ] **imregtform** — Estimate geometric transformation that aligns two 2-D or 3-D images
+- [ ] **imregister** — Intensity-based image registration
+- [ ] **hough** — Hough transform
+- [ ] **fippi** — Extract endmember signatures using fast iterative pixel purity index
+- [ ] **fanbeam** — Fan-beam transform
+- [ ] **dicomreadvolume** — Create 4-D volume from set of DICOM images
+- [ ] **deconvlucy** — Deblur image using Lucy-Richardson method
+- [ ] **bfscore** — Contour matching score for image segmentation
+- [ ] **wiener2** — 2-D adaptive noise-removal filtering
+- [ ] **rgb2lab** — Convert RGB to CIE 1976 L*a*b*
+- [ ] **randomaffine3d** — Create randomized 3-D affine transformation
+- [ ] **normxcorr2** — Normalized 2-D cross-correlation
+- [ ] **label2rgb** — Convert label matrix into RGB image
+- [ ] **jaccard** — Jaccard similarity coefficient for image segmentation
+- [ ] **integralboxfilter** — 2-D box filtering of integral images
+- [ ] **imshowpair** — Compare differences between images
+- [ ] **imsegfmm** — Binary image segmentation using fast marching method
+- [ ] **imreconstruct** — Morphological reconstruction
+- [ ] **imcrop3** — Crop 3-D image
+- [ ] **grayslice** — Convert grayscale image to indexed image using multilevel thresholding
+- [ ] **fwind2** — 2-D FIR filter using 2-D window method
+- [ ] **fspecial3** — Create predefined 3-D filter
+- [ ] **fitgeotform2d** — Fit 2-D geometric transformation to control point pairs
+- [ ] **deltae** — Color difference based on CIE76 standard
+- [ ] **colorcloud** — Display 3-D color gamut as point cloud in specified color space
+- [ ] **bwconncomp** — Find and count connected components in binary image
+- [ ] **adapthisteq** — Contrast-limited adaptive histogram equalization (CLAHE)
+- [ ] **xyz2rgb** — Convert CIE 1931 XYZ to RGB
+- [ ] **removecontinuum** — Normalize spectral signature
+- [ ] **ppi** — Extract endmember signatures using pixel purity index
+- [ ] **makeresampler** — Create resampling structure
+- [ ] **lin2rgb** — Apply gamma correction to linear RGB values
+- [ ] **lab2rgb** — Convert CIE 1976 L*a*b* to RGB
+- [ ] **imregdemons** — Estimate displacement field that aligns two 2-D or 3-D images
+- [ ] **imoverlay** — Burn binary mask into 2-D image
+- [ ] **imhmin** — Suppress regional minima in image using H-minima transform
+- [ ] **imgaborfilt** — Apply Gabor filter or filter bank to 2-D image
+- [ ] **hyperpca** — Principal component analysis of hyperspectral data
+- [ ] **graydist** — Gray-weighted distance transform of grayscale image
+- [ ] **graycoprops** — Properties of gray-level co-occurrence matrix (GLCM)
+- [ ] **ftrans2** — 2-D FIR filter using frequency transformation
+- [ ] **fieldpoint** — Create field point representation of light source
+- [ ] **dicomupdate** — Update value of target attribute in DICOM metadata
+- [ ] **denoisengmeet** — Denoise hyperspectral images using non-local meets global approach
+- [ ] **chromadapt** — Adjust color balance of RGB image with chromatic adaptation
+- [ ] **cc2bw** — Convert connected components to binary image
+- [ ] **bwulterode** — Ultimate erosion
+- [ ] **warp** — Display image as texture-mapped surface
+- [ ] **smilemetric** — Compute spectral smile metrics of hyperspectral data
+- [ ] **rgb2xyz** — Convert RGB to CIE 1931 XYZ
+- [ ] **regionfill** — Fill specified regions in image using inward interpolation
+- [ ] **rangefilt** — Local range of image
+- [ ] **randomwindow2d** — Randomly select rectangular region in image
+- [ ] **projtform2d** — 2-D projective geometric transformation
+- [ ] **pretrainedencodernetwork** — Create encoder network from pretrained network
+- [ ] **piqe** — Perception based Image Quality Evaluator (PIQE) no-reference image quality score
+- [ ] **imrotate3** — Rotate 3-D volumetric grayscale image
+- [ ] **impixel** — Pixel color values
+- [ ] **imkeepborder** — Retain light structures connected to image border
+- [ ] **imhmax** — Suppress regional maxima in image using H-maxima transform
+- [ ] **imhist** — Histogram of image data
+- [ ] **imgradientxy** — Find directional gradients of 2-D image
+- [ ] **imgradient3** — Find gradient magnitude and direction of 3-D image
+- [ ] **imboxfilt** — 2-D box filtering of images
+- [ ] **estimateabundancels** — Estimate abundance maps
+- [ ] **dicomread** — Read DICOM image
+- [ ] **detecttarget** — Detect target in hyperspectral and multispectral image
+- [ ] **demosaic** — Convert Bayer image to truecolor image
+- [ ] **decorrstretch** — Apply decorrelation stretch to multichannel image
+- [ ] **bwdistgeodesic** — Geodesic distance transform of binary image
+- [ ] **blockednetwork** — Create network with repeating block structure
+- [ ] **xyz2rgbwide** — Convert CIE 1931 XYZ color values to wide-gamut RGB color values
+- [ ] **unitpredict** — Perform inference using unsupervised image-to-image translation (UNIT) network
+- [ ] **superpixels** — 2-D superpixel oversegmentation of images
+- [ ] **spacetodepth** — Rearrange spatial blocks of dlarray data along depth dimension
+- [ ] **segmentanythingmodel** — Pretrained Segment Anything Model 2 (SAM 2) for image segmentation
+- [ ] **rgbwide2xyz** — Convert wide-gamut RGB color values to CIE 1931 XYZ color values
+- [ ] **radiance2reflectance** — Convert radiance to reflectance
+- [ ] **poly2mask** — Convert region of interest (ROI) polygon to region mask
+- [ ] **imsharpen** — Sharpen image using unsharp masking
+
+## control (34)
+
+- [ ] **zpk** — Zero-pole-gain model
+- [ ] **mechss** — Sparse second-order state-space model
+- [ ] **pidstd2** — 2-DOF PID controller in standard form
+- [ ] **sparss** — Sparse first-order state-space model
+- [ ] **pidstd** — PID controller in standard form
+- [ ] **tunablesurface** — Create tunable gain surface for gain scheduling
+- [ ] **frd** — Frequency-response data model
+- [ ] **icare** — Implicit solver for continuous-time algebraic Riccati equations
+- [ ] **genss** — Generalized state-space model
+- [ ] **idare** — Implicit solver for discrete-time algebraic Riccati equations
+- [ ] **genfrd** — Generalized frequency response data (FRD) model
+- [ ] **ss** — State-space model
+- [ ] **lyapchol** — Square-root solver for continuous-time Lyapunov equation
+- [ ] **sparsemodaltruncation** — Sparse modal truncation model order reduction specification
+- [ ] **sumblk** — Summing junction for name-based interconnections
+- [ ] **tunabless** — Tunable fixed-order state-space model
+- [ ] **tunablepid2** — Tunable two-degree-of-freedom PID controller
+- [ ] **ndbasis** — Basis functions for tunable gain surface
+- [ ] **tunabletf** — Tunable transfer function with fixed number of poles and zeros
+- [ ] **respconfig** — Options for step or impulse responses
+- [ ] **fourierbasis** — Fourier basis functions for tunable gain surface
+- [ ] **tunablegain** — Tunable static gain block
+- [ ] **varyinggoal** — Variable tuning goal for gain-scheduled controllers
+- [ ] **dss** — Create descriptor state-space models
+- [ ] **systuneoptions** — Set options for systune
+- [ ] **lqrd** — Design discrete linear-quadratic (LQ) regulator for continuous plant
+- [ ] **gensig** — Create periodic signals for simulating system response with lsim
+- [ ] **filt** — Specify discrete transfer functions in DSP format
+- [ ] **lsiminfo** — Compute linear response characteristics
+- [ ] **looptuneoptions** — Set options for looptune
+- [ ] **thiran** — Generate fractional delay filter based on Thiran approximation
+- [ ] **realp** — Real tunable parameter
+- [ ] **viewgoal** — View tuning goals; validate design against tuning goals
+- [ ] **bdqz** — Block-diagonal QZ decomposition
+
+## opt (4)
+
+- [ ] **fgoalattain** — Solve multiobjective goal attainment problems
+- [ ] **fminimax** — Solve minimax constraint problem
+- [ ] **coneprog** — Second-order cone programming solver
+- [ ] **fseminf** — Solve semi-infinitely constrained multivariable nonlinear minimization problem

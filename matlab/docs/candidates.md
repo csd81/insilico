@@ -1,0 +1,5053 @@
+# 5000 Candidate Functions for Sandbox Implementation
+
+Functions with local MathWorks HTML documentation that are **not yet implemented**
+in the sandbox, ranked by toolbox priority × documentation size.
+Total candidates found: 14,398 — top 5000 listed here.
+
+<!-- toc -->
+
+- [core_referencelist](#corereferencelist) (2536)
+- [signal](#signal) (306)
+- [stats](#stats) (1126)
+- [symbolic](#symbolic) (286)
+- [control](#control) (170)
+- [finance](#finance) (202)
+- [images](#images) (344)
+- [opt](#opt) (28)
+- [econ](#econ) (1)
+- [fininst](#fininst) (1)
+
+---
+
+## core_referencelist
+
+- [ ] **detectimportoptions** — Create import options based on file content
+- [ ] **matlab.ui.control.table** — Table UI component
+- [ ] **matlab.ui.figure** — Figure window
+- [ ] **matlab.graphics.chart.primitive.histogram** — Histogram plot
+- [ ] **stackedplot** — Stacked plot of several variables with common x-axis
+- [ ] **matlab.io.text.delimitedtextimportoptions.setvaropts** — Set variable import options
+- [ ] **imwrite** — Write image to graphics file
+- [ ] **arduino** — Connection to the Arduino and Arduino-compatible ESP32 hardware
+- [ ] **matlab.graphics.chart.primitive.histogram2** — Bivariate histogram plot
+- [ ] **boxchart** — Box chart (box plot)
+- [ ] **bubblechart3** — 3-D bubble chart
+- [ ] **pivot** — Summarize tabular data in pivoted table
+- [ ] **matlab.ui.container.buttongroup** — Button group UI container
+- [ ] **bubblechart** — Bubble chart
+- [ ] **mex** — Build C/C++ MEX functions
+- [ ] **matlab.graphics.datatip.datatip** — Create data tip
+- [ ] **swarmchart** — Swarm scatter chart
+- [ ] **imread** — Read image from graphics file
+- [ ] **polarbubblechart** — Polar bubble chart
+- [ ] **matlab.ui.container.panel** — Panel UI container
+- [ ] **ftp** — Connection to FTP server to access its files
+- [ ] **double.groupsummary** — Compute summary statistics by group
+- [ ] **timetable.synchronize** — Synchronize timetables to common time vector, and resample or aggregate data from input timetables
+- [ ] **matlab.ui.control.listbox** — List box UI component
+- [ ] **matlab.graphics.shape.textarrow** — Text arrow annotation on figure
+- [ ] **double.normalize** — Normalize data
+- [ ] **swarmchart3** — 3-D swarm scatter chart
+- [ ] **matlab.ui.control.statebutton** — State button UI component
+- [ ] **matlab.ui.control.dropdown** — Drop-down UI component
+- [ ] **matlab.ui.container.checkboxtree** — Check box tree UI component
+- [ ] **matlab.io.datastore.tabulartextdatastore** — Datastore for tabular text files
+- [ ] **matlab.ui.control.numericeditfield** — Numeric edit field UI component
+- [ ] **violinplot** — Violin plot
+- [ ] **scatteredinterpolant** — Interpolate 2-D or 3-D scattered data
+- [ ] **matlab.ui.control.button** — Button UI component
+- [ ] **runtests** — Run set of tests
+- [ ] **matlab.ui.control.togglebutton** — Toggle button UI component
+- [ ] **matlab.ui.control.spinner** — Spinner UI component
+- [ ] **matlab.graphics.chart.primitive.graphplot.highlight** — Highlight nodes and edges in plotted graph
+- [ ] **graph.plot** — Plot graph nodes and edges
+- [ ] **patch** — Create patches of colored polygons
+- [ ] **matlab.ui.control.html** — HTML UI component
+- [ ] **griddedinterpolant** — Gridded data interpolation
+- [ ] **double.sortrows** — Sort rows of matrix or table
+- [ ] **table.join** — Combine two tables or timetables by rows using key variables
+- [ ] **matlab.ui.control.textarea** — Text area UI component
+- [ ] **matlab.ui.control.slider** — Slider UI component
+- [ ] **matlab.ui.control.label** — Label UI component
+- [ ] **double.union** — Union of two sets of data
+- [ ] **double.setxor** — Exclusive OR of two sets of data
+- [ ] **double.intersect** — Intersection of two sets of data
+- [ ] **parallelplot** — Create parallel coordinates plot
+- [ ] **matlab.ui.control.hyperlink** — Hyperlink UI component
+- [ ] **double.randn** — Normally distributed random numbers
+- [ ] **timetable.retime** — Resample or aggregate data in timetable, and resolve duplicate or irregular times
+- [ ] **matlab.ui.control.semicirculargauge** — Semicircular gauge UI component
+- [ ] **matlab.ui.control.rangeslider** — Range slider UI component
+- [ ] **matlab.ui.control.ninetydegreegauge** — Ninety-degree gauge UI component
+- [ ] **matlab.ui.control.image** — Image UI component
+- [ ] **matlab.ui.control.gauge** — Gauge UI component
+- [ ] **matlab.ui.control.editfield** — Edit field UI component
+- [ ] **matlab.ui.control.datepicker** — Date picker UI component
+- [ ] **matlab.ui.container.tab** — Tab UI container
+- [ ] **matlab.graphics.shape.textbox** — Text box annotation on figure
+- [ ] **double.interp1** — 1-D data interpolation (table lookup)
+- [ ] **matlab.ui.control.lineargauge** — Linear gauge UI component
+- [ ] **matlab.io.datastore.parquetdatastore** — Datastore for collection of Parquet files
+- [ ] **randstream** — Random number stream
+- [ ] **matlab.ui.control.radiobutton** — Radio button UI component
+- [ ] **matlab.ode.oderesults** — Results of ODE integration
+- [ ] **exportgraphics** — Export figure or plot
+- [ ] **double.unique** — Unique values
+- [ ] **double.min** — Minimum elements of array
+- [ ] **double.max** — Maximum elements of array
+- [ ] **double.histcounts** — Histogram bin counts
+- [ ] **readstruct** — Create structure array from file
+- [ ] **matlab.ui.container.gridlayout** — Grid layout manager UI container
+- [ ] **matlab.buildtool.tasks.testtask-class** — Task for running tests
+- [ ] **double.std** — Standard deviation
+- [ ] **double.setdiff** — Difference of two sets of data
+- [ ] **clibgen.generatelibrarydefinition** — Create definition file for C/C++ library
+- [ ] **tall.write** — Write tall array to local and remote locations for checkpointing
+- [ ] **table.outerjoin** — Outer join between two tables or timetables
+- [ ] **matlab.uitest.testcase.choosedialog** — Make a selection in dialog box
+- [ ] **matlab.ui.container.tabgroup** — Tab group UI container
+- [ ] **matlab.io.xml.dom.document-class** — XML Document
+- [ ] **hdfread** — Read data from HDF4 or HDF-EOS2 file
+- [ ] **double.ismember** — Find set members of data
+- [ ] **uistyle** — Create style for UI component
+- [ ] **table.rowfun** — Apply function to table or timetable rows
+- [ ] **matlab.ui.control.knob** — Knob UI component
+- [ ] **matlab.ui.control.colorpicker** — Color picker UI component
+- [ ] **matlab.ui.control.checkbox** — Check box UI component
+- [ ] **matlab.ui.componentcontainer.componentcontainer-class** — Base class for developing custom UI component objects
+- [ ] **matlab.io.text.fixedwidthimportoptions** — Import options object for fixed-width text files
+- [ ] **fpolarplot** — Plot expression or function in polar coordinates
+- [ ] **double.var** — Variance
+- [ ] **double.groupcounts** — Number of group elements
+- [ ] **videoreader** — Create object to read video files
+- [ ] **tcpclient** — Create TCP/IP client connection with TCP/IP server
+- [ ] **matlab.ui.container.menu** — Menu UI component
+- [ ] **matlab.io.datastore.spreadsheetdatastore** — Datastore for spreadsheet files
+- [ ] **geodensityplot** — Density plot in geographic coordinates
+- [ ] **geobubble** — Standalone geographic bubble chart
+- [ ] **double.randi** — Uniformly distributed random integers
+- [ ] **double.groupfilter** — Filter by group
+- [ ] **uitable** — Create table user interface component
+- [ ] **timetable.extractevents** — Extract event table from subset of timetable data
+- [ ] **tiff** — Tiff
+- [ ] **table.varfun** — Apply function to table or timetable variables
+- [ ] **raincloudplot** — Rain cloud plot
+- [ ] **matlab.ui.control.switch** — Switch UI component
+- [ ] **matlab.ui.control.rockerswitch** — Rocker switch UI component
+- [ ] **matlab.ui.control.discreteknob** — Discrete knob UI component
+- [ ] **fill3** — Create filled 3-D patches
+- [ ] **fill** — Create filled 2-D patches
+- [ ] **double.mean** — Average or mean value of array
+- [ ] **double.isbetween** — Determine which elements are within specified range
+- [ ] **datetime.datestr** — (Not recommended; use string or char) Convert date and time to string format
+- [ ] **bubblecloud** — Create bubble cloud chart
+- [ ] **alphashape** — Polygons and polyhedra from points in 2-D and 3-D
+- [ ] **writetimetable** — Write timetable to file
+- [ ] **uihtml** — Create HTML UI component
+- [ ] **table2timetable** — Convert table to timetable
+- [ ] **regexppattern** — Pattern that matches specified regular expression
+- [ ] **pattern** — Patterns to search and match text
+- [ ] **parallel.future** — Function scheduled to run
+- [ ] **matlab.ui.control.toggleswitch** — Toggle switch UI component
+- [ ] **imresize** — Resize image
+- [ ] **graph.shortestpath** — Shortest path between two single nodes
+- [ ] **graph.centrality** — Measure node importance
+- [ ] **double.summary** — Data summary
+- [ ] **double.sort** — Sort array elements
+- [ ] **double.round** — Round to nearest decimal or integer
+- [ ] **double.rand** — Uniformly distributed random numbers
+- [ ] **double.prod** — Product of array elements
+- [ ] **double.discretize** — Group data into bins or categories
+- [ ] **createarray** — Create array of specified class and value
+- [ ] **copygraphics** — Copy plot or graphics content to clipboard
+- [ ] **clabel** — Label contour plot elevation
+- [ ] **wordcloud** — Create word cloud chart from text data
+- [ ] **videowriter** — Create object to write video files
+- [ ] **timer.timerfind** — Find timer objects
+- [ ] **string.replacebetween** — Replace substrings between start and end points
+- [ ] **streamslice** — Plot streamlines in slice planes
+- [ ] **odejacobian** — ODE Jacobian matrix
+- [ ] **matlab.tall.reduce** — Reduce arrays by applying reduction algorithm to blocks of data
+- [ ] **matlab.io.xml.dom.parserconfiguration-class** — XML parser options
+- [ ] **matlab.io.datastore.filedatastore** — Datastore with custom file reader
+- [ ] **matlab.graphics.chart.primitive.graphplot.layout** — Change layout of graph plot
+- [ ] **matlab.buildtool.tasks.pcodetask-class** — Task for creating P-code files
+- [ ] **eventtable** — Event table
+- [ ] **double.median** — Median value of array
+- [ ] **double.grouptransform** — Transform by group
+- [ ] **thetaregion** — Filled wedge in polar coordinates
+- [ ] **radiusregion** — Filled circular region (annulus) in polar coordinates
+- [ ] **polyshape.intersect** — Intersection of polyshape objects or intersection of line segment with polyshape
+- [ ] **line** — Create primitive line
+- [ ] **double.svd** — Singular value decomposition
+- [ ] **double.plus** — Add numbers, append strings
+- [ ] **compassplot** — Polar plot with arrows emanating from origin
+- [ ] **categorical.reordercats** — Reorder categories in categorical array
+- [ ] **yregion** — 1-D filled region between y-coordinates
+- [ ] **xregion** — 1-D filled region between x-coordinates
+- [ ] **table.innerjoin** — Inner join between two tables or timetables
+- [ ] **string.sscanf** — Read formatted data from strings
+- [ ] **string.sprintf** — Format data into string or character vector
+- [ ] **string.extractbetween** — Extract substrings between start and end points
+- [ ] **string.erasebetween** — Delete substrings between start and end points
+- [ ] **polarregion** — Filled polar rectangle
+- [ ] **matlab.unittest.fixtures.fixture-class** — Fundamental interface for test fixtures
+- [ ] **matlab.io.spreadsheet.spreadsheetimportoptions** — Import options object for Spreadsheets
+- [ ] **islocalmin2** — Find local minima in 2-D data
+- [ ] **islocalmax2** — Find local maxima in 2-D data
+- [ ] **ischange** — Find abrupt changes in data
+- [ ] **fread** — Read data from binary file
+- [ ] **eventfilter** — Create event filter for selecting timetable rows
+- [ ] **double.topkrows** — Top rows in sorted order
+- [ ] **double.sum** — Sum of array elements
+- [ ] **double.power** — Element-wise power
+- [ ] **double.mode** — Most frequent values in array
+- [ ] **datetime.dateshift** — Shift date or generate sequence of dates and times
+- [ ] **datetime.datenum** — (Not recommended; use datetime or duration) Convert date and time to serial date number
+- [ ] **binscatter** — Binned scatter plot
+- [ ] **uibuttongroup** — Create button group to manage radio buttons and toggle buttons
+- [ ] **table.rows2vars** — Reorient table or timetable so that rows become variables
+- [ ] **streamparticles** — Plot stream particles
+- [ ] **runperf** — Run set of tests for performance measurement
+- [ ] **polyshape.union** — Union of polyshape objects
+- [ ] **odemassmatrix** — ODE mass matrix
+- [ ] **matlab.uitest.testcase.dismissdialog** — Dismiss dialog box
+- [ ] **matlab.ui.control.table.addstyle** — Add style to UI component
+- [ ] **matlab.ui.container.tree.scroll** — Scroll to location within UI component
+- [ ] **matlab.ui.container.contextmenu** — Context menu UI component
+- [ ] **matlab.io.xml.xmlimportoptions** — Import options object for XML files
+- [ ] **matlab.io.xml.dom.element-class** — Element of XML document
+- [ ] **matlab.io.word.worddocumentimportoptions** — Import options object for Microsoft Word document files
+- [ ] **matlab.io.matfile** — Access and change variables in MAT file without loading file into memory
+- [ ] **matlab.graphics.interaction.internal.pan** — Enable pan mode
+- [ ] **matlab.buildtool.task-class** — Single unit of work in a build
+- [ ] **makehgtform** — Create 4-by-4 transform matrix
+- [ ] **imtile** — Combine multiple image frames into one rectangular tiled image
+- [ ] **h5create** — Create HDF5 dataset
+- [ ] **graph.simplify** — Reduce multigraph to simple graph
+- [ ] **fillmissing2** — Fill missing entries in 2-D data
+- [ ] **double.issortedrows** — Determine if matrix or table rows are sorted
+- [ ] **datetime.datevec** — Convert date and time to vector of components
+- [ ] **buildtool** — Invoke build tool
+- [ ] **arduinoio.shiftregister** — Connection to shift register on Arduino hardware
+- [ ] **arduinoio.motorcarrier.pidmotor** — Connection to motors in closed-loop PID control on Arduino MKR Motor Carrier or Nano Motor Carrier
+- [ ] **writestruct** — Write structure array to file
+- [ ] **timeseries** — Create timeseries object
+- [ ] **timer.timerfindall** — Find all timer objects
+- [ ] **table.unstack** — Unstack data from input table or timetable into multiple variables of output table or timetable
+- [ ] **table.stack** — Stack data from input table or timetable into one variable of output table or timetable
+- [ ] **qftgate** — Quantum Fourier transform gate
+- [ ] **print** — Print figure or save to specific file format
+- [ ] **parquetread** — Read columnar data from a Parquet file
+- [ ] **movie** — Play recorded movie frames
+- [ ] **matlab.ui.container.toolbar.toggletool** — Toggle tool UI component
+- [ ] **matlab.io.html.htmlimportoptions** — Import options object for HTML files
+- [ ] **graph.bfsearch** — Breadth-first graph search
+- [ ] **graph.allcycles** — Find all cycles in graph
+- [ ] **export** — Convert live script or function to standard format
+- [ ] **double.times** — Multiplication
+- [ ] **double.minus** — Subtraction
+- [ ] **annotation** — Create annotations
+- [ ] **timerange** — Time range for timetable row subscripting
+- [ ] **string.compose** — Format data into multiple strings
+- [ ] **rectangle** — Create rectangle with sharp or curved corners
+- [ ] **matlab.uitest.testcase.choose** — Perform choose gesture on UI component
+- [ ] **matlab.ui.container.toolbar.pushtool** — Push tool UI component
+- [ ] **matlab.tall.blockmovingwindow** — Apply moving window function and block reduction to padded blocks of data
+- [ ] **matlab.project.project** — Create project object for manipulating the project programmatically
+- [ ] **matlab.io.datastore.writeall** — Write datastore to files
+- [ ] **matlab.graphics.shape.doubleendarrow** — Double-ended arrow annotation on figure
+- [ ] **matlab.graphics.interaction.internal.zoom** — Enable zoom mode
+- [ ] **graph.layoutcoords** — Graph node and edge layout coordinates
+- [ ] **graph.dfsearch** — Depth-first graph search
+- [ ] **geoaxes** — Create geographic axes
+- [ ] **fitsread** — Read data from FITS file
+- [ ] **double.trace** — Sum of diagonal elements
+- [ ] **double.rdivide** — Right array division
+- [ ] **double.ne** — Determine inequality
+- [ ] **double.lt** — Determine less than
+- [ ] **double.le** — Determine less than or equal to
+- [ ] **double.gt** — Determine greater than
+- [ ] **double.ge** — Determine greater than or equal to
+- [ ] **double.eq** — Determine equality
+- [ ] **double.cumsum** — Cumulative sum
+- [ ] **double.cumprod** — Cumulative product
+- [ ] **uipanel** — Create panel container
+- [ ] **uilistbox** — Create list box component
+- [ ] **uidropdown** — Create drop-down component
+- [ ] **ucrygate** — Uniformly controlled y-axis rotation gate
+- [ ] **ucrxgate** — Uniformly controlled x-axis rotation gate
+- [ ] **timetable.withinrange** — Determine if timetable row times are within specified time range
+- [ ] **timetable.overlapsrange** — Determine if timetable row times overlap specified time range
+- [ ] **timetable.containsrange** — Determine if timetable row times contain specified time range
+- [ ] **timeseries2timetable** — Convert timeseries objects to timetable
+- [ ] **timer** — Schedule execution of MATLAB commands
+- [ ] **publish** — Generate view of MATLAB file in specified format
+- [ ] **matlab.unittest.diagnostics.constraintdiagnostic-class** — Diagnostic with fields common to constraints
+- [ ] **matlab.ui.dialog.progressdialog** — Progress dialog box
+- [ ] **matlab.net.http.io.multipartconsumer-class** — Helper for multipart content types in HTTP messages
+- [ ] **matlab.net.http.io.fileconsumer-class** — Consumer for files in HTTP messages
+- [ ] **matlab.mpm.package** — matlab.mpm.Package
+- [ ] **matlab.metadata.property-class** — Describe property of MATLAB class
+- [ ] **matlab.io.json.jsonimportoptions** — Import options object for JSON files
+- [ ] **matlab.diagram.classviewer-class** — Create class diagrams in Class Diagram Viewer app
+- [ ] **matlab.addons.toolbox.toolboxoptions** — Options for packaging toolbox project
+- [ ] **double.mldivide** — Solve systems of linear equations Ax = B for x
+- [ ] **double.ldivide** — Left array division
+- [ ] **double.issorted** — Determine if array is sorted
+- [ ] **beaglebone** — Connection to BeagleBone Black hardware
+- [ ] **audioplayer** — Object for playing audio
+- [ ] **array2timetable** — Convert homogeneous array to timetable
+- [ ] **webread** — Read content from RESTful web service
+- [ ] **uitab** — Create tabbed panel
+- [ ] **uigridlayout** — Create grid layout manager
+- [ ] **string.extractbefore** — Extract substrings before specified positions
+- [ ] **string.extractafter** — Extract substrings after specified positions
+- [ ] **string.endswith** — Determine if strings end with pattern
+- [ ] **string.contains** — Determine if pattern is in strings
+- [ ] **sftp** — Connection to SFTP server to access its files
+- [ ] **polyshape.subtract** — Difference of two polyshape objects
+- [ ] **odeevent** — ODE event definition
+- [ ] **netcdf.putatt** — Write data to netCDF attribute
+- [ ] **matlabshared.serial.device** — Connection to serial device on Arduino or ESP32 hardware
+- [ ] **matlab.ui.control.lamp** — Lamp UI component
+- [ ] **matlab.ui.container.treenode** — Tree node UI component
+- [ ] **matlab.tall.transform** — Transform array by applying function handle to blocks of data
+- [ ] **matlab.net.http.io.imageconsumer-class** — Consumer for image data in HTTP payloads
+- [ ] **matlab.net.http.io.genericconsumer-class** — Consumer for multiple content types in HTTP messages
+- [ ] **matlab.io.datastore.arraydatastore** — Datastore for in-memory data
+- [ ] **graph.shortestpathtree** — Shortest path tree from node
+- [ ] **fscanf** — Read data from text file
+- [ ] **double.diff** — Differences and approximate derivatives
+- [ ] **containers.map** — Object that maps unique keys to values
+- [ ] **categorical.mergecats** — Merge categories in categorical array
+- [ ] **ztickformat** — Specify z-axis tick label format
+- [ ] **ytickformat** — Specify y-axis tick label format
+- [ ] **weboptions** — Specify parameters for RESTful web service
+- [ ] **uislider** — Create slider or range slider component
+- [ ] **uiprogressdlg** — Create progress dialog box
+- [ ] **uieditfield** — Create text or numeric edit field component
+- [ ] **ucrzgate** — Uniformly controlled z-axis rotation gate
+- [ ] **timeseries.filter** — Modify frequency content of timeseries objects
+- [ ] **testrunner** — Create test runner
+- [ ] **table.addvars** — Add variables to table or timetable
+- [ ] **string.strfind** — Find strings within other strings
+- [ ] **string.startswith** — Determine if strings start with pattern
+- [ ] **string.insertbefore** — Insert strings before specified substrings
+- [ ] **string.insertafter** — Insert strings after specified substrings
+- [ ] **string.count** — Count occurrences of pattern in strings
+- [ ] **serialport** — Connection to serial port
+- [ ] **parquetwrite** — Write columnar data to Parquet file
+- [ ] **parallel.pool.pollabledataqueue** — Send and manually retrieve data
+- [ ] **parallel.future.aftereach** — Run function after each function finishes running in the background
+- [ ] **parallel.future.afterall** — Run function after all functions finish running in the background
+- [ ] **netcdf.putvar** — Write data to netCDF variable
+- [ ] **matlabshared.blelib.characteristic.read** — Read characteristic or descriptor data on a Bluetooth Low Energy peripheral device
+- [ ] **matlab.ui.container.toolbar** — Toolbar UI component
+- [ ] **matlab.tall.movingwindow** — Apply moving window function to blocks of data
+- [ ] **matlab.net.uri-class** — Uniform resource identifier (URI)
+- [ ] **matlab.metadata.class-class** — Describe MATLAB class
+- [ ] **matlab.io.datastore.imagedatastore** — Datastore for image data
+- [ ] **matlab.graphics.shape.internal.datacursormanager** — Enable data cursor mode
+- [ ] **matlab.graphics.shape.arrow** — Arrow annotation on figure
+- [ ] **matlab.graphics.interaction.internal.brush** — Interactively mark data values in a chart
+- [ ] **material** — Set reflectance of surfaces and patches
+- [ ] **loadlibrary** — Load C shared library into MATLAB
+- [ ] **linestyleorder** — Set or query line style order
+- [ ] **hgtransform** — Transform graphics objects
+- [ ] **graph.allpaths** — Find all paths between two graph nodes
+- [ ] **double.isequal** — Determine array equality
+- [ ] **double.cummin** — Cumulative minimum
+- [ ] **double.cummax** — Cumulative maximum
+- [ ] **double.colon** — Vector creation, array subscripting, and for-loop iteration
+- [ ] **datastore** — Create datastore for large collections of data
+- [ ] **copyobj** — Copy graphics objects and their children
+- [ ] **copyfile** — Copy file or folder
+- [ ] **clibgen.buildinterface** — Create interface to C/C++ library without definition file
+- [ ] **cdfread** — Read data from Common Data Format (CDF) file
+- [ ] **categorical.countcats** — Count occurrences of categorical array elements by category
+- [ ] **alpha** — Add transparency to objects in axes
+- [ ] **videowriter.writevideo** — Write video data to file
+- [ ] **uitextarea** — Create text area component
+- [ ] **uistack** — Reorder visual stacking of UI components
+- [ ] **uispinner** — Create spinner component
+- [ ] **uiimage** — Create image component
+- [ ] **uicontextmenu** — Create context menu component
+- [ ] **timetable.isregular** — Determine if input times are regular with respect to time or calendar unit
+- [ ] **table.splitvars** — Split multicolumn variables in table or timetable
+- [ ] **standardizemissing** — Insert standard missing values
+- [ ] **sonify** — Convert numeric data to sound
+- [ ] **readdictionary** — Create dictionary from file
+- [ ] **polyshape.addboundary** — Add polyshape boundary
+- [ ] **odesensitivity** — ODE sensitivity analysis
+- [ ] **ncwriteatt** — Write attribute to netCDF file
+- [ ] **movefile** — Move or rename file or folder
+- [ ] **matlab.uitest.testcase.press** — Perform press gesture on UI component
+- [ ] **matlab.test.behavior.missing-class** — Test if class satisfies contract for missing values
+- [ ] **matlab.net.http.io.stringconsumer-class** — String consumer for HTTP payloads
+- [ ] **matlab.net.http.httpoptions-class** — Options controlling HTTP message exchange
+- [ ] **matlab.metadata.dynamicproperty-class** — Describe dynamic property of MATLAB object
+- [ ] **matlab.lang.workspace** — Store workspace variables
+- [ ] **matlab.lang.makeuniquestrings** — Construct unique strings from input strings
+- [ ] **matlab.io.xml.dom.attr-class** — Attribute of XML element
+- [ ] **matlab.io.datastore.read** — Read data in datastore
+- [ ] **matlab.graphics.shape.ellipse** — Ellipse annotation on figure
+- [ ] **matlab.graphics.interaction.internal.rotate3d** — Enable rotate mode
+- [ ] **matlab.graphics.chartcontainer.chartcontainer-class** — Base class for developing chart objects
+- [ ] **matlab.buildtool.tasks.mextask-class** — Task for building MEX file
+- [ ] **inputparser** — Input parser for functions
+- [ ] **graph.findedge** — Locate edge in graph
+- [ ] **graph.distances** — Shortest path distances of all node pairs
+- [ ] **fwrite** — Write data to binary file
+- [ ] **double.vertcat** — Concatenate arrays vertically
+- [ ] **double.size** — Array size
+- [ ] **double.nufft** — Nonuniform fast Fourier transform
+- [ ] **double.horzcat** — Concatenate arrays horizontally
+- [ ] **double.cat** — Concatenate arrays
+- [ ] **datetime.timeofday** — Elapsed time since midnight for datetime arrays
+- [ ] **colororder** — Set or query color order palette
+- [ ] **checkcode** — Check MATLAB code files for possible problems
+- [ ] **calendarduration** — Lengths of time in variable-length calendar units
+- [ ] **bubblelim** — Map bubble sizes to data range
+- [ ] **bubblelegend** — Create legend for bubble chart
+- [ ] **audiorecorder** — Object for recording audio
+- [ ] **audioread** — Read audio file
+- [ ] **uiswitch** — Create slider switch, rocker switch, or toggle switch component
+- [ ] **uimenu** — Create menu or menu items
+- [ ] **uigetpref** — Create dialog box that opens according to user preference
+- [ ] **uigauge** — Create gauge component
+- [ ] **uicolorpicker** — Create color picker component
+- [ ] **uialert** — Display alert dialog box
+- [ ] **triangulation.pointlocation** — Triangle or tetrahedron enclosing point
+- [ ] **timetable.syncevents** — Add and synchronize variables from attached event table to timetable
+- [ ] **tilenum** — Tile location numbers in tiled chart layout
+- [ ] **string.matches** — Determine if pattern matches strings
+- [ ] **sorty** — Sort elements in heatmap column
+- [ ] **sortx** — Sort elements in heatmap row
+- [ ] **readvoltage** — Read voltage from analog pin on Arduino hardware
+- [ ] **qubo.solve** — Solve QUBO (Quadratic Unconstrained Binary Optimization) problem
+- [ ] **ncread** — Read data from variable in netCDF data source
+- [ ] **namedpattern** — Designate named pattern
+- [ ] **mpminstall** — Install package
+- [ ] **matlab.net.http.io.jsonconsumer-class** — Content consumer that converts JSON input into MATLAB data
+- [ ] **matlab.net.http.io.contentconsumer-class** — Consumer for HTTP message payloads
+- [ ] **matlab.net.http.io.binaryconsumer-class** — Consumer for binary data in HTTP messages
+- [ ] **matlab.graphics.shape.rectangle** — Rectangle annotation on figure
+- [ ] **matlab.graphics.shape.line** — Line annotation on figure
+- [ ] **matlab.buildtool.taskgroup-class** — Group of similar tasks
+- [ ] **h5write** — Write data to HDF5 dataset
+- [ ] **h5read** — Read data from HDF5 dataset
+- [ ] **graph.nearest** — Nearest neighbors within radius
+- [ ] **graph.cyclebasis** — Fundamental cycle basis of graph
+- [ ] **erfc** — Complementary error function
+- [ ] **double.trenddecomp** — Find trends in data
+- [ ] **double.isequaln** — Determine array equality, treating NaN values as equal
+- [ ] **double.eps** — Floating-point relative accuracy
+- [ ] **double.allbetween** — Determine if all elements are within specified range
+- [ ] **containers.Map** — Object that maps unique keys to values
+- [ ] **ccxgate** — Controlled controlled X gate (CCNOT or Toffoli gate)
+- [ ] **categorical.removecats** — Remove categories from categorical array
+- [ ] **axes** — Create Cartesian axes
+- [ ] **audiowrite** — Write audio file
+- [ ] **audiodevinfo** — Information about audio device
+- [ ] **arduinoio.motorcarrier.rotaryencoder.readcount.readcount** — Read current count value from encoder connected to MKR Motor Carrier or Nano Motor Carrier
+- [ ] **arduinoio.motorcarrier.pidmotor.readangularposition.readangularposition** — Read angular position of DC Motor in closed-loop control
+- [ ] **apds9960** — Connect to APDS9960 sensor on Arduino hardware using I2C bus
+- [ ] **zip** — Compress files into ZIP file
+- [ ] **wildcardpattern** — Match as few characters of any type as possible
+- [ ] **videoreader.readframe** — Read next video frame
+- [ ] **uitabgroup** — Create container for tabbed panels
+- [ ] **tall.tall** — Create tall array
+- [ ] **table.movevars** — Move variables in table or timetable
+- [ ] **table.mergevars** — Combine table or timetable variables into multicolumn variable
+- [ ] **string.pad** — Add leading or trailing characters to strings
+- [ ] **ryygate** — Ising YY coupling gate
+- [ ] **rxxgate** — Ising XX coupling gate
+- [ ] **polyshape.xor** — Exclusive OR of two polyshape objects
+- [ ] **pbaspect** — Control relative lengths of each axis
+- [ ] **newplot** — Specify where to draw graphics objects
+- [ ] **ncwrite** — Write data to netCDF file
+- [ ] **msgbox** — Create message dialog box
+- [ ] **memmapfile** — Create memory map to a file
+- [ ] **matlabshared.spi.device** — Connection to device on SPI bus on Arduino or ESP32 hardware
+- [ ] **matlabshared.blelib.characteristic** — Access a characteristic on Bluetooth Low Energy peripheral device
+- [ ] **matlab.net.http.io.fileprovider-class** — ContentProvider to send files
+- [ ] **matlab.net.http.io.contentprovider-class** — ContentProvider for HTTP message payloads
+- [ ] **matlab.io.rowfilter** — Selectively import rows of interest
+- [ ] **matlab.io.datastore.readall** — Read all data in datastore
+- [ ] **matlab.graphics.datatip.datatiptextrow** — Add row to data tips
+- [ ] **matlab.git.gitrepository** — Git repository object
+- [ ] **matlab.buildtool.tasks.codeissuestask-class** — Task for identifying code issues
+- [ ] **mapreduce** — Programming technique for analyzing data sets that do not fit in memory
+- [ ] **gtext** — Add text to figure using mouse
+- [ ] **graph.maxflow** — Maximum flow in graph
+- [ ] **graph.isomorphism** — Compute isomorphism between two graphs
+- [ ] **graph.conncomp** — Connected graph components
+- [ ] **graph.addnode** — Add new node to graph
+- [ ] **graph.addedge** — Add new edge to graph
+- [ ] **gitclone** — Clone Git repository
+- [ ] **fontsize** — Change font size for objects in a figure
+- [ ] **double.mtimes** — Matrix multiplication
+- [ ] **double.mod** — Remainder after division (modulo operation)
+- [ ] **double.mink** — Find k smallest elements of array
+- [ ] **double.maxk** — Find k largest elements of array
+- [ ] **double.isreal** — Determine whether array uses complex storage
+- [ ] **daspect** — Control data unit length along each axis
+- [ ] **combinations** — Generate all element combinations of arrays
+- [ ] **clearvars** — Clear variables from memory
+- [ ] **bno055-system-object** — Connect to BNO055 sensor on Arduino hardware I2C bus
+- [ ] **ble** — Connect to Bluetooth Low Energy peripheral device
+- [ ] **axtoolbar** — Create axes toolbar
+- [ ] **arduinoio.matlabshared.can.channel** — Connection to CAN channel connected to a specified device
+- [ ] **webwrite** — Write data to RESTful web service
+- [ ] **webcam** — Connection to a webcam
+- [ ] **web** — Open web page or file in browser
+- [ ] **validatecolor** — Validate color values
+- [ ] **uitreenode** — Create tree node component
+- [ ] **uitree** — Create tree or check box tree component
+- [ ] **uiputfile** — Open dialog box for saving files
+- [ ] **uibutton** — Create push button or state button component
+- [ ] **timeseries.plot** — Plot timeseries
+- [ ] **thingspeakread** — Read data stored in ThingSpeak channel
+- [ ] **tcpclient.read** — Read data from remote host over TCP/IP
+- [ ] **table.convertvars** — Convert table or timetable variables to specified data type
+- [ ] **system** — Execute operating system command and return output
+- [ ] **rzzgate** — Ising ZZ coupling gate
+- [ ] **readlines** — Read lines of file as string array
+- [ ] **quantum.gate.quantumstate-class** — State of qubits in quantum circuit
+- [ ] **polyshape.polybuffer** — Create buffer around points, lines, or polyshape objects
+- [ ] **pcode** — Create content-obscured, executable files
+- [ ] **parfeval** — Run function in background
+- [ ] **mexception** — Capture error information
+- [ ] **matlabshared.blelib.characteristic.write** — Write data to a characteristic or descriptor on a Bluetooth Low Energy peripheral device
+- [ ] **matlablinux** — matlab (Linux) - Start MATLAB program from Linux system prompt
+- [ ] **matlab.settings.settingsgroup.addsetting** — Add new setting
+- [ ] **matlab.net.http.io.stringprovider-class** — ContentProvider to send MATLAB strings
+- [ ] **matlab.net.http.io.multipartprovider-class** — ContentProvider to send multipart/mixed HTTP messages
+- [ ] **matlab.net.http.io.multipartformprovider-class** — ContentProvider to send multipart/form-data messages
+- [ ] **matlab.net.http.credentials-class** — Credentials for authenticating HTTP requests
+- [ ] **matlab.lang.makevalidname** — Construct valid MATLAB identifiers from input strings
+- [ ] **matlab.io.xml.dom.writerconfiguration-class** — XML DOM writer options
+- [ ] **matlab.io.sftp.sftp.close** — Close connection to SFTP or FTP server
+- [ ] **matlab.io.datastore.imagedatastore.partition** — Partition a datastore
+- [ ] **matlab.io.datastore-class** — Base datastore class
+- [ ] **maskedpattern** — Pattern with specified display name
+- [ ] **inputdlg** — Create dialog box to gather user input
+- [ ] **if** — Execute statements if condition is true
+- [ ] **graph.isisomorphic** — Determine whether two graphs are isomorphic
+- [ ] **fopen** — Open file or obtain information about open files
+- [ ] **end** — Terminate block of code or indicate last array index
+- [ ] **double.or** — Find logical OR
+- [ ] **double.numunique** — Number of unique values
+- [ ] **double.ismatrix** — Determine whether input is matrix
+- [ ] **double.and** — Find logical AND
+- [ ] **double.allunique** — Determine if all values are unique
+- [ ] **delaunaytriangulation** — Delaunay triangulation in 2-D and 3-D
+- [ ] **datetime.convertto** — Convert datetime values to numeric representations
+- [ ] **characterlistpattern** — Match characters from list
+- [ ] **categorical.iscategory** — Determine if inputs are names of categories
+- [ ] **arguments** — Declare function argument validation
+- [ ] **arduinoioaddons.adafruit.stepper** — Connection to stepper motor on Adafruit Motor Shield V2 for Arduino
+- [ ] **arduinoio.lsm9ds1-system-object** — Connect to LSM9DS1 sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.lsm6dsr** — Connect to LSM6DSR sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.lsm6dso** — Connect to LSM6DSO sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.lsm6dsm** — Connect to LSM6DSM sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.lsm6dsl** — Connection to LSM6DSL sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.lsm6ds3** — Connect to LSM6DS3 sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.configurepin** — Set Arduino pin mode
+- [ ] **arduinoio.bmp280-system-object** — Connect to BMP280 sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.bmi160-system-object** — Connect to BMI160 sensor on Arduino hardware I2C bus
+- [ ] **zticklabels** — Set or query z-axis tick labels
+- [ ] **yticklabels** — Set or query y-axis tick labels
+- [ ] **whitespacepattern** — Match whitespace characters
+- [ ] **websave** — Save content from RESTful web service to file
+- [ ] **visdiff** — Compare two files or folders
+- [ ] **unitarygate** — Unitary matrix gate
+- [ ] **uilamp** — Create lamp component
+- [ ] **uifigure** — Create figure for designing apps
+- [ ] **uicontrol** — Create user interface control
+- [ ] **triangulation.nearestneighbor** — Vertex closest to specified point
+- [ ] **thingspeakwrite** — Write data to ThingSpeak channel
+- [ ] **thetaticklabels** — Set or query theta-axis tick labels
+- [ ] **table.removevars** — Delete variables from table or timetable
+- [ ] **string.replace** — Find and replace one or more substrings
+- [ ] **string.extract** — Extract substrings from strings
+- [ ] **string.erase** — Delete substrings within strings
+- [ ] **realmin** — Smallest normalized floating-point number
+- [ ] **questdlg** — Create question dialog box
+- [ ] **quantum.gate.quantummeasurement-class** — Measurement result of quantum circuit
+- [ ] **polyshape.plot** — Plot polyshape
+- [ ] **nweekdate** — (Not recommended; use dateshift) Date of specific occurrence of weekday in month
+- [ ] **nccreate** — Create variable in netCDF file
+- [ ] **mpu9250.read** — Read real-time sensor data at a specified rate
+- [ ] **mpmlist** — List installed packages
+- [ ] **matlabshared.serial.device.read** — Read data from serial device
+- [ ] **matlabshared.i2c.device** — Connection to device on I2C bus on Arduino or ESP32 hardware
+- [ ] **matlab.uitest.testcase.choosecontextmenu** — Perform choose gesture on context menu item
+- [ ] **matlab.system-class** — Base class for System objects
+- [ ] **matlab.net.queryparameter-class** — Parameter in query portion of uniform resource identifier (URI)
+- [ ] **matlab.net.http.requestmessage-class** — HTTP request message
+- [ ] **matlab.net.http.io.imageprovider-class** — ContentProvider to send MATLAB image data
+- [ ] **matlab.mpm.version** — Package version
+- [ ] **matlab.metadata.method-class** — Describe MATLAB class method
+- [ ] **matlab.io.xml.transform.transformer-class** — XML document transformer
+- [ ] **matlab.io.savevariablestoscript** — Save workspace variables to MATLAB script
+- [ ] **matlab.io.datastore.preview** — Preview subset of data in datastore
+- [ ] **matlab.graphics.axis.axes.tightposition** — Position of axes plotting area
+- [ ] **matlab.engine.rest.restfunctionconnector** — RESTFunctionConnector
+- [ ] **lis3dh** — Connect to LIS3DH sensor on Arduino hardware I2C bus
+- [ ] **light** — Create a light object
+- [ ] **import** — Add namespace, class, or functions to current import list
+- [ ] **imfinfo** — Information about graphics file
+- [ ] **graph.biconncomp** — Biconnected graph components
+- [ ] **graph.adjacency** — Graph adjacency matrix
+- [ ] **function** — Declare function name, inputs, and outputs
+- [ ] **findall** — Find all graphics objects
+- [ ] **export2wsdlg** — Create dialog box for exporting variables to workspace
+- [ ] **empty** — Create empty array of specified class
+- [ ] **double.tail** — Get bottom rows of array or table
+- [ ] **double.reshape** — Reshape array by rearranging existing elements
+- [ ] **double.rem** — Remainder after division
+- [ ] **double.pow2** — Base 2 exponentiation and scaling of floating-point numbers
+- [ ] **double.nthroot** — Real nth root of real numbers
+- [ ] **double.log2** — Base 2 logarithm and floating-point number dissection
+- [ ] **double.log10** — Common logarithm (base 10)
+- [ ] **double.head** — Get top rows of array or table
+- [ ] **double.cosh** — Hyperbolic cosine
+- [ ] **double.atan2** — Four-quadrant inverse tangent
+- [ ] **cosh** — Hyperbolic cosine
+- [ ] **constantplane** — Infinite plane in 3-D coordinates
+- [ ] **categorical.categories** — List of categories in categorical array
+- [ ] **calendar** — Calendar for specified month
+- [ ] **bluetooth** — Connect to Bluetooth Classic device
+- [ ] **arduinoio.ultrasonic** — Connection to ultrasonic sensor on Arduino hardware
+- [ ] **arduinoio.motorcarrier.rotaryencoder** — Connection to rotary encoder on Arduino MKR Motor Carrier or Nano Motor Carrier
+- [ ] **arduinoio.motorcarrier.dcmotor** — Connection to DC Motor on Arduino MKR Motor Carrier or Nano Motor Carrier
+- [ ] **arduinoio.lps22hb** — Connect to LPS22HB sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.icm20948-system-object** — Connect to ICM-20948 sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.adxl345** — Connect to ADXL345, ADXL343, ADXL344, or ADXL346 sensor on Arduino hardware I2C bus
+- [ ] **adis16505** — Connect to ADIS16505 sensor on Arduino hardware SPI bus
+- [ ] **addon** — Connection to add-on device for Arduino hardware
+- [ ] **varargin** — Variable-length input argument list
+- [ ] **uihyperlink** — Create hyperlink component
+- [ ] **uidatepicker** — Create date picker component
+- [ ] **uicheckbox** — Create check box component
+- [ ] **uiaxes** — Create UI axes for plots in apps
+- [ ] **triangulation.circumcenter** — Circumcenter of triangle or tetrahedron
+- [ ] **timetable.lag** — Time-shift data in timetable
+- [ ] **thetatickformat** — Specify theta-axis tick label format
+- [ ] **table.renamevars** — Rename variables in table or timetable
+- [ ] **subsref** — Indexed reference using function call
+- [ ] **string.strip** — Remove leading and trailing characters from strings
+- [ ] **stlwrite** — Create STL file from triangulation
+- [ ] **soundsc** — Scale data and play as sound
+- [ ] **rzgate** — z-axis rotation gate
+- [ ] **ryze** — Connection to Ryze drone
+- [ ] **rtickformat** — Specify r-axis tick label format
+- [ ] **r1gate** — z-axis rotation gate with global phase
+- [ ] **quboresult2tsp** — Convert QUBO result to traveling salesperson solution
+- [ ] **quantum.gate.observable** — Measurements in Pauli basis
+- [ ] **netcdf.open** — Open netCDF data source
+- [ ] **mustbesorted** — Validate that input is sorted
+- [ ] **mustbebetween** — Validate that all elements are within specified range
+- [ ] **mpmsearch** — Search for packages in repositories
+- [ ] **mkdir** — Make new folder
+- [ ] **methods** — Class method names
+- [ ] **matlabmacos** — matlab (macOS) - Start MATLAB program from macOS Terminal
+- [ ] **matlab.unittest.testcase-class** — Superclass of all test classes
+- [ ] **matlab.task.livetask-class** — Base class for developing custom Live Editor tasks
+- [ ] **matlab.settings.settingsgroup.addgroup** — Add new settings group
+- [ ] **matlab.net.http.statuscode-class** — Status code in HTTP response
+- [ ] **matlab.net.http.io.jsonprovider-class** — ContentProvider to send MATLAB data as JSON string
+- [ ] **matlab.net.http.io.genericprovider-class** — Generic ContentProvider for HTTP payloads
+- [ ] **matlab.net.http.io.formprovider-class** — ContentProvider that sends form data
+- [ ] **matlab.mixin.scalar-class** — Enforce scalar behavior for class instances
+- [ ] **matlab.lang.memoizedfunction** — Call memoized function and cache results
+- [ ] **matlab.io.xml.dom.text-class** — Text in an XML document
+- [ ] **matlab.io.xml.dom.documentfragment-class** — Group of document nodes
+- [ ] **matlab.io.xml.dom.comment-class** — Comment in XML document
+- [ ] **matlab.io.xml.dom.cdatasection-class** — CDATA section
+- [ ] **matlab.io.parquet.parquetinfo** — Get information about Parquet file
+- [ ] **matlab.io.datastore.partitionable-class** — Add parallelization support to datastore
+- [ ] **matlab.datetime.compatibility.convertdatenum** — Convert inputs to datetime values in a backward-compatible way
+- [ ] **matlab.coverage.result-class** — Result of code coverage analysis
+- [ ] **matlab.buildtool.plan-class** — Fundamental interface for defining a build
+- [ ] **lweekdate** — (Not recommended; use dateshift) Date of last occurrence of weekday in month
+- [ ] **loadenv** — Load environment variables from .env and plain text files
+- [ ] **legoev3** — Connection to LEGO MINDSTORMS EV3 brick
+- [ ] **h5writeatt** — Write attribute to HDF5 file
+- [ ] **h5disp** — Display contents of HDF5 file
+- [ ] **graph.rmedge** — Remove edge from graph
+- [ ] **graph.minspantree** — Minimum spanning tree of graph
+- [ ] **getframe** — Capture axes or figure as movie frame
+- [ ] **fseek** — Move file position pointer to specified position in file
+- [ ] **formatteddisplaytext** — Capture display output as string
+- [ ] **fgets** — Read line from file, keeping newline characters
+- [ ] **double.sinh** — Hyperbolic sine
+- [ ] **double.sign** — Sign function (signum function)
+- [ ] **double.randperm** — Random permutation of integers
+- [ ] **double.numel** — Number of array elements
+- [ ] **double.nextpow2** — Exponent of next higher power of 2
+- [ ] **double.mrdivide** — Solve systems of linear equations xA = B for x
+- [ ] **double.isvector** — Determine whether input is vector
+- [ ] **double.isnan** — Determine which array elements are NaN
+- [ ] **double.cot** — Cotangent of angle in radians
+- [ ] **double.asech** — Inverse hyperbolic secant
+- [ ] **double.acoth** — Inverse hyperbolic cotangent
+- [ ] **dbstop** — Set breakpoints for debugging
+- [ ] **datetime.day** — Day number or name of input date and time
+- [ ] **crygate** — Controlled y-axis rotation gate
+- [ ] **crxgate** — Controlled x-axis rotation gate
+- [ ] **convertstringstochars** — Convert string arrays to character arrays, leaving other arrays unaltered
+- [ ] **convertcontainedstringstochars** — Convert string arrays at any level of cell array or structure
+- [ ] **convertcharstostrings** — Convert character arrays to string arrays, leaving other arrays unaltered
+- [ ] **clim** — Set colormap limits (Renamed from caxis in R2022a)
+- [ ] **chgate** — Controlled Hadamard gate
+- [ ] **cd** — Change current folder
+- [ ] **categorical.renamecats** — Rename categories in categorical array
+- [ ] **blelist** — Scan nearby Bluetooth Low Energy peripheral devices
+- [ ] **asmanyofpattern** — Match pattern as many times as possible
+- [ ] **asfewofpattern** — Match pattern as few times as possible
+- [ ] **arduinoioaddons.adafruit.dcmotorv2** — Connection to DC motor on Adafruit Motor Shield V2 for Arduino
+- [ ] **arduinoio.writeread** — Write and read data from SPI device
+- [ ] **arduinoio.servo** — Connection to servo motor on Arduino or ESP32 hardware
+- [ ] **arduinoio.rotaryencoder** — Connection to quadrature encoder on Arduino or ESP32 hardware
+- [ ] **arduinoio.lsm303c** — Connect to LSM303C sensor Arduino hardware I2C bus
+- [ ] **arduinoio.hts221** — Connect to HTS221 sensor on Arduino hardware I2C bus
+- [ ] **align** — Align UIControl components and Axes objects
+- [ ] **xmlwrite** — Write XML Document Object Model node
+- [ ] **writedictionary** — Write dictionary to file
+- [ ] **whitespaceboundary** — Match boundary between whitespace characters and non-whitespace characters
+- [ ] **videoreader.read** — Read one or more video frames
+- [ ] **version** — Version number for MATLAB and libraries
+- [ ] **uint64** — 64-bit unsigned integer arrays
+- [ ] **uilabel** — Create label component
+- [ ] **uiknob** — Create knob component
+- [ ] **triangulation.edgeattachments** — Triangles or tetrahedra attached to specified edge
+- [ ] **timetable2table** — Convert timetable to table
+- [ ] **tcpclient.configureterminator** — Set terminator for ASCII string communication with remote host over TCP/IP
+- [ ] **tall.gather** — Collect tall array into memory after executing queued operations
+- [ ] **streamribbon** — 3-D stream ribbon plot from vector volume data
+- [ ] **stlread** — Create triangulation from STL file
+- [ ] **smooth3** — Smooth 3-D data
+- [ ] **saveas** — Save figure to specific file format
+- [ ] **rmdir** — Remove folder
+- [ ] **readcount** — Read current count value from encoder with X4 decoding
+- [ ] **quantum.backend.quantumdeviceibm-class** — Quantum device available through IBM
+- [ ] **parallel.pool.constant** — Copy or create data only once on workers in parallel pool
+- [ ] **netcdf.create** — Create new netCDF dataset
+- [ ] **ncreadatt** — Read attribute from netCDF data source
+- [ ] **ncinfo** — Return information about netCDF data source
+- [ ] **nat** — Not-a-Time
+- [ ] **mpmcreate** — Create package
+- [ ] **matlabshared.serial.device.write** — Write data to serial device
+- [ ] **matlabshared.blelib.descriptor** — Access a descriptor on Bluetooth Low Energy peripheral device
+- [ ] **matlab.serialization.elementserializationcontent-class** — Representation of serialized object
+- [ ] **matlab.ode.odedelay** — ODE delay definition
+- [ ] **matlab.net.http.cookieinfo-class** — HTTP cookie information
+- [ ] **matlab.mixin.heterogeneous-class** — Superclass for heterogeneous array formation
+- [ ] **matlab.io.xml.dom.entity-class** — Entity defined by document type
+- [ ] **matlab.io.text.delimitedtextimportoptions.setvartype** — Set variable data types
+- [ ] **matlab.io.fits.createtbl** — Create new ASCII or binary table extension
+- [ ] **matlab.io.datastore.fileset** — File-set for collection of files in datastore
+- [ ] **matlab.io.datastore.combine** — Combine data from multiple datastores
+- [ ] **matlab.io.datastore.blockedfileset** — Blocked file-set for collection of blocks within file
+- [ ] **lineboundary** — Match start or end of line
+- [ ] **letterspattern** — Match letter characters
+- [ ] **letterboundary** — Match boundary between letter characters and non-letter characters
+- [ ] **javamethod** — Call Java method
+- [ ] **j** — j - Imaginary unit
+- [ ] **initgate** — Initialization gate with specified qubit states
+- [ ] **imformats** — Manage image file format registry
+- [ ] **graph.outedges** — Outgoing edges from node
+- [ ] **gpsdev-system-object** — Connect to GPS receiver on Arduino hardware
+- [ ] **for** — for loop to repeat specified number of times
+- [ ] **fliplightness** — Darken light colors and lighten dark colors
+- [ ] **fitswrite** — Write image to FITS file
+- [ ] **fitsinfo** — Information about FITS file
+- [ ] **errordlg** — Create error dialog box
+- [ ] **eomdate** — (Not recommended; use dateshift) Last date of month
+- [ ] **enumeration** — Class enumeration members and names
+- [ ] **double.xor** — Find logical exclusive-OR
+- [ ] **double.tan** — Tangent of argument in radians
+- [ ] **double.sin** — Sine of argument in radians
+- [ ] **double.sec** — Secant of angle in radians
+- [ ] **double.not** — Find logical NOT
+- [ ] **double.length** — Length of largest array dimension
+- [ ] **double.isrow** — Determine if input is row vector
+- [ ] **double.isempty** — Determine whether array is empty
+- [ ] **double.iscolumn** — Determine if input is column vector
+- [ ] **double.exp** — Exponential
+- [ ] **double.csc** — Cosecant of input angle in radians
+- [ ] **double.cos** — Cosine of argument in radians
+- [ ] **double.atanh** — Inverse hyperbolic tangent
+- [ ] **double.atan** — Inverse tangent in radians
+- [ ] **double.asin** — Inverse sine in radians
+- [ ] **double.asec** — Inverse secant in radians
+- [ ] **double.acsch** — Inverse hyperbolic cosecant
+- [ ] **double.acsc** — Inverse cosecant in radians
+- [ ] **double.acot** — Inverse cotangent in radians
+- [ ] **double.acosh** — Inverse hyperbolic cosine
+- [ ] **double.acos** — Inverse cosine in radians
+- [ ] **double.abs** — Absolute value and complex magnitude
+- [ ] **digraph.inedges** — Incoming edges to node
+- [ ] **digitspattern** — Match digit characters
+- [ ] **digitboundary** — Match boundary between digit characters and non-digit characters
+- [ ] **dictionary.insert** — Add entries to a dictionary
+- [ ] **datetime.month** — Month number or name of input date and time
+- [ ] **datetime.caldiff** — Calendar math successive differences
+- [ ] **datetime.between** — Calendar math differences
+- [ ] **csc** — Cosecant of input angle in radians
+- [ ] **crzgate** — Controlled z-axis rotation gate
+- [ ] **cr1gate** — Controlled z-axis rotation gate with global phase
+- [ ] **combine** — Combine data from multiple datastores
+- [ ] **codeissues.fix** — Fix code issues
+- [ ] **codeissues** — Identify code issues in files
+- [ ] **categorical.addcats** — Add categories to categorical array
+- [ ] **cameratoolbar** — Control camera toolbar programmatically
+- [ ] **calendarduration.calmonths** — Calendar duration in months
+- [ ] **calendarduration.caldays** — Calendar duration in days
+- [ ] **bno055.read.read** — Read acceleration, angular velocity, magnetic field, time, and overrun data from BNO055 sensor
+- [ ] **atanh** — Inverse hyperbolic tangent
+- [ ] **asec** — Inverse secant in radians
+- [ ] **arduinoioaddons.adafruit.servo** — Connection to servo motor on Adafruit Motor Shield V2 for Arduino
+- [ ] **arduinoio.writeregister** — Write data to I2C device registers
+- [ ] **arduinoio.readregister** — Read data from I2C device register
+- [ ] **arduinoio.i2cdev.read** — Read data from I2C bus
+- [ ] **alphanumericspattern** — Match letter and digit characters
+- [ ] **alphanumericboundary** — Match boundary between alphanumeric and non-alphanumeric characters
+- [ ] **addpath** — Add folders to search path
+- [ ] **acsch** — Inverse hyperbolic cosecant
+- [ ] **acsc** — Inverse cosecant in radians
+- [ ] **acosh** — Inverse hyperbolic cosine
+- [ ] **zsecondarylabel** — Set z-axis secondary label
+- [ ] **ysecondarylabel** — Set y-axis secondary label
+- [ ] **xsecondarylabel** — Set x-axis secondary label
+- [ ] **while** — while loop to repeat when condition is true
+- [ ] **weeknum** — (Not recommended; use week) Week in year
+- [ ] **webcam.preview** — Preview live video data from webcam
+- [ ] **videoreader.hasframe** — Determine if video frame is available to read
+- [ ] **validatestring** — Check validity of text
+- [ ] **unzip** — Extract contents of ZIP file
+- [ ] **uitoggletool** — Create toggle tool in toolbar
+- [ ] **uitogglebutton** — Create toggle button component
+- [ ] **tscollection** — Create tscollection object
+- [ ] **triangulation.neighbors** — Triangle or tetrahedron neighbors
+- [ ] **triangulation.freeboundary** — Free boundary facets
+- [ ] **timeseries.synchronize** — Synchronize and resample two timeseries objects using common time vector
+- [ ] **timeseries.idealfilter** — timeseries ideal filter
+- [ ] **timeseries.addsample** — Add data sample to timeseries object
+- [ ] **textboundary** — Match start or end of text
+- [ ] **tcpclient.write** — Write data to remote host over TCP/IP
+- [ ] **tallrng** — Control random number generation for tall arrays
+- [ ] **sound** — Convert matrix of signal data to sound
+- [ ] **shortcircuitand** — Short-Circuit AND - Logical AND with short-circuiting
+- [ ] **setsecretmetadata** — Set metadata of secret in MATLAB vault
+- [ ] **setenv** — Set environment variable
+- [ ] **sech** — Hyperbolic secant
+- [ ] **rgb2ind** — Convert RGB image to indexed image
+- [ ] **quantum.backend.quantumtaskibm-class** — Task sent to IBM for execution on quantum device
+- [ ] **quantum.backend.quantumdeviceaws-class** — Quantum device available through AWS
+- [ ] **parrot** — Connection to Parrot drone
+- [ ] **parfor** — Parallel for-loop
+- [ ] **parallel.pool.pollabledataqueue.poll** — Retrieve data from PollableDataQueue
+- [ ] **parallel.backgroundpool** — Environment for running code in the background
+- [ ] **netcdf.inqusertype** — Return information about user-defined type
+- [ ] **netcdf.defvlen** — Define user-defined variable length array type (NC_VLEN)
+- [ ] **nargout** — Number of function output arguments
+- [ ] **nargin** — Number of function input arguments
+- [ ] **mustbegreaterthanorequal** — Validate that value is greater than or equal to another value
+- [ ] **moveback** — Move Ryze drone backwards
+- [ ] **mobilesensor.internal.camera** — Connection to camera on mobile device
+- [ ] **memory** — Memory information
+- [ ] **memoize** — Add memoization semantics to function handle
+- [ ] **matlabwindows** — matlab (Windows) - Start MATLAB program from Windows system prompt
+- [ ] **matlab.unittest.test-class** — Specification of a single test
+- [ ] **matlab.uitest.testcase.type** — Type in UI component
+- [ ] **matlab.system.createsampletime** — Create sample time specification object
+- [ ] **matlab.project.project.updatedependencies** — Update project dependencies
+- [ ] **matlab.project.project.removelabel** — Remove label from project
+- [ ] **matlab.project.project.findfiles** — Find project files by category or label name
+- [ ] **matlab.project.project.addlabel** — Attach label to project files
+- [ ] **matlab.perftest.testcase-class** — Class for writing tests with performance testing framework
+- [ ] **matlab.net.http.responsemessage-class** — HTTP response message
+- [ ] **matlab.metadata.namespace-class** — Describe MATLAB namespace
+- [ ] **matlab.metadata.argument-class** — Describe argument of function or method
+- [ ] **matlab.lang.workspace.evaluateandcapture** — Evaluate MATLAB code in specified workspace
+- [ ] **matlab.io.xml.dom.typeinfo-class** — Schema type information
+- [ ] **matlab.io.xml.dom.resourceidentifier-class** — XML resource identifier
+- [ ] **matlab.io.xml.dom.nodelist-class** — List of document nodes
+- [ ] **matlab.io.xml.dom.documenttype-class** — Document type
+- [ ] **matlab.io.xml.dom.documentconfiguration-class** — XML document normalization options
+- [ ] **matlab.io.unixpermissions** — Permissions of file, folder, or symbolic link in UNIX
+- [ ] **matlab.io.sftp.sftp.mget** — Download files from SFTP or FTP server
+- [ ] **matlab.io.datastore.imagedatastore.subset** — Create subset of datastore or FileSet
+- [ ] **matlab.io.datastore.dsfileset-class** — File-set object for collection of files in datastore
+- [ ] **matlab.graphics.chart.primitive.graphplot** — Graph plot for directed and undirected graphs
+- [ ] **matlab.git.gitrepository.push** — Publish local changes to remote Git repository
+- [ ] **matlab.engine.typedinterface.generatecsharp** — Generate C# code interface for MATLAB namespaces, classes, and functions
+- [ ] **matlab.engine.typedinterface.generatecpp** — Generate C++ code interface for MATLAB namespaces, classes, and functions
+- [ ] **matlab.buildtool.tasks.cleantask-class** — Task for deleting outputs and traces
+- [ ] **matlab.buildtool.io.glob-class** — File collection that matches pattern
+- [ ] **m2xdate** — (Not recommended; use exceltime) MATLAB date to Excel serial date number
+- [ ] **listdlg** — Create list selection dialog box
+- [ ] **leapseconds** — List all leap seconds supported by datetime data type
+- [ ] **ipcamera.ipcam** — Create ipcam object to acquire images from an IP camera
+- [ ] **importsecrets** — Import secrets from file into MATLAB vault
+- [ ] **imapprox** — Approximate indexed image by reducing number of colors
+- [ ] **handle.findobj** — Find handle objects
+- [ ] **h5readatt** — Read attribute from HDF5 file
+- [ ] **h5info** — Information about HDF5 file
+- [ ] **graph.subgraph** — Extract subgraph
+- [ ] **graph.reordernodes** — Reorder graph nodes
+- [ ] **graph.bctree** — Block-cut tree graph
+- [ ] **gpsdev.read.read** — Read data from GPS
+- [ ] **gobjects** — Initialize array for graphics objects
+- [ ] **fileread** — Read contents of file as text
+- [ ] **fgetl** — Read line from file, removing newline characters
+- [ ] **event.listener-class** — Class defining listener objects
+- [ ] **double.transpose** — Transpose vector or matrix
+- [ ] **double.tanh** — Hyperbolic tangent
+- [ ] **double.sech** — Hyperbolic secant
+- [ ] **double.permute** — Permute array dimensions
+- [ ] **double.nnz** — Number of nonzero matrix elements
+- [ ] **double.linspace** — Generate linearly spaced vector
+- [ ] **double.floor** — Round toward negative infinity
+- [ ] **double.ctranspose** — Complex conjugate transpose
+- [ ] **double.csch** — Hyperbolic cosecant
+- [ ] **double.coth** — Hyperbolic cotangent
+- [ ] **double.ceil** — Round toward positive infinity
+- [ ] **double.asinh** — Inverse hyperbolic sine
+- [ ] **double.asind** — Inverse sine in degrees
+- [ ] **dither** — Convert image, increasing apparent color resolution by dithering
+- [ ] **digraph.toposort** — Topological order of directed acyclic graph
+- [ ] **dictionary.values** — Values of dictionary
+- [ ] **dictionary.lookup** — Find value in dictionary by key
+- [ ] **dictionary.keys** — Keys of dictionary
+- [ ] **dictionary.entries** — Key-value pairs of dictionary
+- [ ] **dialog** — Create empty modal dialog box
+- [ ] **demo** — Access product examples
+- [ ] **delaunaytriangulation.convexhull** — Convex hull of Delaunay triangulation
+- [ ] **czgate** — Controlled Z gate
+- [ ] **cygate** — Controlled Y gate
+- [ ] **cxgate** — Controlled X gate (CNOT gate)
+- [ ] **csch** — Hyperbolic cosecant
+- [ ] **comma** — Command separator
+- [ ] **cnotgate** — CNOT gate (controlled X gate)
+- [ ] **cmunique** — Eliminate duplicate colors in colormap; convert grayscale or truecolor image to indexed image
+- [ ] **cdflib.computett2000** — Convert time components to CDF_TIME_TT2000 timestamp
+- [ ] **cdflib.breakdowntt2000** — Convert CDF_TIME_TT2000 timestamp to time components
+- [ ] **categorical.setcats** — Set categories in categorical array
+- [ ] **buildplan** — Create build plan
+- [ ] **beagleboneioserialdev** — Connection to serial device on BeagleBone Black hardware
+- [ ] **beagleboneio.clear** — Terminate connection to BeagleBone Black hardware
+- [ ] **axtoolbarbtn** — Add buttons to axes toolbar
+- [ ] **asech** — Inverse hyperbolic secant
+- [ ] **arduinoio.shiftregister.write** — Write data to shift register
+- [ ] **arduinoio.shiftregister.read** — Read data from shift register
+- [ ] **arduinoio.motorcarrier.rotartyencoder.readspeed.readspeed** — Read current rotational speed of motor from rotary encoder
+- [ ] **arduinoio.motorcarrier.pidmotor.writeangularposition.writeangularposition** — Rotate DC motor by specified angle in closed loop position controls
+- [ ] **arduinoio.motorcarrier.pidmotor.readspeed.readspeed** — Read current rotational speed of DC Motor in closed loop control
+- [ ] **arduinoio.i2cdev.write** — Write data to I2C bus
+- [ ] **alphashape.nearestneighbor** — Determine nearest alpha shape boundary point
+- [ ] **alphashape.inshape** — Determine if point is inside alpha shape
+- [ ] **ztickangle** — Rotate z-axis tick labels
+- [ ] **ytickangle** — Rotate y-axis tick labels
+- [ ] **xmlread** — Read XML document and return Document Object Model node
+- [ ] **x2mdate** — (Not recommended; use datetime) Excel serial date number to MATLAB serial date number or datetime va
+- [ ] **writelines** — Write text to file
+- [ ] **withtol** — Time tolerance for timetable row subscripting
+- [ ] **vartype** — Subscript into table or timetable by variable type
+- [ ] **varargout** — Variable-length output argument list
+- [ ] **unsetenv** — Remove environment variable
+- [ ] **triangulation.isconnected** — Test if two vertices are connected by an edge
+- [ ] **triangulation.incenter** — Incenter of triangulation elements
+- [ ] **timeseries.resample** — Resample time vector in timeseries or tscollection
+- [ ] **tar** — Compress files into tar file
+- [ ] **tabusearchresult** — Result of solve for Tabu search algorithm
+- [ ] **table.addprop** — Add custom properties to table or timetable
+- [ ] **sysobjupdate** — Update custom System object to latest syntax
+- [ ] **subsasgn** — Subscripted assignment using function call
+- [ ] **string.splitlines** — Split strings at newline characters
+- [ ] **serialport.configurecallback** — Set callback function and trigger condition for communication with serial port device
+- [ ] **rygate** — y-axis rotation gate
+- [ ] **rxgate** — x-axis rotation gate
+- [ ] **rtickangle** — Rotate r-axis tick labels
+- [ ] **resetcount** — Set count value to zero or user-specified value
+- [ ] **rendererinfo** — Graphics renderer information
+- [ ] **refreshdata** — Refresh charted data
+- [ ] **quboresult2knapsack** — Convert QUBO result to knapsack solution
+- [ ] **quboresult** — Result of solving QUBO problem
+- [ ] **qaoaresult** — Result of solving QUBO problem using QAOA
+- [ ] **pyrunfile** — Run Python script file from MATLAB
+- [ ] **pyrun** — Run Python statements from MATLAB
+- [ ] **properties** — Class property names
+- [ ] **polyshape.turningdist** — Compute turning distance between polyshape objects
+- [ ] **polyshape.sortboundaries** — Sort polyshape boundaries
+- [ ] **polyshape.nearestvertex** — Query nearest polyshape vertex
+- [ ] **polyshape.isinterior** — Query points inside polyshape
+- [ ] **polyshape.centroid** — Find centroid of polyshape
+- [ ] **parrotio.move** — Move Parrot drone in all six directions
+- [ ] **parallel.pool.dataqueue.aftereach** — Run function after data is received on DataQueue
+- [ ] **netcdf.inqvlen** — Return information about user-defined NC_VLEN type
+- [ ] **netcdf.getvar** — Read data from netCDF variable
+- [ ] **mustbeunderlyingtype** — Validate that value has specified underlying type
+- [ ] **mustbelessthan** — Validate that value is less than another value
+- [ ] **mustbegreaterthan** — Validate that value is greater than another value
+- [ ] **mpmuninstall** — Uninstall package
+- [ ] **moveup** — Move Ryze drone upwards
+- [ ] **moveright** — Move Ryze drone right
+- [ ] **moveleft** — Move Ryze drone left
+- [ ] **moveforward** — Move Ryze drone forward
+- [ ] **movedown** — Move Ryze drone down
+- [ ] **months** — (Not recommended; use between) Number of whole months between dates
+- [ ] **metafunction** — Create metadata object that describes function or method
+- [ ] **mcxgate** — Multi-controlled X gate
+- [ ] **matlab.unittest.constraints.tolerance-class** — Fundamental interface for tolerances
+- [ ] **matlab.uitest.testcase-class** — Class for writing tests with app testing framework
+- [ ] **matlab.project.project.findlabel** — Get project file label
+- [ ] **matlab.project.project.export** — Export project to archive
+- [ ] **matlab.project.project.createcategory** — Create category of project labels
+- [ ] **matlab.net.http.messagebody-class** — Body of HTTP message
+- [ ] **matlab.net.http.mediatype-class** — Internet media type used in HTTP headers
+- [ ] **matlab.net.http.headerfield-class** — Header field of HTTP message
+- [ ] **matlab.net.http.field.authorizationfield-class** — HTTP Authorization or Proxy-Authorization header field
+- [ ] **matlab.net.http.field.authenticatefield-class** — HTTP WWW-Authenticate or Proxy-Authenticate header field
+- [ ] **matlab.net.http.authinfo-class** — Authentication or authorization information in HTTP messages
+- [ ] **matlab.mpm.packagespecifier** — Specify package qualifiers
+- [ ] **matlab.mpm.dependency** — Package dependency
+- [ ] **matlab.mixin.copyable-class** — Superclass providing copy functionality for handle objects
+- [ ] **matlab.metadata.propertyvalidation-class** — Describe property validation
+- [ ] **matlab.metadata.function-class** — Describe function and its signature
+- [ ] **matlab.metadata.event-class** — Describe event defined by MATLAB class
+- [ ] **matlab.mapreduce.keyvaluestore.addmulti** — Add multiple key-value pairs to KeyValueStore
+- [ ] **matlab.lang.workspace.variables** — Information about workspace variables
+- [ ] **matlab.io.xml.transform.stylesheetsourcedocument-class** — Stylesheet source document for transformation
+- [ ] **matlab.io.xml.dom.parser-class** — XML markup parser
+- [ ] **matlab.io.xml.dom.filewriter-class** — Writer that creates a text file
+- [ ] **matlab.io.text.delimitedtextimportoptions.preview** — Preview eight rows from file using import options
+- [ ] **matlab.io.text.delimitedtextimportoptions.getvaropts** — Get variable import options
+- [ ] **matlab.io.sftp.sftp.dir** — List folder contents on SFTP or FTP server
+- [ ] **matlab.io.fits.writeimg** — Write FITS image data
+- [ ] **matlab.io.fits.opendiskfile** — Open FITS file
+- [ ] **matlab.io.datastore.transformeddatastore** — Datastore to transform underlying datastore
+- [ ] **matlab.io.datastore.transform** — Transform datastore
+- [ ] **matlab.io.datastore.subsettable-class** — Add subset and fine-grained parallelization support to datastore
+- [ ] **matlab.io.datastore.dsfilereader-class** — File-reader object for files in a datastore
+- [ ] **matlab.graphics.chart.primitive.graphplot.labeledge** — Label graph edges
+- [ ] **matlab.git.gitrepository.status** — Display status of files in working folder and staging area in Git repository
+- [ ] **matlab.git.gitrepository.fetch** — Download new data from remote Git repository
+- [ ] **matlab.display.displayformatoptions** — Output display format in Command Window
+- [ ] **matlab.display.dimensionsandclassnamerepresentation-class** — Compact display representation using dimensions and class name
+- [ ] **matlab.buildtool.taskoutputs-class** — Container for task outputs
+- [ ] **matlab.buildtool.taskinputs-class** — Container for task inputs
+- [ ] **matlab.buildtool.io.filecollection-class** — Collection of files and folders
+- [ ] **matlab.buildtool.io.file-class** — Single file or folder
+- [ ] **matlab.alias.aliasfilemanager-class** — Create and manage class alias definitions
+- [ ] **license** — Get license status, test existence of license, or check out feature license
+- [ ] **isenv** — Determine if environment variable exists
+- [ ] **isappdata** — Determine if application data exists
+- [ ] **inmem** — Names of functions, MEX files, and classes in memory
+- [ ] **ind2rgb** — Convert indexed image to RGB image
+- [ ] **im2double** — Convert image to double precision
+- [ ] **hgate** — Hadamard gate
+- [ ] **hdfpt** — Gateway to HDF-EOS Point interface
+- [ ] **graph.rmnode** — Remove node from graph
+- [ ] **graph.ismultigraph** — Determine whether graph has multiple edges
+- [ ] **graph.hascycles** — Determine whether graph contains cycles
+- [ ] **graph.degree** — Degree of graph nodes
+- [ ] **gitinit** — Initialize empty Git repository
+- [ ] **ftell** — Current location of file position pointer in file
+- [ ] **double.tand** — Tangent of argument in degrees
+- [ ] **double.sinpi** — Compute sin(X*pi) accurately
+- [ ] **double.secd** — Secant of argument in degrees
+- [ ] **double.nufftn** — N-D nonuniform fast Fourier transform
+- [ ] **double.log1p** — Compute natural logarithm of 1+X accurately for small X
+- [ ] **double.log** — Natural logarithm
+- [ ] **double.isscalar** — Determine whether input is scalar
+- [ ] **double.isinf** — Determine which array elements are infinite
+- [ ] **double.isfinite** — Determine which array elements are finite
+- [ ] **double.fix** — Round toward zero
+- [ ] **double.expm1** — Compute exp(X)-1 accurately for small X
+- [ ] **double.cscd** — Cosecant of argument in degrees
+- [ ] **double.cotd** — Cotangent of argument in degrees
+- [ ] **double.cospi** — Compute cos(X*pi) accurately
+- [ ] **digraph.transreduction** — Transitive reduction
+- [ ] **digraph.transclosure** — Transitive closure
+- [ ] **digraph.outdegree** — Out-degree of nodes
+- [ ] **digraph.indegree** — In-degree of nodes
+- [ ] **digraph.flipedge** — Reverse edge directions
+- [ ] **dictionary.remove** — Remove dictionary entries
+- [ ] **datetime.second** — Seconds component of input date and time
+- [ ] **datetime.juliandate** — Convert MATLAB datetime to Julian date
+- [ ] **codeissues.export** — Write code issues to file
+- [ ] **codecompatibilityreport** — Create code compatibility report
+- [ ] **clibconfiguration** — Set run-time configuration parameters for C/C++ library interface
+- [ ] **categorical.isprotected** — Determine if categories of categorical array are protected
+- [ ] **caseinsensitivepattern** — Match pattern regardless of case
+- [ ] **bubblesize** — Set minimum and maximum bubble sizes in points
+- [ ] **audioinfo** — Information about audio file
+- [ ] **arduinoio.readspeed** — Read current rotational speed
+- [ ] **arduinoio.motorcarrier.rotaryencoder.resetcount.resetcount** — Set encoder count value to zero or specified value
+- [ ] **webcam.snapshot** — Acquire single image frame from a webcam
+- [ ] **untar** — Extract contents of tar file
+- [ ] **uitoolbar** — Create toolbar in figure
+- [ ] **uisetcolor** — Open color picker
+- [ ] **uiradiobutton** — Create radio button component
+- [ ] **uiopen** — Open file selection dialog box and load selected file into workspace
+- [ ] **uint8** — 8-bit unsigned integer arrays
+- [ ] **uint32** — 32-bit unsigned integer arrays
+- [ ] **uint16** — 16-bit unsigned integer arrays
+- [ ] **tsdata.event.findevent** — Query tsdata.event by name
+- [ ] **tsdata.event** — Create tsdata.event object
+- [ ] **tscollection.addsampletocollection** — Add sample to tscollection
+- [ ] **triangulation.featureedges** — Sharp edges of surface triangulation
+- [ ] **timeseries.gettsbetweenevents** — Create timeseries between events
+- [ ] **timeseries.getsampleusingtime** — Subset of timeseries or tscollection data
+- [ ] **tigate** — Inverse T gate
+- [ ] **theme** — Set or get graphics theme
+- [ ] **tgate** — T gate
+- [ ] **textwrap** — Wrap text for user interface control
+- [ ] **tempname** — Unique name for temporary file
+- [ ] **tcpclient.writeline** — Write line of ASCII data to remote host over TCP/IP
+- [ ] **tcpclient.readline** — Read line of ASCII string data from remote host over TCP/IP
+- [ ] **tall.classunderlying** — Class of underlying data in tall array
+- [ ] **tabusearch** — Tabu search algorithm for QUBO solve
+- [ ] **table.rmprop** — Remove custom properties from table or timetable
+- [ ] **table.inner2outer** — Invert nested table-in-table hierarchy in tables or timetables
+- [ ] **swapgate** — Swap gate
+- [ ] **superclasses** — Names of superclasses
+- [ ] **string.upper** — Convert strings to uppercase
+- [ ] **string.reverse** — Reverse order of characters in strings
+- [ ] **string.lower** — Convert strings to lowercase
+- [ ] **streamtube** — Create 3-D stream tube plot
+- [ ] **sigate** — Inverse S gate
+- [ ] **sgate** — S gate
+- [ ] **serialport.configureterminator** — Set terminator for ASCII string communication with serial port
+- [ ] **savefig** — Save figure as FIG-file
+- [ ] **readechotime** — Read echo time of ultrasound waves
+- [ ] **quantumcircuit** — Quantum computing circuit
+- [ ] **pyenv** — Change default environment of Python interpreter
+- [ ] **polyshape.simplify** — Simplify polyshape boundaries
+- [ ] **polyshape.overlaps** — Determine whether polyshape objects overlap
+- [ ] **polyshape.boundary** — Find vertex coordinates of polyshape boundary
+- [ ] **perl** — Call Perl script using operating system executable
+- [ ] **parrotioaddons.camera** — Connection to Parrot drone FPV camera
+- [ ] **parallel.pool.dataqueue.send** — Send data to DataQueue or PollableDataQueue
+- [ ] **parallel.pool.dataqueue** — Send and automatically process data
+- [ ] **optionalpattern** — Make pattern optional to match
+- [ ] **netcdf.defvardeflate** — Define compression parameters for netCDF variable
+- [ ] **net.assembly-class** — Members of .NET assembly
+- [ ] **net.addassembly** — Make .NET assembly visible to MATLAB
+- [ ] **ncwriteschema** — Add netCDF schema definitions to netCDF file
+- [ ] **ncdisp** — Display contents of netCDF data source in Command Window
+- [ ] **mustbepositive** — Validate that value is positive
+- [ ] **mustbenonpositive** — Validate that value is nonpositive
+- [ ] **mustbenonnegative** — Validate that value is nonnegative
+- [ ] **mustbenegative** — Validate that value is negative
+- [ ] **mustbemember** — Validate that value is member of specified set
+- [ ] **mustbeinteger** — Validate that value is integer
+- [ ] **move** — Move Ryze drone in all three axes
+- [ ] **mexext** — Binary MEX filename extension
+- [ ] **matlabshared.blelib.characteristic.subscribe** — Subscribe to characteristic notification or indication
+- [ ] **matlab.unittest.testsuite-class** — Fundamental interface for grouping tests to run
+- [ ] **matlab.unittest.testrunner.runinparallel** — Run all tests in test suite in parallel
+- [ ] **matlab.unittest.testrunner-class** — Class for running tests in unit testing framework
+- [ ] **matlab.unittest.testcase.run** — Run tests corresponding to test case
+- [ ] **matlab.uitest.testcase.scroll** — Perform scroll gesture on UI component
+- [ ] **matlab.ui.control.table.removestyle** — Remove style from UI component
+- [ ] **matlab.ui.container.contextmenu.open** — Open context menu at location within UI figure
+- [ ] **matlab.task.livetask.setup** — Set up instance of Live Editor task subclass
+- [ ] **matlab.task.livetask.generatecode** — Generate code for instance of Live Editor task subclass
+- [ ] **matlab.settings.releasecompatibilityresults** — Results of upgrading toolbox with specific version number
+- [ ] **matlab.settings.operationresult** — Status of individual operation when upgrading toolbox
+- [ ] **matlab.settings.factorygroup.addsetting** — Add new factory setting
+- [ ] **matlab.pyclient.pythonenvironment** — Python environment information
+- [ ] **matlab.project.project.listrequiredfiles** — Get files required by specified project files
+- [ ] **matlab.project.project.listimpactedfiles** — Get files impacted by changes to specified project files
+- [ ] **matlab.project.createproject** — Create blank project
+- [ ] **matlab.net.http.requestline-class** — First line of HTTP request message
+- [ ] **matlab.net.http.protocolversion-class** — HTTP protocol version
+- [ ] **matlab.net.http.progressmonitor-class** — Progress monitor for HTTP message exchange
+- [ ] **matlab.net.http.logrecord-class** — HTTP history log record
+- [ ] **matlab.net.http.field.cookiefield-class** — HTTP Cookie header field
+- [ ] **matlab.net.http.field.contenttypefield-class** — HTTP Content-Type header field
+- [ ] **matlab.net.http.field.acceptfield-class** — HTTP Accept header field
+- [ ] **matlab.mpm.provider** — Package provider
+- [ ] **matlab.mpm.packageidentifier** — Package Identifier
+- [ ] **matlab.mpm.packagefolder** — Package member folder
+- [ ] **matlab.mixin.customelementserialization-class** — Customize how objects are serialized and deserialized
+- [ ] **matlab.metadata.abstractdetails** — Find abstract methods and properties
+- [ ] **matlab.mapreduce.keyvaluestore.add** — Add single key-value pair to KeyValueStore
+- [ ] **matlab.lang.workspace.variablenames** — Names of variables in workspace
+- [ ] **matlab.io.xml.xpath.evaluator-class** — XPath expression evaluator
+- [ ] **matlab.io.xml.transform.sourcedocument-class** — XML source document for transformation
+- [ ] **matlab.io.xml.transform.resultdocument-class** — Store transformation result as document
+- [ ] **matlab.io.xml.dom.processinginstruction-class** — XML processing instruction
+- [ ] **matlab.io.xml.dom.namednodemap-class** — Set of document nodes with names
+- [ ] **matlab.io.xml.dom.domwriter-class** — Writer that serializes an XML document
+- [ ] **matlab.io.fits.readimg** — Read FITS image data
+- [ ] **matlab.io.fits.readcol** — Read rows of ASCII or binary table column
+- [ ] **matlab.io.fits.openfile** — Open FITS file (extended-filename syntax)
+- [ ] **matlab.io.fits.insertatbl** — Insert ASCII table after current HDU
+- [ ] **matlab.io.filesystementrypermissions.setpermissions** — Set individual permissions
+- [ ] **matlab.io.datastore.keyvaluedatastore** — Datastore for key-value pair data for use with mapreduce
+- [ ] **matlab.io.datastore.isshuffleable** — Determine whether datastore is shuffleable
+- [ ] **matlab.io.datastore.ispartitionable** — Determine whether datastore is partitionable
+- [ ] **matlab.io.datastore.imagedatastore.numpartitions** — Number of datastore partitions
+- [ ] **matlab.io.datastore.combineddatastore** — Datastore to combine data read from multiple underlying datastores
+- [ ] **matlab.graphics.internal.linkdata** — Automatically update charted data
+- [ ] **matlab.graphics.interaction.interactions.zoominteraction** — Zoom interaction
+- [ ] **matlab.graphics.interaction.interactions.rulerpaninteraction** — Ruler-pan interaction
+- [ ] **matlab.graphics.interaction.interactions.regionzoominteraction** — Region-zoom interaction
+- [ ] **matlab.graphics.interaction.interactions.paninteraction** — Pan interaction
+- [ ] **matlab.git.gitrepository.switchbranch** — Switch Git branch
+- [ ] **matlab.git.gitrepository.pull** — Download and merge new data from remote Git repository into local repository
+- [ ] **matlab.git.gitrepository.diffcommits** — List modified files between two commits
+- [ ] **matlab.git.gitrepository.addremote** — Add new remote to Git repository
+- [ ] **matlab.engine.start_matlab** — Start MATLAB Engine for Python
+- [ ] **matlab.engine.rest.restfunctionservice** — Service for calling MATLAB functions from client applications
+- [ ] **matlab.display.displayconfiguration-class** — Describe display environment and settings
+- [ ] **matlab.cppclient.clibraryconfiguration** — C/C++ library interface environment information
+- [ ] **matlab.codetools.requiredfilesandproducts** — List dependencies of MATLAB program files
+- [ ] **matlab.buildtool.taskcontext-class** — Context provided when task runs
+- [ ] **matlab.buildtool.taskaction-class** — Action performed when task runs
+- [ ] **matlab.buildtool.diagnostics.taskskipreason-class** — Reason for skipping a task
+- [ ] **matlab.automation.diagnostics.diagnostic-class** — Fundamental interface for diagnostics
+- [ ] **matlab.addons.toolbox.packagetoolbox** — Package toolbox project
+- [ ] **matlab.addons.install** — Install add-on
+- [ ] **lookbehindboundary** — Match boundary following specified pattern
+- [ ] **lookaheadboundary** — Match boundary before specified pattern
+- [ ] **localfunctions** — Handles to all local functions in current file
+- [ ] **isocolors** — Calculate isosurface and patch colors
+- [ ] **interpstreamspeed** — Interpolate stream-line vertices from flow speed
+- [ ] **im2frame** — Convert image to movie frame
+- [ ] **handle.addlistener** — Create event listener bound to event source
+- [ ] **gzip** — Compress files into GNU zip files
+- [ ] **graph.incidence** — Graph incidence matrix
+- [ ] **ginput** — Identify axes coordinates
+- [ ] **getrangefromclass** — Default display range of image based on its class
+- [ ] **geotickformat** — Set or query geographic tick label format
+- [ ] **frewind** — Move file position pointer to beginning of open file
+- [ ] **frame2im** — Return image data associated with movie frame
+- [ ] **fitsdisp** — Display FITS metadata
+- [ ] **ferror** — File I/O error information
+- [ ] **events** — Event names
+- [ ] **event.classinstanceevent-class** — Event data for InstanceCreated and InstanceDestroyed events
+- [ ] **endinvoke** — Retrieve result of asynchronous call initiated by .NET System.Delegate BeginInvoke method
+- [ ] **duration.years** — Duration in years
+- [ ] **duration.seconds** — Duration in seconds
+- [ ] **duration.minutes** — Duration in minutes
+- [ ] **duration.milliseconds** — Duration in milliseconds
+- [ ] **duration.hours** — Duration in hours
+- [ ] **duration.days** — Duration in days
+- [ ] **double.uplus** — Unary plus
+- [ ] **double.uminus** — Unary minus
+- [ ] **double.sqrt** — Square root
+- [ ] **double.sind** — Sine of argument in degrees
+- [ ] **double.realpow** — Array power for real-only output
+- [ ] **double.ndims** — Number of array dimensions
+- [ ] **double.cosd** — Cosine of argument in degrees
+- [ ] **double.atand** — Inverse tangent in degrees
+- [ ] **double.atan2d** — Four-quadrant inverse tangent in degrees
+- [ ] **double.asecd** — Inverse secant in degrees
+- [ ] **double.acscd** — Inverse cosecant in degrees
+- [ ] **double.acotd** — Inverse cotangent in degrees
+- [ ] **double.acosd** — Inverse cosine in degrees
+- [ ] **dotnetenv** — Change .NET default environment
+- [ ] **docsearch** — Documentation search
+- [ ] **dictionary.types** — Types of dictionary keys and values
+- [ ] **dictionary.iskey** — Determine if dictionary contains key
+- [ ] **delaunaytriangulation.voronoidiagram** — Compute Voronoi diagram of Delaunay triangulation
+- [ ] **dbclear** — Remove breakpoints
+- [ ] **datetime.ymd** — Year, month, and day numbers of datetime
+- [ ] **datetime.year** — Year number of input date and time
+- [ ] **datetime.week** — Week number of input date and time
+- [ ] **datetime.posixtime** — Convert MATLAB datetime to POSIX time
+- [ ] **datetime.minute** — Minute component of input date and time
+- [ ] **datetime.hour** — Hour component of input date and time
+- [ ] **datetime.hms** — Hour, minute, and second numbers of datetime or duration
+- [ ] **contrast** — Create grayscale colormap for indexed image
+- [ ] **compositegate** — Construct composite gate for quantum computing
+- [ ] **categorical.isordinal** — Determine if input is ordinal categorical array
+- [ ] **calendarduration.split** — Split calendar duration into numeric and duration units
+- [ ] **calendarduration.calyears** — Calendar duration in years
+- [ ] **calendarduration.calweeks** — Calendar duration in weeks
+- [ ] **bluetooth.configureterminator** — Set terminator for ASCII string communication with Bluetooth device
+- [ ] **bench** — bench
+- [ ] **beagleboneiowebcam** — Connection to web camera on BeagleBone Black hardware
+- [ ] **beagleboneioi2cdev** — Connection to device on BeagleBone Black I2C bus
+- [ ] **beagleboneio.showpins** — Show diagram of GPIO pins
+- [ ] **beagleboneio.showallpins** — Show diagram of all pins
+- [ ] **beagleboneio.configuredigitalpin** — Configure GPIO pin as input or output
+- [ ] **audiorecorder.getaudiodata** — Store recorded audio signal in numeric array
+- [ ] **asecd** — Inverse secant in degrees
+- [ ] **arduinoio.motorcarrier.servo** — Connection to servo motor on Arduino MKR Motor Carrier or Nano Motor Carrier
+- [ ] **arduinoio.motorcarrier.motorcarrier** — Connection to Arduino MKR Motor Carrier or Nano Motor Carrier
+- [ ] **appmigration.migrateguideapp** — Migrate GUIDE apps to App Designer
+- [ ] **alphashape.alphatriangulation** — Triangulation that fills alpha shape
+- [ ] **zgate** — Pauli Z gate
+- [ ] **xgate** — Pauli X gate
+- [ ] **winopen** — Open file in appropriate application (Windows)
+- [ ] **what** — List MATLAB files in folder
+- [ ] **webcam.closepreview** — Close webcam preview window
+- [ ] **waitfor** — Block execution and wait for condition
+- [ ] **videowriter.getprofiles** — Profiles and file formats that VideoWriter supports
+- [ ] **videoreader.getfileformats** — File formats that VideoReader supports
+- [ ] **verlessthan** — Compare toolbox version to specified character vector
+- [ ] **validatefunctionsignaturesjson** — Validate functionSignatures.json files
+- [ ] **userpath** — View or change default user work folder
+- [ ] **uiwait** — Block program execution and wait to resume
+- [ ] **uisetfont** — Open font selection dialog box
+- [ ] **tscollection.addts** — Add timeseries to tscollection
+- [ ] **try** — Execute statements and catch resulting errors
+- [ ] **triangulation.vertexnormal** — Triangulation vertex normal
+- [ ] **triangulation.vertexattachments** — Triangles or tetrahedra attached to vertex
+- [ ] **triangulation.facenormal** — Triangulation unit normal vectors
+- [ ] **triangulation.edges** — Triangulation edges
+- [ ] **triangulation.cartesiantobarycentric** — Convert coordinates from Cartesian to barycentric
+- [ ] **triangulation.barycentrictocartesian** — Convert coordinates from barycentric to Cartesian
+- [ ] **timezones** — List all time zones
+- [ ] **timeseries.var** — Variance of timeseries data
+- [ ] **timeseries.sum** — Sum of timeseries data
+- [ ] **timeseries.std** — Standard deviation of timeseries data
+- [ ] **timeseries.setuniformtime** — Modify uniform timeseries time vector
+- [ ] **timeseries.setinterpmethod** — Set default interpolation method for timeseries object
+- [ ] **timeseries.median** — Median of timeseries data
+- [ ] **timeseries.mean** — Mean of timeseries data
+- [ ] **timeseries.gettsbeforeevent** — Create timeseries before event
+- [ ] **timeseries.gettsbeforeatevent** — Create timeseries at or before event
+- [ ] **timeseries.gettsatevent** — Create timeseries at event
+- [ ] **timeseries.gettsafterevent** — Create timeseries after event
+- [ ] **timeseries.gettsafteratevent** — Create timeseries at or after event
+- [ ] **timeseries.getsamples** — Subset of timeseries
+- [ ] **timeseries.detrend** — Subtract mean or best-fit line from timeseries object
+- [ ] **timeseries.delsample** — Remove sample from timeseries object
+- [ ] **timer.startat** — Schedule timer to fire at specified time
+- [ ] **tcpclient.configurecallback** — Set callback function and trigger condition for communication with remote host over TCP/IP
+- [ ] **tall.isaunderlying** — Determine if tall array data is of specified class
+- [ ] **switch** — Execute one of several groups of statements
+- [ ] **surf2patch** — Convert surface data to patch data
+- [ ] **substruct** — Create indexing structure argument
+- [ ] **stop** — Stop DC motor connected to Adafruit Motor Shield
+- [ ] **squarebrackets** — square brackets, [ ] - Array creation and concatenation, element deletion, argument assignment
+- [ ] **shortcircuitor** — Short-Circuit OR - Logical OR with short-circuiting
+- [ ] **setsecret** — Add secret to MATLAB vault
+- [ ] **setpixelposition** — Set component position in pixels
+- [ ] **sendcommand** — Send message to Arduino device from MATLAB
+- [ ] **ryze.camera** — Connection to Ryze drone's camera
+- [ ] **rmappdata** — Remove application data
+- [ ] **return** — Return control to invoking script or function
+- [ ] **readdistance** — Distance to object in front of ultrasonic sensor
+- [ ] **rad2deg** — Convert angle from radians to degrees
+- [ ] **quantum.gate.simplegate-class** — Simple gate for quantum computing
+- [ ] **quantum.gate.compositegate-class** — Composite gate for quantum computing
+- [ ] **quantum.backend.quantumtaskaws-class** — Task sent to AWS for execution on quantum device
+- [ ] **propertyinfo** — Retrieve metadata for webcam properties
+- [ ] **possessivepattern** — Match pattern without backtracking
+- [ ] **polyshape.translate** — Translate polyshape
+- [ ] **polyshape.scale** — Scale polyshape
+- [ ] **polyshape.rotate** — Rotate polyshape
+- [ ] **polyshape.rmslivers** — Remove polyshape boundary outliers
+- [ ] **polyshape.rmholes** — Remove holes in polyshape
+- [ ] **polyshape.rmboundary** — Remove polyshape boundary
+- [ ] **polyshape.ishole** — Determine if polyshape boundary is a hole
+- [ ] **polyshape.boundingbox** — Find bounding box of polyshape
+- [ ] **persistent** — Define persistent variable
+- [ ] **path** — View or change search path
+- [ ] **parrotio.moveup** — Move Parrot drone upwards
+- [ ] **parrotio.moveright** — Move Parrot drone right
+- [ ] **parrotio.moveleft** — Move Parrot drone left
+- [ ] **parrotio.moveforward** — Move Parrot drone forward
+- [ ] **parrotio.movedown** — Move Parrot drone down
+- [ ] **parrotio.moveback** — Move Parrot drone backward
+- [ ] **parfevalonall** — Run function on all workers in background
+- [ ] **parallel.pool.pollabledataqueue.close** — Close pollable data queue
+- [ ] **parallel.future.fetchoutputs** — Retrieve results from function running in the background
+- [ ] **parallel.future.cancel** — Stop function running in the background
+- [ ] **parallel.fevalfuture.fetchnext** — Retrieve next unread outputs from Future array
+- [ ] **open** — Open file in appropriate application
+- [ ] **netcdf.defvar** — Create netCDF variable
+- [ ] **mustbevector** — Validate that value is vector
+- [ ] **mustbereal** — Validate that value is real
+- [ ] **mustbenumericorlogical** — Validate that value is numeric or logical
+- [ ] **mustbenonzero** — Validate that value is nonzero
+- [ ] **mustbenonsparse** — Validate that value is nonsparse
+- [ ] **mustbenonnan** — Validate that input does not contain NaN
+- [ ] **mustbenonmissing** — Validate that input does not contain missing values
+- [ ] **mustbenonempty** — Validate that value is nonempty
+- [ ] **mustbefinite** — Validate that value is finite
+- [ ] **mustbea** — Validate that value comes from one of specified classes
+- [ ] **mpmaddrepository** — Add repository to repository list
+- [ ] **movegui** — Move figure to specified location on screen
+- [ ] **motor** — Connection to motor
+- [ ] **mobilesensor.internal.mobiledev.readaudio** — Read collected audio data from mobile device
+- [ ] **mobilesensor.internal.mobiledev.poslog** — Return logged position data from mobile device sensor
+- [ ] **mobilesensor.internal.camera.snapshot** — Acquire single image frame from mobile device camera
+- [ ] **mexhost** — Create host process for C++ MEX function
+- [ ] **mexception.getreport** — Get error message for exception
+- [ ] **matlabshared.blelib.characteristic.unsubscribe** — Unsubscribe from characteristic notification and indication
+- [ ] **matlabshared.addon.librarybase-class** — Abstract class for deriving Arduino add-on libraries
+- [ ] **matlab_jenv** — Set the Java path for MATLAB from system prompt
+- [ ] **matlab.wsdl.setwsdltoolpath** — (To be removed) Location of WSDL tools
+- [ ] **matlab.wsdl.createwsdlclient** — (To be removed) Create interface to SOAP-based web service
+- [ ] **matlab.uitest.testcase.hover** — Perform hover gesture on UI component
+- [ ] **matlab.ui.control.html.sendeventtohtmlsource** — Send HTML UI component event from MATLAB to JavaScript
+- [ ] **matlab.ui.componentcontainer.componentcontainer.update** — Update instance of UI component container subclass after setting properties
+- [ ] **matlab.ui.componentcontainer.componentcontainer.setup** — Set up instance of component container subclass
+- [ ] **matlab.task.livetask.reset** — Reset instance of Live Editor task subclass
+- [ ] **matlab.settings.versionresults** — Results of upgrade operations
+- [ ] **matlab.settings.setting** — Represents individual setting
+- [ ] **matlab.settings.releasecompatibilityexception** — Exception that occurs when upgrading toolbox
+- [ ] **matlab.settings.loadsettingscompatibilityresults** — Results of upgrading personal settings of toolbox for specific version
+- [ ] **matlab.settings.factorysetting** — Factory settings object
+- [ ] **matlab.settings.factorygroup.addgroup** — Add new factory settings group
+- [ ] **matlab.project.project.runchecks** — Run all project checks
+- [ ] **matlab.project.project.liststartupissues** — List all issues that occur when project opens
+- [ ] **matlab.project.project.listshutdownissues** — List all issues that occur when project closes
+- [ ] **matlab.perftest.timeresult-class** — Result from running time experiment
+- [ ] **matlab.perftest.frequentisttimeexperiment-class** — TimeExperiment that collects variable number of measurements
+- [ ] **matlab.net.http.message-class** — HTTP request or response message
+- [ ] **matlab.net.http.field.setcookiefield-class** — HTTP Set-Cookie header field
+- [ ] **matlab.net.http.field.locationfield-class** — HTTP Location header field
+- [ ] **matlab.net.http.field.httpdatefield-class** — HTTP header field containing date
+- [ ] **matlab.net.http.field.genericparameterizedfield-class** — GenericField to support parameterized syntax
+- [ ] **matlab.net.http.field.genericfield-class** — HTTP header field with any name and value
+- [ ] **matlab.net.http.field.datefield-class** — HTTP Date header field
+- [ ] **matlab.net.http.field.contentlengthfield-class** — HTTP Content-Length field
+- [ ] **matlab.mock.testcase-class** — Class for writing tests with mocking framework
+- [ ] **matlab.mock.constraints.wasset-class** — Constraint determining property set interaction
+- [ ] **matlab.mock.actions.invoke-class** — Invoke function handle when method is called
+- [ ] **matlab.mixin.util.propertygroup-class** — Custom property list for object display
+- [ ] **matlab.mixin.customcompactdisplayprovider-class** — Interface for customizing object display within containers
+- [ ] **matlab.metadata.enumerationmember-class** — Describe enumeration member of MATLAB class
+- [ ] **matlab.metadata.callsignature-class** — Describe inputs and outputs of function or method
+- [ ] **matlab.metadata.argumentvalidator-class** — Describe argument validation functions applied to function arguments
+- [ ] **matlab.io.xml.transform.tracer-class** — Trace execution of stylesheet
+- [ ] **matlab.io.xml.transform.stylesheetsourcestring-class** — XSL source string for transformation
+- [ ] **matlab.io.xml.transform.stylesheetsourcefile-class** — Stylesheet source file for transformation
+- [ ] **matlab.io.xml.transform.sourcestring-class** — XML source string for transformation
+- [ ] **matlab.io.xml.transform.sourcefile-class** — XML source file for transformation
+- [ ] **matlab.io.xml.transform.resultstring-class** — Store transformation result as string
+- [ ] **matlab.io.xml.transform.resultfile-class** — Store transformation result as file
+- [ ] **matlab.io.fits.writekey** — Add or update keyword in current HDU
+- [ ] **matlab.io.fits.writehistory** — Write HISTORY keyword to current HDU
+- [ ] **matlab.io.fits.writecomment** — Write COMMENT keyword to current HDU
+- [ ] **matlab.io.fits.writecol** — Write elements into ASCII or binary table column
+- [ ] **matlab.io.fits.settiledim** — Set tile dimensions
+- [ ] **matlab.io.fits.sethcompsmooth** — Set smoothing parameter for images compressed with HCOMPRESS algorithm
+- [ ] **matlab.io.fits.sethcompscale** — Set scale parameter for images compressed with HCOMPRESS algorithm
+- [ ] **matlab.io.fits.setcompressiontype** — Set image compression type
+- [ ] **matlab.io.fits.movnamhdu** — Move to first HDU having specific type and keyword values
+- [ ] **matlab.io.fits.insertrows** — Insert rows into table
+- [ ] **matlab.io.fits.insertimg** — Insert FITS image after current HDU
+- [ ] **matlab.io.fits.insertcol** — Insert column into table
+- [ ] **matlab.io.fits.insertbtbl** — Insert binary table after current HDU
+- [ ] **matlab.io.fits.deleterecord** — Delete keyword by record number
+- [ ] **matlab.io.fits.createimg** — Create FITS image
+- [ ] **matlab.io.datastore.talldatastore** — Datastore for checkpointing tall arrays
+- [ ] **matlab.io.datastore.sequentialdatastore** — Sequentially read data from multiple underlying datastores
+- [ ] **matlab.io.datastore.hadooplocationbased-class** — Add Hadoop support to datastore
+- [ ] **matlab.io.datastore.filewritable-class** — Add file writing support to datastore
+- [ ] **matlab.graphics.chartcontainer.mixin.legend-class** — Add legend support to chart container subclass
+- [ ] **matlab.graphics.chartcontainer.mixin.colorbar-class** — Add colorbar support to chart container subclass
+- [ ] **matlab.graphics.chartcontainer.chartcontainer.setup** — Set up instance of chart container subclass
+- [ ] **matlab.graphics.chartcontainer.chartcontainer.gettheme** — Get figure theme of chart container subclass
+- [ ] **matlab.graphics.chartcontainer.chartcontainer.getaxes** — Get axes for chart container subclass
+- [ ] **matlab.graphics.chart.primitive.histogram.morebins** — Increase number of histogram bins
+- [ ] **matlab.graphics.chart.primitive.histogram.fewerbins** — Decrease number of histogram bins
+- [ ] **matlab.graphics.chart.primitive.graphplot.labelnode** — Label graph nodes
+- [ ] **matlab.git.gitrepository.log** — Display record of commits in Git repository
+- [ ] **matlab.git.gitrepository.createbranch** — Create new Git branch
+- [ ] **matlab.git.gitrepository.commit** — Commit changes to Git repository
+- [ ] **matlab.engine.matlabengine-class** — Python object using MATLAB as computational engine within Python session
+- [ ] **matlab.engine.connect_matlab** — Connect shared MATLAB session to MATLAB Engine for Python
+- [ ] **matlab.buildtool.taskresult-class** — Result of running a task
+- [ ] **matlab.addons.uninstall** — Uninstall add-on
+- [ ] **loadobj** — Customize load process for objects
+- [ ] **linkprop** — Keep same value for corresponding properties of graphics objects
+- [ ] **libfunctions** — Return information on functions in shared C library
+- [ ] **lastwarn** — Last warning message
+- [ ] **keymatch** — Determine if two dictionary keys are the same
+- [ ] **jenv** — Set Java path for MATLAB
+- [ ] **javaobjectedt** — Call Java constructor on Event Dispatch Thread (EDT)
+- [ ] **javamethodedt** — Call Java method from Event Dispatch Thread (EDT)
+- [ ] **javaarray** — Construct Java array object
+- [ ] **isunderlyingtype** — Determine whether input has specified underlying data type
+- [ ] **isstringscalar** — Determine if input is string array with one element
+- [ ] **issecret** — Determine if secret exists in MATLAB vault
+- [ ] **isonormals** — Compute normals of isosurface vertices
+- [ ] **isfile** — Determine if input is file
+- [ ] **irsensor** — Connection to infrared sensor
+- [ ] **helpdlg** — Create help dialog box
+- [ ] **hdfinfo** — Information about HDF4 or HDF-EOS2 file
+- [ ] **handle.listener** — Create event listener without binding to event source
+- [ ] **gyrosensor** — Connection to gyroscopic sensor
+- [ ] **gunzip** — Extract contents of GNU zip file
+- [ ] **graph.neighbors** — Neighbors of graph node
+- [ ] **graph.findnode** — Locate node in graph
+- [ ] **graph.edgecount** — Number of edges between two nodes
+- [ ] **getsecretmetadata** — Retrieve metadata of secret in MATLAB vault
+- [ ] **getsecret** — Retrieve secret value from MATLAB vault
+- [ ] **geobasemap** — Set or query basemap
+- [ ] **filepermissions** — View and edit file, folder, and symbolic link permissions
+- [ ] **feof** — Test for end of file
+- [ ] **fclose** — Close one or all open files
+- [ ] **event.proplistener-class** — Class defining listener objects for property events
+- [ ] **event.propertyevent-class** — Data for property events
+- [ ] **equals** — Variable creation and indexed assignment
+- [ ] **ellipsis** — Line continuation
+- [ ] **echodemo** — Run example script step-by-step in Command Window
+- [ ] **double.realsqrt** — Square root for nonnegative real arrays
+- [ ] **double.reallog** — Natural logarithm for nonnegative real arrays
+- [ ] **digraph.successors** — Node successors
+- [ ] **digraph.predecessors** — Node predecessors
+- [ ] **dictionary.numentries** — Number of key-value pairs in dictionary
+- [ ] **dictionary.isconfigured** — Determine if dictionary has types assigned to keys and values
+- [ ] **dictionary.configuredictionary** — Create dictionary with specified key and value types
+- [ ] **delaunaytriangulation.isinterior** — Query points inside Delaunay triangulation
+- [ ] **dbstatus** — List all breakpoints
+- [ ] **dbstack** — Function call stack
+- [ ] **datetime.yyyymmdd** — Convert MATLAB datetime to YYYYMMDD numeric value
+- [ ] **datetime.tzoffset** — Time zone offset from UTC
+- [ ] **datetime.exceltime** — Convert MATLAB datetime to Excel date number
+- [ ] **continue** — Pass control to next iteration of for or while loop
+- [ ] **configurepinresource** — Set resource owner and mode of pin
+- [ ] **computer** — Information about computer on which MATLAB is running
+- [ ] **commandwindow** — Command Window - Enter statements at the command line
+- [ ] **colorsensor** — Connection to color sensor
+- [ ] **cmpermute** — Rearrange colors in colormap
+- [ ] **categorical.isundefined** — Find undefined elements in categorical array
+- [ ] **casesensitivepattern** — Match pattern with case sensitivity
+- [ ] **canchannel.write.write** — Write messages to CAN bus
+- [ ] **camorbit** — Rotate camera position around camera target
+- [ ] **calendarduration.calquarters** — Calendar duration in quarters
+- [ ] **bno055.readorientation.readorientation** — Read orientation data from BNO055 sensor
+- [ ] **bno055.readmagneticfield.readmagneticfield** — Read one sample of magnetic field strength from BNO055 sensor
+- [ ] **bno055.readcalibrationstatus.readcalibrationstatus** — Read calibration status of BNO055 sensor
+- [ ] **bno055.readangularvelocity.readangularvelocity** — Read one sample of angular velocity from BNO055 sensor
+- [ ] **bno055.readacceleration.readacceleration** — Read one sample of acceleration from BNO055 sensor
+- [ ] **bluetooth.write** — Write data to Bluetooth device
+- [ ] **bluetooth.read** — Read data from Bluetooth device
+- [ ] **bluetooth.configurecallback** — Set callback function and trigger condition for communication with Bluetooth device
+- [ ] **beagleboneio.writeregister** — Write to register on I2C device
+- [ ] **beagleboneio.writedigitalpin** — Write logical value to GPIO output pin
+- [ ] **beagleboneio.scani2cbus** — Scan I2C bus device addresses
+- [ ] **beagleboneio.readregister** — Read from register on I2C device
+- [ ] **beagleboneio.readdigitalpin** — Read logical value from GPIO input pin
+- [ ] **beaglebone.serialdev.read** — Read data from serial device
+- [ ] **beaglebone.i2cdev.write** — Write data to I2C device
+- [ ] **beaglebone.i2cdev.read** — Read data from I2C device
+- [ ] **audioplayer.playblocking** — Play audio from audioplayer object; hold control until playback completes
+- [ ] **audioplayer.play** — Play audio from audioplayer object
+- [ ] **atsymbol** — at symbol - Create anonymous functions and function handles, call superclass methods
+- [ ] **arduinoio.writedigitalpin** — Write data to a specified pin on Arduino hardware
+- [ ] **arduinoio.move** — Rotate stepper motor connected to Adafruit Motor Shield
+- [ ] **arduinoio.motorcarrier.servo.writeposition.writeposition** — Write position of servo motor connected to MKR Motor Carrier or Nano Motor Carrier
+- [ ] **arduinoio.motorcarrier.pidmotor.writespeed.writespeed** — Write speed of PID motor
+- [ ] **arduinoio.motorcarrier.dcmotor.stop.stop** — Stop DC motor connected to MKR Motor Carrier or Nano Motor Carriers
+- [ ] **ans** — Most recent answer
+- [ ] **alphashape.volume** — Volume of 3-D alpha shape
+- [ ] **alphashape.surfacearea** — Surface area of 3-D alpha shape
+- [ ] **alphashape.perimeter** — Perimeter of 2-D alpha shape
+- [ ] **alphashape.criticalalpha** — Alpha radius defining critical transition in shape
+- [ ] **alphashape.boundaryfacets** — Boundary facets of alpha shape
+- [ ] **alphashape.area** — Area of 2-D alpha shape
+- [ ] **alphashape.alphaspectrum** — Alpha values giving distinct alpha shapes
+- [ ] **alphamap** — Specify figure alphamap (transparency)
+- [ ] **addon_writeposition** — Write position to servo motor connected to Adafruit Motor Shield
+- [ ] **addon_readposition** — Read position from servo motor connected to Adafruit Motor Shield
+- [ ] **ygate** — Pauli Y gate
+- [ ] **writestatuslight** — Control color and mode of status light on EV3 brick
+- [ ] **writelcd** — Write characters to LCD on EV3 brick
+- [ ] **webcamlist** — List of webcams connected to your system
+- [ ] **viewmtx** — View transformation matrices
+- [ ] **videowriter.open** — Open file for writing video data
+- [ ] **videowriter.close** — Close file after writing video data
+- [ ] **unloadlibrary** — Unload shared C library from memory
+- [ ] **underlyingtype** — Type of underlying data determining array behavior
+- [ ] **tscollection.delsamplefromcollection** — Delete sample from tscollection
+- [ ] **triangulation.size** — Size of triangulation connectivity list
+- [ ] **touchsensor** — Connection to touch sensor
+- [ ] **timeseries.setabstime** — Set timeseries or tscollection times as date character vectors
+- [ ] **timeseries.min** — Minimum of timeseries data
+- [ ] **timeseries.max** — Maximum of timeseries data
+- [ ] **timeseries.iqr** — Interquartile range of timeseries data
+- [ ] **timeseries.getabstime** — Convert timeseries or tscollection time vector to cell array
+- [ ] **timeseries.delevent** — Remove event from timeseries
+- [ ] **timeseries.append** — Concatenate timeseries objects in time
+- [ ] **timeseries.addevent** — Add event to timeseries
+- [ ] **tcpclientfind** — Find TCP/IP client connections
+- [ ] **subvolume** — Extract subset of volume data set
+- [ ] **start** — Start DC motor connected to Adafruit Motor Shield
+- [ ] **sonicsensor** — Connection to ultrasonic sensor
+- [ ] **snapshot** — Acquire single image frame from Ryze drone camera
+- [ ] **serialportfind** — Find serial port connections
+- [ ] **serialport.write** — Write data to serial port
+- [ ] **serialport.read** — Read data from serial port
+- [ ] **semicolon** — Command and array separator
+- [ ] **secretid** — Secret object
+- [ ] **ruler2num** — Convert data from specific ruler to numeric data
+- [ ] **reset** — Clear all outputs of shift register
+- [ ] **renamesecret** — Change name of secret in MATLAB vault
+- [ ] **removesecretmetadata** — Remove metadata of secret in MATLAB vault
+- [ ] **removesecret** — Remove secret from MATLAB vault
+- [ ] **release** — Release stepper motor connected to Adafruit Motor Shield
+- [ ] **reducevolume** — Reduce number of elements in volume data set
+- [ ] **reducepatch** — Reduce number of patch faces
+- [ ] **readposition** — Read servo motor position
+- [ ] **readlightintensity** — Read intensity of light that reaches color sensor
+- [ ] **readcolor** — Reads clear light and RGB components through APDS9960 sensor
+- [ ] **readbeaconproximity** — Read distance and heading from infrared sensor to beacon
+- [ ] **readbeaconbutton** — Read number of pressed button on infrared beacon
+- [ ] **rbbox** — Create rubberband box for area selection
+- [ ] **qubo.evaluateobjective** — Evaluate QUBO (Quadratic Unconstrained Binary Optimization) objective
+- [ ] **pystringarray** — Convert MATLAB string array to Python NumPy string array
+- [ ] **pyargs** — Create keyword arguments for Python function
+- [ ] **polyshape.triangulation** — Triangulate polyshape
+- [ ] **polyshape.regions** — Access polyshape regions
+- [ ] **polyshape.perimeter** — Compute perimeter of polyshape
+- [ ] **polyshape.numsides** — Find number of polyshape sides
+- [ ] **polyshape.numboundaries** — Find number of polyshape boundaries
+- [ ] **polyshape.issimplified** — Determine if polyshape is well-defined
+- [ ] **polyshape.holes** — Convert polyshape hole boundaries to array of polyshape objects
+- [ ] **polyshape.area** — Compute area of polyshape
+- [ ] **plotedit** — Interactively edit and annotate plots
+- [ ] **playtone** — Play tone on piezo speaker using digital pin
+- [ ] **period** — period, . - Decimal point, element-wise operations, indexing
+- [ ] **parrotio.snapshot** — Acquire single image frame from Parrot drone FPV camera
+- [ ] **parallel.fevalqueue.cancelall** — Stop all functions running in the background
+- [ ] **orient** — Paper orientation for printing or saving
+- [ ] **openfig** — Open figure saved in FIG file
+- [ ] **oncleanup** — Cleanup tasks upon function completion
+- [ ] **numargumentsfromsubscript** — Number of arguments from indexing methods
+- [ ] **netcdf.inqvarfill** — Return fill parameters for netCDF variable
+- [ ] **netcdf.inqvardeflate** — Return compression parameters for netCDF variable
+- [ ] **netcdf.inqvarchunking** — Return chunking parameters for netCDF variable
+- [ ] **netcdf.defvarfill** — Define fill parameters for netCDF variable
+- [ ] **netcdf.defvarchunking** — Define chunking parameters for netCDF variable
+- [ ] **net.netexception** — Capture error information for .NET exception
+- [ ] **net.invokegenericmethod** — Invoke generic method of object
+- [ ] **net.creategeneric** — Create instance of specialized .NET generic type
+- [ ] **net.createarray** — Array for nonprimitive .NET types
+- [ ] **namedargs2cell** — Convert structure containing name-value pairs to cell array
+- [ ] **mustbetextscalar** — Validate that value is single piece of text
+- [ ] **mustbesparse** — Validate that value is sparse
+- [ ] **mustbescalarorempty** — Validate that value is scalar or empty
+- [ ] **mustberow** — Validate that value is row vector
+- [ ] **mustbenumeric** — Validate that value is numeric
+- [ ] **mustbenonzerolengthtext** — Validate that value is text with nonzero length
+- [ ] **mustbematrix** — Validate that value is matrix
+- [ ] **mustbefloat** — Validate that value is floating-point array
+- [ ] **mustbecolumn** — Validate that value is column vector
+- [ ] **multibandread** — Read band-interleaved data from binary file
+- [ ] **mobilesensor.internal.mobiledev.orientlog** — Return logged orientation data from mobile device sensor
+- [ ] **mobilesensor.internal.mobiledev.magfieldlog** — Return logged magnetic field data from mobile device sensor
+- [ ] **mobilesensor.internal.mobiledev.angvellog** — Return logged angular velocity data from mobile device sensor
+- [ ] **mobilesensor.internal.mobiledev.accellog** — Return logged acceleration data from mobile device sensor
+- [ ] **mobiledev** — Create mobiledev object to acquire data from mobile device sensors
+- [ ] **mex.getcompilerconfigurations** — Get compiler configuration information for building MEX files
+- [ ] **matlabroot** — matlabroot
+- [ ] **matlabrelease** — Current MATLAB release information
+- [ ] **matlab.unittest.testsuite.run** — Run test suite using default test runner
+- [ ] **matlab.unittest.testrunner.run** — Run test suite
+- [ ] **matlab.unittest.plugins.qualifyingplugin-class** — Plugin interface for performing system-wide qualifications
+- [ ] **matlab.unittest.measurement.measurementresult-class** — Base class for classes holding measurement results
+- [ ] **matlab.unittest.constraints.constraint-class** — Fundamental interface for constraints
+- [ ] **matlab.ui.figure.isinscrollview** — Determine if component is visible in scrollable container
+- [ ] **matlab.ui.container.panel.enablelegacypadding** — Decrease padding in panel UI container
+- [ ] **matlab.ui.container.panel.disablelegacypadding** — Increase padding in panel UI container
+- [ ] **matlab.ui.componentcontainer.componentcontainer.gettheme** — Get figure theme of component container subclass
+- [ ] **matlab.system.supports1dvectorsimpl** — Enable MATLAB System block to use 1-D signals for input and output
+- [ ] **matlab.system.setupimpl** — Initialize System object
+- [ ] **matlab.system.setproperties** — Set property values using name-value pairs when creating System object
+- [ ] **matlab.system.isinputsizemutableimpl** — Set whether System object input size can change
+- [ ] **matlab.system.isinputcomplexitymutableimpl** — Set whether System object input complexity can change
+- [ ] **matlab.system.getoutputdimensionconstraintimpl** — Define output dimension constraints for dataflow subsystems
+- [ ] **matlab.system.getoutputdatatypeimpl** — Data types of output ports
+- [ ] **matlab.system.getinputdimensionconstraintimpl** — Define input dimension constraints for dataflow subsystems
+- [ ] **matlab.system.getimpulseresponselengthimpl** — Define length of input effects for dataflow subsystems
+- [ ] **matlab.system.getdiscretestatespecification** — Get the size, data type, and complexity of the discrete state of a System object
+- [ ] **matlab.settings.settingsgroup.removegroup** — Remove settings group
+- [ ] **matlab.settings.settingsfileupgrader.move** — Record move or rename of factory setting or group
+- [ ] **matlab.settings.factorygroup.createtoolboxgroup** — Create FactoryGroup root object for toolbox
+- [ ] **matlab.settings.factorygroup** — Group of factory settings and factory subgroup objects
+- [ ] **matlab.serialization.serializationcontext-class** — Context in which objects are serialized
+- [ ] **matlab.project.project.findcategory** — Find project category of labels
+- [ ] **matlab.project.project.createlabel** — Create project label
+- [ ] **matlab.project.project.addpath** — Add folder to project path
+- [ ] **matlab.project.project.addfolderincludingchildfiles** — Add folders and child files to project
+- [ ] **matlab.project.project.addfile** — Add files or folders to project
+- [ ] **matlab.project.isunderprojectroot** — Determine whether file or folder is under project root folder
+- [ ] **matlab.project.isfileinproject** — Determine whether file or folder belongs to project
+- [ ] **matlab.project.extractproject** — Extract project from archive
+- [ ] **matlab.net.http.statusline-class** — First line of HTTP response message
+- [ ] **matlab.net.http.httpexception-class** — Exception thrown by HTTP services
+- [ ] **matlab.net.http.field.urireferencefield-class** — Base class for HTTP header fields containing URI components
+- [ ] **matlab.net.http.field.contentdispositionfield-class** — HTTP Content-Disposition header field
+- [ ] **matlab.net.http.field.authenticationinfofield-class** — HTTP Authentication-Info header field in response message
+- [ ] **matlab.net.http.cookie-class** — HTTP cookie received from server
+- [ ] **matlab.mpm.package.updatedependency** — Update dependency information
+- [ ] **matlab.mpm.package.addfolder** — Add member folder to package
+- [ ] **matlab.mpm.package.adddependency** — Add dependency to package
+- [ ] **matlab.mock.constraints.occurred-class** — Constraint qualifying mock object interactions
+- [ ] **matlab.mock.actions.donothing-class** — Take no action
+- [ ] **matlab.mixin.customdisplay.getheader** — Build customized display header text
+- [ ] **matlab.mex.mexhost-class** — Out-of-process host for C++ MEX function execution
+- [ ] **matlab.metadata.fixeddimension-class** — Fixed dimension in property size specification
+- [ ] **matlab.metadata.defaultargumentvalue-class** — Describe default value of function or method argument
+- [ ] **matlab.metadata.argumentvalidation-class** — Describe validation for function argument
+- [ ] **matlab.metadata.argumentidentifier-class** — Name and group name of function argument
+- [ ] **matlab.lang.onoffswitchstate-class** — Represent on and off states with logical values
+- [ ] **matlab.lang.invalidhandle** — Construct array of invalid handles
+- [ ] **matlab.javaclient.javaenvironment** — Java environment information
+- [ ] **matlab.io.xml.xpath.compiledexpression-class** — Compiled XPath expression
+- [ ] **matlab.io.xml.transform.compiledstylesheet-class** — Compiled stylesheet
+- [ ] **matlab.io.xml.dom.parseerrorlocator-class** — Specifies location of parse error
+- [ ] **matlab.io.xml.dom.parseerrorhandler-class** — Abstract base class for parse error handlers
+- [ ] **matlab.io.windowspermissions** — Permissions of file, folder, or symbolic link in Windows
+- [ ] **matlab.io.sftp.sftp.rmdir** — Remove folder on SFTP or FTP server
+- [ ] **matlab.io.ftp.ftp.binary** — Set FTP transfer mode to binary
+- [ ] **matlab.io.ftp.ftp.ascii** — Set FTP transfer mode to ASCII
+- [ ] **matlab.io.fits.writekeyunit** — Write physical units string
+- [ ] **matlab.io.fits.writedate** — Write DATE keyword to current HDU
+- [ ] **matlab.io.fits.writechecksum** — Compute and write checksum for current HDU
+- [ ] **matlab.io.fits.settscale** — Set table column scaling
+- [ ] **matlab.io.fits.setbscale** — Set FITS image scaling
+- [ ] **matlab.io.fits.readrecord** — Read header record specified by number
+- [ ] **matlab.io.fits.readkeyunit** — Read physical units string from keyword
+- [ ] **matlab.io.fits.readkeylongstr** — Read key as long string value
+- [ ] **matlab.io.fits.readkeylonglong** — Read key as 64-bit integer value
+- [ ] **matlab.io.fits.readkeydbl** — Read key as double-precision value
+- [ ] **matlab.io.fits.readkeycmplx** — Read key as complex scalar value
+- [ ] **matlab.io.fits.readkey** — Read key value
+- [ ] **matlab.io.fits.readcard** — Read header record of keyword
+- [ ] **matlab.io.fits.readbtblhdr** — Read header information from current binary table
+- [ ] **matlab.io.fits.readatblhdr** — Read header information from current ASCII table
+- [ ] **matlab.io.fits.movrelhdu** — Move relative number of HDUs from current HDU
+- [ ] **matlab.io.fits.movabshdu** — Move to absolute HDU number
+- [ ] **matlab.io.fits.getimgsize** — Get size of FITS image
+- [ ] **matlab.io.fits.gethdrspace** — Get number of records in header
+- [ ] **matlab.io.fits.geteqcoltype** — Get column data type, repeat value, and width
+- [ ] **matlab.io.fits.getcolname** — Get table column name
+- [ ] **matlab.io.fits.getbcolparms** — Get binary table information
+- [ ] **matlab.io.fits.getacolparms** — Get ASCII table information
+- [ ] **matlab.io.fits.deleterows** — Delete rows from table
+- [ ] **matlab.io.fits.deletekey** — Delete keyword by name
+- [ ] **matlab.io.fits.deletehdu** — Delete current HDU in FITS file
+- [ ] **matlab.io.fits.deletecol** — Delete column from table
+- [ ] **matlab.io.fits.createfile** — Create FITS file
+- [ ] **matlab.io.fits.copyhdu** — Copy current HDU from one file to another
+- [ ] **matlab.io.filesystementrypermissions.getpermissions** — Get individual permissions
+- [ ] **matlab.io.filesystementrypermissions** — Permissions of files, folders, or symbolic links on different systems
+- [ ] **matlab.io.datastore.reset** — Reset datastore to initial state
+- [ ] **matlab.io.datastore.hasdata** — Determine if data is available to read
+- [ ] **matlab.io.cloudpermissions** — Permissions of file or folder in remote location
+- [ ] **matlab.graphics.interaction.interactions.rotateinteraction** — Rotate interaction
+- [ ] **matlab.graphics.interaction.interactions.datatipinteraction** — Data tip interaction
+- [ ] **matlab.graphics.chartcontainer.chartcontainer.update** — Update instance of chart container subclass after setting properties
+- [ ] **matlab.graphics.chartcontainer.chartcontainer.getlayout** — Get tiled chart layout for chart container subclass
+- [ ] **matlab.git.gitrepository.savefilerevision** — Save revision of file to disk
+- [ ] **matlab.git.gitrepository.rm** — Mark file for deletion from Git repository
+- [ ] **matlab.git.gitrepository.merge** — Merge Git branch, revision, or tag into current branch
+- [ ] **matlab.git.gitrepository.add** — Mark new file for addition to Git repository
+- [ ] **matlab.engine.shareengine** — Convert running MATLAB session to shared session
+- [ ] **matlab.codeanalysis.validateconfiguration** — Validate Code Analyzer configuration file
+- [ ] **matlab.apputil.install** — Install app from an MLAPPINSTALL file
+- [ ] **matlab.apputil.getinstalledappinfo** — List information for app installed from an MLAPPINSTALL file
+- [ ] **matlab.addons.toolbox.toolboxversion** — Query or modify version of toolbox
+- [ ] **matlab.addons.toolbox.installtoolbox** — Install toolbox file
+- [ ] **matlab.addons.isaddonenabled** — Determine if add-on is enabled
+- [ ] **matlab.addons.enableaddon** — Enable installed add-on
+- [ ] **mapreducer** — Define execution environment for mapreduce or tall arrays
+- [ ] **listlength** — Number of arguments returned from customized indexing operations
+- [ ] **lis3dh.readvoltage** — Read voltage from ADC pins on sensor
+- [ ] **libstruct** — Convert MATLAB structure to C-style structure for use with shared C library
+- [ ] **libpointer** — Pointer object for use with shared C library
+- [ ] **lib.pointer-class** — Pointer object compatible with C pointer
+- [ ] **javachk** — Error message based on Java feature support
+- [ ] **isprop** — Determine if property is defined by object
+- [ ] **isocaps** — Compute isosurface end-cap geometry
+- [ ] **ismethod** — Determine if object has specified method
+- [ ] **ismatlabreleaseolderthan** — Determine if current MATLAB release is older than specified MATLAB release
+- [ ] **isfolder** — Determine if input is folder
+- [ ] **isfilepathinclusive** — Determine if input is file in current folder, specified location, or MATLAB path
+- [ ] **isdone** — End-of-data status
+- [ ] **iscalendarduration** — Determine if input is calendar duration array
+- [ ] **ipcamera.snapshot** — Acquire single image frame from an IP camera
+- [ ] **idgate** — Identity gate
+- [ ] **hdfvs** — Gateway to VS functions in HDF Vdata interface
+- [ ] **handle.findprop** — Find matlab.metadata.Property object
+- [ ] **handle-class** — Superclass of all handle classes
+- [ ] **guihandles** — Retrieve child objects of figure
+- [ ] **graph.numnodes** — Number of nodes in graph
+- [ ] **graph.numedges** — Number of edges in graph
+- [ ] **graph.laplacian** — Graph Laplacian matrix
+- [ ] **global** — Declare variables as global
+- [ ] **gitrepo** — Create Git repository object
+- [ ] **getpref** — Get custom setting value
+- [ ] **getpoints** — Return points that define animated line
+- [ ] **getpixelposition** — Get component position in pixels
+- [ ] **getenv** — Get environment variable
+- [ ] **getappdata** — Retrieve application data
+- [ ] **genpath** — Generate search path
+- [ ] **filemarker** — Character to separate file name from local or nested function name
+- [ ] **evalin** — Evaluate MATLAB expression in specified workspace
+- [ ] **enablelegacyexplorationmodes** — Control behavior of modes in figures
+- [ ] **dragrect** — Drag rectangles with mouse
+- [ ] **digraph.isdag** — Determine if graph is acyclic
+- [ ] **digraph.condensation** — Graph condensation
+- [ ] **dbup** — Shift current workspace to workspace of caller in debug mode
+- [ ] **dbstep** — Execute next executable line from current breakpoint
+- [ ] **dbdown** — Reverse dbup workspace shift
+- [ ] **datetime.isweekend** — Determine weekend elements
+- [ ] **datetime.isnat** — Determine NaT (Not-a-Time) elements
+- [ ] **datetime.isdst** — Determine daylight saving time elements
+- [ ] **curlybraces** — curly braces, { } - Cell array creation, indexing
+- [ ] **comserver** — Register, unregister, or query MATLAB COM server
+- [ ] **commandhistory** — Command History - View previously run statements
+- [ ] **clipboard** — Copy and paste text to and from system clipboard
+- [ ] **clibconvertarray** — Convert MATLAB fundamental or struct array to MATLAB array of C++ objects
+- [ ] **clearallmemoizedcaches** — Clear caches for all MemoizedFunction objects
+- [ ] **classdef** — Class definition keywords
+- [ ] **cdflib.setcompression** — Specify compression settings
+- [ ] **cdflib.getcompression** — Compression settings
+- [ ] **cdflib.deletevarrecords** — Delete range of records from variable
+- [ ] **cdfinfo** — Information about Common Data Format (CDF) file
+- [ ] **canchannel.read.read** — Read messages from CAN channel
+- [ ] **camlookat** — Position camera to view object or group of objects
+- [ ] **calllib** — Call function in C shared library
+- [ ] **calendarduration.time** — Convert time of calendar duration to duration
+- [ ] **builtin** — Execute built-in function from overloaded method
+- [ ] **builddocsearchdb** — Build searchable documentation database
+- [ ] **bluetoothlist** — Scan nearby Bluetooth Classic devices
+- [ ] **beagleboneio.writeread** — Write data to and read data from SPI device
+- [ ] **beagleboneio.writeled** — Turn LED on or off
+- [ ] **beagleboneio.putfile** — Transfer file from host computer to hardware
+- [ ] **beagleboneio.getfile** — Transfer file from BeagleBone Black hardware to host computer
+- [ ] **beagleboneio.enablespi** — Enable SPI interface
+- [ ] **beagleboneio.enableserialport** — Enable serial interface
+- [ ] **beagleboneio.enablei2c** — Enable I2C interface
+- [ ] **beaglebone.system** — Run command in Linux shell on BeagleBone Black hardware
+- [ ] **beaglebone.serialdev.write** — Write data to serial device
+- [ ] **arduinoio.writepwmvoltage** — Generate PWM signal with specified voltage on digital pin
+- [ ] **arduinoio.writepwmdutycycle** — Generate PWM signal with specified duty cycle on digital pin
+- [ ] **arduinoio.writeposition** — Write position of servo motor
+- [ ] **arduinoio.sensor.readtemperature** — Read one sample of temperature from sensor
+- [ ] **arduinoio.sensor.readmagneticfield** — Read one sample of magnetic field from sensor
+- [ ] **arduinoio.sensor.readangularvelocity** — Read one sample of angular velocity from sensor
+- [ ] **arduinoio.sensor.readacceleration** — Read one sample of acceleration from sensor
+- [ ] **arduinoio.readdigitalpin** — Read data from a specified pin on Arduino hardware
+- [ ] **arduinoio.motorcarrier.dcmotor.start.start** — Start DC motor connected to MKR Motor Carrier or Nano Motor Carrier
+- [ ] **arduinoio.lps22hb.readpressure** — Read one sample of barometric air pressure data from the sensor
+- [ ] **arduinoio.hts221.readhumidity** — Read one sample of relative humidity data from the sensor
+- [ ] **alphashape.plot** — Plot alpha shape
+- [ ] **alphashape.numregions** — Number of regions in alpha shape
+- [ ] **addpref** — Add custom setting
+- [ ] **winqueryreg** — Item from Windows registry
+- [ ] **waitforbuttonpress** — Wait for click or key press
+- [ ] **volumebounds** — Coordinate and color limits for volume data
+- [ ] **validatepin** — Validate that pin supports specific functionality
+- [ ] **usejava** — Determine if Java feature is available
+- [ ] **unregisterevent** — Unregister event handler associated with COM object event at run time
+- [ ] **unix** — Execute UNIX command and return output
+- [ ] **uisave** — Open dialog box for saving variables to MAT-file
+- [ ] **uiresume** — Resume execution of suspended program
+- [ ] **uiprintdlg** — Open figure print dialog box
+- [ ] **uiexportdlg** — Open figure export dialog box
+- [ ] **turn** — Turn Ryze drone by a specified angle
+- [ ] **tsdata.event.gettimestr** — Query tsdata.event times
+- [ ] **tscollection.settimeseriesnames** — Rename timeseries in tscollection
+- [ ] **tscollection.removets** — Remove timeseries from tscollection
+- [ ] **tscollection.gettimeseriesnames** — Names of timeseries in tscollection
+- [ ] **timeseries.getqualitydesc** — timeseries data quality
+- [ ] **timeseries.getdatasamples** — Access timeseries data samples
+- [ ] **timer.stop** — Stop timer
+- [ ] **texlabel** — Format text with TeX characters
+- [ ] **tall.istall** — Determine if input is tall array
+- [ ] **step** — Run System object algorithm
+- [ ] **sheetnames** — Get sheet names from spreadsheet file
+- [ ] **setup** — One-time set up tasks for System objects
+- [ ] **setsharedresourceproperty** — Set shared resource property
+- [ ] **setpref** — Set custom setting value
+- [ ] **setappdata** — Store application data
+- [ ] **serialport.writeline** — Write line of ASCII data to serial port
+- [ ] **serialport.serialbreak** — Send break to device connected to serial port
+- [ ] **serialport.readline** — Read line of ASCII string data from serial port
+- [ ] **savepath** — Save current search path
+- [ ] **ryzelist** — List of Ryze drones connected to your system
+- [ ] **resetsystemobject** — Reset internal states of System object
+- [ ] **resetrotationangle** — Reset rotation angle to zero
+- [ ] **resetrotation** — Reset rotation count to zero
+- [ ] **removetoolbarexplorationbuttons** — Remove data exploration buttons from figure toolbar
+- [ ] **recycle** — Set option to move deleted files to recycle folder
+- [ ] **readtouch** — Read touch sensor value
+- [ ] **readspeed** — Read current speed of Ryze drone
+- [ ] **readrotationrate** — Read rotation rate from gyroscopic sensor
+- [ ] **readrotationangle** — Read rotation angle from gyroscopic sensor
+- [ ] **readrotation** — Read rotation from motor
+- [ ] **readproximity** — Read the proximity from APDS9960 sensor
+- [ ] **readorientation** — Read current orientation of Ryze drone in terms of Euler angles
+- [ ] **readmobilesensordata** — Import data collected from mobile device after file transfer to computer
+- [ ] **readheight** — Read current height of Ryze drone relative to the takeoff surface
+- [ ] **readgesture** — Read gesture through APDS9960 sensor
+- [ ] **readbutton** — Read whether button on EV3 brick is being pressed
+- [ ] **pwd** — Identify current folder
+- [ ] **preview** — Preview live video data from Ryze drone camera
+- [ ] **polyshape.convhull** — Find convex hull of polyshape
+- [ ] **percent** — Code comments, conversion specifier
+- [ ] **parrotio.turn** — Turn Parrot drone at specified angle
+- [ ] **parrotio.readspeed** — Read speed of Parrot drone
+- [ ] **parrotio.readorientation** — Read Euler angles of Parrot drone
+- [ ] **parrotio.readheight** — Read current height of Parrot drone
+- [ ] **parrotio.preview** — Preview live video data from Parrot drone FPV camera
+- [ ] **parrotio.land** — Land Parrot drone
+- [ ] **parrotio.flip** — Flip Parrot drone in specified direction
+- [ ] **parrotio.abort** — End flight of Parrot drone
+- [ ] **parallel.future.wait** — Wait for futures to complete
+- [ ] **num2ruler** — Convert numeric data for use with specific ruler
+- [ ] **netcdf.setchunkcache** — Set default chunk cache settings for netCDF library
+- [ ] **netcdf.inqvarfletcher32** — Return checksum parameters for netCDF variable
+- [ ] **netcdf.inqncid** — Return ID of group
+- [ ] **netcdf.inqgrps** — Return array of child group IDs
+- [ ] **netcdf.inqgrpparent** — Return ID of parent group
+- [ ] **netcdf.inqgrpnamefull** — Complete pathname of group
+- [ ] **netcdf.inqgrpname** — Return name of group
+- [ ] **netcdf.inqformat** — Determine format of netCDF file
+- [ ] **netcdf.inqdimids** — Return list of dimension identifiers in group
+- [ ] **netcdf.getchunkcache** — Return default chunk cache settings for netCDF library
+- [ ] **netcdf.getatt** — Return netCDF attribute
+- [ ] **netcdf.enddef** — End netCDF file define mode
+- [ ] **netcdf.defvarfletcher32** — Define checksum parameters for netCDF variable
+- [ ] **netcdf.defgrp** — Create group in netCDF file
+- [ ] **net.unloadassembly** — Unload .NET Core assembly from MATLAB
+- [ ] **net.createdictionary** — Create generic .NET dictionary
+- [ ] **namespaceclasses** — Classes defined in specified namespace
+- [ ] **namelengthmax** — Maximum identifier length
+- [ ] **mustbevalidvariablename** — Validate that input name is valid variable name
+- [ ] **mustbetext** — Validate that value is string array, character vector, or cell array of character vectors
+- [ ] **mustbefolder** — Validate that input path refers to folder
+- [ ] **multibandwrite** — Write band-interleaved data to file
+- [ ] **mpmremoverepository** — Remove repository from repository list
+- [ ] **more** — Control paged output in Command Window
+- [ ] **mislocked** — Determine if function or script is locked in memory
+- [ ] **mfilename** — Filename of currently running code
+- [ ] **mexception.throwascaller** — Throw exception as if occurs within calling function
+- [ ] **mexception.throw** — Throw exception
+- [ ] **mexception.rethrow** — Rethrow previously caught exception
+- [ ] **mexception.addcorrection** — Provide suggested fix for exception
+- [ ] **mexception.addcause** — Record additional causes of exception
+- [ ] **matlabshared.supportpkg.getinstalled** — List of installed support packages
+- [ ] **matlabshared.supportpkg.checkforupdate** — (Not recommended) List of support packages that can be updated
+- [ ] **matlabdrive** — Root folder of MATLAB Drive
+- [ ] **matlab.unittest.plugins.testrunnerplugin-class** — Plugin interface for extending test runner
+- [ ] **matlab.ui.figure.focus** — Give focus to UI component
+- [ ] **matlab.ui.container.treenode.move** — Move tree node
+- [ ] **matlab.ui.container.tree.collapse** — Collapse tree node
+- [ ] **matlab.ui.container.tree** — Tree UI component
+- [ ] **matlab.task.configuremetadata** — Configure Live Editor task metadata
+- [ ] **matlab.system.validateinputsimpl** — Validate inputs to System object
+- [ ] **matlab.system.update** — Update state of a System object based on inputs
+- [ ] **matlab.system.supportsmultipleinstanceimpl** — Support System object in Simulink For Each subsystem
+- [ ] **matlab.system.supportsmultipleinstance** — Check support for Simulink For Each subsystem for System object
+- [ ] **matlab.system.stepimpl** — System output and state update equations
+- [ ] **matlab.system.saveobjectimpl** — Save System object in MAT file
+- [ ] **matlab.system.releasesystemobject** — Release resources and allow changes to System object property values and input characteristics
+- [ ] **matlab.system.processtunedpropertiesimpl** — Action when tunable properties change
+- [ ] **matlab.system.processinputspecificationchangeimpl** — Perform actions when input size, complexity, or data type change
+- [ ] **matlab.system.output** — Query current output of a System object
+- [ ] **matlab.system.nargin** — Number of input arguments for System object
+- [ ] **matlab.system.loadobjectimpl** — Load System object from MAT file
+- [ ] **matlab.system.istunablepropertydatatypemutableimpl** — Set whether tunable properties can change data type
+- [ ] **matlab.system.isoutputfixedsizeimpl** — Fixed- or variable-size output ports
+- [ ] **matlab.system.isoutputfixedsize** — Check if outputs of a System object are fixed size
+- [ ] **matlab.system.isoutputcompleximpl** — Complexity of output ports
+- [ ] **matlab.system.isoutputcomplex** — Check if outputs of a System object are complex
+- [ ] **matlab.system.islocked** — Determine if System object is in use
+- [ ] **matlab.system.isinputdatatypemutableimpl** — Set whether System object input data type can change
+- [ ] **matlab.system.isinactivepropertyimpl** — Status of inactive property
+- [ ] **matlab.system.isdiscretestatespecificationmutableimpl** — Control whether discrete states can change data type
+- [ ] **matlab.system.getsimulinkfunctionnamesimpl** — Register Simulink function names used in your System object
+- [ ] **matlab.system.getsampletimeimpl** — Specify sample time type, offset time, and sample time
+- [ ] **matlab.system.getsampletime** — Query sample time
+- [ ] **matlab.system.getoutputsizeimpl** — Sizes of output ports
+- [ ] **matlab.system.getoutputsize** — Get the size of outputs of a System object
+- [ ] **matlab.system.getoutputdatatype** — Get data types of the outputs of a System object
+- [ ] **matlab.system.getnumoutputsimpl** — Number of outputs from System object
+- [ ] **matlab.system.getnumoutputs** — Number of outputs from calling the System object
+- [ ] **matlab.system.getnuminputsimpl** — Number of inputs to the System object
+- [ ] **matlab.system.getnuminputs** — Number of inputs required to call the System object
+- [ ] **matlab.system.getglobalnamesimpl** — Global variable names for MATLAB System block
+- [ ] **matlab.system.get** — Get states and properties of a System object
+- [ ] **matlab.system.display.tablecolumn-class** — Table column properties for MATLAB System block
+- [ ] **matlab.system.display.table-class** — Table for MATLAB System block
+- [ ] **matlab.system.cloneimpl** — Create duplicate System object
+- [ ] **matlab.system.clone** — Create duplicate System object
+- [ ] **matlab.settings.settingsgroup.removesetting** — Remove setting
+- [ ] **matlab.settings.settingsgroup.hassetting** — Determine if setting exists in settings group
+- [ ] **matlab.settings.settingsgroup.hasgroup** — Determine if settings group exists
+- [ ] **matlab.settings.settingsfileupgrader.remove** — Record removal of factory setting or group
+- [ ] **matlab.settings.settingsfileupgrader** — Version-specific changes in factory settings tree of toolbox
+- [ ] **matlab.settings.reloadfactoryfile** — Load or reload factory settings
+- [ ] **matlab.pyclient.pythonenvironment.terminate** — Terminate process associated with Python interpreter
+- [ ] **matlab.project.rootproject** — Get root project
+- [ ] **matlab.project.project.removestartupfile** — Remove file from project startup files
+- [ ] **matlab.project.project.removeshutdownfile** — Remove file from project shutdown files
+- [ ] **matlab.project.project.removefile** — Remove file or folder from project
+- [ ] **matlab.project.project.removecategory** — Remove project category of labels
+- [ ] **matlab.project.project.listmodifiedfiles** — List modified files in project
+- [ ] **matlab.project.project.findfile** — Find single project file by name
+- [ ] **matlab.project.project.addstartupfile** — Add startup file to project
+- [ ] **matlab.project.project.addshutdownfile** — Add shutdown file to project
+- [ ] **matlab.project.project.addshortcut** — Add shortcut to project
+- [ ] **matlab.project.project.addreference** — Add referenced project to project
+- [ ] **matlab.project.convertdefinitionfiles** — Change definition file type of project
+- [ ] **matlab.net.http.field.mediarangefield-class** — Base class for HTTP Content-Type and Accept header fields
+- [ ] **matlab.net.http.field.integerfield-class** — Base class for HTTP header fields containing nonnegative integers
+- [ ] **matlab.net.http.field.contentlocationfield-class** — HTTP Content-Location header field
+- [ ] **matlab.net.http.disposition-class** — Results in HTTP log record
+- [ ] **matlab.net.http.authenticationscheme-class** — HTTP Authentication scheme
+- [ ] **matlab.mpm.repository** — Package repository
+- [ ] **matlab.mpm.packagefolderlanguage** — Package folder language
+- [ ] **matlab.mpm.package.removefolder** — Remove member folder from package
+- [ ] **matlab.mpm.package.removedependency** — Remove dependency from package
+- [ ] **matlab.mpm.package.packageidentifier** — Create package identifier
+- [ ] **matlab.mpm.package.digest** — Generate cryptographic hash for package
+- [ ] **matlab.mock.testcase.getmockhistory** — Return history of mock object interactions
+- [ ] **matlab.mock.interactionhistory.formock** — Return history from mock object
+- [ ] **matlab.mock.constraints.wascalled-class** — Constraint determining method call
+- [ ] **matlab.mock.constraints.wasaccessed-class** — Constraint determining property get access
+- [ ] **matlab.mock.actions.assignoutputs-class** — Define return values for method called or property accessed
+- [ ] **matlab.mixin.setget-class** — Provide handle classes with set and get methods
+- [ ] **matlab.mixin.customdisplay.getfooter** — Build customized display footer text
+- [ ] **matlab.mixin.customdisplay-class** — Interface for customizing object display
+- [ ] **matlab.mex.mexhost.feval** — Evaluate C++ MEX function in MEX host process
+- [ ] **matlab.metadata.unrestricteddimension-class** — Unrestricted dimension in property size specification
+- [ ] **matlab.lang.workspace.baseworkspace** — Store variables from base workspace
+- [ ] **matlab.lang.weakreference-class** — Weak reference to handle object
+- [ ] **matlab.lang.handleplaceholder-class** — Basic subclass of handle
+- [ ] **matlab.lang.correction.replaceidentifiercorrection-class** — Correct error by replacing identifier in function call
+- [ ] **matlab.lang.correction.converttofunctionnotationcorrection-class** — Correct error by converting to function notation
+- [ ] **matlab.io.xml.xpath.prefixresolver-class** — Abstract base class for namespace prefix resolvers
+- [ ] **matlab.io.xml.xpath.evalresulttype-class** — Result type for XPath expression evaluation
+- [ ] **matlab.io.xml.dom.notation-class** — Notation in document type definition
+- [ ] **matlab.io.xml.dom.locator-class** — Location of element in XML file
+- [ ] **matlab.io.xml.dom.entityresolver-class** — Abstract base class for entity resolvers
+- [ ] **matlab.io.sftp.sftp.rename** — Rename file on SFTP or FTP server
+- [ ] **matlab.io.sftp.sftp.mput** — Upload file or folder to SFTP or FTP server
+- [ ] **matlab.io.sftp.sftp.mkdir** — Make new folder on SFTP or FTP server
+- [ ] **matlab.io.sftp.sftp.cd** — Change or view current folder on SFTP or FTP server
+- [ ] **matlab.io.hdfeos.gd** — Low-level access to HDF-EOS grid data
+- [ ] **matlab.io.hdf4.sd** — Low-level access to HDF4 multifile scientific datasets (SD)
+- [ ] **matlab.io.fits.iscompressedimg** — Determine if current image is compressed
+- [ ] **matlab.io.fits.imgcompress** — Compress HDU from one file into another
+- [ ] **matlab.io.fits.getversion** — Get revision number of CFITSIO library
+- [ ] **matlab.io.fits.getopenfiles** — Get list of open FITS files
+- [ ] **matlab.io.fits.getnumrows** — Get number of rows in table
+- [ ] **matlab.io.fits.getnumhdus** — Get number of HDUs in FITS file
+- [ ] **matlab.io.fits.getnumcols** — Get number of columns in table
+- [ ] **matlab.io.fits.getimgtype** — Get data type of FITS image
+- [ ] **matlab.io.fits.gethdutype** — Get type of current HDU in FITS file
+- [ ] **matlab.io.fits.gethdunum** — Get number of current HDU in FITS file
+- [ ] **matlab.io.fits.getconstantvalue** — Get numeric value of named constant
+- [ ] **matlab.io.fits.getcoltype** — Get scaled column data type, repeat value, and width
+- [ ] **matlab.io.fits.filename** — Get name of FITS file
+- [ ] **matlab.io.fits.filemode** — Get I/O mode of FITS file
+- [ ] **matlab.io.fits.deletefile** — Delete FITS file
+- [ ] **matlab.io.fits.closefile** — Close FITS file
+- [ ] **matlab.io.datastore.issubsettable** — Determine whether datastore is subsettable
+- [ ] **matlab.io.datastore.imagedatastore.shuffle** — Shuffle all data in datastore
+- [ ] **matlab.io.datastore.folderspropertyprovider-class** — Add Folder property support to datastore
+- [ ] **matlab.htmlviewer.htmlviewer** — HTML Viewer tab
+- [ ] **matlab.graphics.interaction.interactions.editinteraction** — Edit text interaction
+- [ ] **matlab.graphics.chartcontainer.mixin.legend.getlegend** — Get legend object for legend mixin subclass
+- [ ] **matlab.graphics.chartcontainer.mixin.colorbar.getcolorbar** — Get colorbar object for colorbar mixin subclass
+- [ ] **matlab.git.gitrepository.removeremote** — Remove remote from Git repository
+- [ ] **matlab.git.gitrepository.discardchanges** — Discard changes in Git repository
+- [ ] **matlab.git.gitrepository.deletebranch** — Delete local Git branch
+- [ ] **matlab.engine.rest.clientrequestinfo** — Client to function service HTTPS request information
+- [ ] **matlab.dotnetclient.netenvironment** — .NET environment information
+- [ ] **matlab.display.compactdisplayrepresentation-class** — Base class for representing compact display of object array
+- [ ] **matlab.crashhandling.crashreportfolder** — Locate crash report folder
+- [ ] **matlab.addons.disableaddon** — Disable installed add-on
+- [ ] **listsecrets** — List secret names and metadata sizes from MATLAB vault
+- [ ] **listfonts** — List available system fonts
+- [ ] **libisloaded** — Determine if shared C library is loaded
+- [ ] **legomindstormsev3iospidev.stop** — Stop motor
+- [ ] **legomindstormsev3iospidev.start** — Start motor
+- [ ] **legomindstormsev3iospidev.readproximity** — Read distance from infrared sensor to object
+- [ ] **legomindstormsev3iospidev.readdistance** — Read distance from ultrasonic sensor to object
+- [ ] **legomindstormsev3iospidev.readcolor** — Read color of object in front of color sensor
+- [ ] **land** — Land Ryze drone
+- [ ] **keyhash** — Generate hash code for dictionary key
+- [ ] **javaobject** — Call Java constructor
+- [ ] **javaaddpath** — Add entries to dynamic Java class path
+- [ ] **isunix** — Determine if MATLAB is running on Linux or Mac platforms
+- [ ] **isterminalanalog** — Check if terminal can be used as an analog pin
+- [ ] **issymboliclink** — Determine if input is symbolic link
+- [ ] **ispref** — Determine if custom setting exists
+- [ ] **ispc** — Determine if MATLAB is running on Windows (PC) platform
+- [ ] **ismac** — Determine if MATLAB is running on macOS platform
+- [ ] **incrementresourcecount** — Increment current resource count
+- [ ] **hidden** — Remove hidden lines from mesh plot
+- [ ] **hdfv** — Gateway to HDF Vgroup (V) interface
+- [ ] **hdfh** — Gateway to HDF H interface
+- [ ] **hdfdf24** — Gateway to HDF 24-bit raster image (DF24) interface
+- [ ] **hdfan** — Gateway to HDF multifile annotation (AN) interface
+- [ ] **handle.relationaloperators** — Determine equality or sort handle objects
+- [ ] **handle.notify** — Notify listeners that event is occurring
+- [ ] **guidata** — Store or retrieve UI data
+- [ ] **groot** — Graphics root object
+- [ ] **grabcode** — Extract MATLAB code from file published to HTML
+- [ ] **getterminalsfrompins** — Get terminal numbers from pins
+- [ ] **getterminalmode** — Get current terminal mode
+- [ ] **getspiterminals** — Get terminals that have SPI functionality
+- [ ] **getsharedresourceproperty** — Get shared resource property
+- [ ] **getservoterminals** — Get terminals that have servo functionality
+- [ ] **getresourcecount** — Number of instances of a resource
+- [ ] **getpwmterminals** — Get terminals with PWM functionality
+- [ ] **getpinsfromterminals** — Get pin numbers from terminal
+- [ ] **getpinalias** — Get alias pin number
+- [ ] **getinterruptterminals** — Get terminals with interrupt functionality
+- [ ] **geti2cterminals** — Get terminals with I2C functionality
+- [ ] **getfreeresourceslot** — Get first free slot of resource
+- [ ] **functiontests** — Create array of tests from handles to local functions
+- [ ] **filespanel** — Files Panel - Manage files and folders in MATLAB
+- [ ] **event.eventdata-class** — Base class for event data
+- [ ] **event.dynamicpropertyevent-class** — Event data for dynamic property events
+- [ ] **enableservice** — Enable, disable, or report status of MATLAB Automation server
+- [ ] **enabledefaultinteractivity** — Enable built-in axes interactions
+- [ ] **echotcpip** — Start or stop TCP/IP echo server
+- [ ] **echo** — Display statements during function or script execution
+- [ ] **dynamicprops-class** — Superclass for classes that support dynamic properties
+- [ ] **dos** — Execute DOS command and return output
+- [ ] **disabledefaultinteractivity** — Disable built-in axes interactions
+- [ ] **diary** — Log Command Window text to file
+- [ ] **decrementresourcecount** — Decrement count of number of instances of resource
+- [ ] **dbtype** — Display file with line numbers
+- [ ] **createsymboliclink** — Create symbolic link
+- [ ] **codecompatibilityanalysis.analyzecodecompatibility** — Create code compatibility analysis results
+- [ ] **closepreview** — Close Ryze drone camera preview window
+- [ ] **clibarray** — Create MATLAB clib array for C++ library functions
+- [ ] **cdflib.setfilebackward** — Specify backward compatibility mode
+- [ ] **cdflib.setcachesize** — Specify number of CDF cache buffers
+- [ ] **cdflib.putattrgentry** — Write value to entry in attribute with global scope
+- [ ] **cdflib.putattrentry** — Write value to entry in attribute with variable scope
+- [ ] **cdflib.getvardata** — Single value from record in variable
+- [ ] **cdflib.getlibraryversion** — Library version and release information
+- [ ] **cdflib.getfilebackward** — Return backward compatibility mode
+- [ ] **cdflib.getconstantvalue** — Numeric value corresponding to Common Data Format (CDF) library constant
+- [ ] **cdflib.getcachesize** — Number of cache buffers
+- [ ] **cdflib.createvar** — Create new variable
+- [ ] **camva** — Set or query camera view angle
+- [ ] **camtarget** — Set or query location of camera target
+- [ ] **campan** — Rotate camera target around camera position
+- [ ] **camdolly** — Move camera position and target
+- [ ] **bno055.release.release** — Release the BNO055 object
+- [ ] **bno055.info.info** — Read output data rate and bandwidth setting of BNO055 sensor
+- [ ] **bno055.flush.flush** — Flush the host buffer for BNO055 sensor
+- [ ] **bluetooth.writeline** — Write line of ASCII data to Bluetooth device
+- [ ] **bluetooth.readline** — Read line of ASCII string data from Bluetooth device
+- [ ] **begininvoke** — Initiate asynchronous .NET delegate call
+- [ ] **beagleboneio.writepwmvoltage** — Writes average PWM voltage to PWM pin
+- [ ] **beagleboneio.writepwmfrequency** — Writes PWM frequency to PWM pin
+- [ ] **beagleboneio.writepwmdutycycle** — Writes PWM duty cycle to PWM pin
+- [ ] **beagleboneio.showleds** — Show location, name, and color of user-controllable LEDs
+- [ ] **beagleboneio.readvoltage** — Read voltage from analog input pin
+- [ ] **beagleboneio.openshell** — Open terminal on host computer for Linux shell on BeagleBone Black hardware
+- [ ] **beagleboneio.enablepwm** — Enable PWM pin
+- [ ] **beagleboneio.deletefile** — Delete file from hardware
+- [ ] **beaglebone.webcam.snapshot** — Capture RGB image from web camera
+- [ ] **audiorecorder.isrecording** — Determine if recording is in progress
+- [ ] **audiorecorder.getplayer** — Create associated audioplayer object
+- [ ] **audioplayer.stop** — Stop playback of audioplayer object or recording of audiorecorder object
+- [ ] **audioplayer.resume** — Resume playback of audioplayer object or recording of audiorecorder object from paused state
+- [ ] **audioplayer.pause** — Pause playback of audioplayer object or recording of audiorecorder object
+- [ ] **arduinolist** — List available Arduino hardware
+- [ ] **appdesigner.customcomponent.configuremetadata** — Configure custom UI component for use in App Designer
+- [ ] **ancestor** — Ancestor of graphics object
+- [ ] **addtoolbarexplorationbuttons** — Add data exploration buttons to figure toolbar
+- [ ] **actxserver** — Create COM server
+- [ ] **xslt** — Transform XML document using XSLT engine
+- [ ] **unregisterallevents** — Unregister all event handlers associated with COM object events
+- [ ] **underlyingvalue** — Underlying numeric value for C++ enumeration object created in MATLAB
+- [ ] **toolboxdir** — Root folder for specified toolbox
+- [ ] **timeseries.getinterpmethod** — timeseries interpolation method
+- [ ] **timeseries.getdatasamplesize** — timeseries data sample size
+- [ ] **timer.wait** — Block command prompt until timer stops running
+- [ ] **timer.start** — Start timer
+- [ ] **tcpclient.flush** — Clear buffers for communication with remote host over TCP/IP
+- [ ] **takeoff** — Initiate Ryze drone takeoff
+- [ ] **startup** — User-defined startup script for MATLAB
+- [ ] **snapnow** — Take snapshot of image for inclusion in published document
+- [ ] **settings** — Access the SettingsGroup root object
+- [ ] **serialportlist** — List of serial ports connected to your system
+- [ ] **serialport.setrts** — Set serial RTS pin
+- [ ] **serialport.setdtr** — Set serial DTR pin
+- [ ] **serialport.getpinstatus** — Get serial pin status
+- [ ] **serialport.flush** — Clear serial port device buffers
+- [ ] **rmpref** — Remove custom preference
+- [ ] **rmpath** — Remove folders from search path
+- [ ] **restoredefaultpath** — Restore search path to factory-installed state
+- [ ] **restfunctionservices** — List of function services in current MATLAB session
+- [ ] **removeall** — Static .NET System.Delegate RemoveAll method
+- [ ] **rehash** — Refresh function and file system path caches
+- [ ] **regmatlabserver** — Register current MATLAB as COM server
+- [ ] **registerevent** — Associate event handler for COM object event at run time
+- [ ] **quit** — Terminate MATLAB program
+- [ ] **prefdir** — Folder containing settings and layout files
+- [ ] **patchdemoxmlfile** — Patch demos.xml file
+- [ ] **parrotio.takeoff** — Initiate Parrot drone takeoff
+- [ ] **openproject** — Load an existing project
+- [ ] **oncleanup.cancel** — Cancel cleanup tasks
+- [ ] **netcdf.inqvarids** — Return IDs of all variables in group
+- [ ] **netcdf.inqunlimdims** — Return IDs of all visible unlimited dimensions in group
+- [ ] **netcdf.inqlibvers** — Return netCDF library version information
+- [ ] **net.setstaticproperty** — Set static property or field name
+- [ ] **net.isnetsupported** — Check for supported version of Microsoft .NET
+- [ ] **net.interfaceview** — Explicit interface view of .NET object
+- [ ] **net.genericclass-class** — Parameterized generic type definitions
+- [ ] **net.enableautorelease** — Unlock .NET object representing Runtime Callable Wrapper (COM wrapper)
+- [ ] **net.disableautorelease** — Lock .NET object representing Runtime Callable Wrapper (COM wrapper)
+- [ ] **namespacefunctions** — Functions defined in specified namespace
+- [ ] **munlock** — Allow clearing function or script from memory
+- [ ] **mpu9250.stop.stop** — Stop data collection from sensor object
+- [ ] **mpu9250.release** — Release the sensor object
+- [ ] **mpu9250.info** — Read information related to sensor
+- [ ] **mpu9250.flush** — Flush the host buffer
+- [ ] **mpmlistrepositories** — List known repositories
+- [ ] **mobilesensor.internal.mobiledev.discardlogs** — Discard all logged data from mobile device sensors
+- [ ] **mobiledevlist** — List of mobile devices with accessible sensor data
+- [ ] **mmfileinfo** — Information about multimedia file
+- [ ] **mlock** — Prevent clearing function or script from memory
+- [ ] **mexception.last** — Return last uncaught exception
+- [ ] **methodsview** — View class methods
+- [ ] **metaclass** — Obtain matlab.metadata.Class object
+- [ ] **matlabshared.supportpkg.setsupportpackageroot** — Set root folder of support packages
+- [ ] **matlabshared.supportpkg.getsupportpackageroot** — Get root folder of support packages
+- [ ] **matlab.unittest.plugins.parallelizable-class** — Interface for plugins that support running tests in parallel
+- [ ] **matlab.unittest.measurement.chart.comparisonplot-class** — Visually compare two sets of time experiment results
+- [ ] **matlab.unittest.functiontestcase-class** — Test case for function-based tests
+- [ ] **matlab.uitest.unlock** — Unlock figure locked by app testing framework
+- [ ] **matlab.uitest.testcase.forinteractiveuse** — Create test case for interactive use
+- [ ] **matlab.ui.container.tree.expand** — Expand tree node
+- [ ] **matlab.task.removemetadata** — Remove Live Editor task metadata
+- [ ] **matlab.system.validatepropertiesimpl** — Validate property values of System object
+- [ ] **matlab.system.showfisettingsimpl** — Fixed point data type tab visibility for System objects
+- [ ] **matlab.system.set** — Set values for properties of a System object
+- [ ] **matlab.system.resetimpl** — Reset System object states
+- [ ] **matlab.system.releaseimpl** — Release resources
+- [ ] **matlab.system.nargout** — Number of output arguments for System object
+- [ ] **matlab.system.mixin.finitesource.isdoneimpl** — End-of-data flag
+- [ ] **matlab.system.infoimpl** — Information about System object
+- [ ] **matlab.system.getoutputnamesimpl** — Names of MATLAB System block output ports
+- [ ] **matlab.system.getinputnamesimpl** — Names of MATLAB System block input ports
+- [ ] **matlab.system.getheaderimpl** — Header for System object display
+- [ ] **matlab.system.getdiscretestate** — Get the discrete states of a System object
+- [ ] **matlab.system.getcurrenttime** — Current simulation time in MATLAB System block
+- [ ] **matlab.system.display.icon-class** — Specify custom image as icon for MATLAB System block
+- [ ] **matlab.system.delete** — Delete System object
+- [ ] **matlab.settings.settingsgroup** — Group of settings and subgroup objects
+- [ ] **matlab.settings.setting.hastemporaryvalue** — Determine whether setting has temporary value set
+- [ ] **matlab.settings.setting.haspersonalvalue** — Determine whether setting has personal value set
+- [ ] **matlab.settings.setting.hasinstallationvalue** — Determine whether setting has installation value set
+- [ ] **matlab.settings.setting.hasfactoryvalue** — Determine whether setting has factory value set
+- [ ] **matlab.settings.setting.hasactivevalue** — Determine whether setting has active value set
+- [ ] **matlab.settings.setting.cleartemporaryvalue** — Clear temporary value for setting
+- [ ] **matlab.settings.setting.clearpersonalvalue** — Clear personal value for setting
+- [ ] **matlab.settings.setting.clearinstallationvalue** — Clear installation value for setting
+- [ ] **matlab.settings.mustbestringscalar** — Validate that setting value is a string scalar
+- [ ] **matlab.settings.mustbenumericscalar** — Validate that setting value is a numeric scalar
+- [ ] **matlab.settings.mustbelogicalscalar** — Validate that setting value is a logical scalar
+- [ ] **matlab.settings.mustbeintegerscalar** — Validate that setting value is an integer scalar
+- [ ] **matlab.project.project.removeshortcut** — Remove shortcut from project
+- [ ] **matlab.project.project.removereference** — Remove project reference
+- [ ] **matlab.project.project.removepath** — Remove folder from project path
+- [ ] **matlab.project.project.reload** — Reload project
+- [ ] **matlab.project.project.refreshsourcecontrol** — Update source control status of project files
+- [ ] **matlab.project.project.listallprojectreferences** — List all projects in reference hierarchy of current project
+- [ ] **matlab.project.project.isloaded** — Determine if project is loaded
+- [ ] **matlab.project.loadproject** — Load project
+- [ ] **matlab.project.deleteproject** — Stop folder management and delete project definition files
+- [ ] **matlab.project.currentproject** — Get project if open
+- [ ] **matlab.perftest.fixedtimeexperiment-class** — TimeExperiment that collects fixed number of measurements
+- [ ] **matlab.net.http.requestmethod-class** — HTTP request method
+- [ ] **matlab.mock.actions.throwexception-class** — Throw exception when method is called or when property is set or accessed
+- [ ] **matlab.mock.actions.storevalue-class** — Store property value
+- [ ] **matlab.mock.actions.returnstoredvalue-class** — Return stored property value
+- [ ] **matlab.mixin.setgetexactnames-class** — Require exact name match for set and get methods
+- [ ] **matlab.mixin.customdisplay.displayscalarobject** — Display format for scalar objects
+- [ ] **matlab.metadata.metadata-class** — Root of metadata class hierarchy
+- [ ] **matlab.metadata.class.fromname** — Return matlab.metadata.Class object that describes named class
+- [ ] **matlab.metadata.arraydimension-class** — Size information for property validation
+- [ ] **matlab.mapreduce.valueiterator.hasnext** — Determine if ValueIterator has one or more values available
+- [ ] **matlab.mapreduce.valueiterator.getnext** — Get next value from ValueIterator
+- [ ] **matlab.mapreduce.valueiterator** — An iterator over intermediate values for use with mapreduce
+- [ ] **matlab.mapreduce.keyvaluestore** — Store key-value pairs for use with mapreduce
+- [ ] **matlab.lang.workspace.globalworkspace** — Store variables from global workspace
+- [ ] **matlab.lang.correction.appendargumentscorrection-class** — Correct error by appending missing input arguments
+- [ ] **matlab.io.xml.dom.parseerror-class** — Specifies XML markup parse error
+- [ ] **matlab.io.sftp.sftp.delete** — Delete file on SFTP or FTP server
+- [ ] **matlab.io.hdfeos.sw** — Low-level access to HDF-EOS swath files
+- [ ] **matlab.exception.pyexception-class** — Capture error information for Python exception
+- [ ] **matlab.exception.javaexception-class** — Capture error information for Java exception
+- [ ] **matlab.engine.isengineshared** — Determine if MATLAB session is shared
+- [ ] **matlab.engine.futureresult-class** — Results of asynchronous call to MATLAB function stored in Python object
+- [ ] **matlab.engine.enginename** — Return name of shared MATLAB session
+- [ ] **matlab.codeanalysis.refreshconfiguration** — Refresh cached Code Analyzer configuration
+- [ ] **matlab.buildtool.buildresult-class** — Result of running a build
+- [ ] **matlab.automation.verbosity-class** — Enumeration class for verbosity levels
+- [ ] **matlab.apputil.uninstall** — Uninstall app installed from an MLAPPINSTALL file
+- [ ] **matlab.apputil.run** — Run app installed from an MLAPPINSTALL file programmatically
+- [ ] **matlab.apputil.package** — Package app files into an MLAPPINSTALL file
+- [ ] **matlab.addons.toolbox.uninstalltoolbox** — Uninstall toolbox
+- [ ] **matlab.addons.toolbox.installedtoolboxes** — Return information about installed toolboxes
+- [ ] **matlab.addons.installedaddons** — Get list of installed add-ons
+- [ ] **listarduinolibraries** — Display a list of installed Arduino libraries
+- [ ] **lightangle** — Create or position light object in spherical coordinates
+- [ ] **libfunctionsview** — Display shared C library function signatures in window
+- [ ] **javarmpath** — Remove entries from dynamic Java class path
+- [ ] **isinterface** — Determine whether input is COM interface
+- [ ] **iscom** — Determine whether input is COM object
+- [ ] **ipcamera.preview** — Preview live video data from IP camera
+- [ ] **ipcamera.closepreview** — Close IP camera preview window
+- [ ] **innernamespaces** — Inner namespaces defined in specified namespace
+- [ ] **hdfvf** — Gateway to VF functions in HDF Vdata interface
+- [ ] **hdfhe** — Gateway to HDF HE interface
+- [ ] **hdfdfr8** — Gateway to HDF 8-bit raster image (DFR8) interface
+- [ ] **handle.isvalid** — Determine valid handles
+- [ ] **gpsdev.stop.stop** — Stop data collection from GPS module
+- [ ] **gpsdev.release.release** — Release the GPS object
+- [ ] **gpsdev.info.info** — Read Update Rate, GPS Lock information and number of satellites in View for the GPS receiver
+- [ ] **getresourceowner** — Get terminal resource owner
+- [ ] **getmcu** — Get microcontroller of Arduino board
+- [ ] **gcmr** — Get current mapreducer configuration
+- [ ] **gammaln** — Logarithm of gamma function
+- [ ] **finish** — User-defined termination script for MATLAB
+- [ ] **expand** — Expand tree node
+- [ ] **exclamationpoint** — exclamation point - Operating system command
+- [ ] **eventlisteners** — List event handler functions associated with COM object events
+- [ ] **details** — Display array details
+- [ ] **dbquit** — Quit debug mode
+- [ ] **currentproject** — Get current project
+- [ ] **colormaplist** — List available colormaps
+- [ ] **clibrelease** — Release C++ object from MATLAB
+- [ ] **clibpublishinterfaceworkflow** — Publish interface for C/C++ library in the Live Editor
+- [ ] **clibisreadonly** — Determine if C++ object is read-only
+- [ ] **clibisnull** — Determine if C++ object is null
+- [ ] **clearlcd** — Clear characters from LCD on EV3 brick
+- [ ] **cdflib.setvarsparserecords** — Specify how variable handles sparse records
+- [ ] **cdflib.setvarscachesize** — Specify number of cache buffers used for all variables
+- [ ] **cdflib.setvarreservepercent** — Specify reserve percentage for variable
+- [ ] **cdflib.setvarpadvalue** — Specify pad value used with variable
+- [ ] **cdflib.setvarinitialrecs** — Specify initial number of records written to variable
+- [ ] **cdflib.setvarcompression** — Specify compression settings used with variable
+- [ ] **cdflib.setvarcachesize** — Specify number of multifile cache buffers for variable
+- [ ] **cdflib.setvarblockingfactor** — Specify blocking factor for variable
+- [ ] **cdflib.setvarallocblockrecords** — Specify range of records to be allocated for variable
+- [ ] **cdflib.setreadonlymode** — Specify read-only mode
+- [ ] **cdflib.setmajority** — Specify majority of variables
+- [ ] **cdflib.setchecksum** — Specify checksum mode
+- [ ] **cdflib.putvarrecorddata** — Write entire record to variable
+- [ ] **cdflib.putvardata** — Write single value to variable
+- [ ] **cdflib.inquirevar** — Information about variable
+- [ ] **cdflib.inquireattrgentry** — Information about entry in attribute with global scope
+- [ ] **cdflib.inquireattrentry** — Information about entry in attribute with variable scope
+- [ ] **cdflib.inquireattr** — Information about attribute
+- [ ] **cdflib.hyperputvardata** — Write hyperslab of data to variable
+- [ ] **cdflib.hypergetvardata** — Read hyperslab of data from variable
+- [ ] **cdflib.getversion** — Common Data Format (CDF) library version and release information
+- [ ] **cdflib.getvarsparserecords** — Information about how variable handles sparse records
+- [ ] **cdflib.getvarrecorddata** — Entire record for variable
+- [ ] **cdflib.getvarcompression** — Information about compression used by variable
+- [ ] **cdflib.getvalidate** — Library validation mode
+- [ ] **cdflib.getmajority** — Majority of variables
+- [ ] **cdflib.getlibrarycopyright** — Copyright notice of Common Data Format (CDF) library
+- [ ] **cdflib.getconstantnames** — Names of Common Data Format (CDF) library constants
+- [ ] **cdflib.getattrscope** — Scope of attribute
+- [ ] **cdflib.getattrmaxgentry** — Number of last entry for global attribute
+- [ ] **cdflib.getattrmaxentry** — Number of last entry for variable attribute
+- [ ] **cdflib.getattrgentry** — Value of entry in global attribute
+- [ ] **cdflib.getattrentry** — Value of entry in attribute with variable scope
+- [ ] **cdflib.epoch16breakdown** — Convert CDF_EPOCH16 value to time value
+- [ ] **cdflib.deleteattrgentry** — Delete entry from attribute with global scope
+- [ ] **cdflib.deleteattrentry** — Delete entry from attribute with variable scope
+- [ ] **cdflib.createattr** — Create attribute
+- [ ] **cdflib.computeepoch16** — Convert time value to CDF_EPOCH16 value
+- [ ] **cdflib.computeepoch** — Convert time value to CDF_EPOCH value
+- [ ] **canuseparallelpool** — Verify that parallel functions can use a parallel pool
+- [ ] **canusegpu** — Verify supported GPU is available for computation
+- [ ] **camup** — Set or query camera up vector
+- [ ] **camroll** — Rotate camera about view axis
+- [ ] **camproj** — Set or query projection type
+- [ ] **campos** — Set or query camera position
+- [ ] **bluetooth.flush** — Clear Bluetooth device buffers
+- [ ] **blockcomment** — block comment, %{ %} - Block comments
+- [ ] **bitnot** — .NET enumeration object bit-wise NOT instance method
+- [ ] **audioplayer.isplaying** — Determine if playback is in progress
+- [ ] **audiodevreset** — Refresh list of available audio devices
+- [ ] **appdesigner.customcomponent.removemetadata** — Remove custom UI component from App Designer
+- [ ] **actxgetrunningserver** — Handle to running instance of Automation server
+- [ ] **upgradepreviouslyinstalledsupportpackages** — Get previously installed hardware support packages and optional features for the currently installed
+- [ ] **uisetpref** — Manage preferences used in uigetpref
+- [ ] **tempdir** — Name of temporary folder for the system
+- [ ] **shg** — Show current figure
+- [ ] **ryzesetup** — Launch Hardware Setup for multi-drone workflow
+- [ ] **pathtool** — Open Set Path dialog box to view and change search path
+- [ ] **openedfiles** — File identifiers of all open files
+- [ ] **netcdf.sync** — Synchronize netCDF file to disk
+- [ ] **netcdf.setfill** — Set netCDF fill mode
+- [ ] **netcdf.setdefaultformat** — Change default netCDF file format
+- [ ] **netcdf.renamevar** — Change name of netCDF variable
+- [ ] **netcdf.renamedim** — Change name of netCDF dimension
+- [ ] **netcdf.renameatt** — Change name of netCDF attribute
+- [ ] **netcdf.redef** — Put open netCDF file into define mode
+- [ ] **netcdf.inqvarid** — Return ID associated with variable name
+- [ ] **netcdf.inqvar** — Information about netCDF variable
+- [ ] **netcdf.inqdimid** — Return dimension ID
+- [ ] **netcdf.inqdim** — Return netCDF dimension name and length
+- [ ] **netcdf.inqattname** — Return name of netCDF attribute
+- [ ] **netcdf.inqattid** — Return ID of netCDF attribute
+- [ ] **netcdf.inqatt** — Return information about netCDF attribute
+- [ ] **netcdf.inq** — Return information about netCDF file
+- [ ] **netcdf.getconstantnames** — Return list of constants known to netCDF library
+- [ ] **netcdf.getconstant** — Return numeric value of named constant
+- [ ] **netcdf.delatt** — Delete netCDF attribute
+- [ ] **netcdf.defdim** — Create netCDF dimension
+- [ ] **netcdf.copyatt** — Copy attribute to new location
+- [ ] **netcdf.close** — Close netCDF file
+- [ ] **netcdf.abort** — Revert recent netCDF file definitions
+- [ ] **mu2lin** — Convert mu-law audio signal to linear
+- [ ] **matlabrc** — System administrator-defined startup script for MATLAB
+- [ ] **matlabprocessid** — Process identifier for MATLAB code execution process
+- [ ] **matlab.unittest.measurement.defaultmeasurementresult-class** — Default implementation of MeasurementResult class
+- [ ] **matlab.system.mixin.finitesource-class** — Class that adds ability to check for the end of finite data source used by System object
+- [ ] **matlab.project.project.close** — Close project
+- [ ] **matlab.perftest.timeexperiment-class** — Interface for measuring execution time of code under test
+- [ ] **matlab.net.http.statusclass-class** — Status class of HTTP response
+- [ ] **matlab.net.http.startline-class** — First line of HTTP message
+- [ ] **matlab.net.base64encode** — Base 64 encoding of byte string or vector
+- [ ] **matlab.net.base64decode** — Base 64 decoding of string
+- [ ] **matlab.net.arrayformat-class** — Convert arrays in HTTP queries
+- [ ] **matlab.mock.propertysetbehavior-class** — Specify mock object set behavior
+- [ ] **matlab.mock.propertygetbehavior-class** — Specify mock property get behavior
+- [ ] **matlab.mock.propertybehavior-class** — Specify mock object property behavior and qualify interactions
+- [ ] **matlab.mock.methodcallbehavior-class** — Specify mock object method behavior and qualify method calls
+- [ ] **matlab.mock.interactionhistory-class** — Interface for mock object interaction history
+- [ ] **matlab.mock.anyarguments-class** — Match any number of arguments
+- [ ] **matlab.io.xml.dom.resourceidentifiertype-class** — XML resource identifier type
+- [ ] **matlab.io.xml.dom.parseerrorseverity-class** — Enumeration class denoting XML markup parse error severity
+- [ ] **matlab.io.datastore.shuffleable-class** — Add shuffling support to datastore
+- [ ] **matlab.engine.find_matlab** — Find shared MATLAB sessions to connect to MATLAB Engine for Python
+- [ ] **layoutcoords** — MATLAB
+- [ ] **layout** — MATLAB
+- [ ] **labelnode** — MATLAB
+- [ ] **keyboard** — Give control to keyboard
+- [ ] **ishold** — Current hold state
+- [ ] **ishandle** — Test for valid graphics or Java object handle
+- [ ] **isevent** — Determine whether input is COM object event
+- [ ] **home** — Send cursor home
+- [ ] **highlight** — MATLAB
+- [ ] **hggroup** — Create group object
+- [ ] **hdfvh** — Gateway to VH functions in HDF Vdata interface
+- [ ] **hdfml** — Utilities for working with MATLAB HDF gateway functions
+- [ ] **hdfhx** — Gateway to HDF external data (HX) interface
+- [ ] **hdfhd** — Gateway to HDF HD interface
+- [ ] **handle.delete** — Delete handle object
+- [ ] **gpsdev.flush.flush** — Flush the host buffer
+- [ ] **gco** — Handle of current object
+- [ ] **gcbo** — Handle of object whose callback is executing
+- [ ] **gcbf** — Handle of figure containing object whose callback is executing
+- [ ] **flow** — Simple function of three variables
+- [ ] **diffuse** — Calculate diffuse reflectance
+- [ ] **dbmex** — Enable MEX file debugging on UNIX platforms
+- [ ] **dbcont** — Resume execution
+- [ ] **com** — Access COM components from MATLAB
+- [ ] **cellplot** — Graphically display structure of cell array
+- [ ] **cdflib.setvalidate** — Specify library validation mode
+- [ ] **cdflib.setstagecachesize** — Specify number of staging cache buffers for Common Data Format (CDF) file
+- [ ] **cdflib.setcompressioncachesize** — Specify number of compression cache buffers
+- [ ] **cdflib.renamevar** — Change name of variable
+- [ ] **cdflib.renameattr** — Change name of attribute
+- [ ] **cdflib.open** — Open Common Data Format (CDF) file
+- [ ] **cdflib.inquire** — Information about Common Data Format (CDF) file
+- [ ] **cdflib.getvarsmaxwrittenrecnum** — Maximum written record number for CDF file
+- [ ] **cdflib.getvarreservepercent** — Compression reserve percentage for variable
+- [ ] **cdflib.getvarpadvalue** — Pad value for variable
+- [ ] **cdflib.getvarnumrecswritten** — Number of records written to variable
+- [ ] **cdflib.getvarnum** — Variable number, given variable name
+- [ ] **cdflib.getvarname** — Variable name, given variable number
+- [ ] **cdflib.getvarmaxwrittenrecnum** — Maximum written record number for variable
+- [ ] **cdflib.getvarmaxallocrecnum** — Maximum allocated record number for variable
+- [ ] **cdflib.getvarcachesize** — Number of multifile cache buffers
+- [ ] **cdflib.getvarblockingfactor** — Blocking factor for variable
+- [ ] **cdflib.getvarallocrecords** — Number of records allocated for variable
+- [ ] **cdflib.getstagecachesize** — Number of cache buffers for staging
+- [ ] **cdflib.getreadonlymode** — Read-only mode
+- [ ] **cdflib.getnumgattributes** — Number of attributes with global scope
+- [ ] **cdflib.getnumattributes** — Number of attributes with variable scope
+- [ ] **cdflib.getnumattrgentries** — Number of entries for attribute with global scope
+- [ ] **cdflib.getnumattrentries** — Number of entries for attribute with variable scope
+- [ ] **cdflib.getname** — Name of Common Data Format (CDF) file
+- [ ] **cdflib.getformat** — Format of Common Data Format (CDF) file
+- [ ] **cdflib.getcopyright** — Copyright notice in Common Data Format (CDF) file
+- [ ] **cdflib.getcompressioncachesize** — Number of compression cache buffers
+- [ ] **cdflib.getchecksum** — Checksum mode
+- [ ] **cdflib.getattrnum** — Attribute number, given attribute name
+- [ ] **cdflib.getattrname** — Attribute name, given attribute number
+- [ ] **cdflib.epochbreakdown** — Convert CDF_EPOCH value to time value
+- [ ] **cdflib.deletevar** — Delete variable
+- [ ] **cdflib.deleteattr** — Delete attribute
+- [ ] **cdflib.delete** — Delete Common Data Format (CDF) file
+- [ ] **cdflib.create** — Create Common Data Format (CDF) file
+- [ ] **cdflib.closevar** — Close specified variable from multifile format Common Data Format (CDF) file
+- [ ] **cdflib.close** — Close Common Data Format (CDF) file
+- [ ] **camzoom** — Zoom in and out on scene
+- [ ] **batchstartupoptionused** — Determine if MATLAB started with -batch option
+- [ ] **audiorecorder.recordblocking** — Record audio to audiorecorder object; hold control until recording completes
+- [ ] **audiorecorder.record** — Record audio to audiorecorder object
+- [ ] **arduinosetup** — Open Arduino hardware setup interface
+- [ ] **specular** — Calculate specular reflectance
+- [ ] **refresh** — Redraw current figure
+- [ ] **matlab.net.http.messagetype-class** — HTTP message type
+- [ ] **isstudent** — Determine if version is Student Version
+- [ ] **findfigs** — Find visible offscreen figures
+- [ ] **exit** — Terminate MATLAB program (same as quit)
+- [ ] **allchild** — Find all children of specified objects
+- [ ] **log1p** — MATLAB
+- [ ] **scatterhistogram** — Create scatter plot with histograms
+- [ ] **matlab.io.text.delimitedtextimportoptions** — Import options object for delimited text
+- [ ] **testsuite** — Create suite of tests
+- [ ] **uiconfirm** — Create confirmation dialog box
+- [ ] **findobj** — Find graphics objects with specific properties
+- [ ] **uigetfile** — Open file selection dialog box
+- [ ] **waitbar** — Create or update wait bar dialog box
+- [ ] **arduinoio.mpu9250-system-object** — Connect to MPU-9250 sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.mpu6050-system-object** — Connect to MPU-6050 sensor on Arduino hardware I2C bus
+- [ ] **arduinoio.lsm6ds3h** — Connect to LSM6DS3H sensor on Arduino hardware I2C bus
+- [ ] **profile** — Profile execution time for functions
+- [ ] **warndlg** — Create warning dialog box
+- [ ] **uipushtool** — Create push tool in toolbar
+- [ ] **tilerowcol** — Row and column numbers in tiled chart layout
+- [ ] **matlab.uitest.testcase.drag** — Perform drag gesture on UI component
+- [ ] **matlab.lang.obfuscatenames** — Obfuscate names of local variables, local functions, and nested functions
+- [ ] **mustbelessthanorequal** — Validate that value is less than or equal to another value
+- [ ] **matlab.display.plaintextrepresentation-class** — Compact display representation using data in object array
+- [ ] **matlab.unittest.constraints.booleanconstraint-class** — Fundamental interface for constraints that support Boolean operations
+- [ ] **assignin** — Assign value to variable in specified workspace
+- [ ] **sendmail** — Send email message to address list
+- [ ] **matlab.unittest.testresult-class** — Result of running test suite
+- [ ] **javaclasspath** — Return Java class path or specify dynamic path
+- [ ] **beagleboneiospidev** — Connection to SPI device on BeagleBone Black hardware
+- [ ] **polyshape.sortregions** — Sort polyshape regions
+- [ ] **datetime.quarter** — Quarter number of input date and time
+- [ ] **uigetdir** — Open folder selection dialog box
+- [ ] **saveobj** — Customize save process for objects
+- [ ] **legomindstormsev3iospidev.playtone** — Play tones from speaker on EV3 brick
+- [ ] **isterminaldigital** — Check if terminal can be used as a digital pin
+- [ ] **exportapp** — Capture app as image or PDF
+- [ ] **arduinoio.scani2cbus** — Scan I2C bus on Arduino hardware for device address
+- [ ] **shrinkfaces** — Reduce size of patch faces
+- [ ] **parrotio.closepreview** — Close Parrot drone FPV camera preview window
+- [ ] **parentheses** — parentheses, ( ) - Command grouping, indexing
+- [ ] **mustbefile** — Validate that path refers to file
+- [ ] **matlab.lang.workspace.currentworkspace** — Store variables from current workspace
+- [ ] **event.haslistener** — Determine if listeners exist for event
+- [ ] **cmdsep** — Command separator for current platform
+- [ ] **gpsdev.writebytes.writebytes** — Write raw data to GPS module
+- [ ] **cdflib.setformat** — Specify format of Common Data Format (CDF) file
+- [ ] **alim** — Set or query axes alpha limits
+
+## signal
+
+- [ ] **designfilt** — Design digital filter
+- [ ] **signaltimefrequencyfeatureextractor** — Streamline signal time-frequency feature extraction
+- [ ] **spectrogram** — Spectrogram using short-time Fourier transform
+- [ ] **pspectrum** — Analyze signals in the frequency and time-frequency domains
+- [ ] **periodogram** — Periodogram power spectral density estimate
+- [ ] **pmtm** — Multitaper power spectral density estimate
+- [ ] **refinepeaks** — Refine peak value and location estimates
+- [ ] **pwelch** — Welch’s power spectral density estimate
+- [ ] **signaltimefeatureextractor** — Streamline signal time feature extraction
+- [ ] **signalfrequencyfeatureextractor** — Streamline signal frequency feature extraction
+- [ ] **findpeaks** — Find local maxima
+- [ ] **filt2block** — Generate Simulink filter block
+- [ ] **stftmag2sig** — Signal reconstruction from STFT magnitude
+- [ ] **labelspectrogramoptions** — Spectrogram options for time-frequency label definition
+- [ ] **scalarfeatureoptions** — Store information for converting feature vectors to scalar values
+- [ ] **resample** — Resample uniform or nonuniform data to new fixed rate
+- [ ] **plomb** — Lomb-Scargle periodogram
+- [ ] **framelbl** — Partition label sequence into frames
+- [ ] **filtfilt** — Zero-phase digital filtering
+- [ ] **edfwrite** — Create or modify EDF or EDF+ file
+- [ ] **tfestimate** — Transfer function estimate
+- [ ] **stft** — Short-time Fourier transform
+- [ ] **spectralentropy** — Spectral entropy for signals and spectrograms
+- [ ] **poctave** — Generate octave spectrum
+- [ ] **modalfit** — Modal parameters from frequency-response functions
+- [ ] **labeledsignalset** — Create labeled signal set
+- [ ] **ellip** — Elliptic filter design
+- [ ] **cpsd** — Cross power spectral density
+- [ ] **cheby2** — Chebyshev Type II filter design
+- [ ] **xspectrogram** — Cross-spectrogram using short-time Fourier transforms
+- [ ] **istft** — Inverse short-time Fourier transform
+- [ ] **freqz** — Frequency response of digital filter
+- [ ] **ctffilt** — Cascaded transfer function filtering
+- [ ] **cheby1** — Chebyshev Type I filter design
+- [ ] **butter** — Butterworth filter design
+- [ ] **vmd** — Variational mode decomposition
+- [ ] **mscohere** — Magnitude-squared coherence
+- [ ] **grpdelay** — Average filter delay (group delay)
+- [ ] **emd** — Empirical mode decomposition
+- [ ] **digitalfilter** — Digital filter
+- [ ] **deepsignalanomalydetector** — Create signal anomaly detector
+- [ ] **modalfrf** — Frequency-response functions for modal analysis
+- [ ] **hht** — Hilbert-Huang transform
+- [ ] **fsst** — Fourier synchrosqueezed transform
+- [ ] **framesig** — Partition signal into frames
+- [ ] **findchangepts** — Find abrupt changes in signal
+- [ ] **timefrequencyscalarfeatureoptions** — Store information for converting time-frequency-domain feature vectors to scalar values
+- [ ] **timefrequencymask** — Convert and plot time-frequency labels and regions of interest
+- [ ] **spectralkurtosis** — Spectral kurtosis for signals and spectrograms
+- [ ] **phasez** — Phase response of digital filter
+- [ ] **phasedelay** — Phase delay of digital filter
+- [ ] **pmusic** — Pseudospectrum using MUSIC algorithm
+- [ ] **instfreq** — Estimate instantaneous frequency
+- [ ] **edfinfo** — Get information about EDF/EDF+ file
+- [ ] **zp2ctf** — Convert zero-pole-gain filter parameters to cascaded transfer function form
+- [ ] **zerophase** — Zero-phase response of digital filter
+- [ ] **impz** — Impulse response of digital filter
+- [ ] **stepz** — Step response of digital filter
+- [ ] **snr** — Signal-to-noise ratio
+- [ ] **dtw** — Distance between signals using dynamic time warping
+- [ ] **zerocrossrate** — Zero-crossing rate
+- [ ] **instbw** — Estimate instantaneous bandwidth
+- [ ] **impzlength** — Impulse response length
+- [ ] **findsignal** — Find signal location using similarity search
+- [ ] **thd** — Total harmonic distortion
+- [ ] **rpmordermap** — Order-RPM map for order analysis
+- [ ] **peig** — Pseudospectrum using eigenvector method
+- [ ] **firpm** — Parks-McClellan optimal FIR filter design
+- [ ] **cfirpm** — Complex and nonlinear-phase equiripple FIR filter design
+- [ ] **alignsignals** — Align two signals by delaying earliest signal
+- [ ] **zplane** — Zero-pole plot for discrete-time systems
+- [ ] **xwvd** — Cross Wigner-Ville distribution and cross smoothed pseudo Wigner-Ville distribution
+- [ ] **xcorr2** — 2-D cross-correlation
+- [ ] **tfridge** — Time-frequency ridges
+- [ ] **rainflow** — Rainflow counts for fatigue analysis
+- [ ] **islinphase** — Determine whether filter has linear phase
+- [ ] **filtord** — Filter order
+- [ ] **filteranalyzer** — Analyze filters with Filter Analyzer app
+- [ ] **envspectrum** — Envelope spectrum for machinery diagnosis
+- [ ] **dutycycle** — Duty cycle of pulse waveform
+- [ ] **chirp** — Swept-frequency cosine
+- [ ] **timefrequencyfeaturetransformoptions** — Store time-frequency analysis-method information for feature extraction
+- [ ] **signalmask** — Modify and convert signal masks and extract signal regions of interest
+- [ ] **rpmtrack** — Track and extract RPM profile from vibration signal
+- [ ] **rpmfreqmap** — Frequency-RPM map for order analysis
+- [ ] **risetime** — Rise time of positive-going bilevel waveform transitions
+- [ ] **powerbw** — Power bandwidth
+- [ ] **pburg** — Autoregressive power spectral density estimate — Burg’s method
+- [ ] **ismaxphase** — Determine whether filter is maximum phase
+- [ ] **edr** — Edit distance on real signals
+- [ ] **buffer** — Buffer signal vector into matrix of data frames
+- [ ] **bilinear** — Bilinear transformation method for analog-to-digital filter conversion
+- [ ] **bandstop** — Bandstop-filter signals
+- [ ] **bandpass** — Bandpass-filter signals
+- [ ] **undershoot** — Undershoot metrics of bilevel waveform transitions
+- [ ] **tsa** — Time-synchronous signal average
+- [ ] **toi** — Third-order intercept point
+- [ ] **slewrate** — Slew rate of bilevel waveform
+- [ ] **sigrangebinmask** — Label signal samples with values within a specified range
+- [ ] **pyulear** — Autoregressive power spectral density estimate — Yule-Walker method
+- [ ] **pulstran** — Pulse train
+- [ ] **pmcov** — Autoregressive power spectral density estimate — modified covariance method
+- [ ] **pcov** — Autoregressive power spectral density estimate — covariance method
+- [ ] **ordertrack** — Track and extract order magnitudes from vibration signal
+- [ ] **obw** — Occupied bandwidth
+- [ ] **medfreq** — Median frequency
+- [ ] **meanfreq** — Mean frequency
+- [ ] **lowpass** — Lowpass-filter signals
+- [ ] **isstable** — Determine whether filter is stable
+- [ ] **isminphase** — Determine whether filter is minimum phase
+- [ ] **hampel** — Outlier removal using Hampel identifier
+- [ ] **firls** — Least-squares linear-phase FIR filter design
+- [ ] **falltime** — Fall time of negative-going bilevel waveform transitions
+- [ ] **ctf2zp** — Convert cascaded transfer functions to zero-pole-gain form
+- [ ] **ss2sos** — Convert digital filter state-space parameters to second-order sections form
+- [ ] **spectralskewness** — Spectral skewness for signals and spectrograms
+- [ ] **spectralflatness** — Spectral flatness for signals and spectrograms
+- [ ] **spectralcrest** — Spectral crest for signals and spectrograms
+- [ ] **sfdr** — Spurious free dynamic range
+- [ ] **settlingtime** — Settling time for bilevel waveform
+- [ ] **pulsewidth** — Bilevel waveform pulse width
+- [ ] **pulsesep** — Separation between bilevel waveform pulses
+- [ ] **overshoot** — Overshoot metrics of bilevel waveform transitions
+- [ ] **midcross** — Mid-reference level crossing for bilevel waveform
+- [ ] **kurtogram** — Visualize spectral kurtosis
+- [ ] **highpass** — Highpass-filter signals
+- [ ] **goertzel** — Discrete-Time Fourier transform with second-order Goertzel algorithm
+- [ ] **digitalfilter.ctf** — Convert digital filter to coefficients in cascaded transfer function format
+- [ ] **bandpower** — Band power
+- [ ] **statelevels** — State-level estimation for bilevel waveform with histogram method
+- [ ] **sinad** — Signal to noise and distortion ratio
+- [ ] **sgolay** — Savitzky-Golay filter design
+- [ ] **rlevinson** — Reverse Levinson-Durbin recursion
+- [ ] **pulseperiod** — Period of bilevel pulse
+- [ ] **iscola** — Determine whether window-overlap combination is COLA compliant
+- [ ] **ifsst** — Inverse Fourier synchrosqueezed transform
+- [ ] **frequencyscalarfeatureoptions** — Store information for converting frequency-domain feature vectors to scalar values
+- [ ] **fircls1** — Constrained-least-squares linear-phase FIR lowpass and highpass filter design
+- [ ] **filenames2labels** — Get list of labels from filenames
+- [ ] **envelope** — Signal envelope
+- [ ] **edfread** — Read data from EDF/EDF+ file
+- [ ] **tf2sos** — Convert digital filter transfer function data to second-order sections form
+- [ ] **sos2ctf** — Convert digital filter second-order section parameters to cascaded transfer function form
+- [ ] **kaiserord** — Kaiser window FIR filter design estimation parameters
+- [ ] **invfreqs** — Identify continuous-time filter parameters from frequency response data
+- [ ] **fir1** — Window-based FIR filter design
+- [ ] **finddelay** — Estimate delay(s) between signals
+- [ ] **fillgaps** — Fill gaps using autoregressive modeling
+- [ ] **fftfilt** — FFT-based FIR filtering using overlap-add method
+- [ ] **cusum** — Detect small changes in mean using cumulative sum
+- [ ] **zp2sos** — Convert zero-pole-gain filter parameters to second-order sections form
+- [ ] **upfirdn** — Upsample, apply FIR filter, and downsample
+- [ ] **residuez** — Z-transform partial-fraction expansion
+- [ ] **orderwaveform** — Extract time-domain order waveforms from vibration signal
+- [ ] **orderspectrum** — Average spectrum versus order for vibration signal
+- [ ] **fir2** — Frequency sampling-based FIR filter design
+- [ ] **extractsigroi** — Extract signal regions of interest
+- [ ] **cconv** — Modulo-n circular convolution
+- [ ] **besself** — Bessel analog filter design
+- [ ] **timescalarfeatureoptions** — Store information for converting time-domain feature vectors to scalar values
+- [ ] **tf2ss** — Convert transfer function filter parameters to state-space form
+- [ ] **stmcb** — Compute linear model using Steiglitz-McBride iteration
+- [ ] **square** — Square wave
+- [ ] **peak2rms** — Peak-magnitude-to-RMS ratio
+- [ ] **modulate** — Modulation for communications simulation
+- [ ] **medfilt1** — 1-D median filtering
+- [ ] **maxflat** — Generalized digital Butterworth filter design
+- [ ] **lp2bp** — Transform lowpass analog filters to bandpass
+- [ ] **levinson** — Levinson-Durbin recursion
+- [ ] **invfreqz** — Identify discrete-time filter parameters from frequency response data
+- [ ] **idct** — Inverse discrete cosine transform
+- [ ] **freqs** — Frequency response of analog filters
+- [ ] **firpmord** — Parks-McClellan optimal FIR filter order estimation
+- [ ] **dpss** — Discrete prolate spheroidal (Slepian) sequences
+- [ ] **decimate** — Decimation — decrease sample rate by integer factor
+- [ ] **corrmtx** — Data matrix for autocorrelation matrix estimation
+- [ ] **cheb2ord** — Chebyshev Type II filter order
+- [ ] **cheb1ord** — Chebyshev Type I filter order
+- [ ] **aryule** — Autoregressive all-pole model parameters — Yule-Walker method
+- [ ] **tachorpm** — Extract RPM signal from tachometer pulses
+- [ ] **sgolayfilt** — Savitzky-Golay filtering
+- [ ] **seqperiod** — Compute period of sequence
+- [ ] **rssq** — Root-sum-of-squares level
+- [ ] **rcosdesign** — Raised cosine FIR pulse-shaping filter design
+- [ ] **peak2peak** — Maximum-to-minimum difference
+- [ ] **modalsd** — Generate stabilization diagram for modal analysis
+- [ ] **lpc** — Linear prediction filter coefficients
+- [ ] **lp2bs** — Transform lowpass analog filters to bandstop
+- [ ] **hilbert** — Discrete-time analytic signal using Hilbert transform
+- [ ] **gausswin** — Gaussian window
+- [ ] **enbw** — Equivalent noise bandwidth
+- [ ] **ellipord** — Minimum order for elliptic filters
+- [ ] **edfheader** — Create header structure for EDF or EDF+ file
+- [ ] **demod** — Demodulation for communications simulation
+- [ ] **buttord** — Butterworth filter order and cutoff frequency
+- [ ] **zp2ss** — Convert zero-pole-gain filter parameters to state-space form
+- [ ] **uencode** — Quantize and encode floating-point inputs to integer outputs
+- [ ] **udecode** — Decode 2n-level quantized integer inputs to floating-point outputs
+- [ ] **tf2zp** — Convert transfer function filter parameters to zero-pole-gain form
+- [ ] **taylorwin** — Taylor window
+- [ ] **ss2zp** — Convert state-space filter parameters to zero-pole-gain form
+- [ ] **sosfilt** — Second-order (biquadratic) IIR digital filtering
+- [ ] **sos2ss** — Convert digital filter second-order section parameters to state-space form
+- [ ] **shiftdata** — Shift data to operate on specified dimension
+- [ ] **scalefiltersections** — Scale cascaded transfer functions with scale values
+- [ ] **rootmusic** — Root MUSIC algorithm
+- [ ] **rooteig** — Frequency and power content using eigenvector method
+- [ ] **nuttallwin** — Nuttall-defined minimum 4-term Blackman-Harris window
+- [ ] **lp2lp** — Change cutoff frequency for lowpass analog filter
+- [ ] **latcfilt** — Lattice and lattice-ladder filter implementation
+- [ ] **kaiser** — Kaiser window
+- [ ] **intfilt** — Interpolation FIR filter design
+- [ ] **impinvar** — Impulse invariance method for analog-to-digital filter conversion
+- [ ] **gauspuls** — Gaussian-modulated sinusoidal RF pulse
+- [ ] **flattopwin** — Flat top weighted window
+- [ ] **fircls** — Constrained-least-squares FIR multiband filter design
+- [ ] **filternorm** — 2-norm or infinity-norm of digital filter
+- [ ] **extendsigroi** — Extend signal regions of interest to left and right
+- [ ] **ellipap** — Elliptic analog lowpass filter prototype
+- [ ] **diric** — Dirichlet or periodic sinc function
+- [ ] **db** — Convert energy or power measurements to decibels
+- [ ] **czt** — Chirp Z-transform
+- [ ] **blackmanharris** — Minimum four-term Blackman-Harris window
+- [ ] **arburg** — Autoregressive all-pole model parameters — Burg’s method
+- [ ] **zp2tf** — Convert zero-pole-gain filter parameters to transfer function form
+- [ ] **yulewalk** — Recursive digital filter design
+- [ ] **vco** — Voltage-controlled oscillator
+- [ ] **tukeywin** — Tukey (tapered cosine) window
+- [ ] **tf2zpk** — Convert transfer function filter parameters to zero-pole-gain form
+- [ ] **strips** — Strip plot
+- [ ] **sos2zp** — Convert digital filter second-order section parameters to zero-pole-gain form
+- [ ] **sos2tf** — Convert digital filter second-order section data to transfer function form
+- [ ] **sigroi2binmask** — Convert matrix of ROI limits to binary mask
+- [ ] **shortensigroi** — Shorten signal regions of interest from left and right
+- [ ] **sawtooth** — Sawtooth or triangle wave
+- [ ] **prony** — Prony method for filter design
+- [ ] **poly2rc** — Convert prediction filter polynomial to reflection coefficients
+- [ ] **parzenwin** — Parzen (de la Vallée Poussin) window
+- [ ] **mergesigroi** — Merge signal regions of interest
+- [ ] **marcumq** — Generalized Marcum Q-function
+- [ ] **lp2hp** — Transform lowpass analog filters to highpass
+- [ ] **isallpass** — Determine whether filter is allpass
+- [ ] **interp** — Interpolation — increase sample rate by integer factor
+- [ ] **ifwht** — Inverse Fast Walsh-Hadamard transform
+- [ ] **gmonopuls** — Gaussian monopulse
+- [ ] **filtic** — Initial conditions for transposed direct-form II filter implementation
+- [ ] **eqtflength** — Equalize lengths of transfer function numerator and denominator
+- [ ] **dpsssave** — Discrete prolate spheroidal or Slepian sequence database
+- [ ] **dpssdir** — Manage discrete prolate spheroidal sequences database directory
+- [ ] **digitalfilter.cascade** — Cascade digital filters
+- [ ] **chebwin** — Chebyshev window
+- [ ] **cheb2ap** — Chebyshev Type II analog lowpass filter prototype
+- [ ] **cell2sos** — Convert second-order sections cell array to matrix
+- [ ] **cceps** — Complex cepstral analysis
+- [ ] **bohmanwin** — Bohman window
+- [ ] **barthannwin** — Modified Bartlett-Hann window
+- [ ] **armcov** — Autoregressive all-pole model parameters — modified covariance method
+- [ ] **arcov** — Autoregressive all-pole model parameters — covariance method
+- [ ] **upsample** — Increase sample rate by integer factor
+- [ ] **tripuls** — Sampled aperiodic triangle
+- [ ] **triang** — Triangular window
+- [ ] **tf2latc** — Convert transfer function filter coefficients to lattice filter form
+- [ ] **sos2cell** — Convert second-order sections matrix to cell array
+- [ ] **schurrc** — Compute reflection coefficients from autocorrelation sequence
+- [ ] **removesigroi** — Remove signal regions of interest
+- [ ] **rectwin** — Rectangular window
+- [ ] **rectpuls** — Sampled aperiodic rectangle
+- [ ] **rceps** — Real cepstrum and minimum-phase reconstruction
+- [ ] **rc2poly** — Convert reflection coefficients to prediction filter polynomial
+- [ ] **polystab** — Stabilize polynomial
+- [ ] **polyscale** — Scale roots of polynomial
+- [ ] **latc2tf** — Convert lattice filter coefficients to transfer function form
+- [ ] **gaussdesign** — Gaussian FIR pulse-shaping filter design
+- [ ] **fwht** — Fast Walsh-Hadamard transform
+- [ ] **firtype** — Type of linear phase FIR filter
+- [ ] **dpssload** — Load discrete prolate spheroidal sequences from database
+- [ ] **downsample** — Decrease sample rate by integer factor
+- [ ] **digitrevorder** — Permute input into digit-reversed order
+- [ ] **cheb1ap** — Chebyshev Type I analog lowpass filter prototype
+- [ ] **buttap** — Butterworth analog lowpass filter prototype
+- [ ] **bitrevorder** — Permute data into bit-reversed order
+- [ ] **binmask2sigroi** — Convert binary mask to matrix of ROI limits
+- [ ] **besselap** — Bessel analog lowpass filter prototype
+- [ ] **rc2ac** — Convert reflection coefficients to autocorrelation sequence
+- [ ] **pow2db** — Convert power to decibels
+- [ ] **poly2lsf** — Convert prediction filter coefficients to line spectral frequencies
+- [ ] **poly2ac** — Convert prediction filter polynomial to autocorrelation sequence
+- [ ] **lsf2poly** — Convert line spectral frequencies to prediction filter coefficients
+- [ ] **lar2rc** — Convert log area ratio parameters to reflection coefficients
+- [ ] **is2rc** — Convert inverse sine parameters to reflection coefficients
+- [ ] **icceps** — Inverse complex cepstrum
+- [ ] **dpssclear** — Remove discrete prolate spheroidal sequences from database
+- [ ] **digitalfilter.zpk** — Convert digital filter to zero-pole-gain representation
+- [ ] **digitalfilter.ss** — Convert digital filter to state-space representation
+- [ ] **digitalfilter.setsamplerate** — Set sample rate of digital filter
+- [ ] **digitalfilter.getnumstages** — Get number of stages in digital filter cascade
+- [ ] **db2pow** — Convert decibels to power
+- [ ] **ac2rc** — Convert autocorrelation sequence to reflection coefficients
+- [ ] **ac2poly** — Convert autocorrelation sequence to prediction polynomial
+- [ ] **rc2lar** — Convert reflection coefficients to log area ratio parameters
+- [ ] **rc2is** — Convert reflection coefficients to inverse sine parameters
+- [ ] **issingle** — Determine if digital filter coefficients are single precision
+- [ ] **isdouble** — Determine if digital filter coefficients are double precision
+- [ ] **digitalfilter.tf** — Convert digital filter to transfer function
+- [ ] **digitalfilter.isfir** — Determine if digital filter has finite impulse response
+- [ ] **digitalfilter.info** — Information about digital filter
+
+## stats
+
+- [ ] **fitcauto** — Automatically select classification model with optimized hyperparameters
+- [ ] **fitcnet** — Train neural network classification model
+- [ ] **rocmetrics** — Receiver operating characteristic (ROC) curve and performance metrics for binary and multiclass clas
+- [ ] **fitcecoc** — Fit multiclass models for support vector machines or other classifiers
+- [ ] **fitrnet** — Train neural network regression model
+- [ ] **fitclinear** — Fit binary linear classifier to high-dimensional data
+- [ ] **fitrauto** — Automatically select regression model with optimized hyperparameters
+- [ ] **fitrlinear** — Fit linear regression model to high-dimensional data
+- [ ] **fitrgp** — Fit a Gaussian process regression (GPR) model
+- [ ] **fitcsvm** — Train support vector machine (SVM) classifier for one-class and binary classification
+- [ ] **fitcensemble** — Fit ensemble of learners for classification
+- [ ] **fitctree** — Fit binary decision tree for multiclass classification
+- [ ] **fitcgam** — Fit generalized additive model (GAM) for binary classification
+- [ ] **regressiontree.plotpartialdependence** — Create partial dependence plot (PDP) and individual conditional expectation (ICE) plots
+- [ ] **fitrtree** — Fit binary decision tree for regression
+- [ ] **fitckernel** — Fit binary Gaussian kernel classifier using random feature expansion
+- [ ] **fitrgam** — Fit generalized additive model (GAM) for regression
+- [ ] **treebagger** — Ensemble of bagged decision trees
+- [ ] **incrementaldynamickmeans** — Incremental dynamic k-means clustering
+- [ ] **fitrkernel** — Fit Gaussian kernel regression model using random feature expansion
+- [ ] **lime** — Local interpretable model-agnostic explanations (LIME)
+- [ ] **incrementalclassificationecoc** — Multiclass classification model using binary learners for incremental learning
+- [ ] **fitrqnet** — Train regression quantile neural network
+- [ ] **fitcnb** — Train multiclass naive Bayes model
+- [ ] **fitrsvm** — Fit a support vector machine regression model
+- [ ] **fitrensemble** — Fit ensemble of learners for regression
+- [ ] **fitcknn** — Fit k-nearest neighbor classifier
+- [ ] **regressiontree.partialdependence** — Compute partial dependence
+- [ ] **counterfactuals** — Generate counterfactual examples for observation
+- [ ] **incrementalclassificationlinear** — Binary classification linear model for incremental learning
+- [ ] **incrementalclassificationkernel** — Binary classification kernel model for incremental learning
+- [ ] **incrementalregressionkernel** — Kernel regression model for incremental learning
+- [ ] **timeseries.forecaster.directforecaster** — Fit direct forecasting model
+- [ ] **permutationimportance** — Predictor importance by permutation
+- [ ] **incrementalregressionlinear** — Linear regression model for incremental learning
+- [ ] **shapley** — Shapley values
+- [ ] **fitensemble** — Fit ensemble of learners for classification and regression
+- [ ] **incrementalclassificationnaivebayes** — Naive Bayes classification model for incremental learning
+- [ ] **fitcdiscr** — Fit discriminant analysis classifier
+- [ ] **classificationknn.compareholdout** — Compare accuracies of two classification models using new data
+- [ ] **makedist** — Create probability distribution object
+- [ ] **testckfold** — Compare accuracies of two classification models by repeated cross-validation
+- [ ] **incrementalkmeans** — Incremental k-means clustering
+- [ ] **fitrqlinear** — Train quantile linear regression model
+- [ ] **fitlmematrix** — Fit linear mixed-effects model
+- [ ] **classificationsvm** — Support vector machine (SVM) for one-class and binary classification
+- [ ] **generalizedlinearmodel** — Generalized linear regression model class
+- [ ] **fairnessthresholder** — Optimize classification threshold to include fairness
+- [ ] **perfcurve** — Receiver operating characteristic (ROC) curve or other performance curve for classifier output
+- [ ] **nlmefitsa** — Fit nonlinear mixed-effects model with stochastic EM algorithm
+- [ ] **mle** — Maximum likelihood estimates
+- [ ] **linearmodel** — Linear regression model
+- [ ] **fitsemigraph** — Label data using semi-supervised graph-based method
+- [ ] **anova** — Analysis of variance (ANOVA) results
+- [ ] **incrementaloneclasssvm** — One-class support vector machine (SVM) model for incremental anomaly detection
+- [ ] **fsrnca** — Feature selection using neighborhood component analysis for regression
+- [ ] **fitlm** — Fit linear regression model
+- [ ] **fitlme** — Fit linear mixed-effects model
+- [ ] **fairnessmetrics** — Bias and group metrics for a data set or classification model
+- [ ] **classificationecoc.predict** — Classify observations using multiclass error-correcting output codes (ECOC) model
+- [ ] **synthesizetabulardata** — Synthesize tabular data
+- [ ] **regressiongpcomponent** — Pipeline component for Gaussian process regression (GPR)
+- [ ] **nlmefit** — Fit nonlinear mixed-effects estimation
+- [ ] **classificationtree** — Binary decision tree for multiclass classification
+- [ ] **kmeans** — k-means clustering
+- [ ] **generalizedlinearmixedmodel-class** — Generalized linear mixed-effects model class
+- [ ] **classificationneuralnetwork** — Neural network model for classification
+- [ ] **pca** — Principal component analysis of raw data
+- [ ] **gencfeatures** — Perform automated feature engineering for classification
+- [ ] **classreg.learning.coder.config.classificationecoccoderconfigurer** — Coder configurer for multiclass model using binary learners
+- [ ] **classificationlinearcomponent** — Pipeline component for binary classification of high-dimensional data using linear model
+- [ ] **boxplot** — Visualize summary statistics with box plot
+- [ ] **templatelinear** — Linear learner template
+- [ ] **templategp** — Gaussian process template
+- [ ] **mhsample** — Generate Markov chain sample using Metropolis–Hastings sampler
+- [ ] **lasso** — Lasso or elastic net regularization for linear models
+- [ ] **incrementaldriftawarelearner** — Construct drift-aware model for incremental learning
+- [ ] **genrfeatures** — Perform automated feature engineering for regression
+- [ ] **fscnca** — Feature selection using neighborhood component analysis for classification
+- [ ] **classificationlinear.incrementallearner** — Convert linear model for binary classification to incremental learner
+- [ ] **classificationkernel.incrementallearner** — Convert kernel model for binary classification to incremental learner
+- [ ] **classificationecoc** — Multiclass model for support vector machines (SVMs) and other classifiers
+- [ ] **stepwiselm** — Perform stepwise regression
+- [ ] **stepwiseglm** — Create generalized linear regression model by stepwise regression
+- [ ] **regressionkernel.incrementallearner** — Convert kernel regression model to incremental learner
+- [ ] **multinomialregression** — Multinomial regression model
+- [ ] **manova** — Multivariate analysis of variance (MANOVA) results
+- [ ] **incrementalnormalizer** — Instantiate incremental data normalizer
+- [ ] **fitglme** — Fit generalized linear mixed-effects model
+- [ ] **cvpartition** — Partition data for cross-validation
+- [ ] **classreg.learning.partition.classificationpartitionedmodel.kfoldloss** — Classification loss for cross-validated classification model
+- [ ] **classreg.learning.classif.compactclassificationsvm.update** — Update model parameters for code generation
+- [ ] **classificationsvm.incrementallearner** — Convert binary classification support vector machine (SVM) model to incremental learner
+- [ ] **regressionsvm.incrementallearner** — Convert support vector machine (SVM) regression model to incremental learner
+- [ ] **regressionlinearcomponent** — Pipeline component for regression of high-dimensional data using a linear model
+- [ ] **regressionlinear.incrementallearner** — Convert linear regression model to incremental learner
+- [ ] **optimaldoe** — D-optimal design of experiments (DOE)
+- [ ] **lof** — Create local outlier factor model for anomaly detection
+- [ ] **crossval** — Estimate loss using cross-validation
+- [ ] **classreg.learning.coder.config.svm.classificationsvmcoderconfigurer** — Coder configurer for support vector machine (SVM) for one-class and binary classification
+- [ ] **classificationsvm.crossval** — Cross-validate machine learning model
+- [ ] **classificationnaivebayes** — Naive Bayes classification for multiclass classification
+- [ ] **bayesopt** — Select optimal machine learning hyperparameters using Bayesian optimization
+- [ ] **lassoglm** — Lasso or elastic net regularization for generalized linear models
+- [ ] **ksdensity** — Kernel smoothing function estimate for univariate and bivariate data
+- [ ] **incrementalrobustrandomcutforest** — Robust random cut forest model for incremental anomaly detection
+- [ ] **exhaustivesearcher.knnsearch** — Find k-nearest neighbors using searcher object
+- [ ] **classificationsvmcomponent** — Pipeline component for one-class and binary classification using SVM classifier
+- [ ] **testcholdout** — Compare predictive accuracies of two classification models
+- [ ] **templatetree** — Create decision tree template
+- [ ] **spectralcluster** — Spectral clustering
+- [ ] **regressiontree** — Regression tree
+- [ ] **regressionneuralnetwork** — Neural network model for regression
+- [ ] **linearmixedmodel** — Linear mixed-effects model
+- [ ] **lime.fit** — Fit simple model of local interpretable model-agnostic explanations (LIME)
+- [ ] **grpstats** — Summary statistics organized by group
+- [ ] **detectdrift** — Detect drifts between baseline and target data using permutation testing
+- [ ] **classreg.learning.partition.classificationpartitionedecoc.kfoldpredict** — Classify observations in cross-validated ECOC model
+- [ ] **classificationecoc.resubpredict** — Classify observations in multiclass error-correcting output codes (ECOC) model
+- [ ] **sequentialfs** — Sequential feature selection using custom criterion
+- [ ] **fitglm** — Create generalized linear regression model
+- [ ] **ecdf** — Empirical cumulative distribution function
+- [ ] **classreg.learning.coder.config.tree.classificationtreecoderconfigurer** — Coder configurer of binary decision tree model for multiclass classification
+- [ ] **classreg.learning.coder.config.svm.classificationsvmcoderconfigurer.validatedupdateinputs** — Validate and extract machine learning model parameters to update
+- [ ] **classreg.learning.coder.config.linear.classificationlinearcoderconfigurer** — Coder configurer for linear binary classification of high-dimensional data
+- [ ] **classreg.learning.classif.compactclassificationtree** — Compact classification tree
+- [ ] **classificationkernel** — Gaussian kernel classification model using random feature expansion
+- [ ] **classificationgam** — Generalized additive model (GAM) for binary classification
+- [ ] **regressionsvm-class** — Support vector machine regression model
+- [ ] **regressiongp** — Gaussian process regression model
+- [ ] **regressiongam** — Generalized additive model (GAM) for regression
+- [ ] **ocsvm** — Fit one-class support vector machine (SVM) model for anomaly detection
+- [ ] **nonlinearmodel** — Nonlinear regression model
+- [ ] **incrementalpca** — Incremental principal component analysis
+- [ ] **featureselectionregressionncacomponent** — Pipeline component for performing feature selection using neighborhood component analysis (NCA) for 
+- [ ] **featureselectionclassificationncacomponent** — Pipeline component for performing feature selection using neighborhood component analysis (NCA) for 
+- [ ] **classreg.learning.coder.config.svm.regressionsvmcoderconfigurer** — Coder configurer for support vector machine (SVM) regression model
+- [ ] **classreg.learning.coder.config.linear.regressionlinearcoderconfigurer** — Coder configurer for linear regression model with high-dimensional data
+- [ ] **classreg.learning.classif.compactclassificationnaivebayes** — Compact naive Bayes classifier for multiclass classification
+- [ ] **classificationensemblecomponent** — Pipeline component for ensemble classification
+- [ ] **censoredlinearmodel** — Censored linear regression model
+- [ ] **timeseries.forecaster.partitioneddirectforecaster** — Cross-validated direct forecasting model
+- [ ] **taguchidoe** — Taguchi design of experiments (DOE)
+- [ ] **knntest** — Two-sample multivariate hypothesis test using k-nearest neighbors (KNN)
+- [ ] **gplotmatrix** — Matrix of scatter plots by group
+- [ ] **fitnlm** — Fit nonlinear regression model
+- [ ] **factoran** — Factor analysis
+- [ ] **controlchart** — Control charts
+- [ ] **classreg.regr.compactgeneralizedlinearmodel** — Compact generalized linear regression model class
+- [ ] **classreg.learning.classif.classificationbaggedensemble** — Classification ensemble grown by resampling
+- [ ] **classificationtreecomponent** — Pipeline component for multiclass classification using binary decision trees
+- [ ] **classificationneuralnetworkcomponent** — Pipeline component for classification using neural network model
+- [ ] **classificationknn** — k-nearest neighbor classification
+- [ ] **binningtabularsynthesizer** — Binning-based synthesizer for tabular data synthesis
+- [ ] **acceleratedlifemodel** — Accelerated life model for lifetime analysis
+- [ ] **templatesvm** — Support vector machine template
+- [ ] **templateensemble** — Ensemble learning template
+- [ ] **smotetabularsynthesizer** — SMOTE-based synthesizer for tabular data synthesis
+- [ ] **regressionsvmcomponent** — Pipeline component for regression using a support vector machine (SVM) model
+- [ ] **oneclasssvm.incrementallearner** — Convert one-class SVM model to incremental learner
+- [ ] **nlinfit** — Nonlinear regression
+- [ ] **mvregress** — Multivariate linear regression
+- [ ] **multcompare** — Multiple comparison test
+- [ ] **linearmixedmodel.plotresiduals** — Plot residuals of linear mixed-effects model
+- [ ] **knnsearch** — Find k-nearest neighbors using input data
+- [ ] **incrementalclassificationecoc.updatemetrics** — Update performance metrics in ECOC incremental learning classification model given new data
+- [ ] **fscmrmr** — Rank features for classification using minimum redundancy maximum relevance (MRMR) algorithm
+- [ ] **fitmnr** — Fit multinomial regression model
+- [ ] **fitlmcens** — Fit censored linear regression model
+- [ ] **classreg.learning.partition.classificationpartitionedmodel** — Cross-validated classification model
+- [ ] **classreg.learning.paramoptim.hyperparameteroptimizationoptions** — Hyperparameter optimization options
+- [ ] **classreg.learning.coder.config.tree.regressiontreecoderconfigurer** — Coder configurer of binary decision tree model for regression
+- [ ] **classreg.learning.classif.compactclassificationensemble.loss** — Classification loss for classification ensemble model
+- [ ] **classreg.learning.classif.classificationensemble** — Ensemble classifier
+- [ ] **stepwisefit** — Fit linear regression model using stepwise regression
+- [ ] **prob.normaldistribution.random** — Random numbers
+- [ ] **prob.normaldistribution.cdf** — Cumulative distribution function
+- [ ] **manova.boxchart** — Box chart (box plot) for multivariate analysis of variance (MANOVA)
+- [ ] **linearmixedmodel.compare** — Compare linear mixed-effects models
+- [ ] **kmedoids** — k-medoids clustering
+- [ ] **generatelearnerdatatypefcn** — Generate function that defines data types for fixed-point code generation
+- [ ] **fsrmrmr** — Rank features for regression using minimum redundancy maximum relevance (MRMR) algorithm
+- [ ] **fractionalfactorialdoe** — Fractional factorial design of experiments (DOE)
+- [ ] **fitrchains** — Multiresponse regression with regression chains
+- [ ] **classreg.learning.partition.regressionpartitionedmodel.kfoldloss** — Loss for cross-validated partitioned regression model
+- [ ] **classreg.learning.classif.compactclassificationecoc** — Compact multiclass model for support vector machines (SVMs) and other classifiers
+- [ ] **classificationknncomponent** — Pipeline component for classification using k-nearest neighbor model
+- [ ] **classificationdiscriminant** — Discriminant analysis classification
+- [ ] **templatekernel** — Kernel learner template
+- [ ] **regressionquantileneuralnetwork** — Quantile neural network model for regression
+- [ ] **regressionneuralnetwork.loss** — Loss for regression neural network
+- [ ] **regressionkernel** — Gaussian kernel regression model using random feature expansion
+- [ ] **multinomialregression.plotslice** — Plot of slices through fitted multinomial regression surface
+- [ ] **multinomialregression.plotresiduals** — Plot residuals of multinomial regression model
+- [ ] **localoutlierfactor** — Local outlier factor model for anomaly detection
+- [ ] **incrementalclassificationnaivebayes.fit** — Train naive Bayes classification model for incremental learning
+- [ ] **incremental.preprocessing.zscorenormalizer.fit** — Fit incremental normalizer model to streaming data
+- [ ] **fitsemiself** — Label data using semi-supervised self-training method
+- [ ] **fitdist** — Fit probability distribution object to data
+- [ ] **fairnessmetrics.report** — Generate fairness metrics report
+- [ ] **disparateimpactremover** — Remove disparate impact of sensitive attribute
+- [ ] **dataset** — (Not Recommended) Arrays for statistical data
+- [ ] **cordexch** — Coordinate-exchange D-optimal design
+- [ ] **classreg.learning.regr.compactregressiontree** — Compact regression tree
+- [ ] **classreg.learning.paramoptim.supervisedlearningbayesianoptimization** — Results of Bayesian optimization for supervised learning model
+- [ ] **classificationsvm.resubloss** — Resubstitution classification loss
+- [ ] **classificationneuralnetwork.loss** — Classification loss for neural network classifier
+- [ ] **classificationkernelcomponent** — Pipeline component for classification using Gaussian kernel with random feature expansion
+- [ ] **classificationecoc.incrementallearner** — Convert multiclass error-correcting output codes (ECOC) model to incremental learner
+- [ ] **umap** — Uniform Manifold Approximation and Projection (UMAP) for dimension reduction
+- [ ] **tsne** — t-Distributed Stochastic Neighbor Embedding
+- [ ] **shapley.fit** — Compute Shapley values for query points
+- [ ] **rrcforest** — Fit robust random cut forest model for anomaly detection
+- [ ] **rowexch** — Row exchange D-optimal design
+- [ ] **robustcov** — Robust multivariate covariance and mean estimate
+- [ ] **regressiontreecomponent** — Pipeline component for regression using binary decision trees
+- [ ] **regressionneuralnetworkcomponent** — Pipeline component for regression using neural network model
+- [ ] **regressionneuralnetwork.predict** — Predict responses using regression neural network
+- [ ] **regressionlinear.loss** — Regression loss for linear regression models
+- [ ] **prob.normaldistribution.pdf** — Probability density function
+- [ ] **mixturedoe** — Design of experiments (DOE) for mixture experiments
+- [ ] **loadlearnerforcoder** — Reconstruct model object from saved model for code generation
+- [ ] **linearmodel.gather** — Gather properties of Statistics and Machine Learning Toolbox object from GPU
+- [ ] **incrementalregressionlinear.loss** — Loss of linear incremental learning model on batch of data
+- [ ] **glmfit** — Fit generalized linear regression model
+- [ ] **gagerr** — Gage repeatability and reproducibility study
+- [ ] **classreg.learning.regr.regressionbaggedensemble** — Regression ensemble grown by resampling
+- [ ] **classreg.learning.partition.classificationpartitionedecoc** — Cross-validated multiclass ECOC model for support vector machines (SVMs) and other classifiers
+- [ ] **classreg.learning.classif.compactclassificationsvm** — Compact support vector machine (SVM) for one-class and binary classification
+- [ ] **classreg.learning.classif.compactclassificationneuralnetwork** — Compact neural network model for classification
+- [ ] **classificationtree.loss** — Classification loss for classification tree model
+- [ ] **classificationgamcomponent** — Pipeline component for binary classification using generalized additive model (GAM)
+- [ ] **classificationecoc.loss** — Classification loss for multiclass error-correcting output codes (ECOC) model
+- [ ] **classificationecoc.edge** — Classification edge for multiclass error-correcting output codes (ECOC) model
+- [ ] **anovan** — N-way analysis of variance
+- [ ] **scatterhist** — Scatter plot with marginal histograms
+- [ ] **regressionkernelcomponent** — Pipeline component for regression using Gaussian kernel model
+- [ ] **procrustes** — Procrustes analysis
+- [ ] **mmdtest** — Two-sample multivariate hypothesis test using maximum mean discrepancy (MMD)
+- [ ] **meaneffectsize** — One-sample or two-sample effect size computations
+- [ ] **incrementalregressionlinear.updatemetrics** — Update performance metrics in linear incremental learning model given new data
+- [ ] **incrementalconceptdriftdetector** — Instantiate incremental concept drift detector
+- [ ] **incrementalclassificationnaivebayes.updatemetricsandfit** — Update performance metrics in naive Bayes incremental learning classification model given new data a
+- [ ] **incrementalclassificationnaivebayes.loss** — Loss of naive Bayes incremental learning classification model on batch of data
+- [ ] **incrementalclassificationecoc.loss** — Loss of ECOC incremental learning classification model on batch of data
+- [ ] **incrementalclassificationecoc.fit** — Train ECOC classification model for incremental learning
+- [ ] **incremental.preprocessing.zscorenormalizer** — Simple-weighted normalizer
+- [ ] **gscatter** — Scatter plot by group
+- [ ] **fscchi2** — Univariate feature ranking for classification using chi-square tests
+- [ ] **fitgmdist** — Fit Gaussian mixture model to data
+- [ ] **fairnessmetrics.plot** — Plot bar graph of fairness metric
+- [ ] **dcovary** — D-optimal design with fixed covariates
+- [ ] **dbscan** — Density-based spatial clustering of applications with noise (DBSCAN)
+- [ ] **classreg.regr.compactlinearmodel** — Compact linear regression model
+- [ ] **classreg.learning.partition.regressionpartitionedgam** — Cross-validated generalized additive model (GAM) for regression
+- [ ] **classreg.learning.partition.classificationpartitionedlinearecoc-class** — Cross-validated linear error-correcting output codes model for multiclass classification of high-dim
+- [ ] **classreg.learning.partition.classificationpartitionedgam** — Cross-validated generalized additive model (GAM) for classification
+- [ ] **classreg.learning.classif.compactclassificationsvm.loss** — Find classification error for support vector machine (SVM) classifier
+- [ ] **classificationlinear-class** — Linear model for binary classification of high-dimensional data
+- [ ] **binningtabularsynthesizer.synthesizetabulardata** — Synthesize tabular data using binning-based or SMOTE-based synthesizer
+- [ ] **taguchidoe.taguchitypes** — Valid Taguchi design types
+- [ ] **statset** — Create statistics options structure
+- [ ] **regressionquantilelinear** — Quantile linear regression model
+- [ ] **prob.normaldistribution.icdf** — Inverse cumulative distribution function
+- [ ] **linkage** — Agglomerative hierarchical cluster tree
+- [ ] **linearmodel.step** — Improve linear regression model by adding or removing terms
+- [ ] **linearmodel.plotadded** — Added variable plot of linear regression model
+- [ ] **linearmixedmodel.predict** — Predict response of linear mixed-effects model
+- [ ] **learnercoderconfigurer** — Create coder configurer of machine learning model
+- [ ] **incrementalregressionlinear.updatemetricsandfit** — Update performance metrics in linear incremental learning model given new data and train model
+- [ ] **incrementalregressionlinear.fit** — Train linear model for incremental learning
+- [ ] **incrementaldriftawarelearner.fit** — Train drift-aware learner for incremental learning with new data
+- [ ] **incrementalclassificationkernel.updatemetrics** — Update performance metrics in kernel incremental learning model given new data
+- [ ] **incrementalclassificationkernel.loss** — Loss of kernel incremental learning model on batch of data
+- [ ] **incremental.drift.hoeffdingdriftdetectionmethod** — Incremental concept drift detector that utilizes Hoeffding&#39;s Bounds Drift Detection Method (HDDM
+- [ ] **iforest** — Fit isolation forest for anomaly detection
+- [ ] **gmdistribution** — Create Gaussian mixture model
+- [ ] **glyphplot** — Glyph plot
+- [ ] **glmval** — Generalized linear model values
+- [ ] **gardneraltmanplot** — Gardner-Altman plot for two-sample effect size
+- [ ] **fitsvmposterior** — Fit posterior probabilities
+- [ ] **exhaustivesearcher.rangesearch** — Find all neighbors within specified distance using searcher object
+- [ ] **confusionmat** — Compute confusion matrix for classification problem
+- [ ] **classreg.learning.regr.regressionensemble** — Ensemble regression
+- [ ] **classreg.learning.regr.compactregressiongp** — Compact Gaussian process regression model class
+- [ ] **classreg.learning.partition.classificationpartitionedlinear** — Cross-validated linear model for binary classification of high-dimensional data
+- [ ] **classreg.learning.partition.classificationpartitionedecoc.kfoldloss** — Classification loss for cross-validated ECOC model
+- [ ] **classreg.learning.coder.config.svm.classificationsvmcoderconfigurer.generatecode** — Generate C/C++ code using coder configurer
+- [ ] **classificationnaivebayescomponent** — Pipeline component for multiclass classification using naive Bayes model
+- [ ] **classificationnaivebayes.loss** — Classification loss for naive Bayes classifier
+- [ ] **classificationlinear.predict** — Predict labels for linear classification models
+- [ ] **classificationecoc.margin** — Classification margins for multiclass error-correcting output codes (ECOC) model
+- [ ] **bootci** — Bootstrap confidence interval
+- [ ] **aggregatebayesianoptimization.resume** — Resume hyperparameter optimization problems
+- [ ] **acceleratedlifemodel.fitacclife** — Fit accelerated life model
+- [ ] **tspartition** — Partition time series data for cross-validation
+- [ ] **slicemetrics** — Metrics on data slices for machine learning model
+- [ ] **shapley.plot** — Plot Shapley values using bar graphs
+- [ ] **relieff** — Rank importance of predictors using ReliefF or RReliefF algorithm
+- [ ] **regressiongamcomponent** — Pipeline component for generalized additive model (GAM) for regression
+- [ ] **regressiongam.resubpredict** — Predict responses for training data using trained regression model
+- [ ] **rangesearch** — Find all neighbors within specified distance using input data
+- [ ] **nlpredci** — Nonlinear regression prediction confidence intervals
+- [ ] **mlecov** — Asymptotic covariance of maximum likelihood estimators
+- [ ] **localoutlierfactor.isanomaly** — Find anomalies in data using local outlier factor
+- [ ] **linearmodel.plotdiagnostics** — Plot observation diagnostics of linear regression model
+- [ ] **linearmodel.anova** — Analysis of variance for linear regression model
+- [ ] **linearmixedmodel.covarianceparameters** — Extract covariance parameters of linear mixed-effects model
+- [ ] **incrementaloneclasssvm.fit** — Train one-class SVM model for incremental anomaly detection
+- [ ] **generalizedlinearmodel.plotdiagnostics** — Plot observation diagnostics of generalized linear regression model
+- [ ] **fullfactorialdoe** — Full factorial design of experiments (DOE)
+- [ ] **fsrftest** — Univariate feature ranking for regression using F-tests
+- [ ] **dendrogram** — Dendrogram plot
+- [ ] **daugment** — D-optimal augmentation
+- [ ] **createns** — Create nearest neighbor searcher object
+- [ ] **compactcensoredlinearmodel** — Compact censored linear regression model
+- [ ] **classreg.learning.partition.regressionpartitionedmodel.kfoldpredict** — Predict responses for observations in cross-validated regression model
+- [ ] **classreg.learning.partition.regressionpartitionedlinear.kfoldloss** — Regression loss for cross-validated linear regression model
+- [ ] **classreg.learning.partition.classificationpartitionedmodel.kfoldpredict** — Classify observations in cross-validated classification model
+- [ ] **classreg.learning.partition.classificationpartitionedensemble** — Cross-validated classification ensemble
+- [ ] **classreg.learning.classif.compactclassificationdiscriminant** — Compact discriminant analysis classification
+- [ ] **classificationtree.resubloss** — Resubstitution classification loss for classification tree model
+- [ ] **classificationsvm.resubpredict** — Classify training data using trained classifier
+- [ ] **classificationsvm.compact** — Reduce size of machine learning model
+- [ ] **classificationknn.loss** — Loss of k-nearest neighbor classifier
+- [ ] **classificationgam.loss** — Classification loss for generalized additive model (GAM)
+- [ ] **classificationecoccomponent** — Pipeline component for multiclass classification using error-correcting output codes (ECOC) model
+- [ ] **classificationdiscriminantcomponent** — Pipeline component for discriminant analysis classification
+- [ ] **classificationdiscriminant.loss** — Classification loss for discriminant analysis classifier
+- [ ] **bayesianoptimization** — Bayesian optimization results
+- [ ] **anova.boxchart** — Box chart (box plot) for analysis of variance (ANOVA)
+- [ ] **treebagger.quantilepredict** — Predict response quantile using bag of regression trees
+- [ ] **savelearnerforcoder** — Save model object in file for code generation
+- [ ] **regressionlinear.predict** — Predict response of linear regression model
+- [ ] **regressiongam.resubloss** — Resubstitution regression loss
+- [ ] **regressionensemblecomponent** — Pipeline component for regression using ensemble of learners
+- [ ] **plsregress** — Partial least-squares (PLS) regression
+- [ ] **oneclasssvm** — One-class support vector machine (SVM) for anomaly detection
+- [ ] **mvksdensity** — Kernel smoothing function estimate for multivariate data
+- [ ] **incrementalrobustrandomcutforest.fit** — Train robust random cut forest model for incremental anomaly detection
+- [ ] **incrementaldynamickmeans.fit** — Train model for incremental dynamic k-means clustering
+- [ ] **incrementalclassificationnaivebayes.updatemetrics** — Update performance metrics in naive Bayes incremental learning classification model given new data
+- [ ] **incrementalclassificationkernel.updatemetricsandfit** — Update performance metrics in kernel incremental learning model given new data and train model
+- [ ] **incrementalclassificationkernel.fit** — Train kernel model for incremental learning
+- [ ] **incrementalclassificationecoc.updatemetricsandfit** — Update performance metrics in ECOC incremental learning classification model given new data and trai
+- [ ] **incrementalclassificationecoc.predict** — Predict responses for new observations from ECOC incremental learning classification model
+- [ ] **incremental.preprocessing.classweightednormalizer** — Class-weighted normalizer
+- [ ] **generalizedlinearmodel.step** — Improve generalized linear regression model by adding or removing terms
+- [ ] **featureselectionncaregression** — Feature selection for regression using neighborhood component analysis (NCA)
+- [ ] **featureselectionncaclassification** — Feature selection for classification using neighborhood component analysis (NCA)
+- [ ] **crosstab** — Cross-tabulation
+- [ ] **coxmodel** — Cox proportional hazards model
+- [ ] **classreg.learning.regr.compactregressionneuralnetwork** — Compact neural network model for regression
+- [ ] **classreg.learning.partition.classificationpartitionedmodel.kfoldedge** — Classification edge for cross-validated classification model
+- [ ] **classreg.learning.partition.classificationpartitionedkernelecoc** — Cross-validated kernel error-correcting output codes (ECOC) model for multiclass classification
+- [ ] **classreg.learning.partition.classificationpartitionedecoc.kfoldedge** — Classification edge for cross-validated ECOC model
+- [ ] **classreg.learning.classif.compactclassificationsvm.predict** — Classify observations using support vector machine (SVM) classifier
+- [ ] **classreg.imported.classif.compactclassificationxgboost.loss** — Classification error for XGBoost model
+- [ ] **classificationtree.predict** — Predict labels using classification tree model
+- [ ] **classificationknn.predict** — Predict labels using k-nearest neighbor classification model
+- [ ] **bootstrp** — Bootstrap sampling
+- [ ] **ttest** — One-sample and paired-sample t-test
+- [ ] **timeseries.forecaster.compactdirectforecaster** — Compact direct forecasting model
+- [ ] **templatenaivebayes** — Naive Bayes classifier template
+- [ ] **slicesample** — Slice sampler
+- [ ] **robustrandomcutforest.incrementallearner** — Convert robust random cut forest model to incremental learner
+- [ ] **robustrandomcutforest** — Robust random cut forest model for anomaly detection
+- [ ] **regressiontree.loss** — Regression error for regression tree model
+- [ ] **regressionquantilelinear.loss** — Loss for quantile linear regression model
+- [ ] **regressionlinear-class** — Linear regression model for high-dimensional data
+- [ ] **regressiongp.predict** — Predict response of Gaussian process regression model
+- [ ] **outlierremovercomponent** — Pipeline component for removing outlier values
+- [ ] **mdscale** — Nonclassical multidimensional scaling
+- [ ] **linearmodel.plotresiduals** — Plot residuals of linear regression model
+- [ ] **incrementaldriftawarelearner.updatemetricsandfit** — Update performance metrics in incremental drift-aware learning model given new data and train model
+- [ ] **incrementaldriftawarelearner.loss** — Regression or classification error of incremental drift-aware learner
+- [ ] **incrementalclassificationnaivebayes.predict** — Predict responses for new observations from naive Bayes incremental learning classification model
+- [ ] **incremental.drift.driftdetectionmethod** — Incremental drift detector that utilizes Drift Detection Method (DDM)
+- [ ] **hnswsearcher** — Hierarchical Navigable Small Worlds (HNSW) approximate nearest neighbor search
+- [ ] **hamiltoniansampler-class** — Hamiltonian Monte Carlo (HMC) sampler
+- [ ] **generalizedlinearmodel.plotresiduals** — Plot residuals of generalized linear regression model
+- [ ] **generalizedlinearmixedmodel.randomeffects** — Estimates of random effects and related statistics
+- [ ] **generalizedlinearmixedmodel.predict** — Predict response of generalized linear mixed-effects model
+- [ ] **fullfactorialdoe.fitlm** — Fit linear regression model using design runs
+- [ ] **fsulaplacian** — Rank features for unsupervised learning using Laplacian scores
+- [ ] **fairnessweights** — Reweight observations for fairness in binary classification
+- [ ] **coxphfit** — Cox proportional hazards regression
+- [ ] **clustering.evaluation.gapevaluation** — Gap criterion clustering evaluation object
+- [ ] **classreg.learning.partition.regressionpartitionedmodel** — Cross-validated regression model
+- [ ] **classreg.learning.partition.classificationpartitionedneuralnetwork** — Cross-validated classification neural network
+- [ ] **classreg.learning.partition.classificationpartitionedkernel** — Cross-validated, binary kernel classification model
+- [ ] **classreg.learning.classif.compactclassificationsvm.edge** — Find classification edge for support vector machine (SVM) classifier
+- [ ] **classreg.learning.classif.compactclassificationensemble.predict** — Predict labels using classification ensemble model
+- [ ] **classreg.learning.classif.classificationensemble.resubloss** — Resubstitution classification loss for classification ensemble model
+- [ ] **classify** — Classify observations using discriminant analysis
+- [ ] **classificationneuralnetwork.predict** — Classify observations using neural network classifier
+- [ ] **classificationneuralnetwork.edge** — Classification edge for neural network classifier
+- [ ] **classificationnaivebayes.predict** — Classify observations using naive Bayes classifier
+- [ ] **classificationnaivebayes.incrementallearner** — Convert naive Bayes classification model to incremental learner
+- [ ] **classificationgam.addinteractions** — Add interaction terms to univariate generalized additive model (GAM)
+- [ ] **chi2gof** — Chi-square goodness-of-fit test
+- [ ] **censoredlinearmodel.plotresiduals** — Plot residuals of censored linear regression model
+- [ ] **tall.binscatterplot** — Scatter plot of bins for tall arrays
+- [ ] **stats.drift.driftdiagnostics** — Diagnostics information for batch drift detection
+- [ ] **signtest** — Sign test
+- [ ] **signrank** — Wilcoxon signed rank test
+- [ ] **shapley.plotdependence** — Plot dependence of Shapley values on predictor values
+- [ ] **sampsizepwr** — Sample size and power of test
+- [ ] **robustrandomcutforest.isanomaly** — Find anomalies in data using robust random cut forest
+- [ ] **regressiongam.predict** — Predict responses using generalized additive model (GAM)
+- [ ] **probplot** — Probability plots
+- [ ] **nonlinearmodel.plotresiduals** — Plot residuals of nonlinear regression model
+- [ ] **nonlinearmodel.plotdiagnostics** — Plot diagnostics of nonlinear regression model
+- [ ] **linearmodel.plotinteraction** — Plot interaction effects of two predictors in linear regression model
+- [ ] **linearmodel.plotadjustedresponse** — Adjusted response plot of linear regression model
+- [ ] **isolationforest.isanomaly** — Find anomalies in data using isolation forest
+- [ ] **incrementaldynamickmeans.assignclusters** — Assign observations to existing clusters and dynamic clusters
+- [ ] **incrementaldriftawarelearner.perobservationloss** — Per observation regression or classification error of incremental drift-aware learner
+- [ ] **incremental.preprocessing.exponentiallyweightednormalizer** — Exponentially weighted normalizer
+- [ ] **generalizedlinearmixedmodel.coefci** — Confidence intervals for coefficients of generalized linear mixed-effects model
+- [ ] **fitcox** — Create Cox proportional hazards model
+- [ ] **featureselectionregressionrelieffcomponent** — Pipeline component for performing feature selection using RReliefF algorithm
+- [ ] **featureselectionclassificationrelieffcomponent** — Pipeline component for performing feature selection using ReliefF algorithm
+- [ ] **exhaustivesearcher** — Create exhaustive nearest neighbor searcher
+- [ ] **evalclusters** — Evaluate clustering solutions
+- [ ] **countpredictorsaftercategoricalencoding** — Number of predictors in tabular data after encoding categorical variables
+- [ ] **clusterdata** — Construct agglomerative clusters from data
+- [ ] **classreg.learning.partition.regressionpartitionedlinear** — Cross-validated linear regression model for high-dimensional data
+- [ ] **classreg.learning.paramoptim.aggregatebayesianoptimization** — Aggregate Bayesian optimization results
+- [ ] **classreg.learning.classif.compactclassificationensemble.edge** — Classification edge for classification ensemble model
+- [ ] **classreg.learning.classif.compactclassificationensemble** — Compact classification ensemble
+- [ ] **classificationecoc.resubloss** — Resubstitution classification loss for multiclass error-correcting output codes (ECOC) model
+- [ ] **anova1** — One-way analysis of variance
+- [ ] **vartestn** — Multiple-sample tests for equal variances
+- [ ] **ttest2** — Two-sample t-test
+- [ ] **timeseries.forecaster.partitioneddirectforecaster.cvloss** — Loss for partitioned data at each horizon step
+- [ ] **templateknn** — k-nearest neighbor classifier template
+- [ ] **templategam** — Generalized additive model (GAM) learner template
+- [ ] **templateecoc** — Error-correcting output codes learner template
+- [ ] **shapley.swarmchart** — Visualize Shapley values using swarm scatter charts
+- [ ] **robustfit** — Fit robust linear regression
+- [ ] **ricacomponent** — Pipeline component for feature extraction using reconstruction independent component analysis (RICA)
+- [ ] **repeatedmeasuresmodel.ranova** — Analysis of variance for within-subject effects in a repeated measures model
+- [ ] **regressionquantileneuralnetwork.predict** — Predict response for quantile neural network regression model
+- [ ] **regressionquantileneuralnetwork.loss** — Loss for quantile neural network regression model
+- [ ] **regressionquantilelinear.predict** — Predict response for quantile linear regression model
+- [ ] **prob.pearsondistribution** — Pearson probability distribution object
+- [ ] **ppca** — Probabilistic principal component analysis
+- [ ] **pearscdf** — Pearson cumulative distribution function
+- [ ] **pcacomponent** — Pipeline component for principal component analysis (PCA)
+- [ ] **outlierimputercomponent** — Pipeline component for imputing outlier values
+- [ ] **normfit** — Normal parameter estimates
+- [ ] **nonlinearmodel.plotprofilelikelihood** — Plot profile loglikelihood for nonlinear regression model
+- [ ] **mvncdf** — Multivariate normal cumulative distribution function
+- [ ] **manova.coeftest** — Linear hypothesis test on MANOVA model coefficients
+- [ ] **logncdf** — Lognormal cumulative distribution function
+- [ ] **linearmodel.predict** — Predict responses of linear regression model
+- [ ] **linearmixedmodel.coeftest** — Hypothesis test on fixed and random effects of linear mixed-effects model
+- [ ] **lillietest** — Lilliefors test
+- [ ] **kstest** — One-sample Kolmogorov-Smirnov test
+- [ ] **kdtreesearcher** — Create Kd-tree nearest neighbor searcher
+- [ ] **incrementalregressionlinear.predict** — Predict responses for new observations from linear incremental learning model
+- [ ] **incrementaloneclasssvm.isanomaly** — Find anomalies in data using one-class support vector machine (SVM) for incremental learning
+- [ ] **incrementaldriftawarelearner.predict** — Predict responses for new observations from incremental drift-aware learning model
+- [ ] **generalizedlinearmodel.predict** — Predict responses of generalized linear regression model
+- [ ] **featureselectionclassificationchi2component** — Pipeline component for performing feature selection using chi-square tests
+- [ ] **fairnessthresholder.predict** — Predicted labels adjusted by fairness threshold
+- [ ] **evcdf** — Extreme value cumulative distribution function
+- [ ] **disparateimpactremover.transform** — Transform new predictor data to remove disparate impact
+- [ ] **datasample** — Randomly sample from data, with or without replacement
+- [ ] **classreg.learning.regr.compactregressionquantileneuralnetwork** — Compact quantile neural network model for regression
+- [ ] **classreg.learning.partition.regressionpartitionedensemble** — Cross-validated regression ensemble
+- [ ] **classreg.learning.partition.classificationpartitionedecoc.kfoldmargin** — Classification margins for cross-validated ECOC model
+- [ ] **classreg.learning.classif.compactclassificationsvm.fitposterior** — Fit posterior probabilities for compact support vector machine (SVM) classifier
+- [ ] **classificationsvm.resubmargin** — Resubstitution classification margin
+- [ ] **classificationsvm.resubedge** — Resubstitution classification edge
+- [ ] **classificationnaivebayes.edge** — Classification edge for naive Bayes classifier
+- [ ] **classificationkernel.predict** — Predict labels for Gaussian kernel classification model
+- [ ] **classificationgam.predict** — Classify observations using generalized additive model (GAM)
+- [ ] **classificationgam.edge** — Classification edge for generalized additive model (GAM)
+- [ ] **biplot** — Biplot
+- [ ] **anova.stats** — Analysis of variance (ANOVA) table
+- [ ] **wblcdf** — Weibull cumulative distribution function
+- [ ] **trimmean** — Mean, excluding outliers
+- [ ] **treebagger.oobquantilepredict** — Quantile predictions for out-of-bag observations from bag of regression trees
+- [ ] **timeseries.forecaster.directforecaster.preparedpredictors** — Obtain prepared data used for training or testing in direct forecasting
+- [ ] **sparsefiltercomponent** — Pipeline component for feature extraction using sparse filtering
+- [ ] **skewness** — Skewness
+- [ ] **shapley.boxchart** — Visualize Shapley values using box charts (box plots)
+- [ ] **rotatefactors** — Rotate factor loadings
+- [ ] **regressiongp.loss** — Regression error for Gaussian process regression model
+- [ ] **regressionchainensemble** — Multiresponse regression model
+- [ ] **prob.normaldistribution.plot** — Plot probability distribution object
+- [ ] **prob.normaldistribution** — Normal probability distribution object
+- [ ] **pearspdf** — Pearson probability density function
+- [ ] **oneclasssvm.isanomaly** — Find anomalies in data using one-class support vector machine (SVM)
+- [ ] **norminv** — Normal inverse cumulative distribution function
+- [ ] **nnmf** — Nonnegative matrix factorization
+- [ ] **logninv** — Lognormal inverse cumulative distribution function
+- [ ] **linearmixedmodel.anova** — Analysis of variance for linear mixed-effects model
+- [ ] **kurtosis** — Kurtosis
+- [ ] **kmeansencodercomponent** — Pipeline component for feature extraction using k-means clustering
+- [ ] **isolationforest** — Isolation forest for anomaly detection
+- [ ] **incrementalrobustrandomcutforest.isanomaly** — Find anomalies in data using robust random cut forest (RRCF) for incremental learning
+- [ ] **incrementalkmeans.fit** — Fit model for incremental k-means clustering
+- [ ] **incrementaldriftawarelearner.updatemetrics** — Update performance metrics in incremental drift-aware learning model given new data
+- [ ] **histfit** — Histogram with a distribution fit
+- [ ] **generalizedlinearmodel.random** — Simulate responses with random noise for generalized linear regression model
+- [ ] **generalizedlinearmixedmodel.coeftest** — Hypothesis test on fixed and random effects of generalized linear mixed-effects model
+- [ ] **gamcdf** — Gamma cumulative distribution function
+- [ ] **featureselectionregressionftestcomponent** — Pipeline component for performing feature selection using F-tests
+- [ ] **featureselectionclassificationmrmrcomponent** — Pipeline component for performing MRMR feature selection in classification workflow
+- [ ] **expcdf** — Exponential cumulative distribution function
+- [ ] **cluster** — Construct agglomerative clusters from linkages
+- [ ] **classreg.learning.regr.compactregressionsvm-class** — Compact support vector machine regression model
+- [ ] **classreg.learning.regr.compactregressionensemble.loss** — Regression error for regression ensemble model
+- [ ] **classreg.learning.partition.regressionpartitionedquantileneuralnetwork** — Cross-validated quantile neural network for regression
+- [ ] **classreg.learning.partition.regressionpartitionedquantilemodel.kfoldloss** — Loss for cross-validated partitioned quantile regression model
+- [ ] **classreg.learning.partition.regressionpartitionedquantilemodel** — Cross-validated quantile model for regression
+- [ ] **classreg.learning.partition.regressionpartitionedneuralnetwork** — Cross-validated regression neural network model
+- [ ] **classreg.learning.partition.regressionpartitionedgp** — Cross-validated Gaussian process regression (GPR) model
+- [ ] **classificationneuralnetwork.margin** — Classification margins for neural network classifier
+- [ ] **classificationecoc.resubmargin** — Resubstitution classification margins for multiclass error-correcting output codes (ECOC) model
+- [ ] **classificationecoc.resubedge** — Resubstitution classification edge for multiclass error-correcting output codes (ECOC) model
+- [ ] **classificationdiscriminant.resubloss** — Resubstitution classification loss for discriminant analysis classifier
+- [ ] **classificationdiscriminant.predict** — Predict labels using discriminant analysis classifier
+- [ ] **candgen** — Candidate set generation
+- [ ] **anova.multcompare** — Multiple comparison of means for analysis of variance (ANOVA)
+- [ ] **timeseries.forecaster.partitioneddirectforecaster.cvpredict** — Predict response using cross-validated direct forecasting model
+- [ ] **sobolset** — Sobol quasirandom point set
+- [ ] **silhouette** — Silhouette plot
+- [ ] **regressionkernel.predict** — Predict responses for Gaussian kernel regression model
+- [ ] **regressiongam.loss** — Regression loss for generalized additive model (GAM)
+- [ ] **regress** — Multiple linear regression
+- [ ] **ranksum** — Wilcoxon rank sum test
+- [ ] **qrandstream** — Quasirandom number stream
+- [ ] **qqplot** — Quantile-quantile plot
+- [ ] **prob.weibulldistribution** — Weibull probability distribution object
+- [ ] **prob.tlocationscaledistribution** — t location-scale probability distribution object
+- [ ] **prob.lognormaldistribution** — Lognormal probability distribution object
+- [ ] **prob.halfnormaldistribution** — Half-normal probability distribution object
+- [ ] **prob.generalizedparetodistribution** — Generalized Pareto probability distribution object
+- [ ] **prob.generalizedextremevaluedistribution** — Generalized extreme value probability distribution object
+- [ ] **prob.extremevaluedistribution** — Extreme value probability distribution object
+- [ ] **pearsrnd** — Pearson system random numbers
+- [ ] **paretotails** — Piecewise distribution with Pareto tails
+- [ ] **optimaldoe.addruns** — Add runs to D-optimal design
+- [ ] **nonlinearmodel.predict** — Predict response of nonlinear regression model
+- [ ] **mvnpdf** — Multivariate normal probability density function
+- [ ] **lognfit** — Lognormal parameter estimates
+- [ ] **linearmodel.matchresponse** — Predictor values at specified response value for linear regression model
+- [ ] **linearmixedmodel.randomeffects** — Estimates of random effects and related statistics
+- [ ] **linearmixedmodel.random** — Generate random responses from fitted linear mixed-effects model
+- [ ] **linearmixedmodel.fitted** — Fitted responses from a linear mixed-effects model
+- [ ] **learningpipeline.crossvalidate** — Cross-validate pipeline
+- [ ] **learningpipeline** — Machine learning pipeline
+- [ ] **incrementaldynamickmeans.updatemetrics** — Update performance metrics in incremental dynamic k-means clustering model given new data
+- [ ] **generalizedlinearmixedmodel.compare** — Compare generalized linear mixed-effects models
+- [ ] **gaminv** — Gamma inverse cumulative distribution function
+- [ ] **fishertest** — Fisher’s exact test
+- [ ] **featuretransformer.describe** — Describe generated features
+- [ ] **featureselectionregressionmrmrcomponent** — Pipeline component for performing MRMR feature selection in regression workflow
+- [ ] **driftdiagnostics.plotpermutationresults** — Plot histogram of permutation results for a variable specified for data drift detection
+- [ ] **coxmodel.survival** — Calculate survival of Cox proportional hazards model
+- [ ] **coxmodel.plotsurvival** — Plot survival function of Cox proportional hazards model
+- [ ] **compactregressionsvm.predict** — Predict responses using support vector machine regression model
+- [ ] **clustering.evaluation.silhouetteevaluation** — Silhouette criterion clustering evaluation object
+- [ ] **classreg.learning.regr.compactregressionquantilelinear** — Compact quantile linear regression model
+- [ ] **classreg.learning.partition.regressionpartitionedkernel** — Cross-validated kernel model for regression
+- [ ] **classreg.learning.partition.classificationpartitionedmodel.kfoldmargin** — Classification margins for cross-validated classification model
+- [ ] **classreg.imported.classif.compactclassificationxgboost** — Compact classification XGBoost model
+- [ ] **classificationgam.resume** — Resume training of generalized additive model (GAM)
+- [ ] **classificationgam.plotlocaleffects** — Plot local effects of terms in generalized additive model (GAM)
+- [ ] **classificationdiscriminant.cvshrink** — Cross-validate regularization of linear discriminant
+- [ ] **anova2** — Two-way analysis of variance
+- [ ] **andrewsplot** — Andrews plot
+- [ ] **adtest** — Anderson-Darling test
+- [ ] **ztest** — z-test
+- [ ] **wblinv** — Weibull inverse cumulative distribution function
+- [ ] **wblfit** — Weibull parameter estimates
+- [ ] **timeseries.forecaster.directforecaster.forecast** — Forecast response at time steps beyond available data
+- [ ] **sparsefilt** — Feature extraction by using sparse filtering
+- [ ] **ridge** — Ridge regression
+- [ ] **rica** — Feature extraction by using reconstruction ICA
+- [ ] **repeatedmeasuresmodel.predict** — Compute predicted values given predictor values
+- [ ] **repeatedmeasuresmodel.multcompare** — Multiple comparison of estimated marginal means
+- [ ] **regressiontree.resubloss** — Resubstitution loss for regression tree model
+- [ ] **regressionchainensemble.loss** — Loss for multiresponse regression model
+- [ ] **prob.stabledistribution** — Stable probability distribution object
+- [ ] **prob.negativebinomialdistribution** — Negative binomial distribution object
+- [ ] **prob.nakagamidistribution** — Nakagami probability distribution object
+- [ ] **prob.loglogisticdistribution** — Loglogistic probability distribution object
+- [ ] **prob.logisticdistribution** — Logistic probability distribution object
+- [ ] **prob.inversegaussiandistribution** — Inverse Gaussian probability distribution object
+- [ ] **prob.gammadistribution** — Gamma probability distribution object
+- [ ] **prob.exponentialdistribution** — Exponential probability distribution object
+- [ ] **prob.burrdistribution** — Burr probability distribution object
+- [ ] **prob.birnbaumsaundersdistribution** — Birnbaum-Saunders probability distribution object
+- [ ] **prob.binomialdistribution** — Binomial probability distribution object
+- [ ] **prob.betadistribution** — Beta probability distribution object
+- [ ] **polyconf** — Polynomial confidence intervals
+- [ ] **pearsinv** — Pearson inverse cumulative distribution function (icdf)
+- [ ] **partialcorri** — Partial correlation coefficients adjusted for internal variables
+- [ ] **parallelcoords** — Parallel coordinates plot
+- [ ] **normlike** — Normal negative loglikelihood
+- [ ] **normalizercomponent** — Pipeline component for normalizing data
+- [ ] **nonlinearmodel.profilelikelihood** — Profile loglikelihood for nonlinear regression model
+- [ ] **nearcorr** — Compute nearest correlation matrix by minimizing Frobenius distance
+- [ ] **multinomialregression.predict** — Predict responses of multinomial regression model
+- [ ] **moment** — Central moment
+- [ ] **manova.groupmeans** — Mean response estimates for multivariate analysis of variance (MANOVA)
+- [ ] **lognrnd** — Lognormal random numbers
+- [ ] **linearmodel.plotslice** — Plot of slices through fitted linear regression surface
+- [ ] **linearmodel.optimizeresponse** — Predictor and response values at response surface maximum or minimum of linear regression model
+- [ ] **linearmixedmodel.residuals** — Residuals of fitted linear mixed-effects model
+- [ ] **linearmixedmodel.designmatrix** — Fixed- and random-effects design matrices
+- [ ] **lime.plot** — Plot results of local interpretable model-agnostic explanations (LIME)
+- [ ] **kruskalwallis** — Kruskal-Wallis test
+- [ ] **incrementalclassificationkernel.predict** — Predict responses for new observations from kernel incremental learning model
+- [ ] **generalizedlinearmixedmodel.plotresiduals** — Plot residuals of generalized linear mixed-effects model
+- [ ] **fitrm** — Fit repeated measures model
+- [ ] **featuretransformer** — Generated feature transformations
+- [ ] **featureselectionclassificationkruskalwalliscomponent** — Pipeline component for performing feature selection using Kruskal-Wallis test
+- [ ] **featureselectionclassificationanovacomponent** — Pipeline component for performing feature selection using ANOVA algorithm
+- [ ] **evinv** — Extreme value inverse cumulative distribution function
+- [ ] **ecdfhist** — Histogram based on empirical cumulative distribution function
+- [ ] **clustering.evaluation.calinskiharabaszevaluation** — Calinski-Harabasz criterion clustering evaluation object
+- [ ] **classreg.learning.regr.regressionbaggedensemble.oobpermutedpredictorimportance** — Out-of-bag predictor importance estimates for random forest of regression trees by permutation
+- [ ] **classreg.learning.regr.compactregressionensemble.predict** — Predict responses using regression ensemble model
+- [ ] **classreg.learning.regr.compactregressionensemble** — Compact regression ensemble
+- [ ] **classreg.learning.partition.regressionpartitionedquantilemodel.kfoldpredict** — Predict responses for observations in cross-validated quantile regression model
+- [ ] **classreg.learning.partition.regressionpartitionedlinear.kfoldpredict** — Predict responses for observations in cross-validated linear regression model
+- [ ] **classreg.learning.classif.compactclassificationsvm.margin** — Find classification margins for support vector machine (SVM) classifier
+- [ ] **classreg.learning.classif.compactclassificationgam** — Compact generalized additive model (GAM) for binary classification
+- [ ] **classreg.learning.classif.compactclassificationensemble.margin** — Classification margins for classification ensemble model
+- [ ] **classreg.learning.classif.classificationensemble.resubedge** — Resubstitution classification edge for classification ensemble model
+- [ ] **classreg.learning.classif.classificationbaggedensemble.oobpermutedpredictorimportance** — Out-of-bag predictor importance estimates for random forest of classification trees by permutation
+- [ ] **classreg.imported.regr.compactregressionxgboost.loss** — Regression error for XGBoost model
+- [ ] **classificationtree.resubpredict** — Classify observations in classification tree by resubstitution
+- [ ] **classificationnaivebayes.margin** — Classification margins for naive Bayes classifier
+- [ ] **classificationgam.margin** — Classification margins for generalized additive model (GAM)
+- [ ] **censoredlinearmodel.predict** — Predict responses of censored linear regression model
+- [ ] **vartest2** — Two-sample F-test for equal variances
+- [ ] **vartest** — Chi-square variance test
+- [ ] **timeseries.forecaster.directforecaster.predict** — Predict response at time steps in observed test data
+- [ ] **slicemetrics.plot** — Plot bar graph of slice metric
+- [ ] **semisupervisedselftrainingmodel** — Semi-supervised self-trained model for classification
+- [ ] **semisupervisedgraphmodel** — Semi-supervised graph-based model for classification
+- [ ] **repeatedmeasuresmodel.manova** — Multivariate analysis of variance
+- [ ] **repeatedmeasuresmodel.anova** — Analysis of variance for between-subject effects in a repeated measures model
+- [ ] **regstats** — Regression diagnostics
+- [ ] **regressiontree.predict** — Predict responses using regression tree model
+- [ ] **regressiontree.cvloss** — Regression error by cross-validation for regression tree model
+- [ ] **regressionensemble.cvshrink** — Cross-validate pruning and regularization of regression ensemble
+- [ ] **quantilebinnercomponent** — Pipeline component for binning data based on quantiles
+- [ ] **prob.riciandistribution** — Rician probability distribution object
+- [ ] **prob.rayleighdistribution** — Rayleigh probability distribution object
+- [ ] **prob.poissondistribution** — Poisson probability distribution object
+- [ ] **prob.normaldistribution.proflik** — Profile likelihood function for probability distribution
+- [ ] **prob.normaldistribution.paramci** — Confidence intervals for probability distribution parameters
+- [ ] **observationremovercomponent** — Pipeline component for removing observations
+- [ ] **observationimputercomponent** — Pipeline component for imputing missing values
+- [ ] **multivarichart** — Multivari chart for grouped data
+- [ ] **multinomialregression.coeftest** — Linear hypothesis test on multinomial regression model coefficients
+- [ ] **manova1** — One-way multivariate analysis of variance (MANOVA)
+- [ ] **lognlike** — Lognormal negative loglikelihood
+- [ ] **linearmodel.plot** — Scatter plot or added variable plot of linear regression model
+- [ ] **linearmodel.coeftest** — Linear hypothesis test on linear regression model coefficients
+- [ ] **linearmixedmodel.fixedeffects** — Estimates of fixed effects and related statistics
+- [ ] **lassoplot** — Trace plot of lasso fit
+- [ ] **kstest2** — Two-sample Kolmogorov-Smirnov test
+- [ ] **jbtest** — Jarque-Bera test
+- [ ] **incrementalpca.fit** — Fit principal component analysis model to streaming data
+- [ ] **incrementalkmeans.updatemetrics** — Update performance metrics in incremental k-means clustering model given new data
+- [ ] **importmodelfromxgboost** — Import pretrained XGBoost model into MATLAB
+- [ ] **hyperparameters** — Variable descriptions for optimizing a fit function
+- [ ] **hmcsampler** — Hamiltonian Monte Carlo (HMC) sampler
+- [ ] **gpcdf** — Generalized Pareto cumulative distribution function
+- [ ] **gevcdf** — Generalized extreme value cumulative distribution function
+- [ ] **generalizedlinearmodel.plotslice** — Plot of slices through fitted generalized linear regression surface
+- [ ] **generalizedlinearmixedmodel.random** — Generate random responses from fitted generalized linear mixed-effects model
+- [ ] **generalizedlinearmixedmodel.fixedeffects** — Estimates of fixed effects and related statistics
+- [ ] **generalizedlinearmixedmodel.designmatrix** — Fixed- and random-effects design matrices
+- [ ] **gamfit** — Gamma parameter estimates
+- [ ] **functioncomponent** — Pipeline component for custom function
+- [ ] **finv** — F inverse cumulative distribution function
+- [ ] **fairnessthresholder.loss** — Classification loss adjusted by fairness threshold
+- [ ] **expinv** — Exponential inverse cumulative distribution function
+- [ ] **equalwidthbinnercomponent** — Pipeline component for grouping data into equal-width bins
+- [ ] **dummyvar** — Create dummy variables
+- [ ] **driftdiagnostics.plotdriftstatus** — Plot p-values and confidence intervals for variables tested for data drift
+- [ ] **cvpartition.summary** — Summarize cross-validation partition with stratification or grouping variable
+- [ ] **compacttreebagger** — Compact ensemble of bagged decision trees
+- [ ] **cmdscale** — Classical multidimensional scaling
+- [ ] **clustering.evaluation.daviesbouldinevaluation** — Davies-Bouldin criterion clustering evaluation object
+- [ ] **classreg.learning.regr.compactregressionchainensemble** — Compact multiresponse regression model
+- [ ] **classreg.learning.classif.compactclassificationensemble.predictorimportance** — Estimates of predictor importance for classification ensemble of decision trees
+- [ ] **classreg.learning.classif.classificationensemble.resubpredict** — Classify observations in classification ensemble by resubstitution
+- [ ] **classreg.imported.regr.compactregressionxgboost** — Compact regression XGBoost model
+- [ ] **classreg.imported.classif.compactclassificationxgboost.edge** — Classification edge for XGBoost classification model
+- [ ] **classificationtree.predictorimportance** — Estimates of predictor importance for classification tree
+- [ ] **classificationtree.cvloss** — Classification error by cross-validation for classification tree model
+- [ ] **classificationdiscriminant.edge** — Classification edge for discriminant analysis classifier
+- [ ] **cholcov** — Cholesky-like covariance decomposition
+- [ ] **censoredlinearmodel.plotslice** — Plot of slices through fitted censored linear regression surface
+- [ ] **censoredlinearmodel.coeftest** — Linear hypothesis test on censored linear regression model coefficients
+- [ ] **ccdesign** — Central composite design
+- [ ] **canoncorr** — Canonical correlation
+- [ ] **candexch** — D-optimal design from candidate set using row exchanges
+- [ ] **ansaribradley** — Ansari-Bradley test
+- [ ] **anova.plotcomparisons** — Interactive plot of multiple comparisons of means for analysis of variance (ANOVA)
+- [ ] **wblrnd** — Weibull random numbers
+- [ ] **variableselectorcomponent** — Pipeline component for manual variable selection
+- [ ] **unifrnd** — Continuous uniform random numbers
+- [ ] **tinv** — Student&#39;s t inverse cumulative distribution function
+- [ ] **repeatedmeasuresmodel.plotprofile** — Plot expected marginal means with optional grouping
+- [ ] **repeatedmeasuresmodel.plot** — Plot data with optional grouping
+- [ ] **repeatedmeasuresmodel** — Repeated measures model object
+- [ ] **raylrnd** — Rayleigh random numbers
+- [ ] **prob.triangulardistribution** — Triangular probability distribution object
+- [ ] **prob.piecewiselineardistribution** — Piecewise linear probability distribution object
+- [ ] **prob.normaldistribution.var** — Variance of probability distribution
+- [ ] **prob.normaldistribution.truncate** — Truncate probability distribution object
+- [ ] **prob.normaldistribution.std** — Standard deviation of probability distribution
+- [ ] **prob.normaldistribution.mean** — Mean of probability distribution
+- [ ] **prob.multinomialdistribution** — Multinomial probability distribution object
+- [ ] **prob.loguniformdistribution** — Loguniform probability distribution object
+- [ ] **ordinal** — (Not Recommended) Arrays for ordinal data
+- [ ] **onehotencodercomponent** — Pipeline component for encoding categorical data into one-hot vectors
+- [ ] **normrnd** — Normal random numbers
+- [ ] **nonlinearmodel.plotslice** — Plot of slices through fitted nonlinear regression surface
+- [ ] **nonlinearmodel.coefci** — Confidence intervals of coefficient estimates of nonlinear regression model
+- [ ] **nominal** — (Not Recommended) Arrays for nominal data
+- [ ] **ncx2cdf** — Noncentral chi-square cumulative distribution function
+- [ ] **ncfrnd** — Noncentral F random numbers
+- [ ] **nbinfit** — Negative binomial parameter estimates
+- [ ] **nbincdf** — Negative binomial cumulative distribution function
+- [ ] **multinomialregression.random** — Generate random responses from fitted multinomial regression model
+- [ ] **manova.stats** — Multivariate analysis of variance (MANOVA) table
+- [ ] **manova.multcompare** — Multiple comparison of marginal means for multiple analysis of variance (MANOVA)
+- [ ] **manova.canonvars** — Canonical variables
+- [ ] **makecdiscr** — Construct discriminant analysis classifier from parameters
+- [ ] **linearmixedmodel.coefci** — Confidence intervals for coefficients of linear mixed-effects model
+- [ ] **lhsdesign** — Latin hypercube sample
+- [ ] **learningpipeline.package** — Create deployable archive or standalone application from pipeline
+- [ ] **interactionplot** — Interaction plot for grouped data
+- [ ] **incrementalclassificationlinear.perobservationloss** — Per observation classification error of model for incremental learning
+- [ ] **incremental.preprocessing.zscorenormalizer.transform** — Normalize streaming data
+- [ ] **hygecdf** — Hypergeometric cumulative distribution function
+- [ ] **haltonset** — Halton quasirandom point set
+- [ ] **gprnd** — Generalized Pareto random numbers
+- [ ] **gevrnd** — Generalized extreme value random numbers
+- [ ] **geocdf** — Geometric cumulative distribution function
+- [ ] **generalizedlinearmodel.coeftest** — Linear hypothesis test on generalized linear regression model coefficients
+- [ ] **generalizedlinearmixedmodel.residuals** — Residuals of fitted generalized linear mixed-effects model
+- [ ] **generalizedlinearmixedmodel.covarianceparameters** — Extract covariance parameters of generalized linear mixed-effects model
+- [ ] **generalizedlinearmixedmodel.anova** — Analysis of variance for generalized linear mixed-effects model
+- [ ] **gamrnd** — Gamma random numbers
+- [ ] **frequencyencodercomponent** — Pipeline component for frequency encoding categorical variables
+- [ ] **featureselectionncaclassification.selectfeatures** — Select important features for NCA classification or regression
+- [ ] **fcdf** — F cumulative distribution function
+- [ ] **evfit** — Extreme value parameter estimates
+- [ ] **driftdiagnostics.plothistogram** — Plot histogram of a variable specified for data drift detection
+- [ ] **coxmodel.hazardratio** — Estimate Cox model hazard relative to baseline
+- [ ] **copulafit** — Fit copula to data
+- [ ] **classreg.learning.regr.regressionensemble.regularize** — Find optimal weights for learners in regression ensemble
+- [ ] **classreg.learning.regr.compactregressiongam** — Compact generalized additive model (GAM) for regression
+- [ ] **classreg.learning.regr.compactregressionensemble.predictorimportance** — Estimates of predictor importance for regression ensemble of decision trees
+- [ ] **classreg.learning.classif.classificationensemble.resubmargin** — Resubstitution classification margins for classification ensemble model
+- [ ] **classreg.imported.classif.compactclassificationxgboost.margin** — Classification margins for XGBoost classification model
+- [ ] **classificationsvm.resume** — Resume training support vector machine (SVM) classifier
+- [ ] **classificationknn.edge** — Edge of k-nearest neighbor classifier
+- [ ] **binornd** — Random numbers from binomial distribution
+- [ ] **acceleratedlifemodel.distplot** — Plot distribution functions of accelerated life model
+- [ ] **acceleratedlifemodel.distfcn** — Distribution functions of accelerated life model
+- [ ] **x2fx** — Convert predictor matrix to design matrix
+- [ ] **wblpdf** — Weibull probability density function
+- [ ] **wbllike** — Weibull negative loglikelihood
+- [ ] **unidrnd** — Random numbers from discrete uniform distribution
+- [ ] **unidcdf** — Discrete uniform cumulative distribution function
+- [ ] **trnd** — Student&#39;s t random numbers
+- [ ] **timeseries.forecaster.directforecaster.loss** — Loss at each horizon step
+- [ ] **templatediscriminant** — Discriminant analysis classifier template
+- [ ] **tcdf** — Student&#39;s t cumulative distribution function
+- [ ] **slicemetrics.report** — Generate slice metrics report
+- [ ] **semisupervisedgraphmodel.predict** — Label new data using semi-supervised graph-based classifier
+- [ ] **regressiontree.view** — View regression tree
+- [ ] **regressiontree.predictorimportance** — Estimates of predictor importance for regression tree
+- [ ] **regressionchainensemble.predict** — Predict responses using multiresponse regression model
+- [ ] **reconstructionica** — Feature extraction by reconstruction ICA
+- [ ] **raylcdf** — Rayleigh cumulative distribution function
+- [ ] **prob.uniformdistribution** — Uniform probability distribution object
+- [ ] **prob.normaldistribution.iqr** — Interquartile range of probability distribution
+- [ ] **prob.empiricaldistribution** — Empirical probability distribution object
+- [ ] **poissrnd** — Random numbers from Poisson distribution
+- [ ] **normspec** — Normal density plot shading between specifications
+- [ ] **normplot** — Normal probability plot
+- [ ] **nlparci** — Nonlinear regression parameter confidence intervals
+- [ ] **nctcdf** — Noncentral t cumulative distribution function
+- [ ] **ncfcdf** — Noncentral F cumulative distribution function
+- [ ] **nbinrnd** — Negative binomial random numbers
+- [ ] **mvtcdf** — Multivariate t cumulative distribution function
+- [ ] **mvnrnd** — Multivariate normal random numbers
+- [ ] **multinomialregression.testdeviance** — Deviance test for multinomial regression model
+- [ ] **multinomialregression.coefci** — Confidence intervals for coefficient estimates of multinomial regression model
+- [ ] **mnrnd** — Multinomial random numbers
+- [ ] **mat2dataset** — (Not Recommended) Convert matrix to dataset array
+- [ ] **manova.barttest** — Bartlett&#39;s test for multivariate analysis of variance (MANOVA)
+- [ ] **maineffectsplot** — Main effects plot for grouped data
+- [ ] **linearmodel.ploteffects** — Plot main effects of predictors in linear regression model
+- [ ] **learningpipeline.run** — Execute pipeline or component for inference after learning
+- [ ] **learningpipeline.learn** — Initialize and evaluate pipeline or component
+- [ ] **johnsrnd** — Johnson system random numbers
+- [ ] **incrementalregressionlinear.perobservationloss** — Per observation regression error of model for incremental learning
+- [ ] **incrementalpca.transform** — Transform data into principal component scores
+- [ ] **incrementalkmeans.assignclusters** — Assign observations to existing clusters
+- [ ] **incrementaldriftawarelearner.reset** — Reset incremental drift-aware learner
+- [ ] **hygernd** — Hypergeometric random numbers
+- [ ] **hygepdf** — Hypergeometric probability density function
+- [ ] **gppdf** — Generalized Pareto probability density function
+- [ ] **gpinv** — Generalized Pareto inverse cumulative distribution function
+- [ ] **gpfit** — Generalized Pareto parameter estimates
+- [ ] **gmdistribution.cluster** — Construct clusters from Gaussian mixture distribution
+- [ ] **gevpdf** — Generalized extreme value probability density function
+- [ ] **gevinv** — Generalized extreme value inverse cumulative distribution function
+- [ ] **gevfit** — Generalized extreme value parameter estimates
+- [ ] **generalizedlinearmixedmodel.response** — Response vector of generalized linear mixed-effects model
+- [ ] **generalizedlinearmixedmodel.refit** — Refit generalized linear mixed-effects model
+- [ ] **generalizedlinearmixedmodel.fitted** — Fitted responses from generalized linear mixed-effects model
+- [ ] **gamlike** — Gamma negative loglikelihood
+- [ ] **friedman** — Friedman’s test
+- [ ] **fracfactgen** — Two-level fractional factorial design generators
+- [ ] **featuretransformer.transform** — Transform new data using generated features
+- [ ] **exprnd** — Exponential random numbers
+- [ ] **expfit** — Exponential parameter estimates
+- [ ] **evrnd** — Extreme value random numbers
+- [ ] **evlike** — Extreme value negative loglikelihood
+- [ ] **dwtest** — Durbin-Watson test with residual inputs
+- [ ] **driftdiagnostics.plotempiricalcdf** — Plot empirical cumulative distribution function (ecdf) of a variable specified for data drift detect
+- [ ] **driftdiagnostics.histcounts** — Compute histogram bin counts for specified variables in baseline and target data for drift detection
+- [ ] **cvpartition.training** — Training indices for cross-validation
+- [ ] **cvpartition.test** — Test indices for cross-validation
+- [ ] **cophenet** — Cophenetic correlation coefficient
+- [ ] **controlrules** — Western Electric and Nelson control rules
+- [ ] **classreg.learning.partition.regressionpartitionedmodel.kfoldfun** — Cross-validate function for regression
+- [ ] **classreg.learning.partition.classificationpartitionedmodel.kfoldfun** — Cross-validate function for classification
+- [ ] **classreg.learning.classif.classificationbaggedensemble.oobpredict** — Predict out-of-bag labels and scores of bagged classification ensemble
+- [ ] **classreg.imported.classif.compactclassificationxgboost.predict** — Predict labels using classification XGBoost model
+- [ ] **classificationtree.edge** — Classification edge for classification tree model
+- [ ] **chi2rnd** — Chi-square random numbers
+- [ ] **cell2dataset** — (Not Recommended) Convert cell array to dataset array
+- [ ] **binocdf** — Binomial cumulative distribution function
+- [ ] **betarnd** — Beta random numbers
+- [ ] **betacdf** — Beta cumulative distribution function
+- [ ] **anova.groupmeans** — Mean response estimates for analysis of variance (ANOVA)
+- [ ] **acceleratedlifemodel.meanfailplot** — Plot failure times of accelerated life model
+- [ ] **wblplot** — Weibull probability plot
+- [ ] **unifpdf** — Continuous uniform probability density function
+- [ ] **unifit** — Continuous uniform parameter estimates
+- [ ] **unifcdf** — Continuous uniform cumulative distribution function
+- [ ] **timeseries.forecaster.directforecaster.crossval** — Cross-validate direct forecasting model
+- [ ] **taguchidoe.snr** — Taguchi DOE signal-to-noise ratio (SNR)
+- [ ] **taguchidoe.plotsnr** — Plot signal-to-noise ratio (SNR) for Taguchi design factors
+- [ ] **struct2dataset** — (Not Recommended) Convert structure array to dataset array
+- [ ] **sparsefiltering** — Feature extraction by sparse filtering
+- [ ] **runstest** — Run test for randomness
+- [ ] **repeatedmeasuresmodel.grpstats** — Compute descriptive statistics of repeated measures data by group
+- [ ] **regressiontree.resubpredict** — Predict response of regression tree by resubstitution
+- [ ] **regressionlinear.selectmodels** — Select fitted regularized linear regression models
+- [ ] **refline** — Add reference line to plot
+- [ ] **refcurve** — Add reference curve to plot
+- [ ] **prob.normaldistribution.median** — Median of probability distribution
+- [ ] **prob.kerneldistribution** — Kernel probability distribution object
+- [ ] **poisscdf** — Poisson cumulative distribution function
+- [ ] **optimizablevariable** — Variable description for bayesopt or other optimizers
+- [ ] **optimalleaforder** — Optimal leaf ordering for hierarchical clustering
+- [ ] **ncx2rnd** — Noncentral chi-square random numbers
+- [ ] **ncx2pdf** — Noncentral chi-square probability density function
+- [ ] **ncx2inv** — Noncentral chi-square inverse cumulative distribution function
+- [ ] **nctrnd** — Noncentral t random numbers
+- [ ] **ncfpdf** — Noncentral F probability density function
+- [ ] **ncfinv** — Noncentral F inverse cumulative distribution function
+- [ ] **nbinpdf** — Negative binomial probability density function
+- [ ] **multinomialregression.feval** — Predict responses of multinomial regression model using one input for each predictor
+- [ ] **manova.plotprofile** — Plot MANOVA response variable means with grouping
+- [ ] **lognstat** — Lognormal mean and variance
+- [ ] **lognpdf** — Lognormal probability density function
+- [ ] **linearmodel.removeterms** — Remove terms from linear regression model
+- [ ] **linearmodel.coefci** — Confidence intervals of coefficient estimates of linear regression model
+- [ ] **linearmodel.addterms** — Add terms to linear regression model
+- [ ] **lhsnorm** — Latin hypercube sample from multivariate normal distribution
+- [ ] **learningpipeline.reset** — Reset pipeline or component
+- [ ] **learningpipeline.insert** — Insert component or pipeline into existing pipeline
+- [ ] **learnersize** — Compact size of trained machine learning model object
+- [ ] **incrementalclassificationnaivebayes.logp** — Log unconditional probability density of naive Bayes classification model for incremental learning
+- [ ] **incremental.drift.driftdetectionmethod.detectdrift** — Update drift detector states and drift status with new data
+- [ ] **inconsistent** — Inconsistency coefficient
+- [ ] **hygeinv** — Hypergeometric inverse cumulative distribution function
+- [ ] **grp2idx** — Create index vector from grouping variable
+- [ ] **gmdistribution.random** — Random variate from Gaussian mixture distribution
+- [ ] **gevlike** — Generalized extreme value negative loglikelihood
+- [ ] **geostat** — Geometric mean and variance
+- [ ] **geornd** — Geometric random numbers
+- [ ] **geopdf** — Geometric probability density function
+- [ ] **generalizedlinearmodel.removeterms** — Remove terms from generalized linear regression model
+- [ ] **generalizedlinearmodel.deviancetest** — Analysis of deviance for generalized linear regression model
+- [ ] **gampdf** — Gamma probability density function
+- [ ] **fsurfht** — Interactive contour plot of function
+- [ ] **frnd** — F random numbers
+- [ ] **fractionalfactorialdoe.fractionalfactorialtypes** — Fractional factorial design types
+- [ ] **fracfact** — Fractional factorial design
+- [ ] **fpdf** — F probability density function
+- [ ] **explike** — Exponential negative loglikelihood
+- [ ] **evpdf** — Extreme value probability density function
+- [ ] **driftdiagnostics.ecdf** — Compute empirical cumulative distribution function (ecdf) for baseline and target data specified for
+- [ ] **copularnd** — Copula random numbers
+- [ ] **copulaparam** — Copula parameters as function of rank correlation
+- [ ] **clustering.evaluation.calinskiharabaszevaluation.plot** — Plot clustering evaluation object criterion values
+- [ ] **classreg.learning.regr.regressionensemble.resume** — Resume training of regression ensemble model
+- [ ] **classreg.learning.regr.regressionensemble.resubloss** — Resubstitution loss for regression ensemble model
+- [ ] **classreg.learning.coder.config.svm.classificationsvmcoderconfigurer.generatefiles** — Generate MATLAB files for code generation using coder configurer
+- [ ] **classreg.learning.classif.compactclassificationsvm.discardsupportvectors** — Discard support vectors for linear support vector machine (SVM) classifier
+- [ ] **classreg.learning.classif.classificationensemble.resume** — Resume training of classification ensemble model
+- [ ] **classreg.imported.regr.compactregressionxgboost.predict** — Predict responses using regression XGBoost model
+- [ ] **classificationtree.view** — View classification tree
+- [ ] **classificationtree.prune** — Produce sequence of classification subtrees by pruning classification tree
+- [ ] **classificationtree.margin** — Classification margins for classification tree model
+- [ ] **classificationknn.margin** — Margin of k-nearest neighbor classifier
+- [ ] **classificationecoc.discardsupportvectors** — Discard support vectors of linear SVM binary learners in ECOC model
+- [ ] **classificationdiscriminant.resubpredict** — Classify observations in discriminant analysis classifier by resubstitution
+- [ ] **classificationdiscriminant.resubedge** — Resubstitution classification edge for discriminant analysis classifier
+- [ ] **classificationdiscriminant.nlinearcoeffs** — Number of nonzero linear coefficients in discriminant analysis classifier
+- [ ] **classificationdiscriminant.margin** — Classification margins for discriminant analysis classifier
+- [ ] **classificationdiscriminant.mahal** — Mahalanobis distance to class means of discriminant analysis classifier
+- [ ] **chi2inv** — Chi-square inverse cumulative distribution function
+- [ ] **chi2cdf** — Chi-square cumulative distribution function
+- [ ] **censoredlinearmodel.coefci** — Confidence intervals of coefficient estimates for censored linear regression model
+- [ ] **cdfplot** — Empirical cumulative distribution function (cdf) plot
+- [ ] **binopdf** — Binomial probability density function
+- [ ] **binoinv** — Binomial inverse cumulative distribution function
+- [ ] **binofit** — Binomial parameter estimates
+- [ ] **betapdf** — Beta probability density function
+- [ ] **betainv** — Beta inverse cumulative distribution function
+- [ ] **anova.variancecomponent** — Variance component estimates for analysis of variance (ANOVA)
+- [ ] **acceleratedlifemodel.coefci** — Confidence intervals for accelerated life model coefficients
+- [ ] **wishrnd** — Wishart random numbers
+- [ ] **unifstat** — Continuous uniform mean and variance
+- [ ] **unifinv** — Continuous uniform inverse cumulative distribution function
+- [ ] **unidpdf** — Discrete uniform probability density function
+- [ ] **tspartition.training** — Training indices for time series cross-validation
+- [ ] **tspartition.test** — Test indices for time series cross-validation
+- [ ] **tpdf** — Student&#39;s t probability density function
+- [ ] **semisupervisedselftrainingmodel.predict** — Label new data using semi-supervised self-trained classifier
+- [ ] **repeatedmeasuresmodel.margmean** — Estimate marginal means
+- [ ] **regressiontree.surrogateassociation** — Mean predictive measure of association for surrogate splits in regression tree
+- [ ] **regressiontree.prune** — Produce sequence of regression subtrees by pruning regression tree
+- [ ] **regressionensemble.resubpredict** — Predict response of regression ensemble by resubstitution
+- [ ] **regressionchainensemble.compact** — Reduce size of multiresponse regression model
+- [ ] **raylpdf** — Rayleigh probability density function
+- [ ] **prob.normaldistribution.negloglik** — Negative loglikelihood of probability distribution
+- [ ] **poisspdf** — Poisson probability density function
+- [ ] **poissfit** — Poisson parameter estimates
+- [ ] **pcares** — Residuals from principal component analysis
+- [ ] **paretotails.segment** — Piecewise distribution segments containing input values
+- [ ] **nonlinearmodel.coeftest** — Linear hypothesis test on nonlinear regression model coefficients
+- [ ] **ncx2stat** — Noncentral chi-square mean and variance
+- [ ] **nctpdf** — Noncentral t probability density function
+- [ ] **nctinv** — Noncentral t inverse cumulative distribution function
+- [ ] **ncfstat** — Noncentral F mean and variance
+- [ ] **nbinstat** — Negative binomial mean and variance
+- [ ] **nbininv** — Negative binomial inverse cumulative distribution function
+- [ ] **manovacluster** — Dendrogram of group mean clusters following MANOVA
+- [ ] **mahal** — Mahalanobis distance to reference samples
+- [ ] **lsline** — Add least-squares line to scatter plot
+- [ ] **linearmodel.random** — Simulate responses with random noise for linear regression model
+- [ ] **linearmodel.feval** — Predict responses of linear regression model using one input for each predictor
+- [ ] **linearmodel.dwtest** — Durbin-Watson test with linear regression model object
+- [ ] **learningpipeline.series** — Connect components in series to create pipeline
+- [ ] **learningpipeline.parallel** — Connect components or pipelines in parallel to create pipeline
+- [ ] **learningpipeline.connect** — Create connections between pipeline components
+- [ ] **iwishrnd** — Inverse Wishart random numbers
+- [ ] **incrementalkmeans.reset** — Reset incremental k-means clustering model
+- [ ] **hygestat** — Hypergeometric mean and variance
+- [ ] **gpstat** — Generalized Pareto mean and variance
+- [ ] **gplike** — Generalized Pareto negative loglikelihood
+- [ ] **gmdistribution.posterior** — Posterior probability of Gaussian mixture component
+- [ ] **gmdistribution.pdf** — Probability density function for Gaussian mixture distribution
+- [ ] **gmdistribution.mahal** — Mahalanobis distance to Gaussian mixture component
+- [ ] **gmdistribution.cdf** — Cumulative distribution function for Gaussian mixture distribution
+- [ ] **gevstat** — Generalized extreme value mean and variance
+- [ ] **geoinv** — Geometric inverse cumulative distribution function
+- [ ] **generalizedlinearmodel.feval** — Predict responses of generalized linear regression model using one input for each predictor
+- [ ] **generalizedlinearmodel.coefci** — Confidence intervals of coefficient estimates of generalized linear regression model
+- [ ] **generalizedlinearmodel.addterms** — Add terms to generalized linear regression model
+- [ ] **fstat** — F mean and variance
+- [ ] **exppdf** — Exponential probability density function
+- [ ] **driftdiagnostics.summary** — Summary table for DriftDiagnostics object
+- [ ] **coxmodel.coefci** — Confidence interval for Cox proportional hazards model coefficients
+- [ ] **copulastat** — Copula rank correlation
+- [ ] **copulapdf** — Copula probability density function
+- [ ] **copulacdf** — Copula cumulative distribution function
+- [ ] **classreg.learning.regr.regressionensemble.shrink** — Prune regression ensemble
+- [ ] **classreg.learning.partition.regressionpartitionedquantilemodel.kfoldfun** — Cross-validate function for quantile regression
+- [ ] **classreg.learning.partition.classificationpartitionedecoc.kfoldfun** — Cross-validate function using cross-validated ECOC model
+- [ ] **classreg.learning.classif.compactclassificationtree.nodevariablerange** — Retrieve variable range of decision tree node
+- [ ] **classificationtree.surrogateassociation** — Mean predictive measure of association for surrogate splits in classification tree
+- [ ] **classificationnaivebayes.logp** — Log unconditional probability density for naive Bayes classifier
+- [ ] **classificationdiscriminant.resubmargin** — Resubstitution classification margins for discriminant analysis classifier
+- [ ] **classificationdiscriminant.logp** — Log unconditional probability density for discriminant analysis classifier
+- [ ] **chi2pdf** — Chi-square probability density function
+- [ ] **censoredlinearmodel.feval** — Predict responses of censored linear regression model using one input for each predictor
+- [ ] **capaplot** — Process capability plot
+- [ ] **betastat** — Beta mean and variance
+- [ ] **betalike** — Beta negative loglikelihood
+- [ ] **betafit** — Beta parameter estimates
+- [ ] **bbdesign** — Box-Behnken design
+- [ ] **acceleratedlifemodel.meanfailtime** — Mean failure times and life distribution coefficients of accelerated life model
+- [ ] **acceleratedlifemodel.accelfactor** — Acceleration factors of accelerated life model
+- [ ] **wblstat** — Weibull mean and variance
+- [ ] **unidinv** — Discrete uniform inverse cumulative distribution function
+- [ ] **tstat** — Student&#39;s t mean and variance
+- [ ] **timeseries.forecaster.directforecaster.compact** — Reduce size of direct forecasting model
+- [ ] **tdfread** — Read tab-delimited file
+- [ ] **surfht** — Interactive contour plot
+- [ ] **repeatedmeasuresmodel.random** — Generate new random response values given predictor values
+- [ ] **repeatedmeasuresmodel.epsilon** — Epsilon adjustment for repeated measures anova
+- [ ] **repeatedmeasuresmodel.coeftest** — Linear hypothesis test on coefficients of repeated measures model
+- [ ] **regressiongp.postfitstatistics** — Compute post-fit statistics for the exact Gaussian process regression model
+- [ ] **raylinv** — Rayleigh inverse cumulative distribution function
+- [ ] **raylfit** — Rayleigh parameter estimates
+- [ ] **poissinv** — Poisson inverse cumulative distribution function
+- [ ] **pcacov** — Principal component analysis on covariance matrix
+- [ ] **paretotails.boundary** — Piecewise distribution boundaries
+- [ ] **normstat** — Normal mean and variance
+- [ ] **nonlinearmodel.random** — Simulate responses for nonlinear regression model
+- [ ] **nctstat** — Noncentral t mean and variance
+- [ ] **mvtrnd** — Multivariate t random numbers
+- [ ] **mnpdf** — Multinomial probability density function
+- [ ] **learningpipeline.view** — View diagram of pipeline inputs, outputs, components, and connections
+- [ ] **learningpipeline.replace** — Replace existing pipeline component with new component
+- [ ] **learningpipeline.disconnect** — Remove connections between ports in pipeline
+- [ ] **learningpipeline.add** — Add new component or pipeline to existing pipeline
+- [ ] **incrementalrobustrandomcutforest.reset** — Reset incremental robust random cut forest model
+- [ ] **incrementalpca.reset** — Reset incremental principal component analysis model
+- [ ] **incrementaloneclasssvm.reset** — Reset incremental one-class SVM model
+- [ ] **incrementalclassificationlinear.reset** — Reset incremental classification model
+- [ ] **incremental.drift.driftdetectionmethod.reset** — Reset incremental concept drift detector
+- [ ] **gamstat** — Gamma mean and variance
+- [ ] **evstat** — Extreme value mean and variance
+- [ ] **dataset.join** — (Not Recommended) Merge dataset array observations
+- [ ] **cvpartition.repartition** — Repartition data for cross-validation
+- [ ] **clustering.evaluation.gapevaluation.increaseb** — Increase reference data sets
+- [ ] **clustering.evaluation.calinskiharabaszevaluation.compact** — Compact clustering evaluation object
+- [ ] **clustering.evaluation.calinskiharabaszevaluation.addk** — Evaluate additional numbers of clusters
+- [ ] **censoredlinearmodel.random** — Simulate responses with random noise for censored linear regression model
+- [ ] **binostat** — Binomial mean and variance
+- [ ] **aggregatebayesianoptimization.summary** — Summary table for AggregateBayesianOptimization object
+- [ ] **aggregatebayesianoptimization.plot** — Plot aggregated hyperparameter optimization results
+- [ ] **acceleratedlifemodel.probplot** — Plot failure probabilities of accelerated life model
+- [ ] **acceleratedlifemodel.icdf** — Inverse cumulative distribution function of accelerated life model
+- [ ] **unidstat** — Discrete uniform mean and variance
+- [ ] **treebagger.predict** — Predict responses using ensemble of bagged decision trees
+- [ ] **statget** — Access field values in statistics options structure
+- [ ] **repeatedmeasuresmodel.mauchly** — Mauchly’s test for sphericity
+- [ ] **reconstructionica.transform** — Transform predictors into extracted features
+- [ ] **raylstat** — Rayleigh mean and variance
+- [ ] **poisstat** — Poisson mean and variance
+- [ ] **paretotails.upperparams** — Upper Pareto tail parameters
+- [ ] **paretotails.lowerparams** — Lower Pareto tail parameters
+- [ ] **nonlinearmodel.feval** — Evaluate nonlinear regression model prediction
+- [ ] **mvtpdf** — Multivariate t probability density function
+- [ ] **linearmodel.compact** — Compact linear regression model
+- [ ] **learningpipeline.remove** — Remove existing components or pipelines from pipeline
+- [ ] **learningpipeline.prune** — Remove unnecessary components and dependencies from pipeline
+- [ ] **learningpipeline.expand** — Expand subpipelines in pipeline
+- [ ] **incrementalregressionlinear.reset** — Reset incremental regression model
+- [ ] **incrementaldynamickmeans.reset** — Reset incremental dynamic k-means clustering model
+- [ ] **incremental.preprocessing.zscorenormalizer.reset** — Reset incremental normalizer model
+- [ ] **generalizedlinearmodel.compact** — Compact generalized linear regression model
+- [ ] **expstat** — Exponential mean and variance
+- [ ] **dataset.ismissing** — (Not Recommended) Find dataset array elements with missing values
+- [ ] **dataset.dataset2struct** — (Not Recommended) Convert dataset array to structure
+- [ ] **coxmodel.linhyptest** — Linear hypothesis tests on Cox model coefficients
+- [ ] **coxmodel.discardresiduals** — Remove residuals from Cox model
+- [ ] **classreg.learning.regr.compactregressionensemble.removelearners** — Remove members of compact regression ensemble
+- [ ] **classreg.learning.classif.compactclassificationensemble.removelearners** — Remove members of compact classification ensemble
+- [ ] **classreg.imported.classif.compactclassificationxgboost.predictorimportance** — Estimates of predictor importance for XGBoost model
+- [ ] **classificationtree.resubmargin** — Resubstitution classification margins for classification tree model
+- [ ] **classificationtree.resubedge** — Resubstitution classification edge for classification tree model
+- [ ] **chi2stat** — Chi-square mean and variance
+- [ ] **censoredlinearmodel.compact** — Create compact censored linear regression model
+- [ ] **casewrite** — Write case names to file
+- [ ] **caseread** — Read case names from file
+- [ ] **capability** — Process capability indices
+- [ ] **barttest** — Bartlett’s test
+- [ ] **table2dataset** — (Not Recommended) Convert table to dataset array
+- [ ] **stepwise** — Interactive stepwise regression
+- [ ] **randg** — Gamma random numbers with unit scale
+- [ ] **paretotails.nsegments** — Number of segments in piecewise distribution
+- [ ] **linearmixedmodel.response** — Response vector of the linear mixed-effects model
+- [ ] **learningpipeline.describe** — Display summary of pipeline components
+- [ ] **invpred** — Inverse prediction
+- [ ] **hougen** — Hougen–Watson model
+- [ ] **hmmtrain** — Hidden Markov model parameter estimates from emissions
+- [ ] **hmmestimate** — Hidden Markov model parameter estimates from emissions and states
+- [ ] **gline** — Add line to plot interactively
+- [ ] **fullfact** — Full factorial design
+- [ ] **ff2n** — Two-level full factorial design
+- [ ] **dataset2table** — Convert dataset array to table
+- [ ] **dataset.export** — (Not Recommended) Write dataset array to file
+- [ ] **aoctool** — Interactive analysis of covariance
+- [ ] **treebagger.oobpredict** — Ensemble predictions for out-of-bag observations
+- [ ] **tblwrite** — Write tabular data to file
+- [ ] **robustdemo** — Interactive robust regression
+- [ ] **polytool** — Interactive polynomial fitting
+- [ ] **mvregresslike** — Negative log-likelihood for multivariate regression
+- [ ] **linhyptest** — Linear hypothesis test
+- [ ] **jackknife** — Jackknife sampling
+- [ ] **hmmviterbi** — Hidden Markov model most probable state path
+- [ ] **hmmgenerate** — Hidden Markov model states and emissions
+- [ ] **hmmdecode** — Hidden Markov model posterior state probabilities
+- [ ] **xptread** — Create table from data stored in SAS XPORT format file
+- [ ] **tblread** — Read tabular data from file
+- [ ] **randtool** — Interactive random number generation
+- [ ] **gname** — Add case names to plot
+- [ ] **dataset.dataset2cell** — (Not Recommended) Convert dataset array to cell array
+
+## symbolic
+
+- [ ] **sym.solve** — Equations and systems solver
+- [ ] **sym.qr** — QR decomposition of symbolic matrix
+- [ ] **sym.subs** — Symbolic substitution
+- [ ] **sym.syms** — Create symbolic scalar variables and functions, and matrix variables and functions
+- [ ] **sym.functionalderivative** — Functional derivative (variational derivative)
+- [ ] **sym** — Create symbolic variables, expressions, functions, matrices
+- [ ] **sym.pdecoefficientstodouble** — Convert symbolic PDE coefficients to double format
+- [ ] **sym.rewrite** — Rewrite expression in terms of another function
+- [ ] **sym.piecewise** — Conditionally defined expression or function
+- [ ] **sym.fsurf** — Plot 3-D surface
+- [ ] **sym.fourier** — Fourier transform of symbolic expression or function
+- [ ] **sym.diff** — Differentiate symbolic expression or function
+- [ ] **sym.pdecoefficients** — Extract coefficients of partial differential equation
+- [ ] **sym.taylor** — Taylor series
+- [ ] **sym.int** — Definite and indefinite integrals
+- [ ] **sym.solverecurrence** — Solve recurrence relations
+- [ ] **sym.simplify** — Algebraic simplification
+- [ ] **sym.sort** — Sort elements of symbolic arrays
+- [ ] **sym.norm** — Norm of symbolic vector or matrix
+- [ ] **sym.min** — Minimum elements of symbolic input
+- [ ] **sym.curl** — Curl of symbolic vector field
+- [ ] **sym.max** — Maximum elements of symbolic input
+- [ ] **sym.finddecoupledblocks** — Search for decoupled blocks in systems of equations
+- [ ] **sym.eig** — Eigenvalues and eigenvectors of symbolic matrix
+- [ ] **sym.divergence** — Divergence of symbolic vector field
+- [ ] **sym.meijerg** — Meijer G-function
+- [ ] **sym.mapsymtype** — Apply function to symbolic subobjects of specific type
+- [ ] **sym.unitconvert** — Convert units to other units of measurement
+- [ ] **sym.reduceredundancies** — Simplify system of first-order differential algebraic equations by eliminating redundant equations a
+- [ ] **sym.inv** — Inverse of symbolic matrix
+- [ ] **sym.fimplicit3** — Plot 3-D implicit equation or function
+- [ ] **sym.gradient** — Gradient vector of symbolic scalar field
+- [ ] **sym.cumsum** — Symbolic cumulative sum
+- [ ] **sym.displayformula** — Display symbolic formula from string
+- [ ] **sym.fplot3** — Plot 3-D parametric curve
+- [ ] **sym.fimplicit** — Plot implicit symbolic equation or function
+- [ ] **symmatrix2sym** — Convert symbolic matrix variable to array of scalar variables
+- [ ] **sym.symsum** — Symbolic sum of series
+- [ ] **sym.root** — Represent roots of polynomial
+- [ ] **sym.jacobian** — Jacobian matrix of symbolic function
+- [ ] **sym.changeintegrationvariable** — Integration by substitution
+- [ ] **sym.odetovectorfield** — Reduce order of differential equations to first-order
+- [ ] **sym.gcd** — Greatest common divisor of symbolic numbers and polynomials
+- [ ] **sym.subexpr** — Rewrite symbolic expression in terms of common subexpressions
+- [ ] **sym.double** — Convert symbolic values to MATLAB double precision
+- [ ] **symfun.symfun** — Create symbolic functions
+- [ ] **sym.fmesh** — Plot 3-D mesh
+- [ ] **sym.det** — Determinant of symbolic matrix
+- [ ] **sym.fpolarplot** — Plot symbolic expression or function in polar coordinates
+- [ ] **sym.ilaplace** — Inverse Laplace transform
+- [ ] **sym.jacobisymbol** — Jacobi symbol
+- [ ] **sym.integratebyparts** — Integration by parts
+- [ ] **sym.ztrans** — Z-transform
+- [ ] **sym.symtrue** — Symbolic logical constant true
+- [ ] **sym.symfalse** — Symbolic logical constant false
+- [ ] **sym.laplace** — Laplace transform
+- [ ] **sym.harmonic** — Harmonic function (harmonic number)
+- [ ] **sym.ellipj** — Jacobi elliptic functions
+- [ ] **sym.besselh** — Bessel function of third kind (Hankel function) for symbolic expressions
+- [ ] **sym.sinc** — Normalized sinc function
+- [ ] **sym.linsolve** — Solve symbolic linear equations in matrix form
+- [ ] **sym.assumptions** — Show assumptions affecting symbolic variable, expression, or function
+- [ ] **sym.matlabfunction** — Convert symbolic expression to function handle or file
+- [ ] **sym.latex** — LaTeX form of symbolic expression
+- [ ] **sym.jacobip** — Jacobi polynomials
+- [ ] **sym.issymtype** — Determine whether symbolic object is specific type
+- [ ] **sym.hurwitzzeta** — Hurwitz zeta function
+- [ ] **sym.findsymtype** — Find symbolic subobjects of specific type
+- [ ] **sym.digits** — Change variable precision used
+- [ ] **sym.combine** — Combine terms of identical algebraic structure
+- [ ] **sym.poly2sym** — Create symbolic polynomial from vector of coefficients
+- [ ] **sym.ihtrans** — Inverse Hilbert transform
+- [ ] **sym.atan** — Symbolic inverse tangent
+- [ ] **sym.mod** — Symbolic modulus after division
+- [ ] **sym.heaviside** — Heaviside step function
+- [ ] **sym.symunit** — Units of measurement
+- [ ] **sym.release** — Evaluate integrals
+- [ ] **sym.rectangularpulse** — Rectangular pulse function
+- [ ] **sym.logical** — Determine if symbolic equation, inequality, or condition is true
+- [ ] **sym.lcm** — Least common multiple of symbolic numbers and polynomials
+- [ ] **sym.cell2sym** — Convert cell array to symbolic array
+- [ ] **sym.nthroot** — Nth root of symbolic numbers
+- [ ] **sym.limit** — Limit of symbolic expression
+- [ ] **sym.gegenbauerc** — Gegenbauer polynomials
+- [ ] **sym.dirac** — Dirac delta function
+- [ ] **sym.decic** — Find consistent initial conditions for first-order implicit ODE system with algebraic constraints
+- [ ] **symfunmatrix2symfun** — Convert symbolic matrix function to symbolic function
+- [ ] **symfunmatrix** — Create symbolic matrix function
+- [ ] **sym.rhs** — Right side (RHS) of equation
+- [ ] **sym.pade** — Pade approximant
+- [ ] **sym.matlabfunctionblock** — Convert symbolic expression to MATLAB function block
+- [ ] **sym.isalways** — Determine if symbolic conditions are true for all values of variables
+- [ ] **sym.igamma** — Incomplete gamma function
+- [ ] **sym.chebyshevt** — Chebyshev polynomials of the first kind
+- [ ] **sym.toeplitz** — Symbolic Toeplitz matrix
+- [ ] **sym.vpaintegral** — Numerical integration using variable precision
+- [ ] **sym.series** — Puiseux series
+- [ ] **sym.isequal** — Determine if symbolic inputs are equal
+- [ ] **sym.eliminate** — Eliminate variables from rational equations
+- [ ] **sym.chebyshevu** — Chebyshev polynomials of the second kind
+- [ ] **sym.bernstein** — Bernstein polynomials
+- [ ] **sym.animationtoframe** — Return structure of frames from animation objects
+- [ ] **sym.symtype** — Determine type of symbolic object
+- [ ] **sym.symprod** — Product of series
+- [ ] **sym.playanimation** — Play animation objects in a MATLAB figure window
+- [ ] **sym.partfrac** — Partial fraction decomposition
+- [ ] **sym.hessian** — Hessian matrix of symbolic scalar function
+- [ ] **sym.fold** — Combine (fold) vector elements using function
+- [ ] **sym.fibonacci** — Fibonacci numbers
+- [ ] **sym.eq** — Define symbolic equation
+- [ ] **sym.daefunction** — Convert system of differential algebraic equations to MATLAB function handle suitable for ode15i
+- [ ] **sym.checkunits** — Check for compatible dimensions and consistent units
+- [ ] **sym.bessely** — Bessel function of the second kind for symbolic expressions
+- [ ] **sym.besselk** — Modified Bessel function of the second kind for symbolic expressions
+- [ ] **sym.airy** — Airy function
+- [ ] **sym.zeta** — Riemann zeta function
+- [ ] **sym.polylog** — Polylogarithm
+- [ ] **sym.pochhammer** — Pochhammer symbol
+- [ ] **sym.lambertw** — Lambert W function
+- [ ] **sym.isprimitiveroot** — Determine which array elements are primitive roots
+- [ ] **sym.frac** — Find fractional part
+- [ ] **sym.chol** — Cholesky factorization
+- [ ] **sym.besseli** — Modified Bessel function of the first kind for symbolic expressions
+- [ ] **sym.bernsteinmatrix** — Bernstein matrix
+- [ ] **sym.argnames** — Input variables of symbolic function or matrix function
+- [ ] **sym.writeanimation** — Save animation as video file
+- [ ] **sym.kummeru** — Confluent hypergeometric Kummer U function
+- [ ] **sym.ifourier** — Inverse Fourier transform
+- [ ] **sym.besselj** — Bessel function of the first kind for symbolic expressions
+- [ ] **sym.whittakerw** — Whittaker W function
+- [ ] **sym.whittakerm** — Whittaker M function
+- [ ] **sym.sym2cell** — Convert symbolic array to cell array
+- [ ] **sym.separateunits** — Separate units from expression
+- [ ] **sym.polynomialreduce** — Reduce polynomials by division
+- [ ] **sym.jacobizeta** — Jacobi zeta function
+- [ ] **sym.isequaln** — Test symbolic objects for equality, treating NaN values as equal
+- [ ] **sym.hermiteh** — Hermite polynomials
+- [ ] **sym.erfc** — Complementary error function
+- [ ] **sym.ellipticpi** — Complete and incomplete elliptic integrals of the third kind
+- [ ] **sym.ellipke** — Complete elliptic integrals of the first and second kinds
+- [ ] **sym.assume** — Set assumption on symbolic object
+- [ ] **sym.triangularpulse** — Triangular pulse function
+- [ ] **sym.symwritessc** — Create new Simscape component
+- [ ] **sym.str2sym** — Evaluate string representing symbolic expression
+- [ ] **sym.rewindanimation** — Rewind previously played animation objects
+- [ ] **sym.psi** — Digamma function
+- [ ] **sym.potential** — Potential of vector field
+- [ ] **sym.nchoosek** — Binomial coefficient
+- [ ] **sym.jacobidn** — Jacobi DN elliptic function
+- [ ] **sym.iztrans** — Inverse Z-transform
+- [ ] **sym.formula** — Return body of symbolic function or matrix function
+- [ ] **sym.factor** — Factorization
+- [ ] **sym.ellipticnome** — Elliptic nome function
+- [ ] **sym.elliptice** — Complete and incomplete elliptic integrals of the second kind
+- [ ] **sym.dec2hex** — Convert symbolic integer in decimal to hexadecimal representation
+- [ ] **sym.dec2bin** — Convert symbolic integer in decimal to binary representation
+- [ ] **sym.cot** — Symbolic cotangent function
+- [ ] **sym.tan** — Symbolic tangent function
+- [ ] **sym.smithform** — Smith form of matrix
+- [ ] **sym.sin** — Symbolic sine function
+- [ ] **sym.jordan** — Jordan normal form (Jordan canonical form)
+- [ ] **sym.jacobisn** — Jacobi SN elliptic function
+- [ ] **sym.jacobins** — Jacobi NS elliptic function
+- [ ] **sym.jacobind** — Jacobi ND elliptic function
+- [ ] **sym.jacobinc** — Jacobi NC elliptic function
+- [ ] **sym.jacobidc** — Jacobi DC elliptic function
+- [ ] **sym.jacobicn** — Jacobi CN elliptic function
+- [ ] **sym.jacobicd** — Jacobi CD elliptic function
+- [ ] **sym.jacobiam** — Jacobi amplitude function
+- [ ] **sym.has** — Check if expression contains particular subexpression
+- [ ] **sym.findunits** — Find units in input
+- [ ] **sym.expint** — Exponential integral function
+- [ ] **sym.euler** — Euler numbers and polynomials
+- [ ] **sym.ellipticcpi** — Complementary complete elliptic integral of the third kind
+- [ ] **sym.csc** — Symbolic cosecant function
+- [ ] **sym.coshint** — Hyperbolic cosine integral function
+- [ ] **sym.beta** — Beta function
+- [ ] **sym.signim** — Sign of the imaginary part of complex number
+- [ ] **sym.sign** — Sign of real or complex value
+- [ ] **sym.rsums** — Interactive evaluation of Riemann sums
+- [ ] **sym.reshape** — Reshape symbolic array
+- [ ] **sym.quorem** — Quotient and remainder
+- [ ] **sym.poles** — Poles of expression or function
+- [ ] **sym.newunitsystem** — Define unit system
+- [ ] **sym.mtimes** — Symbolic matrix multiplication
+- [ ] **sym.mrdivide** — Symbolic matrix right division
+- [ ] **sym.mathml** — Generate MathML from symbolic expression
+- [ ] **sym.fresnelc** — Fresnel cosine integral function
+- [ ] **sym.erfinv** — Inverse error function
+- [ ] **sym.erfi** — Imaginary error function
+- [ ] **sym.elliptick** — Complete elliptic integral of the first kind
+- [ ] **sym.ellipticf** — Incomplete elliptic integral of the first kind
+- [ ] **sym.ellipticck** — Complementary complete elliptic integral of the first kind
+- [ ] **sym.dilog** — Dilogarithm function
+- [ ] **sym.dawson** — Dawson integral
+- [ ] **sym.cosint** — Cosine integral function
+- [ ] **sym.coeffs** — Coefficients of polynomial
+- [ ] **sym.abs** — Symbolic absolute value (complex modulus or magnitude)
+- [ ] **sym.wrightomega** — Wright omega function
+- [ ] **sym.vectorpotential** — Vector potential of vector field
+- [ ] **sym.unitinfo** — Information on units of measurement
+- [ ] **sym.transpose** — Symbolic matrix transpose
+- [ ] **sym.times** — Symbolic array multiplication
+- [ ] **sym.symvar** — Find symbolic variables in symbolic input
+- [ ] **sym.ssinint** — Shifted sine integral function
+- [ ] **sym.sinint** — Sine integral function
+- [ ] **sym.sinhint** — Hyperbolic sine integral function
+- [ ] **sym.simplifyfraction** — Simplify symbolic rational expressions
+- [ ] **sym.resultant** — Resultant of two polynomials
+- [ ] **sym.rdivide** — Symbolic array right division
+- [ ] **sym.plus** — Symbolic addition
+- [ ] **sym.orth** — Orthonormal basis for range of symbolic matrix
+- [ ] **sym.or** — Logical OR for symbolic expressions
+- [ ] **sym.logint** — Logarithmic integral function
+- [ ] **sym.ldivide** — Symbolic array left division
+- [ ] **sym.isolate** — Isolate variable or expression in equation
+- [ ] **sym.gbasis** — Reduced Groebner basis
+- [ ] **sym.gamma** — Gamma function
+- [ ] **sym.eulergamma** — Euler–Mascheroni constant
+- [ ] **sym.ei** — One-argument exponential integral function
+- [ ] **sym.divisors** — Divisors of integer or expression
+- [ ] **sym.diag** — Create diagonal matrix or get diagonals from symbolic matrices
+- [ ] **sym.ctranspose** — Symbolic matrix complex conjugate transpose
+- [ ] **sym.cond** — Condition number of matrix
+- [ ] **sym.compose** — Functional composition
+- [ ] **sym.colon** — Create symbolic vectors, array subscripting, and for-loop iterators
+- [ ] **sym.charpoly** — Characteristic polynomial of matrix
+- [ ] **sym.catalan** — Catalan constant
+- [ ] **sym.and** — Logical AND for symbolic expressions
+- [ ] **sym.xor** — Logical XOR for symbolic expressions
+- [ ] **sym.vertcat** — Concatenate symbolic arrays vertically
+- [ ] **sym.unitconversionfactor** — Conversion factor between units
+- [ ] **sym.tanh** — Symbolic hyperbolic tangent function
+- [ ] **sym.symunit2str** — Convert unit to character vector
+- [ ] **sym.sym2poly** — Extract vector of all numeric coefficients, including zeros, from symbolic polynomial
+- [ ] **sym.str2symunit** — Convert character vector or string to unit
+- [ ] **sym.sqrtm** — Matrix square root
+- [ ] **sym.sinh** — Symbolic hyperbolic sine function
+- [ ] **sym.sech** — Symbolic hyperbolic secant function
+- [ ] **sym.rem** — Remainder after division
+- [ ] **sym.polynomialdegree** — Degree of polynomial
+- [ ] **sym.pinv** — Moore-Penrose inverse (pseudoinverse) of symbolic matrix
+- [ ] **sym.numden** — Extract numerator and denominator
+- [ ] **sym.newunit** — Define new unit
+- [ ] **sym.ne** — Define inequality
+- [ ] **sym.mixedunits** — Split unit into sum of units
+- [ ] **sym.lt** — Define less than relation
+- [ ] **sym.isinf** — Check whether symbolic array elements are infinite
+- [ ] **sym.isfinite** — Check whether symbolic array elements are finite
+- [ ] **sym.imag** — Imaginary part of complex number
+- [ ] **sym.horner** — Horner nested polynomial representation
+- [ ] **sym.gt** — Define greater than relation
+- [ ] **sym.ge** — Define greater than or equal to condition
+- [ ] **sym.factorintegerpower** — Perfect power factoring
+- [ ] **sym.expm** — Matrix exponential of symbolic matrices
+- [ ] **sym.derivedunits** — Derived units of unit system
+- [ ] **sym.coth** — Symbolic hyperbolic cotangent function
+- [ ] **sym.cosh** — Symbolic hyperbolic cosine function
+- [ ] **sym.conj** — Complex conjugate of symbolic input
+- [ ] **sym.cat** — Concatenate symbolic arrays along specified dimension
+- [ ] **sym.atanh** — Symbolic inverse hyperbolic tangent function
+- [ ] **sym.asin** — Symbolic inverse sine function
+- [ ] **sym.asech** — Symbolic inverse hyperbolic secant function
+- [ ] **sym.asec** — Symbolic inverse secant function
+- [ ] **sym.angle** — Symbolic polar angle
+- [ ] **sym.acsch** — Symbolic inverse hyperbolic cosecant function
+- [ ] **sym.acsc** — Symbolic inverse cosecant function
+- [ ] **sym.acoth** — Symbolic inverse hyperbolic cotangent function
+- [ ] **sym.acot** — Symbolic inverse cotangent function
+- [ ] **sym.acosh** — Symbolic inverse hyperbolic cosine function
+- [ ] **sym.acos** — Symbolic inverse cosine function
+- [ ] **sym.unitsystems** — List available unit systems
+- [ ] **sym.triu** — Return upper triangular part of symbolic matrix
+- [ ] **sym.tril** — Return lower triangular part of symbolic matrix
+- [ ] **sym.simscapeequation** — Convert symbolic expressions to Simscape language equations
+- [ ] **sym.rref** — Reduced row echelon form of matrix (Gauss-Jordan elimination)
+- [ ] **sym.removeunitsystem** — Remove unit system
+- [ ] **sym.removeunit** — Remove unit
+- [ ] **sym.prevprime** — Previous prime number
+- [ ] **sym.null** — Form basis for null space of matrix
+- [ ] **sym.nextprime** — Next prime number
+- [ ] **sym.logm** — Matrix logarithm
+- [ ] **sym.isnan** — Check whether symbolic array elements are NaNs
+- [ ] **sym.finverse** — Functional inverse
+- [ ] **sym.colspace** — Basis for column space of matrix
+- [ ] **sym.baseunits** — Base units of unit system
+
+## control
+
+- [ ] **ss.assemble** — Assemble components by connecting their physical interfaces
+- [ ] **ss.addinterface** — Add interface for physical assembly
+- [ ] **zpk** — Zero-pole-gain model
+- [ ] **ss.kalman** — Design Kalman filter for state estimation
+- [ ] **mechss** — Sparse second-order state-space model
+- [ ] **dynamicsystem.step** — Step response of dynamic system
+- [ ] **pidstd2** — 2-DOF PID controller in standard form
+- [ ] **dynamicsystem.lsim** — Compute time response simulation data of dynamic system to arbitrary inputs
+- [ ] **sparss** — Sparse first-order state-space model
+- [ ] **pid2** — 2-DOF PID controller in parallel form
+- [ ] **dynamicsystem.impulse** — Impulse response plot of dynamic system; impulse response data
+- [ ] **pidstd** — PID controller in standard form
+- [ ] **pid** — PID controller in parallel form
+- [ ] **mor.properorthogonaldecomposition** — Proper orthogonal decomposition model order reduction
+- [ ] **lti.lqr** — Linear-Quadratic Regulator (LQR) design
+- [ ] **tunablesurface** — Create tunable gain surface for gain scheduling
+- [ ] **mor.balancedtruncation.getrom** — Obtain reduced-order models when using balanced truncation method
+- [ ] **frd** — Frequency-response data model
+- [ ] **mor.balancedtruncation** — Balanced truncation model order reduction
+- [ ] **icare** — Implicit solver for continuous-time algebraic Riccati equations
+- [ ] **dynamicsystem.stepinfo** — Rise time, settling time, and other step-response characteristics
+- [ ] **genss** — Generalized state-space model
+- [ ] **dynamicsystem.compreal** — Compute companion state-space realization
+- [ ] **sigmaplot** — Plot singular values for frequency response of dynamic system
+- [ ] **lsimplot** — Plot simulated time response of dynamic system to arbitrary inputs
+- [ ] **extendedkalmanfilter** — Create extended Kalman filter object for online state estimation
+- [ ] **dynamicsystem.modalsep** — Compute modal decomposition
+- [ ] **dynamicsystem.balreal** — Balanced state-space realization
+- [ ] **bodeplot** — Plot Bode frequency response of dynamic system
+- [ ] **mor.frequencyresponsefitting** — Specification for fitting low-order model to frequency response
+- [ ] **ss.lqg** — Linear-Quadratic-Gaussian (LQG) design
+- [ ] **plotopts.nicholsoptions** — Plot options for nicholsplot
+- [ ] **mor.properorthogonaldecomposition.getrom** — Obtain reduced-order models when using proper orthogonal decomposition method
+- [ ] **impulseplot** — Plot impulse response of dynamic system
+- [ ] **dynamicsystem.connect** — Block diagram interconnections of dynamic systems
+- [ ] **plotopts.timeoptions** — Create list of time plot options
+- [ ] **idare** — Implicit solver for discrete-time algebraic Riccati equations
+- [ ] **nicholsplot** — Plot Nichols frequency response of dynamic system
+- [ ] **extendedkalmanfilter.correct** — Correct state and state estimation error covariance using extended or unscented Kalman filter, or pa
+- [ ] **dynamicsystem.findop** — Compute operating condition from specifications
+- [ ] **dynamicsystem.bode** — Bode frequency response of dynamic system
+- [ ] **tuninggoal.steptracking** — Step response requirement for control system tuning
+- [ ] **statespacemodel.ss2ss** — State coordinate transformation for state-space model
+- [ ] **extendedkalmanfilter.predict_method_state_estimation** — Predict state and state estimation error covariance at next time step using extended or unscented Ka
+- [ ] **dynamicsystem.sigma** — Singular values of frequency response of dynamic system
+- [ ] **dynamicsystem.systune** — Tune fixed-structure control systems modeled in MATLAB
+- [ ] **tuninggoal.weightedpassivity** — Frequency-weighted passivity constraint
+- [ ] **tuninggoal.transient** — Transient matching requirement for control system tuning
+- [ ] **plotopts.sigmaoptions** — Sigma plot options
+- [ ] **tuninggoal.passivity** — Passivity constraint for control system tuning
+- [ ] **tuninggoal.loopshape** — Target loop shape for control system tuning
+- [ ] **statespacemodel.xelim** — Eliminate states from state-space models
+- [ ] **genfrd** — Generalized frequency response data (FRD) model
+- [ ] **dynamicsystem.freqresp** — Evaluate system response over a grid of frequencies
+- [ ] **dynamicsystem.c2d** — Convert model from continuous to discrete time
+- [ ] **ss** — State-space model
+- [ ] **plotopts.bodeoptions** — Plot options for bodeplot
+- [ ] **particlefilter** — Particle filter object for online state estimation
+- [ ] **mor.frequencyresponsefitting.getrom** — Obtain reduced-order models when using frequency-response fitting method
+- [ ] **lyapchol** — Square-root solver for continuous-time Lyapunov equation
+- [ ] **ltvss.psample** — Sample linear parameter-varying or time-varying dynamics
+- [ ] **dynamicsystem.sectorplot** — Compute or plot sector index as function of frequency
+- [ ] **dynamicsystem.margin** — Gain margin, phase margin, and crossover frequencies
+- [ ] **tuninggoal.minloopgain** — Minimum loop gain constraint for control system tuning
+- [ ] **sparsemodaltruncation** — Sparse modal truncation model order reduction specification
+- [ ] **lpvss.ssinterpolant** — Build gridded LTV or LPV model from state-space data
+- [ ] **dynamicsystem.isstable** — Determine if dynamic system model is stable
+- [ ] **sumblk** — Summing junction for name-based interconnections
+- [ ] **plotopts.nyquistoptions** — Create list of Nyquist plot options
+- [ ] **mor.modaltruncation** — Modal truncation model order reduction specification
+- [ ] **dynamicsystem.norm** — Norm of linear model
+- [ ] **dynamicsystem.nichols** — Nichols response of dynamic system
+- [ ] **tuninggoal.weightedvariance** — Frequency-weighted H2 norm constraint for control system tuning
+- [ ] **tuninggoal.tracking** — Tracking requirement for control system tuning
+- [ ] **tuninggoal.steprejection** — Step disturbance rejection requirement for control system tuning
+- [ ] **tunabless** — Tunable fixed-order state-space model
+- [ ] **tunablepid2** — Tunable two-degree-of-freedom PID controller
+- [ ] **ndbasis** — Basis functions for tunable gain surface
+- [ ] **mor.sparsebalancedtruncation** — Sparse balanced truncation model order reduction object
+- [ ] **dynamicsystem.pole** — Poles of dynamic system
+- [ ] **tuninggoal.maxloopgain** — Maximum loop gain constraint for control system tuning
+- [ ] **tunabletf** — Tunable transfer function with fixed number of poles and zeros
+- [ ] **respconfig** — Options for step or impulse responses
+- [ ] **mor.modaltruncation.getrom** — Obtain reduced-order models when using modal truncation method
+- [ ] **mor.frequencyresponsefittingoptions** — Options for model order reduction with frequency response fitting
+- [ ] **tuninggoal.weightedgain** — Frequency-weighted gain constraint for control system tuning
+- [ ] **tuninggoal.gain** — Gain constraint for control system tuning
+- [ ] **mor.ncfbalancedtruncation** — Balanced truncation of normalized coprime factors model order reduction specification
+- [ ] **lti.dlqr** — Linear-quadratic (LQ) state-feedback regulator for discrete-time state-space system
+- [ ] **extendedkalmanfilter.generatejacobianfcn** — Generate MATLAB Jacobian functions for extended Kalman filter using automatic differentiation
+- [ ] **dynamicsystem.rlocus** — Root locus of dynamic system
+- [ ] **dynamicsystem.passiveplot** — Compute or plot passivity index as function of frequency
+- [ ] **dynamicsystem.getpeakgain** — Peak gain of dynamic system frequency response
+- [ ] **tuninggoal.variance** — Noise amplification constraint for control system tuning
+- [ ] **ss.lqgtrack** — Form Linear-Quadratic-Gaussian (LQG) servo controller
+- [ ] **dynamicsystem.freqsep** — Slow-fast decomposition
+- [ ] **tuninggoal.poles** — Constraint on control system dynamics
+- [ ] **tunablesurface.viewsurf** — Visualize gain surface as a function of scheduling variables
+- [ ] **mechss.getx0** — Map initial conditions from a mechss object to a sparss object
+- [ ] **inputoutputmodel.append** — Group models by appending their inputs and outputs
+- [ ] **dynamicsystem.pidstddata2** — Access coefficients of standard-form 2-DOF PID controller
+- [ ] **dynamicsystem.evalfr** — Evaluate system response at specific frequency
+- [ ] **dynamicsystem.d2c** — Convert model from discrete to continuous time
+- [ ] **statespacemodel.gram** — Controllability and observability Gramians
+- [ ] **plotopts.sectorplotoptions** — Create list of relative index plot options
+- [ ] **mor.ncfbalancedtruncation.getrom** — Obtain reduced-order models when using balanced truncation of normalized coprime factors method
+- [ ] **genlti.getlooptransfer** — Open-loop transfer function of control system represented by genss model
+- [ ] **fourierbasis** — Fourier basis functions for tunable gain surface
+- [ ] **dynamicsystem.tfdata** — Access transfer function data
+- [ ] **dynamicsystem.pade** — Padé approximation of models with time delay
+- [ ] **dynamicsystem.getdelaymodel** — State-space representation of internal delays
+- [ ] **tunablegain** — Tunable static gain block
+- [ ] **statespacemodel.obsv** — Observability of state-space model
+- [ ] **statespacemodel.ctrb** — Controllability of state-space model
+- [ ] **ss.estim** — Form state estimator given estimator gain
+- [ ] **genlti.getcompsensitivity** — Complementary sensitivity function from generalized model of control system
+- [ ] **dynamicsystem.tzero** — Invariant zeros of linear system
+- [ ] **dynamicsystem.stabsep** — Stable-unstable decomposition
+- [ ] **dynamicsystem.piddata2** — Access coefficients of parallel-form 2-DOF PID controller
+- [ ] **dynamicsystem.ispassive** — Check passivity of linear systems
+- [ ] **varyinggoal** — Variable tuning goal for gain-scheduled controllers
+- [ ] **tuninggoal.overshoot** — Overshoot constraint for control system tuning
+- [ ] **tuninggoal.lqg** — Linear-Quadratic-Gaussian (LQG) goal for control system tuning
+- [ ] **mor.balancedtruncation.view** — Plot state contributions when using balanced truncation method
+- [ ] **mechss.spy** — Visualize sparsity pattern of a sparse model
+- [ ] **inputoutputmodel.replaceblock** — Replace or update control design blocks in generalized model
+- [ ] **dynamicsystem.spectralfact** — Spectral factorization of linear systems
+- [ ] **dss** — Create descriptor state-space models
+- [ ] **tuninggoal.sensitivity** — Sensitivity requirement for control system tuning
+- [ ] **tuninggoal.rejection** — Disturbance rejection requirement for control system tuning
+- [ ] **systuneoptions** — Set options for systune
+- [ ] **statespacemodel.augoffset** — Map offset contribution to extra input channel
+- [ ] **mor.sparsezeropoletruncation** — Reduce sparse models using zero-pole truncation
+- [ ] **lqrd** — Design discrete linear-quadratic (LQ) regulator for continuous plant
+- [ ] **inputoutputmodel.imp2exp** — Convert implicit linear relationship to explicit input-output relation
+- [ ] **gensig** — Create periodic signals for simulating system response with lsim
+- [ ] **genlti.getsensitivity** — Sensitivity function from generalized model of control system
+- [ ] **genlti.getiotransfer** — Closed-loop transfer function from generalized model of control system
+- [ ] **filt** — Specify discrete transfer functions in DSP format
+- [ ] **dynamicsystem.looptune** — Tune fixed-structure feedback loops
+- [ ] **dynamicsystem.absorbdelay** — Replace time delays by poles at z = 0 or phase shift
+- [ ] **mor.sparsezeropoletruncation.getrom** — Obtain reduced-order models when using zero-pole truncation method
+- [ ] **lsiminfo** — Compute linear response characteristics
+- [ ] **looptuneoptions** — Set options for looptune
+- [ ] **inputoutputmodel.rsampleblock** — Randomly sample Control Design blocks in generalized model
+- [ ] **dynamicsystem.zero** — Zeros and gain of SISO dynamic system
+- [ ] **dynamicsystem.mechssdata** — Access second-order sparse state-space model data
+- [ ] **tuninggoal.controllerpoles** — Constraint on controller dynamics for control system tuning
+- [ ] **thiran** — Generate fractional delay filter based on Thiran approximation
+- [ ] **ss.lqgreg** — Form linear-quadratic-Gaussian (LQG) regulator
+- [ ] **realp** — Real tunable parameter
+- [ ] **plotopts.hsvoptions** — Create list of Hankel singular value plot options
+- [ ] **particlefilter.initialize** — Initialize the state of the particle filter
+- [ ] **dynamicsystem.sparssdata** — Access first-order sparse state-space model data
+- [ ] **dynamicsystem.setdelaymodel** — Construct state-space model with internal delays
+- [ ] **dynamicsystem.getsectorcrossover** — Crossover frequencies for sector bound
+- [ ] **abstractpid.getpidloopresponse** — Closed-loop and open-loop responses of systems with PID controllers
+- [ ] **viewgoal** — View tuning goals; validate design against tuning goals
+- [ ] **statespacemodel.augdelay** — Append internal delay signal to outputs of state-space model
+- [ ] **ss.lqi** — Linear-Quadratic-Integral control
+- [ ] **pid.make2dof** — Convert 1-DOF PID controller to 2-DOF controller
+- [ ] **mor.balancedtruncationoptions** — Options for model order reduction with balanced truncation
+- [ ] **incrementalpod.svd** — Compute truncated SVD of state-data matrix
+- [ ] **dynamicsystem.fixinput** — Fix value of some inputs and delete them
+- [ ] **mor.properorthogonaldecompositionoptions** — Options for model order reduction with proper orthogonal decomposition
+- [ ] **inputoutputmodel.getvalue** — Current value of generalized model
+- [ ] **incrementalpod.merge** — Combine incremental proper orthogonal decomposition results
+- [ ] **dynamicsystem.repsys** — Replicate and tile models
+- [ ] **dynamicsystem.minreal** — Minimal realization or pole-zero cancellation
+- [ ] **bdqz** — Block-diagonal QZ decomposition
+
+## finance
+
+- [ ] **portfolio.setsolverminlp** — Choose mixed integer nonlinear programming (MINLP) solver for portfolio optimization
+- [ ] **transprob** — Estimate transition probabilities from credit ratings data
+- [ ] **creditscorecard.autobinning** — Perform automatic binning of given predictors
+- [ ] **creditscorecard.formatpoints** — Format scorecard points and scaling
+- [ ] **backteststrategy** — Create backtestStrategy object to define portfolio allocation strategy
+- [ ] **portfolio** — Create Portfolio object for mean-variance portfolio optimization and analysis
+- [ ] **creditscorecard.fitconstrainedmodel** — Fit logistic regression model to Weight of Evidence (WOE) data subject to constraints on model coeff
+- [ ] **portfoliocvar** — Creates PortfolioCVaR object for conditional value-at-risk portfolio optimization and analysis
+- [ ] **portfoliomad** — Create PortfolioMAD object for mean-absolute deviation portfolio optimization and analysis
+- [ ] **portfolio.estimatecustomobjectiveportfolio** — Estimate optimal portfolio for user-defined objective function for Portfolio object
+- [ ] **portfolio.setsolver** — Choose main solver and specify associated solver options for portfolio optimization
+- [ ] **creditscorecard.displaypoints** — Return points per predictor per bin
+- [ ] **brinsonattribution** — Create brinsonAttribution object to analyze performance attribution
+- [ ] **sde.simbyeuler_sde** — Euler simulation of stochastic differential equations (SDEs) for SDE, BM, GBM, CEV, CIR, HWV, Heston
+- [ ] **creditscorecard** — Create creditscorecard object to build credit scorecard model
+- [ ] **creditscorecard.validatemodel** — Validate quality of credit scorecard model
+- [ ] **cfamounts** — Cash flow and time mapping for bond portfolio
+- [ ] **sde.simulate** — Simulate multivariate stochastic differential equations (SDEs) for SDE, BM, GBM, CEV, CIR, HWV, Hest
+- [ ] **portfolio.setbounds** — Set up bounds for portfolio weights for portfolio
+- [ ] **creditscorecard.modifybins** — Modify predictor’s bins
+- [ ] **creditscorecard.bindata** — Binned predictor variables
+- [ ] **portfolio.estimatefrontierbyrisk** — Estimate optimal portfolios with targeted portfolio risks
+- [ ] **fanplot** — Plot combined historical and forecast data to visualize possible outcomes
+- [ ] **creditscorecard.bininfo** — Return predictor’s bin information
+- [ ] **bates** — Bates stochastic volatility model
+- [ ] **portfolio.estimatefrontier** — Estimate specified number of optimal portfolios on the efficient frontier
+- [ ] **merton.simbymilstein2_merton** — Simulate diagonal diffusion Merton sample paths by second order Milstein approximation
+- [ ] **cir.simbytransition_cir** — Simulate CIR sample paths with transition density
+- [ ] **cir.simbymilstein2_cir** — Simulate CIR process sample paths by second order Milstein approximation
+- [ ] **bonddefaultbootstrap** — Bootstrap default probability curve from bond prices
+- [ ] **bates.simbyquadexp** — Simulate Bates, Heston, and CIR sample paths by quadratic-exponential discretization scheme
+- [ ] **backtestengine** — Create backtestEngine object to backtest strategies and analyze results
+- [ ] **creditscorecard.fillmissing** — Replace missing values for credit scorecard predictors
+- [ ] **bm.simbymilstein2_sde** — Simulate BM, GBM, CEV, HWV, SDEDDO, SDELD, SDEMRD process sample paths by second order Milstein appr
+- [ ] **bates.simbymilstein2_bates** — Simulate Bates process sample paths by second order Milstein approximation
+- [ ] **merton** — Merton jump diffusion model
+- [ ] **gbm.simbysolution_gbm** — Simulate approximate solution of diagonal-drift GBM processes
+- [ ] **backtestengine.runbacktest** — Run backtest on one or more strategies
+- [ ] **portfolio.plotfrontier** — Plot efficient frontier
+- [ ] **portfolio.estimatemaxsharperatio** — Estimate efficient portfolio to maximize Sharpe ratio for Portfolio object
+- [ ] **heston.simbymilstein2_heston** — Simulate Heston process sample paths by second order Milstein approximation
+- [ ] **heston** — Heston model
+- [ ] **creditscorecard.score** — Compute credit scores for given data
+- [ ] **portfolio.estimatefrontierbyreturn** — Estimate optimal portfolios with targeted portfolio returns
+- [ ] **merton.simbysolution_merton** — Simulate approximate solution of diagonal-drift Merton jump diffusion process
+- [ ] **creditscorecard.fitmodel** — Fit logistic regression model to Weight of Evidence (WOE) data
+- [ ] **merton.simbymilstein_merton** — Simulate diagonal diffusion Merton sample paths by Milstein approximation
+- [ ] **bates.simbyeuler_bates** — Simulate Bates sample paths by Euler approximation
+- [ ] **rvm.simbyeuler_rvm** — Simulate RVM, roughbergomi, or roughheston sample paths by Euler approximation
+- [ ] **merton.simbyeuler_merton** — Simulate Merton jump diffusion sample paths by Euler approximation
+- [ ] **gbm** — Geometric Brownian motion (GBM) model
+- [ ] **covariancedenoising** — Estimate covariance matrix using denoising
+- [ ] **cir.simbymilstein_cir** — Simulate CIR process sample paths by Milstein approximation
+- [ ] **bates.simbytransition_bates** — Simulate Bates sample paths with transition density
+- [ ] **sdemrd** — SDE with Mean-Reverting Drift (SDEMRD) model
+- [ ] **heston.simbytransition_heston** — Simulate Heston sample paths with transition density
+- [ ] **creditexposures** — Compute credit exposures from contract values
+- [ ] **bm.simbymilstein_sde** — Simulate diagonal diffusion for BM, GBM, CEV, HWV, SDEDDO, SDELD, or SDEMRD sample paths by Milstein
+- [ ] **rvm** — Rough volatility model (RVM)
+- [ ] **cir** — Cox-Ingersoll-Ross (CIR) mean-reverting square root diffusion model
+- [ ] **bates.simbymilstein_bates** — Simulate Bates process sample paths by Milstein approximation
+- [ ] **sdeld** — SDE with Linear Drift (SDELD) model
+- [ ] **rvm.simbyhybrid_rvm** — Simulate RVM or roughbergomi sample paths by hybrid approximation
+- [ ] **roughheston** — Rough Heston model
+- [ ] **portfoliocvar.simulatenormalscenariosbydata** — Simulate multivariate normal asset return scenarios from data
+- [ ] **hwv** — Hull-White/Vasicek (HWV) Gaussian Diffusion model
+- [ ] **bndprice** — Price fixed-income security from yield to maturity
+- [ ] **portfolio.setconditionalbudget** — Set up conditional budget constraints for portfolio
+- [ ] **heston.simbymilstein_heston** — Simulate Heston process sample paths by Milstein approximation
+- [ ] **creditscorecard.probdefault** — Likelihood of default for given data set
+- [ ] **cev** — Constant Elasticity of Variance (CEV) model
+- [ ] **cdsprice** — Determine price for credit default swap
+- [ ] **sde** — Stochastic Differential Equation (SDE) model
+- [ ] **roughbergomi** — Rough Bergomi model
+- [ ] **portfolio.setminmaxnumassets** — Set cardinality constraints on the number of assets invested in a portfolio
+- [ ] **portfolio.estimateassetmoments** — Estimate mean and covariance of asset returns from data
+- [ ] **hwv.simbysolution_hwv** — Simulate approximate solution of diagonal-drift HWV processes
+- [ ] **creditscorecard.setmodel** — Set model predictors and coefficients
+- [ ] **creditscorecard.plotbins** — Plot histogram counts for predictor variables
+- [ ] **bndyield** — Yield to maturity for fixed-income security
+- [ ] **backtestengine.summary** — Generate summary table of backtest results
+- [ ] **sdeddo** — Stochastic Differential Equation (SDEDDO) model from Drift and Diffusion components
+- [ ] **portsim** — Monte Carlo simulation of correlated asset returns
+- [ ] **lifetablegen** — Generate life table series from calibrated mortality model
+- [ ] **lifetablefit** — Calibrate life table from survival data with parametric models
+- [ ] **cfplot** — Visualize cash flows of financial instruments
+- [ ] **cdsspread** — Determine spread of credit default swap
+- [ ] **bndtotalreturn** — Total return of fixed-coupon bond
+- [ ] **bndspread** — Static spread over spot curve
+- [ ] **bm** — Brownian motion (BM) models
+- [ ] **ts2func** — Convert time series arrays to functions of time and state
+- [ ] **sde.interpolate** — Brownian interpolation of stochastic differential equations (SDEs) for SDE, BM, GBM, CEV, CIR, HWV, 
+- [ ] **pyld2zero** — Zero curve given par yield curve
+- [ ] **portfolio.setcosts** — Set up proportional transaction costs for portfolio
+- [ ] **portfolio.addgroupratio** — Add group ratio constraints for portfolio weights to existing group ratio constraints
+- [ ] **covarianceshrinkage** — Estimate covariance matrix using shrinkage estimators
+- [ ] **bndkrdur** — Bond key rate duration given zero curve
+- [ ] **portfolio.estimatefrontierlimits** — Estimate optimal portfolios at endpoints of efficient frontier
+- [ ] **ecmmvnrmle** — Multivariate normal regression with missing data
+- [ ] **cdsbootstrap** — Bootstrap default probability curve from credit default swap market quotes
+- [ ] **rollingreturns** — Period-over-period rolling returns or differences from prices
+- [ ] **portfolio.setonewayturnover** — Set up one-way portfolio turnover constraints
+- [ ] **portfolio.setgroupratio** — Set up group ratio constraints for portfolio weights
+- [ ] **portfolio.setbudget** — Set up budget constraints for portfolio
+- [ ] **lifetableconv** — Convert life table series into life tables with forced termination
+- [ ] **bnddury** — Bond duration given yield
+- [ ] **bnddurp** — Bond duration given price
+- [ ] **bndconvy** — Bond convexity given yield
+- [ ] **bndconvp** — Bond convexity given price
+- [ ] **zero2pyld** — Par yield curve given zero curve
+- [ ] **riskbudgetingportfolio** — Compute risk budgeting portfolios
+- [ ] **portfolioriskcontribution** — Compute individual asset risk contribution to overall portfolio volatility
+- [ ] **portfolio.setinitport** — Set up initial or current portfolio
+- [ ] **portfolio.estimateportmoments** — Estimate moments of portfolio returns for Portfolio object
+- [ ] **portfolio.addgroups** — Add group constraints for portfolio weights to existing group constraints
+- [ ] **floatmargin** — Margin measures for floating-rate bond
+- [ ] **floatdiscmargin** — Discount margin for floating-rate bond
+- [ ] **convert2monthly** — Aggregate timetable data to monthly periodicity
+- [ ] **cdsrpv01** — Compute risky present value of a basis point for credit default swap
+- [ ] **yearfrac** — Fraction of year between dates
+- [ ] **portfolio.setturnover** — Set up maximum portfolio turnover constraint
+- [ ] **portfolio.setinequality** — Set up linear inequality constraints for portfolio weights
+- [ ] **portfolio.setgroups** — Set up group constraints for portfolio weights
+- [ ] **portfolio.setassetlist** — Set up list of identifiers for assets
+- [ ] **portfolio.estimateportrisk** — Estimate portfolio risk according to risk proxy associated with corresponding object
+- [ ] **portfolio.estimateportreturn** — Estimate mean of portfolio returns
+- [ ] **cpndatenq** — Next quasi-coupon date for fixed-income security
+- [ ] **cftimes** — Time factors corresponding to bond cash flow dates
+- [ ] **zbtyield** — Zero curve bootstrapping from coupon bond data given yield
+- [ ] **prbyzero** — Price bonds in portfolio by set of zero curves
+- [ ] **portfoliocvar.simulatenormalscenariosbymoments** — Simulate multivariate normal asset return scenarios from mean and covariance of asset returns
+- [ ] **portfoliocvar.setscenarios** — Set asset returns scenarios by direct matrix
+- [ ] **portfolio.setequality** — Set up linear equality constraints for portfolio weights
+- [ ] **portfolio.addinequality** — Add linear inequality constraints for portfolio weights to existing constraints
+- [ ] **portfolio.addequality** — Add linear equality constraints for portfolio weights to existing constraints
+- [ ] **mvnrmle** — Multivariate normal regression (ignore missing data)
+- [ ] **movavg** — Moving average of a financial time series
+- [ ] **ecmnmle** — Mean and covariance of incomplete multivariate normal data
+- [ ] **ecmlsrmle** — Least-squares regression with missing data
+- [ ] **cpndatepq** — Previous quasi-coupon date for fixed-income security
+- [ ] **cfdatesq** — Quasi-coupon dates for fixed-income security
+- [ ] **cfdates** — Cash flow dates for fixed-income security
+- [ ] **zero2fwd** — Forward curve given zero curve
+- [ ] **ret2tick** — Convert return series to price series
+- [ ] **portfolio.setdefaultconstraints** — Set up portfolio constraints with nonnegative weights that sum to 1
+- [ ] **portfolio.getonewayturnover** — Obtain one-way turnover constraints from portfolio object
+- [ ] **maxdrawdown** — Compute maximum drawdown for one or more price series
+- [ ] **geom2arith** — Geometric to arithmetic moments of asset returns
+- [ ] **fwd2zero** — Zero curve given forward curve
+- [ ] **fbusdate** — First business date of month
+- [ ] **ecmnstd** — Standard errors for mean and covariance of incomplete data
+- [ ] **ecmmvnrstd** — Evaluate standard errors for multivariate normal regression model
+- [ ] **diffusion** — Diffusion-rate model component
+- [ ] **cpndatep** — Previous coupon date for fixed-income security
+- [ ] **cpndaten** — Next coupon date for fixed-income security
+- [ ] **cfport** — Portfolio form of cash flow amounts
+- [ ] **brinsonattribution.categoryweightschart** — Create a horizontal bar chart for category weights
+- [ ] **brinsonattribution.attributionschart** — Create horizontal bar chart of performance attribution
+- [ ] **blsimpv** — Black-Scholes implied volatility
+- [ ] **arith2geom** — Arithmetic to geometric moments of asset returns
+- [ ] **transprobprep** — Preprocess credit ratings data to estimate transition probabilities
+- [ ] **transprobbytotals** — Estimate transition probabilities using totals structure input
+- [ ] **portfolio.getgroupratio** — Obtain group ratio constraint arrays from portfolio object
+- [ ] **portfolio.estimateportsharperatio** — Estimate Sharpe ratio of given portfolio weights for Portfolio object
+- [ ] **portfolio.estimatebounds** — Estimate global lower and upper bounds for set of portfolios
+- [ ] **portalpha** — Compute risk-adjusted alphas and returns for one or more assets
+- [ ] **portalloc** — Optimal capital allocation to efficient frontier portfolios
+- [ ] **elpm** — Compute expected lower partial moments for normal asset returns
+- [ ] **drift** — Drift-rate model component
+- [ ] **disc2zero** — Zero curve given discount curve
+- [ ] **creditscorecard.predictorinfo** — Summary of credit scorecard predictor properties
+- [ ] **cpnpersz** — Number of days in coupon period
+- [ ] **cpndaysp** — Number of days since previous coupon date
+- [ ] **cpndaysn** — Number of days to next coupon date
+- [ ] **cpncount** — Coupon payments remaining until maturity
+- [ ] **brinsonattribution.totalattribution** — Compute total performance attribution by Brinson model
+- [ ] **brinsonattribution.categoryweights** — Compute average and periodic category weights
+- [ ] **brinsonattribution.categoryattribution** — Compute performance attribution for portfolio of each category
+- [ ] **blsprice** — Black-Scholes put and call option pricing
+- [ ] **zero2disc** — Discount curve given zero curve
+- [ ] **zbtprice** — Zero curve bootstrapping from coupon bond data given price
+- [ ] **uicalendar** — Graphical calendar
+- [ ] **transprobgrouptotals** — Aggregate credit ratings information into fewer rating categories
+- [ ] **tr2bonds** — Term-structure parameters given Treasury bond parameters
+- [ ] **tick2ret** — Convert price series to return series
+- [ ] **prmat** — Price with interest at maturity
+- [ ] **portvrisk** — Portfolio value at risk (VaR)
+- [ ] **portfolio.getinequality** — Obtain inequality constraint arrays from portfolio object
+- [ ] **portfolio.getgroups** — Obtain group constraint arrays from portfolio object
+- [ ] **portfolio.checkfeasibility** — Check feasibility of input portfolios against portfolio object
+- [ ] **ewstats** — Expected return and covariance from return time series
+- [ ] **ecmnhess** — Hessian of negative log-likelihood function
+- [ ] **ecmnfish** — Fisher information matrix
+- [ ] **cfspread** — Compute spread over yield curve for cash flow
+- [ ] **cdprice** — Price of certificate of deposit
+- [ ] **brinsonattribution.summary** — Summarize performance attribution by Brinson model
+- [ ] **brinsonattribution.categoryreturnschart** — Create horizontal bar chart of category returns
+- [ ] **brinsonattribution.categoryreturns** — Compute aggregate and periodic category returns
+- [ ] **blkimpv** — Implied volatility for futures options from Black model
+- [ ] **adjustedclosingprices** — Adjust closing stock prices for splits and cash dividends
+- [ ] **accrfrac** — Fraction of coupon period before settlement
+- [ ] **abs2active** — Convert constraints from absolute to active format
+
+## images
+
+- [ ] **cyclegangenerator** — Create CycleGAN generator network for image-to-image translation
+- [ ] **patchgandiscriminator** — Create PatchGAN discriminator network
+- [ ] **imfilter** — N-D filtering of multidimensional images
+- [ ] **addpix2pixhdlocalenhancer** — Add local enhancer network to pix2pixHD generator network
+- [ ] **padarray** — Pad array
+- [ ] **imgaussfilt** — 2-D Gaussian filtering of images
+- [ ] **imgaussfilt3** — 3-D Gaussian filtering of 3-D images
+- [ ] **blockedimage** — Big or multiresolution image made from discrete blocks
+- [ ] **images.roi.cuboid** — Cuboidal region of interest
+- [ ] **modefilt** — 2-D and 3-D mode filtering
+- [ ] **images.roi.freehand** — Freehand region of interest
+- [ ] **images.roi.assistedfreehand** — Assisted freehand region of interest
+- [ ] **images.roi.rectangle** — Rectangular region of interest
+- [ ] **images.roi.ellipse** — Elliptical region of interest
+- [ ] **drawrectangle** — Create customizable rectangular ROI
+- [ ] **drawellipse** — Create customizable elliptical ROI
+- [ ] **imshow** — Display image
+- [ ] **drawcuboid** — Create customizable cuboidal ROI
+- [ ] **optics.ui.opticalcoatingeditor** — Optical coating editor UI component
+- [ ] **images.roi.polygon** — Polygonal region of interest
+- [ ] **images.roi.circle** — Circular region of interest
+- [ ] **drawpolygon** — Create customizable polygonal ROI
+- [ ] **drawfreehand** — Create customizable freehand ROI
+- [ ] **drawcircle** — Create customizable circular ROI
+- [ ] **drawassisted** — Create customizable freehand ROI with assistance from object edges
+- [ ] **volshow** — Display volume
+- [ ] **images.roi.polyline** — Polyline region of interest
+- [ ] **drawpolyline** — Create customizable polyline ROI
+- [ ] **drawline** — Create customizable linear ROI
+- [ ] **bigimageshow** — Display 2-D blockedImage object
+- [ ] **spectralmatch** — Identify unknown regions or materials using spectral library
+- [ ] **medfilt3** — 3-D median filtering
+- [ ] **imageshow** — Display image in 2-D viewer
+- [ ] **drawpoint** — Create customizable point ROI
+- [ ] **opticalmaterial** — Create optical material
+- [ ] **images.roi.point** — Point region of interest
+- [ ] **images.roi.line** — Line region of interest
+- [ ] **images.roi.crosshair** — Crosshair region of interest
+- [ ] **drawcrosshair** — Create customizable crosshair ROI
+- [ ] **regionprops** — Measure properties of image regions
+- [ ] **blockedimagedatastore** — Datastore for use with blocks from blockedImage objects
+- [ ] **optics.ui.opticalmaterialpicker** — Optical material picker UI component
+- [ ] **montage** — Display multiple images as rectangular montage
+- [ ] **imsegsam** — Perform automatic full image segmentation using Segment Anything Model 2 (SAM 2)
+- [ ] **ssim** — Structural similarity (SSIM) index for measuring image quality
+- [ ] **simtform3d** — 3-D similarity geometric transformation
+- [ ] **bwferet** — Measure Feret properties
+- [ ] **uidraw** — Interactively draw ROI in viewer window
+- [ ] **orthosliceviewer** — Browse orthogonal slices in grayscale or RGB volume
+- [ ] **optics.ui.opticalcoatingpicker** — Optical coating picker UI component
+- [ ] **multissim** — Multiscale structural similarity (MS-SSIM) index for image quality
+- [ ] **affineoutputview** — Create output view for warping images
+- [ ] **rigidtform3d** — 3-D rigid geometric transformation
+- [ ] **optics.chart.spotdiagram** — Chart displaying spot diagram of optical system
+- [ ] **imwarp** — Apply geometric transformation to image
+- [ ] **imhistmatch** — Adjust histogram of 2-D image to match histogram of reference image
+- [ ] **imcrop** — Crop image
+- [ ] **blockedimage.apply** — Process blocks of blocked image
+- [ ] **viewer3d** — Create viewer for 3-D image display
+- [ ] **lazysnapping** — Segment image into foreground and background using graph-based segmentation
+- [ ] **imdilate** — Dilate image
+- [ ] **fspecial** — Create predefined 2-D filter
+- [ ] **simtform2d** — 2-D similarity geometric transformation
+- [ ] **selectblocklocations** — Select blocks from blocked images
+- [ ] **jmsam** — Measure spectral similarity using Jeffries Matusita-Spectral Angle Mapper method
+- [ ] **imsegkmeans** — K-means clustering based image segmentation
+- [ ] **esfrchart.measurecolor** — Measure color reproduction using test chart
+- [ ] **viewer2d** — Create viewer for 2-D image display
+- [ ] **transltform3d** — 3-D translation geometric transformation
+- [ ] **sidsam** — Measure spectral similarity using spectral information divergence-spectral angle mapper hybrid metho
+- [ ] **polytoblockedimage** — Create labeled blockedImage object from set of ROIs
+- [ ] **optics.ui.opticalsystemviewer3d** — Customize 3-D visualization of optical system
+- [ ] **obliqueslice** — Extract oblique slice from 3-D volumetric data
+- [ ] **immulticube** — Read multispectral image
+- [ ] **imcolordiff** — Color difference based on CIE94 or CIE2000 standard
+- [ ] **exrwrite** — Write image data to EXR file
+- [ ] **esfrchart.measuresharpness** — Measure spatial frequency response using test chart
+- [ ] **bwboundaries** — Trace object boundaries in binary image
+- [ ] **blockproc** — Distinct block processing for image
+- [ ] **samplinggrid** — Create ray sampling grid for entrance surface of optical system
+- [ ] **rigidtform2d** — 2-D rigid geometric transformation
+- [ ] **opticalsystem** — Model components of optical system
+- [ ] **ns3** — Measure normalized spectral similarity score
+- [ ] **multithresh** — Multilevel image thresholds using Otsu’s method
+- [ ] **images.ui.graphics.roi.line** — Line annotation
+- [ ] **bwpropfilt** — Extract objects from binary image using properties
+- [ ] **affinetform2d.transformpointsforward** — Apply forward geometric transformation
+- [ ] **activecontour** — Segment image into foreground and background using active contours (snakes) region growing technique
+- [ ] **strel** — Morphological structuring element
+- [ ] **optics.ui.opticalsystemviewer2d** — Customize 2-D visualization of optical system
+- [ ] **nnet.cnn.layer.resize3dlayer** — 3-D resize layer
+- [ ] **nnet.cnn.layer.resize2dlayer** — 2-D resize layer
+- [ ] **makehdr** — Create high dynamic range image
+- [ ] **imref2d** — Reference 2-D image to world coordinates
+- [ ] **imhypercube** — Read hyperspectral image
+- [ ] **imclearborder** — Suppress light structures connected to image border
+- [ ] **images.ui.graphics.roi.rectangle** — Rectangle annotation
+- [ ] **images.ui.graphics.roi.point** — Point annotation
+- [ ] **images.ui.graphics.roi.ellipse** — Ellipse annotation
+- [ ] **images.ui.graphics.roi.circle** — Circle annotation
+- [ ] **affinetform2d.transformpointsinverse** — Apply inverse geometric transformation
+- [ ] **watershed** — Watershed transform
+- [ ] **transltform2d** — 2-D translation geometric transformation
+- [ ] **sliceviewer** — Browse image slices
+- [ ] **randompatchextractiondatastore** — Datastore for extracting random 2-D or 3-D random patches from images or pixel label images
+- [ ] **psnr** — Peak signal-to-noise ratio (PSNR)
+- [ ] **opticalcoating** — Create optical coating for optical system surfaces
+- [ ] **imtranslate** — Translate image
+- [ ] **imsegisodata** — ISODATA clustering based image segmentation
+- [ ] **imresize3** — Resize 3-D volumetric image
+- [ ] **imquantize** — Quantize image using specified quantization levels and output values
+- [ ] **imfindcircles** — Find circles using circular Hough transform
+- [ ] **imblend** — Blend two images
+- [ ] **imbinarize** — Binarize 2-D grayscale image or 3-D volume by thresholding
+- [ ] **images.ui.graphics.roi.polygon** — Polygon annotation
+- [ ] **imadjust** — Adjust image intensity values or colormap
+- [ ] **ifanbeam** — Inverse fan-beam transform
+- [ ] **histeq** — Enhance contrast using histogram equalization
+- [ ] **graycomatrix** — Create gray-level co-occurrence matrix from image
+- [ ] **grabcut** — Segment image into foreground and background using iterative graph-based segmentation
+- [ ] **fwind1** — 2-D FIR filter using 1-D window method
+- [ ] **esfrchart** — Imatest edge spatial frequency response (eSFR) test chart
+- [ ] **dicomwrite** — Write images as DICOM files
+- [ ] **bwmorph** — Morphological operations on binary images
+- [ ] **bwdist** — Distance transform of binary image
+- [ ] **affinetform3d** — 3-D affine geometric transformation
+- [ ] **uipaint** — Draw using paintbrush in viewer window
+- [ ] **tformarray** — Apply spatial transformation to N-D array
+- [ ] **sam** — Measure spectral similarity using spectral angle mapper
+- [ ] **resamplesignature** — Resample spectral signature to required wavelengths
+- [ ] **regionprops3** — Measure properties of 3-D volumetric image regions
+- [ ] **plotchromaticity** — Plot color reproduction on chromaticity diagram
+- [ ] **opticalsystem.tracerays** — Perform ray tracing through optical system
+- [ ] **maketform** — Create N-D spatial transformation structure (TFORM)
+- [ ] **makecform** — Create color transformation structure
+- [ ] **labeloverlay** — Overlay label matrix regions on 2-D image
+- [ ] **integralimage** — Calculate 2-D integral image
+- [ ] **imlincomb** — Linear combination of images
+- [ ] **imfuse** — Composite of two images
+- [ ] **imdiffusefilt** — Anisotropic diffusion filtering of images
+- [ ] **images.ui.graphics.roi.freehand** — Freehand annotation
+- [ ] **idct2** — 2-D inverse discrete cosine transform
+- [ ] **geometrictransform2d** — 2-D geometric transformation object
+- [ ] **esfrchart.measurechromaticaberration** — Measure chromatic aberration at slanted edges
+- [ ] **dct2** — 2-D discrete cosine transform
+- [ ] **bigimageshow.showlabels** — Display label overlay on bigimageshow object
+- [ ] **sid** — Measure spectral similarity using spectral information divergence
+- [ ] **iradon** — Inverse Radon transform
+- [ ] **inpaintcoherent** — Restore specific image regions using coherence transport based image inpainting
+- [ ] **imregcorr** — Estimate geometric transformation that aligns two 2-D images using cross correlation
+- [ ] **imref3d** — Reference 3-D image to world coordinates
+- [ ] **imreducehaze** — Reduce atmospheric haze
+- [ ] **imnlmfilt** — Non-local means filtering of image
+- [ ] **imfill** — Fill image regions and holes
+- [ ] **imbilatfilt** — Bilateral filtering of images with Gaussian kernels
+- [ ] **encoderdecodernetwork** — Create encoder-decoder network
+- [ ] **edge** — Find edges in 2-D grayscale image
+- [ ] **cpselect** — Control Point Selection tool
+- [ ] **affinetform2d** — 2-D affine geometric transformation
+- [ ] **adaptthresh** — Adaptive image threshold using local first-order statistics
+- [ ] **viscircles** — Create circle
+- [ ] **superpixels3** — 3-D superpixel oversegmentation of 3-D image
+- [ ] **spectralindices** — Compute spectral indices
+- [ ] **sharpencnmf** — Sharpen hyperspectral data using coupled nonnegative matrix factorization (CNMF) method
+- [ ] **roipoly** — Specify polygonal region of interest (ROI)
+- [ ] **readecostresssig** — Read data from ECOSTRESS spectral library
+- [ ] **opticalsystem.view3d** — Visualize optical system in 3-D
+- [ ] **opticalsystem.lensdistortion** — Compute geometric lens distortion for optical system
+- [ ] **niftiwrite** — Write volume to file using NIfTI format
+- [ ] **ndvi** — Normalized difference vegetation index
+- [ ] **inpaintexemplar** — Restore specific image regions using exemplar-based image inpainting
+- [ ] **imregtform** — Estimate geometric transformation that aligns two 2-D or 3-D images
+- [ ] **imregister** — Intensity-based image registration
+- [ ] **images.ui.graphics.surface** — Display surface in 3-D viewer
+- [ ] **images.ui.graphics.roi.polyline** — Polyline annotation
+- [ ] **images.ui.graphics.roi.angle** — Angle annotation
+- [ ] **hough** — Hough transform
+- [ ] **geometrictransform3d** — 3-D geometric transformation object
+- [ ] **fippi** — Extract endmember signatures using fast iterative pixel purity index
+- [ ] **fanbeam** — Fan-beam transform
+- [ ] **esfrchart.measurenoise** — Measure noise of test chart
+- [ ] **dicomreadvolume** — Create 4-D volume from set of DICOM images
+- [ ] **deconvlucy** — Deblur image using Lucy-Richardson method
+- [ ] **bfscore** — Contour matching score for image segmentation
+- [ ] **wiener2** — 2-D adaptive noise-removal filtering
+- [ ] **visboundaries** — Plot region boundaries
+- [ ] **rgb2lab** — Convert RGB to CIE 1976 L*a*b*
+- [ ] **randomaffine3d** — Create randomized 3-D affine transformation
+- [ ] **opticalsystem.view2d** — Visualize optical system in 2-D
+- [ ] **normxcorr2** — Normalized 2-D cross-correlation
+- [ ] **label2rgb** — Convert label matrix into RGB image
+- [ ] **jaccard** — Jaccard similarity coefficient for image segmentation
+- [ ] **integralboxfilter** — 2-D box filtering of integral images
+- [ ] **imshowpair** — Compare differences between images
+- [ ] **imsegfmm** — Binary image segmentation using fast marching method
+- [ ] **imreconstruct** — Morphological reconstruction
+- [ ] **improfile** — Pixel-value cross-sections along line segments
+- [ ] **imcrop3** — Crop 3-D image
+- [ ] **images.geotrans.warper** — Apply same geometric transformation to many images efficiently
+- [ ] **grayslice** — Convert grayscale image to indexed image using multilevel thresholding
+- [ ] **fwind2** — 2-D FIR filter using 2-D window method
+- [ ] **fspecial3** — Create predefined 3-D filter
+- [ ] **fitgeotform2d** — Fit 2-D geometric transformation to control point pairs
+- [ ] **exrread** — Read image data from EXR file
+- [ ] **deltae** — Color difference based on CIE76 standard
+- [ ] **colorcloud** — Display 3-D color gamut as point cloud in specified color space
+- [ ] **bwskel** — Reduce all objects to lines in 2-D binary image or 3-D binary volume
+- [ ] **bwconncomp** — Find and count connected components in binary image
+- [ ] **adapthisteq** — Contrast-limited adaptive histogram equalization (CLAHE)
+- [ ] **xyz2rgb** — Convert CIE 1931 XYZ to RGB
+- [ ] **removecontinuum** — Normalize spectral signature
+- [ ] **ppi** — Extract endmember signatures using pixel purity index
+- [ ] **opticalsystem.chromaticaberration** — Compute lateral and longitudinal chromatic aberration of optical system
+- [ ] **makeresampler** — Create resampling structure
+- [ ] **lin2rgb** — Apply gamma correction to linear RGB values
+- [ ] **lab2rgb** — Convert CIE 1976 L*a*b* to RGB
+- [ ] **imregdemons** — Estimate displacement field that aligns two 2-D or 3-D images
+- [ ] **imoverlay** — Burn binary mask into 2-D image
+- [ ] **imhmin** — Suppress regional minima in image using H-minima transform
+- [ ] **imgaborfilt** — Apply Gabor filter or filter bank to 2-D image
+- [ ] **images.roi.assistedfreehand.createmask** — Create binary mask image from ROI
+- [ ] **hyperpca** — Principal component analysis of hyperspectral data
+- [ ] **hyper.io.hypercube.selectbands** — Select bands from spectral image
+- [ ] **hyper.io.hypercube.assigndata** — Assign new data to spectral image data cube
+- [ ] **hyper.io.hypercube** — Read hyperspectral data
+- [ ] **graydist** — Gray-weighted distance transform of grayscale image
+- [ ] **graycoprops** — Properties of gray-level co-occurrence matrix (GLCM)
+- [ ] **ftrans2** — 2-D FIR filter using frequency transformation
+- [ ] **fieldpoint** — Create field point representation of light source
+- [ ] **fan2para** — Convert fan-beam projections to parallel-beam
+- [ ] **esfrchart.measureilluminant** — Measure scene illuminant using test chart
+- [ ] **dlresize** — Resize spatial dimensions of dlarray object
+- [ ] **dicomupdate** — Update value of target attribute in DICOM metadata
+- [ ] **denoisengmeet** — Denoise hyperspectral images using non-local meets global approach
+- [ ] **chromadapt** — Adjust color balance of RGB image with chromatic adaptation
+- [ ] **cc2bw** — Convert connected components to binary image
+- [ ] **camresponse** — Estimate camera response function
+- [ ] **bwulterode** — Ultimate erosion
+- [ ] **bwselect3** — Select objects in binary volume
+- [ ] **bwselect** — Select objects in binary image
+- [ ] **blockedimagedatastore.counteachlabel** — Counts number of pixel labels for each class
+- [ ] **axes2pix** — Convert axes coordinates to pixel coordinates
+- [ ] **warp** — Display image as texture-mapped surface
+- [ ] **smilemetric** — Compute spectral smile metrics of hyperspectral data
+- [ ] **rgb2xyz** — Convert RGB to CIE 1931 XYZ
+- [ ] **regionfill** — Fill specified regions in image using inward interpolation
+- [ ] **rangefilt** — Local range of image
+- [ ] **randomwindow2d** — Randomly select rectangular region in image
+- [ ] **projtform2d** — 2-D projective geometric transformation
+- [ ] **pretrainedencodernetwork** — Create encoder network from pretrained network
+- [ ] **piqe** — Perception based Image Quality Evaluator (PIQE) no-reference image quality score
+- [ ] **optics.result.chromaticaberration.show** — Plot analysis result
+- [ ] **opticalsystem.updatesemidiameters** — Update semi-diameters of surfaces in optical system
+- [ ] **opticalsystem.setconstructionframe** — Set coordinate break for all subsequent components in optical system
+- [ ] **opticalsystem.add** — Add optical component to optical system
+- [ ] **iptsetpointerbehavior** — Store pointer behavior structure in graphics object or UI component
+- [ ] **imscrollpanel** — Scroll panel for interactive image navigation
+- [ ] **imrotate3** — Rotate 3-D volumetric grayscale image
+- [ ] **impixel** — Pixel color values
+- [ ] **imkeepborder** — Retain light structures connected to image border
+- [ ] **imhmax** — Suppress regional maxima in image using H-maxima transform
+- [ ] **imhist** — Histogram of image data
+- [ ] **imgradientxy** — Find directional gradients of 2-D image
+- [ ] **imgradient3** — Find gradient magnitude and direction of 3-D image
+- [ ] **imboxfilt** — 2-D box filtering of images
+- [ ] **images.roi.assistedfreehand.reduce** — Reduce density of points in ROI
+- [ ] **hyper.io.hypercube.removebands** — Remove spectral bands from spectral image
+- [ ] **hyper.io.hypercube.cropdata** — Crop regions-of-interest of spectral image
+- [ ] **hyper.io.hypercube.colorize** — Estimate color image of spectral image
+- [ ] **estimateabundancels** — Estimate abundance maps
+- [ ] **dicomread** — Read DICOM image
+- [ ] **dicomcollection** — Gather details about related series of DICOM files
+- [ ] **detecttarget** — Detect target in hyperspectral and multispectral image
+- [ ] **denoisingimagedatastore** — Denoising image datastore
+- [ ] **demosaic** — Convert Bayer image to truecolor image
+- [ ] **decorrstretch** — Apply decorrelation stretch to multichannel image
+- [ ] **bwtraceboundary** — Trace object in binary image
+- [ ] **bwdistgeodesic** — Geodesic distance transform of binary image
+- [ ] **blockednetwork** — Create network with repeating block structure
+- [ ] **bigimageshow.showmask** — Show mask overlay at specified inclusion threshold
+- [ ] **xyz2rgbwide** — Convert CIE 1931 XYZ color values to wide-gamut RGB color values
+- [ ] **unitpredict** — Perform inference using unsupervised image-to-image translation (UNIT) network
+- [ ] **superpixels** — 2-D superpixel oversegmentation of images
+- [ ] **spacetodepth** — Rearrange spatial blocks of dlarray data along depth dimension
+- [ ] **segmentanythingmodel** — Pretrained Segment Anything Model 2 (SAM 2) for image segmentation
+- [ ] **rgbwide2xyz** — Convert wide-gamut RGB color values to CIE 1931 XYZ color values
+- [ ] **raw2rgb** — Transform color filter array (CFA) image in RAW file into RGB image
+- [ ] **radiance2reflectance** — Convert radiance to reflectance
+- [ ] **poly2mask** — Convert region of interest (ROI) polygon to region mask
+- [ ] **imsharpen** — Sharpen image using unsharp masking
+- [ ] **imrotate** — Rotate image
+- [ ] **imnoise** — Add noise to image
+- [ ] **imguidedfilter** — Guided filtering of images
+- [ ] **images.spatialref.cuboid** — Spatial extents of 3-D cuboidal region
+- [ ] **imagemodel** — Image model object
+- [ ] **hyperseganchor** — Segment hyperspectral and multispectral images using fast spectral clustering with anchor graphs
+- [ ] **hyper.io.multicube** — Read multispectral data
+- [ ] **houghlines** — Extract line segments based on Hough transform
+- [ ] **grayconnected** — Select contiguous image region with similar gray values using flood-fill technique
+- [ ] **geomulticube** — Read multispectral image with geospatial information
+- [ ] **geohypercube** — Read hyperspectral image with geospatial information
+- [ ] **fitniqe** — Fit custom model for NIQE image quality score
+- [ ] **esfrchart.displaychart** — Display test chart with overlaid regions of interest
+- [ ] **empiricalline** — Empirical line calibration of hyperspectral data
+- [ ] **dn2reflectance** — Convert digital number to reflectance
+- [ ] **dn2radiance** — Convert digital number to radiance
+- [ ] **displaycolorpatch** — Display measured and reference color as color patches
+- [ ] **deconvblind** — Deblur image using blind deconvolution
+- [ ] **countendmembershfc** — Find number of endmembers
+- [ ] **bwlookup** — Nonlinear filtering using lookup tables
+- [ ] **bwareafilt** — Extract objects from binary image by size
+- [ ] **brisque** — Blind/Referenceless Image Spatial Quality Evaluator (BRISQUE) no-reference image quality score
+- [ ] **blockedimage.makemultilevel2d** — 2-D multilevel blocked image
+- [ ] **blendexposure** — Create well-exposed image from images with different exposures
+- [ ] **tonemapfarbman** — Convert HDR image to LDR using edge-preserving multiscale decompositions
+- [ ] **subtractdarkpixel** — Subtract dark pixel value from spectral data
+- [ ] **roifilt2** — Filter region of interest (ROI) in grayscale image
+- [ ] **registration.optimizer.regularstepgradientdescent** — Regular step gradient descent optimizer configuration
+- [ ] **reducesmile** — Reduce spectral smile effect in hyperspectral data cube
+- [ ] **poly2label** — Create label matrix from set of ROIs
+- [ ] **opticalsystem.rayaberration** — Compute tangential and sagittal ray aberration of optical system
+- [ ] **opticalsystem.focus** — Position image plane of optical system to minimize RMS spot size
+- [ ] **ntsc2rgb** — Convert NTSC values to RGB color space
+- [ ] **imsubtract** — Subtract one image from another or subtract constant from image
+- [ ] **impyramid** — Image pyramid reduction and expansion
+- [ ] **imlocalbrighten** — Brighten low-light image
+- [ ] **imimposemin** — Impose minima
+- [ ] **imgradientxyz** — Find directional gradients of 3-D image
+- [ ] **imextendedmin** — Extended-minima transform
+- [ ] **imextendedmax** — Extended-maxima transform
+- [ ] **imcomplement** — Complement image
+- [ ] **illumgray** — Estimate illuminant using gray world algorithm
+- [ ] **iccfind** — Find ICC profiles
+- [ ] **gabor** — Create Gabor filter or Gabor filter bank
+- [ ] **fibermetric** — Enhance elongated or tubular structures in image using Frangi vesselness filter
+- [ ] **exrinfo** — Read metadata from EXR file
+- [ ] **dicominfo** — Read metadata from DICOM message
+- [ ] **dicomanon** — Anonymize DICOM file
+- [ ] **bwlabel** — Label connected components in 2-D binary image
+- [ ] **brisquemodel** — Blind/Referenceless Image Spatial Quality Evaluator (BRISQUE) model
+- [ ] **blocklocationset.mergeblocklocationsets** — Merge block location sets
+- [ ] **blocklocationset** — List of block locations in large images
+- [ ] **blockedimage.crop** — Create cropped version of blocked image
+- [ ] **anomalyrx** — Detect anomalies using Reed-Xiaoli detector
+
+## opt
+
+- [ ] **optim.problemdef.optimizationproblem.solve** — Solve optimization problem or equation problem
+- [ ] **fgoalattain** — Solve multiobjective goal attainment problems
+- [ ] **fminimax** — Solve minimax constraint problem
+- [ ] **coneprog** — Second-order cone programming solver
+- [ ] **fseminf** — Solve semi-infinitely constrained multivariable nonlinear minimization problem
+- [ ] **optim.problemdef.optimizationproblem.issatisfied** — Constraint satisfaction of an optimization problem at a set of points
+- [ ] **checkgradients** — Check first derivative function against finite-difference approximation
+- [ ] **optim.problemdef.optimizationexpression.evaluate** — Evaluate optimization expression or objectives and constraints in problem
+- [ ] **fcn2optimexpr** — Convert function to optimization expression
+- [ ] **optimvar** — Create optimization variables
+- [ ] **optim.problemdef.optimizationvariable** — Variable for optimization
+- [ ] **optim.problemdef.optimizationproblem.optimoptions** — Create optimization options
+- [ ] **optim.problemdef.optimizationexpression** — Arithmetic or functional expression in terms of optimization variables
+- [ ] **optim.problemdef.equationproblem** — System of nonlinear equations
+- [ ] **eqnproblem** — Create equation problem
+- [ ] **optimproblem** — Create optimization problem
+- [ ] **optimeq** — Create empty optimization equality array
+- [ ] **optim.problemdef.optimizationvalues.paretoplot** — Pareto plot of multiobjective values
+- [ ] **optim.problemdef.optimizationequality** — Equalities and equality constraints
+- [ ] **optim.problemdef.optimizationinequality** — Inequality constraints
+- [ ] **optimwarmstart** — Create warm start object
+- [ ] **optimineq** — Create empty optimization inequality array
+- [ ] **optim.linprog.sensitivityanalysis** — Sensitivities of linear program coefficients
+- [ ] **secondordercone** — Create second-order cone constraint
+- [ ] **optimexpr** — Create empty optimization expression array
+- [ ] **optim.problemdef.optimizationproblem** — Optimization problem
+- [ ] **optim.coder.infbound** — Infinite bound support for code generation
+- [ ] **mpsread** — Read MPS file for LP and MILP optimization data
+
+## econ
+
+- [ ] **bssm.simulate** — Simulate posterior draws of Bayesian state-space model parameters
+
+## fininst
+
+- [ ] **fininstrument.vanilla** — Vanilla instrument object
+
+---
+*5000 functions listed*
