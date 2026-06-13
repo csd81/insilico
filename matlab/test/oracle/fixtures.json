@@ -5871,5 +5871,101 @@
       ],
       "real": 1.7182818284590453
     }
+  },
+  "geom_convhull_area": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "geom_convhull_perimeter": {
+    "per": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "geom_convhulln_volume_3d": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "geom_delaunay_triangles": {
+    "nt": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "geom_delaunay_triangulation_obj": {
+    "nt": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "geom_voronoi_cells": {
+    "nc": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "geom_polyarea": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        0.5
+      ]
+    }
+  },
+  "geom_inpolygon": {
+    "v": {
+      "class": "logical",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        0
+      ]
+    }
+  },
+  "geom_pdist": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
   }
 }

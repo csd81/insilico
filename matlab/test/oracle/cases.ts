@@ -673,4 +673,15 @@ export const CASES: OracleCase[] = [
   { name: 'cal-subst-tan', src: 'syms x; v = double(int(tan(x), 0, pi/4));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
   { name: 'cal-subst-power', src: 'syms x; v = double(int(x^2*(x^3+1)^4, 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
   { name: 'cal-subst-nested', src: 'syms x; v = double(int(cos(x)*exp(sin(x)), 0, pi/2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
+
+  // ══════════ computational geometry (convention-independent invariants: areas/volumes/counts) ══════════
+  { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'geometry', tags: ['convex-hull', 'area', 'oracle-validation'] },
+  { name: 'geom-convhull-perimeter', src: 'x = [0 1 1 0]; y = [0 0 1 1]; k = convhull(x, y); per = sum(sqrt(diff(x(k)).^2 + diff(y(k)).^2));', vars: ['per'], tol: 1e-9, level: 'graduate', domain: 'geometry', tags: ['convex-hull', 'perimeter', 'oracle-validation'] },
+  { name: 'geom-convhulln-volume-3d', src: 'P = [0 0 0;1 0 0;0 1 0;0 0 1;1 1 1;1 1 0;1 0 1;0 1 1]; [k, vol] = convhulln(P); v = vol;', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'geometry', tags: ['convex-hull', 'volume', 'convhulln', 'oracle-validation'] },
+  { name: 'geom-delaunay-triangles', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; DT = delaunay(x, y); nt = size(DT, 1);', vars: ['nt'], tol: 1e-9, level: 'graduate', domain: 'geometry', tags: ['delaunay', 'triangulation', 'oracle-validation'] },
+  { name: 'geom-delaunay-triangulation-obj', src: 'DT = delaunayTriangulation([0 0;1 0;0 1;1 1]); nt = size(DT.ConnectivityList, 1);', vars: ['nt'], tol: 1e-9, level: 'graduate', domain: 'geometry', tags: ['delaunay', 'triangulation-object', 'oracle-validation'] },
+  { name: 'geom-voronoi-cells', src: 'P = [0 0;1 0;0 1;1 1;0.5 0.5]; [V, C] = voronoin(P); nc = numel(C);', vars: ['nc'], tol: 1e-9, level: 'graduate', domain: 'geometry', tags: ['voronoi', 'voronoin', 'oracle-validation'] },
+  { name: 'geom-polyarea', src: 'v = [polyarea([0 1 1 0], [0 0 1 1]); polyarea([0 1 0.5], [0 0 1])];', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'geometry', tags: ['polygon', 'area', 'polyarea', 'oracle-validation'] },
+  { name: 'geom-inpolygon', src: 'v = [inpolygon(0.5, 0.5, [0 1 1 0], [0 0 1 1]), inpolygon(2, 2, [0 1 1 0], [0 0 1 1])];', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'geometry', tags: ['point-in-polygon', 'inpolygon', 'oracle-validation'] },
+  { name: 'geom-pdist', src: 'v = pdist([0 0; 3 4]);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'geometry', tags: ['pairwise-distance', 'pdist', 'oracle-validation'] },
 ];
