@@ -1,0 +1,183 @@
+/* ── Reset & tokens ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #ffffff;
+  --bg2: #f5f6f8;
+  --bg3: #ecedf0;
+  --fg: #1f2733;
+  --fg2: #4a5568;
+  --border: rgba(0,0,0,0.10);
+  --accent: #2f6fed;
+  --accent-fg: #ffffff;
+  --err: #c0392b;
+  --kw: #0068d6;
+  --str: #c0392b;
+  --num: #8e44ad;
+  --cmt: #6c7a89;
+  --fn: #006b6b;
+  --op: #555;
+  --mono: 'Fira Mono', 'Cascadia Code', 'Consolas', monospace;
+  --font: system-ui, sans-serif;
+}
+[data-theme='dark'] {
+  --bg: #1e2330;
+  --bg2: #252a3a;
+  --bg3: #2e3448;
+  --fg: #d8dee9;
+  --fg2: #8892a4;
+  --border: rgba(255,255,255,0.10);
+  --accent: #5b9cf6;
+  --err: #ff6b6b;
+  --kw: #81a1c1;
+  --str: #a3be8c;
+  --num: #b48ead;
+  --cmt: #616e88;
+  --fn: #88c0d0;
+  --op: #aaa;
+}
+
+html, body, #root { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 14px; }
+
+/* ── App shell ────────────────────────────────────────────────────────────── */
+.app { display: flex; flex-direction: column; height: 100vh; }
+
+.app-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 12px;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+  flex: 0 0 auto;
+}
+.app-logo { font-weight: 700; font-size: 1rem; letter-spacing: -0.02em; }
+.app-sub  { font-size: 0.75rem; color: var(--fg2); }
+.app-toolbar { margin-left: auto; display: flex; gap: 6px; }
+
+.app-btn {
+  padding: 4px 12px; border-radius: 5px; border: none; cursor: pointer;
+  background: var(--accent); color: var(--accent-fg); font-size: 0.8rem; font-weight: 600;
+}
+.app-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.app-btn--abort  { background: var(--err); }
+.app-btn--ghost  { background: var(--bg3); color: var(--fg); border: 1px solid var(--border); }
+
+.app-main {
+  display: grid; grid-template-columns: 1fr 1fr;
+  flex: 1 1 0; min-height: 0;
+}
+.app-editor  { border-right: 1px solid var(--border); min-height: 0; display: flex; flex-direction: column; }
+.app-figure  { min-height: 0; }
+.app-console { flex: 0 0 260px; border-top: 1px solid var(--border); min-height: 0; }
+
+/* ── Code editor ─────────────────────────────────────────────────────────── */
+.mlab__editarea {
+  position: relative; flex: 1 1 0; min-height: 0;
+  font-family: var(--mono); font-size: 13px; line-height: 1.55;
+  overflow: hidden;
+}
+.mlab__hl, .mlab__code {
+  position: absolute; inset: 0;
+  padding: 10px 12px;
+  white-space: pre-wrap; word-break: break-all;
+  margin: 0; border: none; outline: none;
+  font: inherit; line-height: inherit;
+  overflow: auto;
+}
+.mlab__hl  { background: transparent; pointer-events: none; color: transparent; }
+.mlab__code {
+  background: var(--bg2); color: var(--fg);
+  resize: none; caret-color: var(--fg);
+}
+.mlab__code:focus { background: var(--bg); }
+
+/* Syntax tokens */
+.tok-kw  { color: var(--kw); font-weight: 600; }
+.tok-str { color: var(--str); }
+.tok-num { color: var(--num); }
+.tok-cmt { color: var(--cmt); font-style: italic; }
+.tok-op  { color: var(--op); }
+.tok-fn  { color: var(--fn); }
+
+/* ── Command window ──────────────────────────────────────────────────────── */
+.mlab__term {
+  display: flex; flex-direction: column; height: 100%;
+  font-family: var(--mono); font-size: 13px;
+}
+.mlab__pane-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 3px 10px; background: var(--bg2); border-bottom: 1px solid var(--border);
+  font-size: 0.75rem; font-weight: 600; color: var(--fg2); flex: 0 0 auto;
+}
+.mlab__mini {
+  background: none; border: 1px solid var(--border); border-radius: 3px;
+  padding: 1px 7px; cursor: pointer; font-size: 0.7rem; color: var(--fg2);
+}
+.mlab__mini:hover { background: var(--bg3); }
+
+.mlab__scroll { flex: 1 1 0; overflow-y: auto; padding: 6px 10px; }
+
+.mlab__line { display: block; white-space: pre-wrap; word-break: break-word; margin: 0; line-height: 1.5; }
+.mlab__line--cmd    { color: var(--accent); }
+.mlab__line--out    { color: var(--fg); }
+.mlab__line--err    { color: var(--err); }
+.mlab__line--prompt { color: var(--fn); }
+
+.mlab__prompt-row { display: flex; align-items: flex-start; gap: 6px; padding: 2px 0; }
+.mlab__caret { color: var(--accent); font-weight: 700; padding-top: 2px; user-select: none; white-space: pre; }
+.mlab__input-wrap { position: relative; flex: 1 1 0; }
+
+.mlab__input {
+  width: 100%; resize: none; border: none; outline: none;
+  background: transparent; color: var(--fg);
+  font: inherit; line-height: 1.5; padding: 0;
+  overflow: hidden; min-height: 1.5em;
+}
+
+.mlab__ac {
+  position: absolute; bottom: calc(100% + 2px); left: 0;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 5px; list-style: none; max-height: 200px;
+  overflow-y: auto; min-width: 180px; z-index: 100;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.mlab__ac-item { padding: 4px 10px; cursor: pointer; white-space: nowrap; font-size: 12px; }
+.mlab__ac-item--sel, .mlab__ac-item:hover { background: var(--accent); color: var(--accent-fg); }
+
+.mlab__link { color: var(--accent); text-decoration: underline; cursor: pointer; }
+
+/* ── Help block ──────────────────────────────────────────────────────────── */
+.mlab__help        { padding: 4px 0; }
+.mlab__help-title  { font-weight: 700; margin-bottom: 4px; }
+.mlab__help-name   { color: var(--accent); }
+.mlab__help-head   { color: var(--fg2); font-weight: 600; margin: 8px 0 2px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.mlab__help-head--inline { margin: 0 4px 0 0; }
+.mlab__help-tag    { color: var(--fg2); font-size: 0.75rem; margin: 4px 0; }
+.mlab__help-tbname { font-weight: 600; }
+.mlab__help-code   { color: var(--fn); padding: 1px 0; }
+.mlab__help-text   { color: var(--fg); padding: 1px 0; }
+.mlab__help-gap    { height: 6px; }
+.mlab__help-seealso { margin-top: 6px; }
+.mlab__help-link   { background: none; border: none; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; padding: 0; }
+
+.mlab__tex { font-family: var(--mono); font-size: 0.88em; }
+
+/* ── Figure pane ─────────────────────────────────────────────────────────── */
+.mlab__fig-empty {
+  display: flex; align-items: center; justify-content: center;
+  height: 100%; color: var(--fg2); font-size: 0.85rem;
+}
+.mlab__fig-empty code { background: var(--bg3); padding: 1px 5px; border-radius: 3px; }
+
+/* ── Embed variant (ChapterSandbox) ─────────────────────────────────────── */
+.mlab-embed { border: 1px solid var(--border); border-radius: 8px; margin: 1.5rem 0; overflow: hidden; }
+.mlab-embed__summary { padding: 10px 14px; cursor: pointer; font-weight: 600; font-size: 0.9rem; background: var(--bg2); }
+.mlab-embed__body { display: flex; flex-direction: column; }
+.mlab-embed__bar { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: var(--bg2); border-bottom: 1px solid var(--border); }
+.mlab-embed__select { font-size: 0.8rem; padding: 2px 6px; }
+.mlab-embed__full { font-size: 0.8rem; color: var(--accent); }
+.mlab-embed__cols { display: grid; grid-template-columns: 1fr 1fr; min-height: 240px; }
+.mlab-embed__code { min-height: 0; }
+.mlab-embed__fig  { border-left: 1px solid var(--border); min-height: 0; }
+.mlab__run { padding: 3px 10px; background: var(--accent); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+.mlab__run:disabled { opacity: 0.5; cursor: not-allowed; }
+.mlab__spacer { flex: 1; }
