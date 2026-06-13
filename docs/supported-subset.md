@@ -7,7 +7,7 @@ intentionally out of scope. It is a contract, not a bug list — items under
 "Intentionally unsupported" are deliberate scope decisions, not defects.
 
 Behavior is mechanically verified against **real MATLAB** via the oracle suite
-(`matlab/test/oracle/`, 338 committed fixtures) plus TS-only tests — 473 total,
+(`matlab/test/oracle/`, 344 committed fixtures) plus TS-only tests — 479 total,
 all green. See `pnpm test`.
 
 ---
@@ -87,7 +87,7 @@ all green. See `pnpm test`.
 | Area | Status |
 |---|---|
 | Toolboxes | 15 registered (`matlab/tb/`); only oracle-checked functions. Many per-toolbox functions are stubs and not registered. |
-| Symbolic math (`sym`) | A small exact rule-based CAS — see **[symbolic-boundary.md](symbolic-boundary.md)** for the precise domain of validity. In brief: `diff` is complete; `int` is exact for polynomials/`sqrt`/linear-substitution/by-parts-forms/`1/(x^2+a^2)`/real-pole rational functions/improper bounds (else unevaluated — no Risch); `limit` does substitution + symbolic & numeric L'Hôpital (else unevaluated — no Gruntz); `solve` does polynomial roots + linear symbolic/literal equations; symbolic matrices support `det`/`inv`/`*`/`\` (Cramer). `simplify`/`expand`/`collect`/`factor`/`taylor`/`jacobian`/`hessian`/`matlabFunction`/`laplace` present. Not full Symbolic Toolbox. |
+| Symbolic math (`sym`) | A small exact rule-based CAS — see **[symbolic-boundary.md](symbolic-boundary.md)** for the precise domain of validity. In brief: `diff` is complete; `int` is exact for polynomials/`sqrt`/linear-substitution/by-parts-forms/`1/(x^2+a^2)`/real-pole rational functions/improper bounds, and derivative-divides substitution `int(2x·exp(x^2))` (else unevaluated — no Risch); `limit` does substitution + symbolic & numeric L'Hôpital (else unevaluated — no Gruntz); `solve` does polynomial roots + linear symbolic/literal equations; symbolic matrices support `det`/`inv`/`*`/`\` (Cramer). `simplify`/`expand`/`collect`/`factor`/`taylor`/`jacobian`/`hessian`/`matlabFunction`/`laplace` present. Not full Symbolic Toolbox. |
 | Tables / timetables | Construction, variable access, CSV import. Not the full join/groupby surface. |
 | `datetime` / `duration` | Present; not exhaustively covered. |
 | `categorical` | Present; basic operations. |

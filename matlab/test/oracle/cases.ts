@@ -550,4 +550,12 @@ export const CASES: OracleCase[] = [
   { name: 'cal-trig-double-angle', src: 'syms x; s = simplify(diff(sin(x)*cos(x))); v = double(subs(s, x, 0.3));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['simplify', 'trig-identity'] },
   { name: 'cal-factor', src: 'syms x; v = sort(double(subs(factor(x^2 - 5*x + 6), x, 5)));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['factor', 'polynomial'] },
   { name: 'cal-symbolic-inv', src: 'syms a b; I = inv([a 0; 0 b]); v = double(subs(subs(I(1,1), a, 2), b, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['inverse', 'symbolic-matrix'] },
+
+  // ── derivative-divides substitution (bounded nonlinear u-substitution) ──
+  { name: 'cal-subst-gaussian', src: 'syms x; v = double(int(2*x*exp(x^2), 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
+  { name: 'cal-subst-sincos', src: 'syms x; v = double(int(sin(x)*cos(x), 0, pi/2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
+  { name: 'cal-subst-rational-log', src: 'syms x; v = double(int(x/(1+x^2), 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
+  { name: 'cal-subst-tan', src: 'syms x; v = double(int(tan(x), 0, pi/4));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
+  { name: 'cal-subst-power', src: 'syms x; v = double(int(x^2*(x^3+1)^4, 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
+  { name: 'cal-subst-nested', src: 'syms x; v = double(int(cos(x)*exp(sin(x)), 0, pi/2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
 ];

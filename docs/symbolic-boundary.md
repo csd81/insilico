@@ -43,15 +43,21 @@ constant-factor extraction. It is exact for:
 | By-parts `x^n·log(x)` | `int(x*log(x))` |
 | Arctangent form `1/(x^2+a^2)` | `int(1/(1+x^2))` → `atan(x)` |
 | Rational functions, **real poles** | `int((3*x+5)/((x-1)*(x-2)))` (partial fractions) |
+| **Derivative-divides** substitution `∫c·g'·F(g)` | `int(2*x*exp(x^2))`, `int(sin(x)*cos(x))`, `int(x/(1+x^2))`, `int(tan(x))`, `int(x^2*(x^3+1)^4)` |
 | Definite integrals, incl. **improper bounds** | `int(exp(-x), 0, inf)` → `1` |
+
+The derivative-divides rule recognises (by a bounded, terminating check — *not*
+general substitution) integrands of the form `c·g'(x)·F(g(x))` where `F ∈ {exp,
+sin, cos, (·)^n, 1/(·)}` and the remaining factors are a constant multiple of `g'`.
 
 **Returned unevaluated** (by design — these need techniques outside the table):
 
-- **Nonlinear substitution:** `int(exp(x^2))`, `int(x*exp(x^2))`, `int(sin(x^2))`
+- **No elementary antiderivative:** `int(exp(x^2))`, `int(sin(x^2))`, `int(exp(-x^2))`
+  (provably impossible — the Risch result), and substitutions where the integrand
+  is *not* `c·g'·F(g)` (the inner derivative isn't present as a factor)
 - **Products needing general by-parts** beyond the `x^n·f` patterns above
 - **Irreducible-quadratic partial fractions** (complex poles → `(Mx+N)/(x^2+bx+c)`)
-- **Outside the table:** `int(tan(x))`, `int(sec(x))`, special functions (`erf`, `Si`, …)
-- Anything with **no elementary antiderivative** (e.g. `int(exp(-x^2))`)
+- **Outside the table:** `int(sec(x))`, special functions (`erf`, `Si`, …)
 
 > *Why not more?* General elementary integration is the Risch algorithm — a large,
 > slow procedure that still hits provably unsolvable cases. Out of scope.

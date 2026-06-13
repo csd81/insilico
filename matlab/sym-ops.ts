@@ -356,6 +356,41 @@ function arctanPattern(e: SymExpr, x: string): SymExpr | null {
   return null;
 }
 
+/** Derivative-divides substitution (bounded — not general substitution): recognises
+ *  ∫ c·g'·F(g) dx where F ∈ {exp, sin, cos, (·)^n, 1/(·)} and the remaining factors are a
+ *  constant multiple of g'. Covers ∫2x·e^(x²), ∫sin·cos, ∫x/(1+x²), ∫tan(x) (via sin/cos). */
+function integrateSubst(e: SymExpr, x: string): SymExpr | null {
+  const isZ = (z: SymExpr) => z.t === 'n' && Math.abs(z.v) < 1e-12;
+  const factors = e.t === 'mul' ? e.args : [e];
+  for (let fi = 0; fi < factors.length; fi++) {
+    const f = factors[fi];
+    if (symVars(f).indexOf(x) < 0) continue;
+    const others = factors.filter((_, j) => j !== fi);
+    const rest = others.length ? (others.length === 1 ? others[0] : sMul(...others)) : sN(1);
+    const cands: { u: SymExpr; anti: (u: SymExpr) => SymExpr }[] = [];
+    if (!linearArg(f, x)) cands.push({ u: f, anti: (u) => sMul(sN(0.5), sPow(u, sN(2))) });                 // ∫u·u' = u²/2
+    if (f.t === 'fn' && elemAntideriv(f.name, f.args[0]) && symVars(f.args[0]).indexOf(x) >= 0 && !linearArg(f.args[0], x))
+      cands.push({ u: f.args[0], anti: (u) => elemAntideriv(f.name, u)! });                                  // ∫g'·F(g)
+    if (f.t === 'pow' && f.exp.t === 'n' && symVars(f.base).indexOf(x) >= 0 && !linearArg(f.base, x)) {
+      const n = f.exp.v; cands.push({ u: f.base, anti: (u) => (n === -1 ? sFn('log', u) : sMul(sN(1 / (n + 1)), sPow(u, sN(n + 1)))) });   // ∫g'·g^n
+    }
+    for (const { u, anti } of cands) {
+      const up = simplifyExpr(diffExpr(u, x));
+      if (isZ(up)) continue;
+      const ratio = simplifyExpr(sDiv(rest, up));
+      if (symVars(ratio).indexOf(x) < 0) return simplifyExpr(sMul(ratio, anti(u)));   // rest = const·u' (symbolically)
+      // numeric constancy: simplify won't cancel x/(2x), so sample — if rest/u' is the same
+      // at several x, it's a constant in x and the substitution applies.
+      const samp = [0.713, 1.371, 2.119].map((p) => symEval(ratio, new Map([[x, p]])));
+      if (samp.every(Number.isFinite) && Math.abs(samp[0] - samp[1]) < 1e-9 * (1 + Math.abs(samp[0])) && Math.abs(samp[0] - samp[2]) < 1e-9 * (1 + Math.abs(samp[0]))) {
+        const cv = Math.abs(samp[0] - Math.round(samp[0])) < 1e-9 ? Math.round(samp[0]) : samp[0];
+        return simplifyExpr(sMul(sN(cv), anti(u)));
+      }
+    }
+  }
+  return null;
+}
+
 export function integrate(e: SymExpr, x: string): SymExpr {
   e = simplifyExpr(normSqrt(e));
   if (e.t === 'fn' && e.name === 'piecewise') return sFn('piecewise', ...e.args.map((a, i) => (i % 2 === 0 ? a : integrate(a, x))));
@@ -386,6 +421,9 @@ export function integrate(e: SymExpr, x: string): SymExpr {
     const base = lin && elemAntideriv(e.name, e.args[0]);
     if (base) return sMul(sN(1 / lin!.a), base);
   }
+  const sub = integrateSubst(e, x); if (sub) return sub;                    // derivative-divides substitution
+  const rw = simplifyExpr(rewriteExpr(e, 'sincos'));                        // tan/cot/sec/csc → sin/cos, then retry
+  if (exprToStr(rw) !== exprToStr(e)) { const r2 = integrateSubst(rw, x); if (r2) return r2; }
   return sFn('int', e);   // unevaluated
 }
 /** Limit by substitution; multi-round L'Hôpital for 0/0 and ∞/∞, then a cancellation-safe

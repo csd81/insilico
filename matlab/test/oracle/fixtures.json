@@ -4650,5 +4650,65 @@
       ],
       "real": 0.5
     }
+  },
+  "cal_subst_gaussian": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.7182818284590453
+    }
+  },
+  "cal_subst_sincos": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5
+    }
+  },
+  "cal_subst_rational_log": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.34657359027997264
+    }
+  },
+  "cal_subst_tan": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.34657359027997264
+    }
+  },
+  "cal_subst_power": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.066666666666667
+    }
+  },
+  "cal_subst_nested": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.7182818284590453
+    }
   }
 }
