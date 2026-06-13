@@ -31,7 +31,11 @@ Use two-space indentation, single quotes, and concise comments only where they c
 
 ## Testing Guidelines
 
-Tests use Node’s `node:test` plus `assert/strict`, not Vitest. Name test files `*.test.ts` under `matlab/test/`. Add focused tests for parser/interpreter behavior, numeric results, figure specs, and VFS effects. Use helper assertions from `matlab/test/harness.ts` when possible; avoid testing numeric behavior through formatted console output.
+Tests use Node’s `node:test` plus `assert/strict`, not Vitest. Name test files `*.test.ts` under `matlab/test/`. The suite is split by domain: `language`, `numeric`, `linalg`, `plotting`, `fileio`, `errors`, `examples` (inline numerical-methods scripts), plus `core` (smoke) and `oracle`.
+
+Use `matlab/test/harness.ts`: `run(src, files?)` returns `{ output, error, fig, get(name), interp }` with **raw** workspace `Value` access via `get()`. Assert math with `expectMat(get('x'), { rows, cols, data, tol })` and `num()`/`dataOf()` — do **not** assert on formatted console output or workspace previews. Assert plots against `fig` (the FigureSpec), never pixels.
+
+**MATLAB oracle (`matlab/test/oracle/`).** `cases.ts` lists snippets; `pnpm oracle:generate` runs them through real MATLAB (`/usr/bin/matlab`, local only) and writes the committed `fixtures.json` ground truth. `oracle.test.ts` compares the interpreter against that JSON — so `pnpm test` needs **no** MATLAB. Numbers are serialized column-major (`real(v(:))'`) to match `Mat.data`. Treat a `fixtures.json` diff as a deliberate change to “what MATLAB says is correct”; regenerate only when adding/altering cases.
 
 Run `pnpm test` before committing.
 

@@ -9,6 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "tsc -p tsconfig.test.json && echo '{\"type\":\"commonjs\"}' > .test-dist/package.json && node --test '.test-dist/**/*.test.js'",
+    "oracle:generate": "tsc -p tsconfig.test.json && node matlab/test/oracle/generate.mjs",
     "clean": "rm -rf .test-dist dist"
   },
   "dependencies": {
