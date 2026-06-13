@@ -859,4 +859,20 @@ export const CASES: OracleCase[] = [
   { name: 'lang-nested-function-handle', src: 'f = @(a) @(x) a*x.^2; g = f(3); v = g(2);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'core-language', tags: ['anonymous-function', 'currying'] },
   { name: 'lang-break-continue', src: 's = 0; for k = 1:10, if k == 3, continue; end; if k == 6, break; end; s = s + k; end; v = s;', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'core-language', tags: ['break', 'continue', 'control-flow'] },
   { name: 'lang-rng-reproducibility', src: 'rng(42); a = rand(1, 5); rng(42); b = rand(1, 5); v = norm(a - b);', vars: ['v'], tol: 1e-15, level: 'undergrad', domain: 'statistics', tags: ['rng', 'seed', 'reproducibility-invariant'] },
+
+  // ══════════ classic linear-algebra theorems & identities (validated as norm-zero invariants) ══════════
+  { name: 'la-cayley-hamilton', src: 'A = [2 1; 1 3]; v = norm(polyvalm(charpoly(A), A));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'linear-algebra', tags: ['cayley-hamilton', 'characteristic-polynomial', 'identity'] },
+  { name: 'la-cramer-numeric', src: 'A = [2 1; 1 3]; b = [1; 2]; x1 = det([b A(:,2)])/det(A); x2 = det([A(:,1) b])/det(A); v = norm(A*[x1; x2] - b);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['cramers-rule', 'determinant'] },
+  { name: 'la-rank-nullity', src: 'A = [1 2 3; 2 4 6]; v = rank(A) + size(null(A), 2);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['rank-nullity', 'null-space', 'theorem'] },
+  { name: 'la-schur-complement', src: 'M = [4 2; 1 3]; A = M(1,1); B = M(1,2); C = M(2,1); D = M(2,2); v = D - C/A*B;', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'linear-algebra', tags: ['schur-complement', 'block-matrix'] },
+  { name: 'la-householder', src: "x = [3; 4]; w = x; w(1) = w(1) + norm(x); H = eye(2) - 2*(w*w')/(w'*w); r = H*x; v = r(2);", vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['householder', 'reflection', 'orthogonal'] },
+  { name: 'la-woodbury-identity', src: 'A = 2*eye(3); U = [1; 0; 1]; V = [1 0 1]; lhs = inv(A + U*V); rhs = inv(A) - inv(A)*U/(1 + V*inv(A)*U)*V*inv(A); v = norm(lhs - rhs);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['woodbury', 'sherman-morrison', 'matrix-inversion-lemma'] },
+  { name: 'la-outer-product-rank1', src: "x = [1; 2; 3]; y = [4; 5]; M = x*y'; v = [rank(M) M(2,2)];", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['outer-product', 'rank-one'] },
+  { name: 'la-adjugate', src: 'v = adjoint([1 2; 3 4]); v = v(:)\x27;', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['adjugate', 'adjoint', 'cofactor'] },
+  { name: 'la-polar-decomposition', src: "A = [2 1; 0 3]; [U, S, V] = svd(A); Up = U*V'; P = V*S*V'; v = norm(Up*P - A) + norm(Up'*Up - eye(2));", vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['polar-decomposition', 'svd', 'orthogonal-factor'] },
+  { name: 'la-pfaffian', src: 'A = [0 2; -2 0]; pf = 2; v = pf^2 - det(A);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'linear-algebra', tags: ['pfaffian', 'skew-symmetric', 'determinant'] },
+  { name: 'la-minor-cofactor', src: 'A = [1 2 3; 4 5 6; 7 8 10]; v = det(A([2 3], [2 3]));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['minor', 'cofactor', 'submatrix'] },
+  { name: 'la-cauchy-binet', src: 'A = [1 2 3; 4 5 6]; B = [1 0; 0 1; 1 1]; v = det(A*B);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'linear-algebra', tags: ['cauchy-binet', 'determinant', 'product'] },
+  { name: 'la-spectral-theorem', src: "A = [2 1; 1 2]; [V, D] = eig(A); v = norm(V'*V - eye(2)) + norm(V*D*V' - A);", vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['spectral-theorem', 'symmetric', 'orthogonal-eigenvectors'] },
+  { name: 'la-positive-definite-chol', src: 'A = [2 1; 1 2]; [R, flag] = chol(A); v = flag;', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'numerical-linear-algebra', tags: ['positive-definite', 'cholesky', 'flag'] },
 ];

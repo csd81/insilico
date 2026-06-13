@@ -7787,5 +7787,153 @@
       ],
       "real": 0
     }
+  },
+  "la_cayley_hamilton": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "la_cramer_numeric": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.220446049250313e-16
+    }
+  },
+  "la_rank_nullity": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "la_schur_complement": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.5
+    }
+  },
+  "la_householder": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -4.440892098500626e-16
+    }
+  },
+  "la_woodbury_identity": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "la_outer_product_rank1": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        10
+      ]
+    }
+  },
+  "la_adjugate": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        4.000000000000002,
+        -3.0000000000000018,
+        -2,
+        1.0000000000000007
+      ]
+    }
+  },
+  "la_polar_decomposition": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.070112049336638e-15
+    }
+  },
+  "la_pfaffian": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "la_minor_cofactor": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "la_cauchy_binet": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -5.9999999999999964
+    }
+  },
+  "la_spectral_theorem": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 7.771561172376097e-16
+    }
+  },
+  "la_positive_definite_chol": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
   }
 }
