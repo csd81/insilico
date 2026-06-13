@@ -700,4 +700,18 @@ export const CASES: OracleCase[] = [
   { name: 'geom-polyarea', src: 'v = [polyarea([0 1 1 0], [0 0 1 1]); polyarea([0 1 0.5], [0 0 1])];', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'geometry', tags: ['polygon', 'area', 'polyarea', 'oracle-validation'] },
   { name: 'geom-inpolygon', src: 'v = [inpolygon(0.5, 0.5, [0 1 1 0], [0 0 1 1]), inpolygon(2, 2, [0 1 1 0], [0 0 1 1])];', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'geometry', tags: ['point-in-polygon', 'inpolygon', 'oracle-validation'] },
   { name: 'geom-pdist', src: 'v = pdist([0 0; 3 4]);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'geometry', tags: ['pairwise-distance', 'pdist', 'oracle-validation'] },
+
+  // ══════════ control systems (LTI models; transfer functions / responses / margins) ══════════
+  // grid-independent invariants (dcgain, poles, integrals); responses use loose tol for horizon differences
+  { name: 'ctrl-tf-dcgain', src: 'v = dcgain(tf(4, [1 3 2]));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'control', tags: ['tf', 'dcgain', 'oracle-validation'] },
+  { name: 'ctrl-zpk-dcgain', src: 'v = dcgain(zpk([], [-1 -1], 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'control', tags: ['zpk', 'dcgain', 'oracle-validation'] },
+  { name: 'ctrl-ss-dcgain', src: 'v = dcgain(ss([0 1; -1 -2], [0; 1], [1 0], 0));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'control', tags: ['ss', 'state-space', 'dcgain', 'oracle-validation'] },
+  { name: 'ctrl-pole-sorted', src: 'v = sort(pole(tf(1, [1 3 2])));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'control', tags: ['pole', 'oracle-validation'] },
+  { name: 'ctrl-feedback-dcgain', src: 'v = dcgain(feedback(tf(1, [1 0]), 1));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'control', tags: ['feedback', 'dcgain', 'oracle-validation'] },
+  { name: 'ctrl-step-final', src: '[y, t] = step(tf(1, [1 2 1])); v = y(end);', vars: ['v'], tol: 2e-2, level: 'graduate', domain: 'control', tags: ['step', 'step-response', 'settling', 'oracle-validation'] },
+  { name: 'ctrl-impulse-integral', src: 'sys = tf(1, [1 2]); [y, t] = impulse(sys); v = trapz(t, y);', vars: ['v'], tol: 1e-2, level: 'graduate', domain: 'control', tags: ['impulse', 'integral-invariant', 'oracle-validation'] },
+  { name: 'ctrl-lsim-steady', src: 'sys = tf(2, [1 1]); t = 0:0.05:10; u = 3*ones(size(t)); y = lsim(sys, u, t); v = y(end);', vars: ['v'], tol: 2e-2, level: 'graduate', domain: 'control', tags: ['lsim', 'forced-response', 'oracle-validation'] },
+  { name: 'ctrl-lqr-gain', src: 'K = lqr([0 1; 0 0], [0; 1], eye(2), 1); v = K;', vars: ['v'], tol: 1e-4, level: 'graduate', domain: 'control', tags: ['lqr', 'optimal-control', 'oracle-validation'] },
+  { name: 'ctrl-bode-magnitude', src: '[mag, ph] = bode(tf(1, [1 1]), 1); v = mag;', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'control', tags: ['bode', 'frequency-response', 'oracle-validation'] },
+  { name: 'ctrl-margin-phase', src: '[Gm, Pm] = margin(tf(5, [1 3 2])); v = Pm;', vars: ['v'], tol: 1e-3, level: 'graduate', domain: 'control', tags: ['margin', 'phase-margin', 'stability', 'oracle-validation'] },
 ];

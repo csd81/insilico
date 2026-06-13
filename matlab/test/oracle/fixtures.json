@@ -6135,5 +6135,121 @@
       ],
       "real": 5
     }
+  },
+  "ctrl_tf_dcgain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "ctrl_zpk_dcgain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "ctrl_ss_dcgain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "ctrl_pole_sorted": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -2,
+        -1
+      ]
+    }
+  },
+  "ctrl_feedback_dcgain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "ctrl_step_final": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9995181183429719
+    }
+  },
+  "ctrl_impulse_integral": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.49857811913661043
+    }
+  },
+  "ctrl_lsim_steady": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5.999727600421419
+    }
+  },
+  "ctrl_lqr_gain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.9999999999999993,
+        1.732050807568877
+      ]
+    }
+  },
+  "ctrl_bode_magnitude": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7071067811865475
+    }
+  },
+  "ctrl_margin_phase": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 81.71887200158994
+    }
   }
 }

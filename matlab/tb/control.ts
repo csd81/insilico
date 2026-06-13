@@ -503,6 +503,63 @@ function stepResponse(numIn: number[], denIn: number[]): { t: number[]; y: numbe
   return { t, y, yfinal };
 }
 
+/** Impulse response of a SISO tf: y(t)=C·e^{At}·B on the controllable-canonical realization. */
+function impulseResponse(numIn: number[], denIn: number[]): { t: number[]; y: number[] } {
+  let den = denIn.slice(); while (den.length > 1 && den[0] === 0) den.shift();
+  let num = numIn.slice(); while (num.length > 1 && num[0] === 0) num.shift();
+  if (num.length > den.length) throw new Error('impulse: improper transfer function');
+  const g = den[0] || 1; const d = den.map((v) => v / g); const nm = num.map((v) => v / g);
+  while (nm.length < d.length) nm.unshift(0);
+  const no = d.length - 1; const D = nm[0];
+  if (no === 0) return { t: [0, 1], y: [0, 0] };
+  const A: number[][] = []; for (let i = 0; i < no; i++) { A[i] = []; for (let j = 0; j < no; j++) A[i][j] = i === 0 ? -d[j + 1] : (i - 1 === j ? 1 : 0); }
+  const C = Array.from({ length: no }, (_, j) => nm[j + 1] - D * d[j + 1]);
+  const poles = polyRoots(den); let minDecay = Infinity;
+  for (let i = 0; i < poles.re.length; i++) if (poles.re[i] < 0) minDecay = Math.min(minDecay, -poles.re[i]);
+  const Tfinal = isFinite(minDecay) && minDecay > 0 ? 8 / minDecay : 40;
+  const Nsteps = 40000; const h = Tfinal / Nsteps;
+  const Ad = matExp(A.map((row) => row.map((v) => v * h)));
+  let x = Array.from({ length: no }, (_, i) => (i === 0 ? 1 : 0));   // x0 = B (impulse injects B)
+  const t: number[] = [], y: number[] = [];
+  for (let k = 0; k <= Nsteps; k++) {
+    let out = 0; for (let j = 0; j < no; j++) out += C[j] * x[j];
+    t.push(k * h); y.push(out);
+    const xn = new Array(no).fill(0);
+    for (let i = 0; i < no; i++) { let s = 0; for (let j = 0; j < no; j++) s += Ad[i][j] * x[j]; xn[i] = s; }
+    x = xn;
+  }
+  return { t, y };
+}
+
+/** lsim: response of a SISO tf to input samples u at (uniform) times t, via ZOH discretization. */
+function lsimResponse(numIn: number[], denIn: number[], u: number[], tIn: number[]): { t: number[]; y: number[] } {
+  let den = denIn.slice(); while (den.length > 1 && den[0] === 0) den.shift();
+  let num = numIn.slice(); while (num.length > 1 && num[0] === 0) num.shift();
+  if (num.length > den.length) throw new Error('lsim: improper transfer function');
+  const g = den[0] || 1; const d = den.map((v) => v / g); const nm = num.map((v) => v / g);
+  while (nm.length < d.length) nm.unshift(0);
+  const no = d.length - 1; const D = nm[0]; const t = tIn.slice();
+  if (no === 0) return { t, y: u.map((uk) => D * uk) };
+  const h = t.length > 1 ? t[1] - t[0] : 0.01;
+  const A: number[][] = []; for (let i = 0; i < no; i++) { A[i] = []; for (let j = 0; j < no; j++) A[i][j] = i === 0 ? -d[j + 1] : (i - 1 === j ? 1 : 0); }
+  const C = Array.from({ length: no }, (_, j) => nm[j + 1] - D * d[j + 1]);
+  // ZOH: [Ad Bd; 0 1] = expm([A B; 0 0]·h), B = e1
+  const Maug: number[][] = [];
+  for (let i = 0; i < no + 1; i++) { Maug[i] = []; for (let j = 0; j < no + 1; j++) Maug[i][j] = i < no && j < no ? A[i][j] * h : (i < no && j === no ? (i === 0 ? h : 0) : 0); }
+  const E = matExp(Maug);
+  const Ad: number[][] = [], Bd: number[] = [];
+  for (let i = 0; i < no; i++) { Ad[i] = []; for (let j = 0; j < no; j++) Ad[i][j] = E[i][j]; Bd[i] = E[i][no]; }
+  let x = new Array(no).fill(0); const y: number[] = [];
+  for (let k = 0; k < t.length; k++) {
+    const uk = u[k] ?? u[u.length - 1];
+    let out = D * uk; for (let j = 0; j < no; j++) out += C[j] * x[j]; y.push(out);
+    const xn = new Array(no).fill(0);
+    for (let i = 0; i < no; i++) { let s = Bd[i] * uk; for (let j = 0; j < no; j++) s += Ad[i][j] * x[j]; xn[i] = s; }
+    x = xn;
+  }
+  return { t, y };
+}
+
 /** minreal: cancel coincident num/den roots within tol; rebuild tf. */
 function minrealTf(num: number[], den: number[], tol: number): { num: number[]; den: number[] } {
   const z = polyRoots(num), p = polyRoots(den);
@@ -1293,6 +1350,28 @@ export const CONTROL: ToolboxModule = {
       if (n >= 3) return Promise.resolve([scalar(Gm), scalar(Pm), scalar(Wcg)]);
       if (n >= 2) return Promise.resolve([scalar(Gm), scalar(Pm)]);
       return ret(scalar(Gm));
+    },
+    /** y=step(sys) or [y,t]=step(sys) — unit step response of an LTI model (SISO). */
+    step: (a, n) => {
+      const { num, den } = getNumDenAny(a[0]);
+      const r = stepResponse(num, den);
+      if (n >= 2) return Promise.resolve([colVec(r.y), colVec(r.t)]);
+      return ret(colVec(r.y));
+    },
+    /** y=impulse(sys) or [y,t]=impulse(sys) — impulse response of an LTI model (SISO). */
+    impulse: (a, n) => {
+      const { num, den } = getNumDenAny(a[0]);
+      const r = impulseResponse(num, den);
+      if (n >= 2) return Promise.resolve([colVec(r.y), colVec(r.t)]);
+      return ret(colVec(r.y));
+    },
+    /** y=lsim(sys,u,t) — response of an LTI model to input u sampled at times t (ZOH). */
+    lsim: (a, n) => {
+      const { num, den } = getNumDenAny(a[0]);
+      const u = toArray(m(a[1])); const t = toArray(m(a[2]));
+      const r = lsimResponse(num, den, u, t);
+      if (n >= 2) return Promise.resolve([colVec(r.y), colVec(r.t)]);
+      return ret(colVec(r.y));
     },
     /** stepinfo(sys) or stepinfo(y,t[,yfinal[,yinit]]) — step-response characteristics struct. */
     stepinfo: (a) => {
