@@ -8699,12 +8699,14 @@ async function odeSolve(a: Value[], nargout: number, env: Env): Promise<Value[]>
   const { relTol, absTol, h0, hMax } = odeOpts(a[3]);
   // Optional event detection (odeset('Events', @(t,y) [value,isterminal,direction])).
   const eventsH = (a[3] && isStruct(a[3]) && a[3].fields.get('Events')?.[0] && isHandle(a[3].fields.get('Events')![0])) ? a[3].fields.get('Events')![0] as Handle : undefined;
+  // Optional constant mass matrix (odeset('Mass', M)): solves M·y' = f by returning M\f.
+  const massV = (a[3] && isStruct(a[3]) && a[3].fields.get('Mass')?.[0] && isMat(a[3].fields.get('Mass')![0]) && (a[3].fields.get('Mass')![0] as Mat).rows > 1) ? a[3].fields.get('Mass')![0] as Mat : undefined;
   const TE: number[] = [], YE: number[][] = [], IE: number[] = [];
   const evalEvents = async (t: number, y: number[]): Promise<{ value: number[]; isterminal: number[]; direction: number[] }> => {
     const r = await env.callHandle(eventsH!, [scalar(t), colVec(y)], 3);
     return { value: toArray(m(r[0])), isterminal: r[1] ? toArray(m(r[1])) : [], direction: r[2] ? toArray(m(r[2])) : [] };
   };
-  const evalF = async (t: number, y: number[]): Promise<number[]> => { const r = await env.callHandle(f, [scalar(t), colVec(y)], 1); return isMat(r[0]) ? toArray(r[0] as Mat) : new Array(neq).fill(0); };
+  const evalF = async (t: number, y: number[]): Promise<number[]> => { const r = await env.callHandle(f, [scalar(t), colVec(y)], 1); const fv = isMat(r[0]) ? toArray(r[0] as Mat) : new Array(neq).fill(0); return massV ? toArray(mldivide(massV, colVec(fv))) : fv; };
   const axpy = (y: number[], terms: Array<[number, number[]]>) => y.map((v, j) => v + terms.reduce((s, [c, k]) => s + c * k[j], 0));
 
   const t0 = tspan[0], tEnd = tspan[tspan.length - 1];
@@ -9112,7 +9114,9 @@ async function odeSolveNDF(a: Value[], nargout: number, env: Env): Promise<Value
   const f = handle(a[0], 'ode15s'); const tspan = toArray(m(a[1])); const y0 = toArray(m(a[2])); const neq = y0.length;
   const { relTol, absTol, h0, hMax } = odeOpts(a[3]);
   const maxk = Math.min(5, (a[3] && isStruct(a[3]) && a[3].fields.get('MaxOrder')?.[0] && isMat(a[3].fields.get('MaxOrder')![0]) ? Math.round(asScalar(a[3].fields.get('MaxOrder')![0])) : 5));
-  const evalF = async (t: number, y: number[]) => { const r = await env.callHandle(f, [scalar(t), colVec(y)], 1); return isMat(r[0]) ? toArray(r[0] as Mat) : new Array(neq).fill(0); };
+  // Optional constant mass matrix (odeset('Mass', M)): solves M·y' = f by returning M\f.
+  const massV = (a[3] && isStruct(a[3]) && a[3].fields.get('Mass')?.[0] && isMat(a[3].fields.get('Mass')![0]) && (a[3].fields.get('Mass')![0] as Mat).rows > 1) ? a[3].fields.get('Mass')![0] as Mat : undefined;
+  const evalF = async (t: number, y: number[]) => { const r = await env.callHandle(f, [scalar(t), colVec(y)], 1); const fv = isMat(r[0]) ? toArray(r[0] as Mat) : new Array(neq).fill(0); return massV ? toArray(mldivide(massV, colVec(fv))) : fv; };
   const G = [0, 1, 1.5, 1 + 1 / 2 + 1 / 3, 0, 0]; G[4] = G[3] + 1 / 4; G[5] = G[4] + 1 / 5; // γ_k
   const t0 = tspan[0], tEnd = tspan[tspan.length - 1]; const dir = tEnd >= t0 ? 1 : -1;
   const wantPoints = tspan.length > 2 ? tspan.slice() : null; let nextWant = 1;

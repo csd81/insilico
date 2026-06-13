@@ -6505,5 +6505,157 @@
       ],
       "real": 1.1039032157256938
     }
+  },
+  "stat_linreg_normal_qr": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        -1.4210854715202005e-15,
+        1.1000000000000005,
+        1.4888583356622763e-15
+      ]
+    }
+  },
+  "stat_logistic_irls": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -1.5581610551624732,
+        1.0904255602981154
+      ]
+    }
+  },
+  "stat_pca_svd": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2.6666666666666674,
+        0.6666666666666669
+      ]
+    }
+  },
+  "opt_intlinprog_knapsack": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 220
+    }
+  },
+  "ode_mass_matrix_rk4": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.7602445970851343,
+        -0.9187253698496514
+      ]
+    }
+  },
+  "ode_ode15s_mass": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.759157569150769,
+        -0.9170538692092431
+      ]
+    }
+  },
+  "na_arnoldi_ritz": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.732050807568877
+    }
+  },
+  "na_lanczos_ritz": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        1.2679491924311228,
+        3.000000000000001,
+        4.732050807568877
+      ]
+    }
+  },
+  "na_clenshaw_curtis": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "coding_gf2_polymul": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "coding_hammgen": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        7,
+        4,
+        3
+      ]
+    }
+  },
+  "coding_biterr": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        0.5
+      ]
+    }
   }
 }
