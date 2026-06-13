@@ -238,4 +238,17 @@ export const CASES: OracleCase[] = [
   { name: 'complex-lt', src: 'x = (1+1i) < 2;', vars: ['x'] },
   { name: 'complex-sort', src: 'x = sort([1+1i 2]);', vars: ['x'] },
   { name: 'complex-max-mag', src: 'x = max([1+1i 2]);', vars: ['x'] },
+
+  // ── vector arithmetic (magnitude, dot/cross/norm, angles, normalization) ──
+  { name: 'vec-mag-2d', src: 'v = [2 2]; mag = sqrt(v(1)^2 + v(2)^2);', vars: ['mag'], tol: 1e-9 },
+  { name: 'vec-mag-3d', src: 'v = [4 5 5]; mag = sqrt(v(1)^2 + v(2)^2 + v(3)^2);', vars: ['mag'], tol: 1e-9 },
+  { name: 'atand-neg', src: 't = atand(-3/2);', vars: ['t'], tol: 1e-9 },
+  { name: 'vec-add', src: 'u = [0 2]; v = [2 2]; w = u + v;', vars: ['w'] },
+  { name: 'vec-sub', src: 'a = [-0.1 0.2 9.53]; b = [5.095 -0.04 9.5]; c = b - a;', vars: ['c'], tol: 1e-9 },
+  { name: 'scalar-vec-mul', src: 'u = [0.5 2 -2]; au = 0.5 * u;', vars: ['au'], tol: 1e-9 },
+  { name: 'dot-product', src: 'd = dot([2 4 -1], [-1 3 2]);', vars: ['d'] },
+  { name: 'angle-between', src: 'u = [2 4 -1]; v = [-1 3 2]; t = acosd(dot(u,v) / (norm(u)*norm(v)));', vars: ['t'], tol: 1e-9 },
+  { name: 'cross-product', src: 'c = cross([1 3 6], [1 0 2]);', vars: ['c'] },
+  { name: 'normalize-vector', src: 'a = [-0.077 0.038 9.538]; an = a / norm(a);', vars: ['an'], tol: 1e-9 },
+  { name: 'vector-frame-chain', src: 'a = [-0.077 0.038 9.538]; m = [-15.188 12.563 -49.625]; an = a/norm(a); mn = m/norm(m); d = -an; dxm = cross(d, mn); e = dxm/norm(dxm); n = cross(e, d); psi = acosd(dot([0 1 0], n) / (norm([0 1 0])*norm(n)));', vars: ['e', 'psi'], tol: 1e-6 },
 ];

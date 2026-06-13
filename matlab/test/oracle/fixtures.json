@@ -2206,5 +2206,146 @@
       ],
       "real": 2
     }
+  },
+  "vec_mag_2d": {
+    "mag": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.8284271247461903
+    }
+  },
+  "vec_mag_3d": {
+    "mag": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8.12403840463596
+    }
+  },
+  "atand_neg": {
+    "t": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -56.309932474020215
+    }
+  },
+  "vec_add": {
+    "w": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        4
+      ]
+    }
+  },
+  "vec_sub": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        5.194999999999999,
+        -0.24000000000000002,
+        -0.02999999999999936
+      ]
+    }
+  },
+  "scalar_vec_mul": {
+    "au": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0.25,
+        1,
+        -1
+      ]
+    }
+  },
+  "dot_product": {
+    "d": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8
+    }
+  },
+  "angle_between": {
+    "t": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 62.188156861783895
+    }
+  },
+  "cross_product": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        6,
+        4,
+        -3
+      ]
+    }
+  },
+  "normalize_vector": {
+    "an": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        -0.008072644153169361,
+        0.003983902309356308,
+        0.9999594796484335
+      ]
+    }
+  },
+  "vector_frame_chain": {
+    "e": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0.633426250336741,
+        0.7738004015189324,
+        0.002030761796834727
+      ]
+    },
+    "psi": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 50.697326728681745
+    }
   }
 }
