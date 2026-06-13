@@ -6251,5 +6251,126 @@
       ],
       "real": 81.71887200158994
     }
+  },
+  "pde_maccormack": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.17724441948741437
+    },
+    "peak": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9678824355078883
+    }
+  },
+  "pde_method_of_lines": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.37573556255587387
+    }
+  },
+  "na_richardson_extrapolation": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1252948350914949e-7
+    }
+  },
+  "na_romberg_integration": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.3084646133829665e-14
+    }
+  },
+  "na_aitken_acceleration": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7390826625151952
+    }
+  },
+  "na_power_iteration": {
+    "lam": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.6180339887498953
+    }
+  },
+  "na_gauss_seidel": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_sor": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_halley_method": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_numerov_method": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9997837516005899
+    }
+  },
+  "na_gauss_newton": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        0.5
+      ]
+    }
   }
 }
