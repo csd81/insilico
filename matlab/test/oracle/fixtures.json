@@ -7935,5 +7935,108 @@
       ],
       "real": 0
     }
+  },
+  "nla_givens_rotation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -4.440892098500626e-16
+    }
+  },
+  "nla_jacobi_iteration": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_iterative_refinement": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_modified_richardson": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_ssor": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.440892098500626e-16
+    }
+  },
+  "nla_chebyshev_iteration": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_conjugate_residual": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_qr_pivoting": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.380240836061012e-15
+    }
+  },
+  "nla_wilkinson_matrix": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        6,
+        0
+      ]
+    }
+  },
+  "nla_diagonally_dominant": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
   }
 }
