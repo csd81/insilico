@@ -3704,6 +3704,67 @@
       "real": 1.1239457006249998
     }
   },
+  "ode_stiff_backward_euler": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.7351112277912544e-16
+    }
+  },
+  "ode_stability_functions": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.09090909090909091,
+        0.6666666666666666
+      ]
+    }
+  },
+  "ode_astability_trapezoidal": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        0.9999999999999999
+      ]
+    }
+  },
+  "ode_stiff_explicit_unstable": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1048576
+    }
+  },
+  "ode_stiff_amplification_ratio": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.16666666666666666,
+        4
+      ]
+    }
+  },
   "val_fminbnd": {
     "x": {
       "class": "double",

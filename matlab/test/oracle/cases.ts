@@ -416,6 +416,12 @@ export const CASES: OracleCase[] = [
   { name: 'val-bvp4c-sine', src: "solinit = bvpinit(linspace(0,1,5), [0 1]); sol = bvp4c(@(x,y)[y(2); -y(1)], @(ya,yb)[ya(1); yb(1)-1], solinit); yy = deval(sol, 0.5); v = yy(1);", vars: ['v'], tol: 1e-3, level: 'graduate', domain: 'numerical-ode', tags: ['bvp4c', 'boundary-value-problem', 'deval', 'oracle-validation'] },
   { name: 'val-dde23', src: 'sol = dde23(@(t,y,Z) -Z, 1, 1, [0 5]); v = deval(sol, 5);', vars: ['v'], tol: 1e-2, level: 'graduate', domain: 'numerical-ode', tags: ['dde23', 'delay-differential-equation', 'oracle-validation'] },
   { name: 'sde-euler-maruyama-gbm', src: 'mu = 0.1; sigma = 0.2; X = 1; dt = 0.25; dW = [0.1 -0.2 0.15 0.05]; for k = 1:4, X = X + mu*X*dt + sigma*X*dW(k); end; v = X;', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-ode', tags: ['sde', 'euler-maruyama', 'geometric-brownian-motion', 'prescribed-path'] },
+  // ── stiff stability: A-stability, stability functions, implicit vs explicit amplification ──
+  { name: 'ode-stiff-backward-euler', src: 'y = 1; dt = 0.1; lam = -50; for k = 1:20, y = y/(1 - lam*dt); end; v = y;', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-ode', tags: ['stiff', 'backward-euler', 'a-stable', 'bounded'] },
+  { name: 'ode-stability-functions', src: 'z = -10; v = [abs(1/(1 - z)); abs((1 + z/2)/(1 - z/2))];', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-ode', tags: ['stiff', 'stability-function', 'backward-euler', 'trapezoidal'] },
+  { name: 'ode-astability-trapezoidal', src: 'w = [1 2 5 10]; R = (1 + 1i*w/2)./(1 - 1i*w/2); v = abs(R);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-ode', tags: ['a-stable', 'trapezoidal', 'imaginary-axis', 'energy-preserving'] },
+  { name: 'ode-stiff-explicit-unstable', src: 'y = 1; dt = 0.1; lam = -50; for k = 1:10, y = y + lam*dt*y; end; v = abs(y);', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'numerical-ode', tags: ['stiff', 'explicit-euler', 'instability', 'amplification'] },
+  { name: 'ode-stiff-amplification-ratio', src: 'dt = 0.1; lam = -50; Rimp = 1/(1 - lam*dt); Rexp = 1 + lam*dt; v = [abs(Rimp); abs(Rexp)];', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-ode', tags: ['stiff', 'implicit-vs-explicit', 'stability-region'] },
 
   // ── validation: optimization (unique minimizers; iterative tol) ──
   { name: 'val-fminbnd', src: 'x = fminbnd(@(x)(x-2).^2, 0, 5);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fminbnd', 'oracle-validation'] },

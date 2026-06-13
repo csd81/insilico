@@ -13,6 +13,13 @@ There is **no Risch algorithm and no Gruntz algorithm**. The engine never
 attempts a general decision procedure; it applies a finite, terminating ruleset
 and otherwise returns the expression unevaluated.
 
+**Known limitation — symbolic functions `y(x)` are not differentiable.** Declaring
+`syms y(x)` and then taking `diff(y, x)` is **not** supported (it errors); the engine
+has no first-class symbolic-function-derivative representation. Consequently
+`functionalDerivative` (and thus Euler–Lagrange / calculus-of-variations workflows)
+does not work. `dsolve` handles its own `syms y(t)` forms internally, but general
+`symfun` differentiation is out of scope.
+
 ---
 
 ## Differentiation — complete
