@@ -7,7 +7,7 @@ intentionally out of scope. It is a contract, not a bug list — items under
 "Intentionally unsupported" are deliberate scope decisions, not defects.
 
 Behavior is mechanically verified against **real MATLAB** via the oracle suite
-(`matlab/test/oracle/`, 328 committed fixtures) plus TS-only tests — 463 total,
+(`matlab/test/oracle/`, 331 committed fixtures) plus TS-only tests — 466 total,
 all green. See `pnpm test`.
 
 ---
@@ -87,7 +87,7 @@ all green. See `pnpm test`.
 | Area | Status |
 |---|---|
 | Toolboxes | 15 registered (`matlab/tb/`); only oracle-checked functions. Many per-toolbox functions are stubs and not registered. |
-| Symbolic math (`sym`) | Useful subset: `diff` (all rules), `taylor`, `subs`, `simplify`, `jacobian`/`hessian`, `laplace`, transforms. `int` handles polynomials, `sqrt`, **linear** substitution (`sin(ax+b)`, `(ax+b)^n`), by-parts forms (`x^n·exp/sin/cos(ax+b)`, `x^n·log x`), `1/(x^2+a^2)→atan`, and **rational functions with real poles** (partial fractions); it does **not** do nonlinear substitution (`exp(x^2)`) or arbitrary integrands. `limit` does symbolic L'Hôpital (difference quotients → derivatives) + multi-round numeric L'Hôpital + a cancellation-safe fallback. `solve` handles polynomial roots and **linear symbolic/literal equations** (`solve(a*x+b==0,x)→-b/a`). Not full Symbolic Toolbox. |
+| Symbolic math (`sym`) | Useful subset: `diff` (all rules), `taylor`, `subs`, `simplify`, `jacobian`/`hessian`, `laplace`, transforms. `int` handles polynomials, `sqrt`, **linear** substitution (`sin(ax+b)`, `(ax+b)^n`), by-parts forms (`x^n·exp/sin/cos(ax+b)`, `x^n·log x`), `1/(x^2+a^2)→atan`, and **rational functions with real poles** (partial fractions); it does **not** do nonlinear substitution (`exp(x^2)`) or arbitrary integrands. `limit` does symbolic L'Hôpital (difference quotients → derivatives) + multi-round numeric L'Hôpital + a cancellation-safe fallback. `solve` handles polynomial roots and **linear symbolic/literal equations** (`solve(a*x+b==0,x)→-b/a`). Symbolic matrices support `*` (product) and `\` (Cramer-rule solve); `jacobian`/`hessian`/`taylor`/`matlabFunction`/`expand` are present. Not full Symbolic Toolbox. |
 | Tables / timetables | Construction, variable access, CSV import. Not the full join/groupby surface. |
 | `datetime` / `duration` | Present; not exhaustively covered. |
 | `categorical` | Present; basic operations. |

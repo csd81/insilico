@@ -14,6 +14,7 @@ import {
   type Sym, isSym, makeSym, applyClass, pickClass, isMap, mapNormKey, isDict, cloneDict,
 } from './values';
 import { type SymExpr, sN, sV, sAdd, sSub, sMul, sDiv, sPow, sFn, simplifyExpr, subsExpr, evalExpr } from './sym';
+import { symDet } from './sym-ops';
 
 /** Elementary functions that overload to symbolic when given a sym argument. */
 const SYM_ELEMENTARY = new Set(['sin', 'cos', 'tan', 'cot', 'sec', 'csc', 'asin', 'acos', 'atan', 'acot', 'asec', 'acsc', 'sinh', 'cosh', 'tanh', 'coth', 'sech', 'csch', 'asinh', 'acosh', 'atanh', 'exp', 'log', 'log10', 'log2', 'sqrt', 'abs', 'sign', 'cbrt', 'gamma', 'gammaln', 'erf', 'erfc', 'factorial', 'conj', 'real', 'imag', 'zeta', 'psi', 'sinc', 'erfi', 'dawson', 'fresnelc', 'fresnels', 'ei', 'logint', 'sinhint', 'coshint', 'ssinint', 'dilog', 'wrightOmega']);
@@ -949,8 +950,15 @@ export class Interpreter implements Env {
         if (meth) { const r = await meth([av, bv], 1, this); return Array.isArray(r) ? r[0] : r; }
       }
     }
-    // symbolic arithmetic (build expression trees element-wise).
-    if (isSym(av) || isSym(bv)) return symBinary(op, av, bv);
+    // symbolic arithmetic: matrix product / left-division route to the matrix helpers;
+    // everything else (scalars, .*, ./, +, comparisons, ==) is element-wise.
+    if (isSym(av) || isSym(bv)) {
+      const sa = toSymArr(av), sb = toSymArr(bv);
+      const scA = sa.exprs.length === 1, scB = sb.exprs.length === 1;
+      if (op === '*' && !scA && !scB) return symMatMul(sa, sb);   // matrix product
+      if (op === '\\' && !scA) return symLinSolve(sa, sb);        // Cramer's-rule solve
+      return symBinary(op, av, bv);
+    }
     // datetime/duration arithmetic and comparison.
     if (isTemporal(av) || isTemporal(bv)) return temporalBinary(op, av, bv);
     // String-class operators: `+` concatenates, `==`/`~=` compare element-wise.
@@ -1107,6 +1115,31 @@ function toSymArr(v: Value): { rows: number; cols: number; exprs: SymExpr[] } {
 }
 function asMatLoose(v: Value): Mat { if (isMat(v)) return v; if (v.kind === 'sparse') return sparseToDense(v); throw new MatError('expected a numeric or symbolic value'); }
 function symEvalNum(e: SymExpr): number { return evalExpr(e, new Map()); }
+/** Symbolic matrix product (when `*` has a non-scalar symbolic operand). */
+function symMatMul(A: { rows: number; cols: number; exprs: SymExpr[] }, B: { rows: number; cols: number; exprs: SymExpr[] }): Value {
+  if (A.cols !== B.rows) throw new MatError(`inner matrix dimensions must agree (${A.rows}×${A.cols} * ${B.rows}×${B.cols})`);
+  const out: SymExpr[] = new Array(A.rows * B.cols);
+  for (let c = 0; c < B.cols; c++) for (let r = 0; r < A.rows; r++) {
+    let s: SymExpr = sN(0);
+    for (let k = 0; k < A.cols; k++) s = sAdd(s, sMul(A.exprs[r + k * A.rows], B.exprs[k + c * B.rows]));
+    out[r + c * A.rows] = simplifyExpr(s);
+  }
+  return makeSym(A.rows, B.cols, out);
+}
+/** Symbolic linear solve A\b via Cramer's rule: x_i = det(A_i)/det(A) (reuses symDet). */
+function symLinSolve(A: { rows: number; cols: number; exprs: SymExpr[] }, B: { rows: number; cols: number; exprs: SymExpr[] }): Value {
+  const n = A.rows;
+  if (A.cols !== n) throw new MatError('matrix must be square for symbolic \\');
+  if (B.rows !== n) throw new MatError('matrix dimensions must agree');
+  const detA = symDet(A.exprs, n);
+  const out: SymExpr[] = new Array(n * B.cols);
+  for (let c = 0; c < B.cols; c++) for (let i = 0; i < n; i++) {
+    const Ai = A.exprs.slice();
+    for (let r = 0; r < n; r++) Ai[r + i * n] = B.exprs[r + c * B.rows];   // replace column i with b(:,c)
+    out[i + c * n] = simplifyExpr(sDiv(symDet(Ai, n), detA));
+  }
+  return makeSym(n, B.cols, out);
+}
 /** Element-wise symbolic arithmetic / comparison → a Sym (== builds lhs−rhs for solve). */
 function symBinary(op: string, a: Value, b: Value): Value {
   const A = toSymArr(a), B = toSymArr(b);
@@ -1118,6 +1151,7 @@ function symBinary(op: string, a: Value, b: Value): Value {
       case '-': return sSub(x, y);
       case '*': case '.*': return sMul(x, y);
       case '/': case './': return sDiv(x, y);
+      case '\\': case '.\\': return sDiv(y, x);
       case '^': case '.^': return sPow(x, y);
       case '==': return sSub(x, y); case '~=': return sSub(x, y);
       case '<': return sFn('lt', x, y); case '>': return sFn('gt', x, y); case '<=': return sFn('le', x, y); case '>=': return sFn('ge', x, y);

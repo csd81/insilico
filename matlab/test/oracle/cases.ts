@@ -534,4 +534,9 @@ export const CASES: OracleCase[] = [
   { name: 'cal-solve-linear', src: 'syms a b x; s = solve(a*x + b == 0, x); v = double(subs(subs(s, a, 2), b, 6));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['solve', 'symbolic-linear'] },
   { name: 'cal-solve-kinematics', src: 'syms u a t v0; s = solve(v0 == u + a*t, t); val = double(subs(subs(subs(s, v0, 10), u, 2), a, 4));', vars: ['val'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['solve', 'literal-equation'] },
   { name: 'cal-diff-partial', src: 'syms a b x; d = diff(a*x + b, x); v = double(subs(d, a, 5));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['diff', 'variable-selection'] },
+
+  // ── symbolic linear algebra: Cramer-rule solve + symbolic matrix product ──
+  { name: 'cal-symbolic-solve-cramer', src: 'syms a b; A = [a 1; 1 b]; x = A\\[1; 0]; v = double(subs(subs(x(1), a, 2), b, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['linear-solve', 'cramer', 'symbolic-matrix'] },
+  { name: 'cal-symbolic-solve-verify', src: 'syms a b; A = [a 1; 1 b]; x = A\\[1; 0]; r = A*x; v = double(subs(subs(r(1), a, 2), b, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['linear-solve', 'matrix-product', 'symbolic-matrix'] },
+  { name: 'cal-symbolic-matmul', src: 'syms a; M = [a 1; 0 a]*[1; 1]; v = double(subs(M(1), a, 4));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['matrix-product', 'symbolic-matrix'] },
 ];

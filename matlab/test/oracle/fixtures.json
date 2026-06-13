@@ -4547,5 +4547,35 @@
       ],
       "real": 5
     }
+  },
+  "cal_symbolic_solve_cramer": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.6
+    }
+  },
+  "cal_symbolic_solve_verify": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_symbolic_matmul": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
   }
 }
