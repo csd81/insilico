@@ -9,8 +9,8 @@ not a full MATLAB clone.
 
 ## Status
 
-- **404 tests green** · **269 MATLAB-oracle fixtures** · 269/269 cases classified
-- 191 undergrad / 78 graduate cases across **15 domains**
+- **411 tests green** · **276 MATLAB-oracle fixtures** · 276/276 cases classified
+- 191 undergrad / 85 graduate cases across **15 domains**
 - Behavior is mechanically verified against **real MATLAB** (see Testing)
 
 > The sandbox implements and MATLAB-oracle-validates a graduate-level

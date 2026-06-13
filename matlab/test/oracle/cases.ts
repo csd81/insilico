@@ -441,4 +441,13 @@ export const CASES: OracleCase[] = [
   { name: 'val-sym-laplace', src: 'syms t s; L = laplace(exp(-2*t)); v = double(subs(L, s, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['laplace', 'oracle-validation'] },
   { name: 'val-sym-dsolve', src: 'syms y(t); S = dsolve(diff(y, t) == y, y(0) == 1); v = double(subs(S, t, 1));', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'symbolic', tags: ['dsolve', 'oracle-validation'] },
   { name: 'val-sym-vpasolve', src: 'syms x; v = sort(double(vpasolve(x^2 - 2 == 0, x)));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['vpasolve', 'oracle-validation'] },
+
+  // ══════════ Matrix Methods — end-to-end workflows (chain validated primitives) ══════════
+  { name: 'mm-diagonalization-power', src: 'A = [2 1; 1 2]; [V, D] = eig(A); A5 = A^5; err = norm(A^5 - V*D^5/V);', vars: ['A5', 'err'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['diagonalization', 'matrix-power', 'end-to-end'] },
+  { name: 'mm-markov-power', src: 'P = [0.9 0.1 0; 0.05 0.9 0.05; 0 0.2 0.8]; pic = [1 0 0]*P^300; resid = norm(pic*P - pic);', vars: ['pic', 'resid'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['markov-chain', 'steady-state', 'end-to-end'] },
+  { name: 'mm-markov-null', src: "P = [0.9 0.1 0; 0.05 0.9 0.05; 0 0.2 0.8]; w = null(P' - eye(3)); pin = (w/sum(w))';", vars: ['pin'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['markov-chain', 'null-space', 'end-to-end'] },
+  { name: 'mm-eig-identities', src: 'A = [4 1 0; 1 4 1; 0 1 4]; ev = sort(eig(A)); c1 = abs(sum(ev) - trace(A)); c2 = abs(prod(ev) - det(A));', vars: ['ev', 'c1', 'c2'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['eigenanalysis', 'trace-det-identity', 'end-to-end'] },
+  { name: 'mm-matrix-chain', src: "A = [1 2; 3 4]; B = [5 6; 7 8]; C = (A*B + B*A)'; D = inv(A)*B - B*inv(A); s = trace(C) + norm(D, 'fro');", vars: ['s'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['matrix-operations', 'end-to-end'] },
+  { name: 'mm-lsq-twoways', src: "t = [0 1 2 3 4]'; y = [1 3 2 5 4]'; A = [ones(5,1) t]; c = A\\y; cn = (A'*A)\\(A'*y); err = norm(c - cn);", vars: ['c', 'err'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['least-squares', 'normal-equations', 'end-to-end'] },
+  { name: 'mm-diag-recon', src: 'A = [2 1; 0 3]; [V, D] = eig(A); rr = norm(V*D/V - A); ev = sort(diag(D));', vars: ['rr', 'ev'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['diagonalization', 'reconstruction', 'end-to-end'] },
 ];
