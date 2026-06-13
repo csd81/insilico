@@ -6830,5 +6830,169 @@
       ],
       "real": -4
     }
+  },
+  "nt_gcd_lcm": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        18,
+        12
+      ]
+    }
+  },
+  "nt_modular_exponentiation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "nt_modular_inverse": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "nt_primality": {
+    "v": {
+      "class": "logical",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        0
+      ]
+    }
+  },
+  "nt_integer_factorization": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        5
+      ]
+    }
+  },
+  "topo_betti_hollow_triangle": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        1
+      ]
+    }
+  },
+  "topo_betti_filled_triangle": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        0
+      ]
+    }
+  },
+  "topo_euler_characteristic": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "dg_curve_curvature": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5
+    }
+  },
+  "dg_jacobian_polar_det": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "dg_arc_length": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6.283185307179586
+    }
+  },
+  "dyn_newton_fixed_point": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7142857142857143
+    }
+  },
+  "dyn_stable_cycle_period4": {
+    "v": {
+      "class": "double",
+      "size": [
+        4,
+        1
+      ],
+      "real": [
+        0.38281968301732416,
+        0.5008842103072179,
+        0.8269407065914387,
+        0.8749972636024641
+      ]
+    }
+  },
+  "coding_generator_paritycheck": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
   }
 }
