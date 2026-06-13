@@ -145,4 +145,36 @@ export const CASES: OracleCase[] = [
   { name: 'gaussian-elimination', src: 'A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; x = A\\b;', vars: ['x'], tol: 1e-9 },
   { name: 'simpson-sin', src: 'n = 100; a = 0; b = pi; h = (b-a)/n; x = a:h:b; y = sin(x); S = y(1) + y(end) + 4*sum(y(2:2:end-1)) + 2*sum(y(3:2:end-2)); I = S*h/3;', vars: ['I'], tol: 1e-6 },
   { name: 'euler-exp', src: 'n = 100000; h = 1/n; y = 1; for k = 1:n, y = y + h*y; end', vars: ['y'], tol: 1e-3 },
+
+  // ── fundamentals: string / char operations (char-row & string outputs) ──
+  { name: 'sprintf-int', src: "s = sprintf('%d/%d', 3, 4);", vars: ['s'] },
+  { name: 'sprintf-float', src: "s = sprintf('%.2f', pi);", vars: ['s'] },
+  { name: 'num2str-int', src: 's = num2str(42);', vars: ['s'] },
+  { name: 'strcat-char', src: "s = strcat('foo', 'bar');", vars: ['s'] },
+  { name: 'strrep', src: "s = strrep('a-b-c', '-', '+');", vars: ['s'] },
+  { name: 'upper-lower', src: "a = upper('abc'); b = lower('XYZ');", vars: ['a', 'b'] },
+  { name: 'regexprep-digits', src: "s = regexprep('a1b2c3', '\\d', '#');", vars: ['s'] },
+  { name: 'strtrim', src: "s = strtrim('  hi  ');", vars: ['s'] },
+  { name: 'fliplr-char', src: "s = fliplr('abcd');", vars: ['s'] },
+
+  // ── fundamentals: logical & data-wrangling ──
+  { name: 'find-nonzero', src: 'idx = find([0 3 0 5 0 7]);', vars: ['idx'] },
+  { name: 'any-all', src: 'a = any([0 0 1]); b = all([1 1 0]);', vars: ['a', 'b'] },
+  { name: 'masked-assign', src: 'A = [-1 2 -3 4]; A(A < 0) = 0;', vars: ['A'] },
+  { name: 'sort-descend', src: "[s, i] = sort([3 1 2], 'descend');", vars: ['s', 'i'] },
+  { name: 'sortrows-2col', src: 'B = sortrows([3 1; 1 2; 2 0]);', vars: ['B'] },
+  { name: 'unique-values', src: 'u = unique([3 1 4 1 5 9 2 6]);', vars: ['u'] },
+  { name: 'histcounts', src: 'nc = histcounts([1 2 2 3 3 3], 1:4);', vars: ['nc'] },
+  { name: 'cumprod', src: 'c = cumprod([1 2 3 4]);', vars: ['c'] },
+  { name: 'accumarray', src: 'v = accumarray([1; 2; 1; 3], [10; 20; 30; 40]);', vars: ['v'] },
+
+  // ── fundamentals: reshape / colon tricks ──
+  { name: 'repmat-tile', src: 'A = repmat([1 2], 2, 3);', vars: ['A'] },
+  { name: 'circshift', src: 'v = circshift([1 2 3 4 5], 2);', vars: ['v'] },
+  { name: 'flipud', src: 'A = flipud([1 2; 3 4]);', vars: ['A'] },
+  { name: 'cat-3d', src: 'C = cat(3, [1 2; 3 4], [5 6; 7 8]);', vars: ['C'] },
+
+  // ── fundamentals: elementary-function domains ──
+  { name: 'atan2', src: 'a = atan2(1, 1);', vars: ['a'], tol: 1e-9 },
+  { name: 'hypot', src: 'h = hypot(3, 4);', vars: ['h'] },
 ];

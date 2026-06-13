@@ -7,7 +7,7 @@ import { CASES } from './oracle/cases';
 import { type Value, type Mat, isMat, isStr, isSparse, sparseToDense } from '../values';
 
 // Committed ground truth from real MATLAB (see oracle/generate.mjs).
-type Fix = { class: string; size: [number, number]; real?: number | number[]; imag?: number | number[]; value?: string; error?: string };
+type Fix = { class: string; size: number[]; real?: number | number[]; imag?: number | number[]; value?: string; error?: string };
 const FIXTURES: Record<string, Record<string, Fix>> = JSON.parse(
   readFileSync(join(process.cwd(), 'matlab/test/oracle/fixtures.json'), 'utf8'),
 );
@@ -17,13 +17,20 @@ const arr = (x: number | number[] | undefined): number[] => (x === undefined ? [
 // MATLAB struct field names go through makeValidName; our case names only use '-'.
 const key = (name: string) => name.replace(/-/g, '_');
 
-/** TS Value → the same shape MATLAB serialized. */
-function describeValue(v: Value): { class: string; size: [number, number]; real: number[]; imag: number[] } {
+/** Char-row / string-scalar text content (matches MATLAB's `string(v)`). */
+function textOf(v: Value): string {
+  if (isStr(v)) return v.rows * v.cols === 1 ? v.items[0] : v.items.join('');
+  if (isMat(v) && (v as Mat).isChar) { let s = ''; for (const c of (v as Mat).data) s += String.fromCharCode(c); return s; }
+  return '';
+}
+
+/** TS Value → the same shape MATLAB serialized (size is the full N-D dim vector). */
+function describeValue(v: Value): { class: string; size: number[]; real: number[]; imag: number[] } {
   if (isSparse(v)) v = sparseToDense(v);   // MATLAB side densifies via full(); class(sparse) is 'double'
   if (isMat(v)) {
     const m = v as Mat;
     const cls = m.isChar ? 'char' : m.isBool ? 'logical' : (m.itype ?? 'double');
-    return { class: cls, size: [m.rows, m.cols], real: Array.from(m.data), imag: m.idata ? Array.from(m.idata) : [] };
+    return { class: cls, size: m.nd ? m.nd.slice() : [m.rows, m.cols], real: Array.from(m.data), imag: m.idata ? Array.from(m.idata) : [] };
   }
   if (isStr(v)) return { class: 'string', size: [v.rows, v.cols], real: [], imag: [] };
   throw new Error(`unhandled value kind: ${v.kind}`);
@@ -51,8 +58,12 @@ describe('MATLAB oracle (committed fixtures)', () => {
         assert.equal(d.class, exp.class, `${c.name}.${name} class: ${d.class} ≠ ${exp.class}`);
         // size
         assert.deepEqual(d.size, exp.size, `${c.name}.${name} size: ${JSON.stringify(d.size)} ≠ ${JSON.stringify(exp.size)}`);
-        // numeric value (column-major, tolerance)
-        if (exp.real !== undefined || d.real.length) {
+
+        if (exp.class === 'char' || exp.class === 'string') {
+          // textual value
+          assert.equal(textOf(got), exp.value, `${c.name}.${name} text: "${textOf(got)}" ≠ "${exp.value}"`);
+        } else if (exp.real !== undefined || d.real.length) {
+          // numeric value (column-major, tolerance)
           const er = arr(exp.real), ei = arr(exp.imag);
           assert.equal(d.real.length, er.length, `${c.name}.${name} numel: ${d.real.length} ≠ ${er.length}`);
           er.forEach((e, i) => assert.ok(Math.abs(d.real[i] - e) <= tol, `${c.name}.${name} real[${i}]: ${d.real[i]} ≠ ${e}`));
@@ -60,8 +71,6 @@ describe('MATLAB oracle (committed fixtures)', () => {
           // TS must not carry imaginary parts MATLAB doesn't have
           if (!ei.length) d.imag.forEach((im, i) => assert.ok(Math.abs(im) <= tol, `${c.name}.${name} unexpected imag[${i}]=${im}`));
         }
-        // string value
-        if (exp.value !== undefined && isStr(got)) assert.equal(got.items[0], exp.value);
       }
     });
   }

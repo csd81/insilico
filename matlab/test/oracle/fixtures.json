@@ -1398,5 +1398,348 @@
       ],
       "real": 2.7182682371744953
     }
+  },
+  "sprintf_int": {
+    "s": {
+      "class": "char",
+      "size": [
+        1,
+        3
+      ],
+      "value": "3/4"
+    }
+  },
+  "sprintf_float": {
+    "s": {
+      "class": "char",
+      "size": [
+        1,
+        4
+      ],
+      "value": "3.14"
+    }
+  },
+  "num2str_int": {
+    "s": {
+      "class": "char",
+      "size": [
+        1,
+        2
+      ],
+      "value": "42"
+    }
+  },
+  "strcat_char": {
+    "s": {
+      "class": "char",
+      "size": [
+        1,
+        6
+      ],
+      "value": "foobar"
+    }
+  },
+  "strrep": {
+    "s": {
+      "class": "char",
+      "size": [
+        1,
+        5
+      ],
+      "value": "a+b+c"
+    }
+  },
+  "upper_lower": {
+    "a": {
+      "class": "char",
+      "size": [
+        1,
+        3
+      ],
+      "value": "ABC"
+    },
+    "b": {
+      "class": "char",
+      "size": [
+        1,
+        3
+      ],
+      "value": "xyz"
+    }
+  },
+  "regexprep_digits": {
+    "s": {
+      "class": "char",
+      "size": [
+        1,
+        6
+      ],
+      "value": "a#b#c#"
+    }
+  },
+  "strtrim": {
+    "s": {
+      "class": "char",
+      "size": [
+        1,
+        2
+      ],
+      "value": "hi"
+    }
+  },
+  "fliplr_char": {
+    "s": {
+      "class": "char",
+      "size": [
+        1,
+        4
+      ],
+      "value": "dcba"
+    }
+  },
+  "find_nonzero": {
+    "idx": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        2,
+        4,
+        6
+      ]
+    }
+  },
+  "any_all": {
+    "a": {
+      "class": "logical",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    },
+    "b": {
+      "class": "logical",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "masked_assign": {
+    "A": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        0,
+        2,
+        0,
+        4
+      ]
+    }
+  },
+  "sort_descend": {
+    "s": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        3,
+        2,
+        1
+      ]
+    },
+    "i": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        3,
+        2
+      ]
+    }
+  },
+  "sortrows_2col": {
+    "B": {
+      "class": "double",
+      "size": [
+        3,
+        2
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        2,
+        0,
+        1
+      ]
+    }
+  },
+  "unique_values": {
+    "u": {
+      "class": "double",
+      "size": [
+        1,
+        7
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        9
+      ]
+    }
+  },
+  "histcounts": {
+    "nc": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "cumprod": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        2,
+        6,
+        24
+      ]
+    }
+  },
+  "accumarray": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        40,
+        20,
+        40
+      ]
+    }
+  },
+  "repmat_tile": {
+    "A": {
+      "class": "double",
+      "size": [
+        2,
+        6
+      ],
+      "real": [
+        1,
+        1,
+        2,
+        2,
+        1,
+        1,
+        2,
+        2,
+        1,
+        1,
+        2,
+        2
+      ]
+    }
+  },
+  "circshift": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        4,
+        5,
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "flipud": {
+    "A": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        3,
+        1,
+        4,
+        2
+      ]
+    }
+  },
+  "cat_3d": {
+    "C": {
+      "class": "double",
+      "size": [
+        2,
+        2,
+        2
+      ],
+      "real": [
+        1,
+        3,
+        2,
+        4,
+        5,
+        7,
+        6,
+        8
+      ]
+    }
+  },
+  "atan2": {
+    "a": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7853981633974483
+    }
+  },
+  "hypot": {
+    "h": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
   }
 }
