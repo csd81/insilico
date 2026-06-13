@@ -6,8 +6,11 @@ The declared scope and the oracle-verified status of each area. The target is
 tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 
 ```bash
-pnpm exec tsc -p tsconfig.test.json && node matlab/test/oracle/coverage.mjs
+pnpm oracle:coverage
 ```
+
+**Status (as of this revision):** 404 tests green · 269 MATLAB oracle fixtures ·
+269/269 cases classified · 191 undergrad / 78 graduate across 15 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -100,17 +103,18 @@ not MATLAB function names.
 - `gammapdf`: incorrect name. MATLAB uses `gampdf`, which is already implemented
   and oracle-validated.
 
-### Validate existing (implemented; lock with oracle cases)
-Implemented and **already oracle-validated**: `eig`/`svd`/`qr`/`lu`/`chol`,
-`schur`/`hess`/`polyeig`, `pinv`/`rank`/`null`/`orth`/`rref`/`cond`,
-`expm`/`sqrtm`/`logm`, `gmres`/`minres`/`bicg`/`bicgstab`/`lsqr`, `eigs`/`svds`,
-`ode45`, `fminbnd`/`fminsearch`/`fsolve`/`quadprog`/`lsqlin`,
-`interp2`/`ppval`/`polyvalm`, `fft2`/`fftshift`/`hilbert`/`findpeaks`,
-`shortestpath`/`conncomp`/`distances`/`toposort`, distribution `*pdf`/`*cdf`/`icdf`.
-Implemented, validation still pending: `ode23`/`ode113`/`ode15s`/`deval`,
-`linprog` (non-unique vertex — needs objective-value framing), `residue`
-(pole-order convention), `centrality`/`maxflow`/`minspantree`, `interpn`/`makima`,
-symbolic `jacobian`/`hessian`/`taylor`/`laplace`/`dsolve`/`vpasolve`.
+### Validate existing (implemented + oracle-validated)
+All oracle-validated — no validation backlog remains:
+- **Decompositions / matrix functions:** `eig`/`svd`/`qr`/`lu`/`chol`,
+  `schur`/`hess`/`polyeig`, `expm`/`sqrtm`/`logm`, `pinv`/`rank`/`null`/`orth`/`rref`/`cond`
+- **Iterative / sparse solvers:** `gmres`/`minres`/`bicg`/`bicgstab`/`lsqr`, `eigs`/`svds`
+- **ODE:** `ode45`/`ode23`/`ode113`/`ode15s`/`deval`
+- **Optimization:** `fminbnd`/`fminsearch`/`fsolve`/`quadprog`/`lsqlin`/`linprog`
+- **Approximation:** `interp2`/`interpn`/`ppval`/`makima`/`polyvalm`/`residue`
+- **Fourier / signal:** `fft2`/`fftshift`/`hilbert`/`findpeaks`
+- **Graph:** `shortestpath`/`conncomp`/`distances`/`toposort`/`centrality`/`maxflow`/`minspantree`
+- **Statistics:** distribution `*pdf`/`*cdf`/`icdf`, `var`/`std`/`corrcoef`/`cov`
+- **Symbolic CAS:** `jacobian`/`hessian`/`taylor`/`laplace`/`dsolve`/`vpasolve`
 
 Functions with non-unique outputs are validated by invariants rather than raw
 value equality (e.g. `linprog` objective value, `residue` sorted poles, `eig`
