@@ -1289,6 +1289,7 @@ export const BUILTINS: Record<string, Builtin> = {
     // Block sizes per eigenvalue from the null-space dimensions of (A−λI)^k.
     const eye2 = (k: number) => { const I = zeros(k, k); for (let i = 0; i < k; i++) I.data[i + i * k] = 1; return I; };
     const diag: { re: number; im: number; one: boolean }[] = [];   // diagonal entries + super-diagonal 1 flags
+    const clusterBlocks: { lambda: number; sizes: number[] }[] = []; // per real eigenvalue, Jordan block sizes (desc)
     for (const cl of clusters) {
       if (Math.abs(cl.im) > 1e-9) { for (let j = 0; j < cl.mult; j++) diag.push({ re: cl.re, im: cl.im, one: false }); continue; }
       const Am = zeros(N, N); for (let i = 0; i < N * N; i++) Am.data[i] = A.data[i]; for (let i = 0; i < N; i++) Am.data[i + i * N] -= cl.re;
@@ -1299,11 +1300,23 @@ export const BUILTINS: Record<string, Builtin> = {
       const blocks: number[] = [];
       for (let s = 1; s <= kmax; s++) { const cnt = Math.round(2 * d[s] - d[s - 1] - (d[s + 1] ?? d[kmax])); for (let b = 0; b < cnt; b++) blocks.push(s); }
       blocks.sort((x, y) => y - x);                 // larger blocks first (MATLAB convention)
+      clusterBlocks.push({ lambda: cl.re, sizes: blocks.slice() });
       for (const s of blocks) for (let p = 0; p < s; p++) diag.push({ re: cl.re, im: 0, one: p < s - 1 });
     }
     const J = makeSym(N, N, Array.from({ length: N * N }, () => sN(0)));
     for (let i = 0; i < N; i++) { const e = diag[i] ?? { re: 0, im: 0, one: false }; J.exprs[i + i * N] = Math.abs(e.im) < 1e-9 ? sN(e.re) : sFn('complex', sN(e.re), sN(e.im)); if (e.one && i + 1 < N) J.exprs[i + (i + 1) * N] = sN(1); }
-    if (n >= 2) { const { V } = generalEig(A, true); return [makeSym(N, N, Array.from(V!.data, (x) => sN(x))), J]; }
+    if (n >= 2) {
+      // [V,J]: build the generalized-eigenvector (Jordan) basis so that A*V = V*J. For all-real
+      // spectra use the chain construction; fall back to ordinary eigenvectors for complex spectra.
+      const allReal = clusters.every((c) => Math.abs(c.im) < 1e-9);
+      const Vcols: number[][] = allReal ? clusterBlocks.flatMap((cb) => jordanChainsReal(A, cb.lambda, cb.sizes)) : [];
+      if (allReal && Vcols.length === N) {
+        const Vd = new Float64Array(N * N);
+        for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) Vd[i + j * N] = Vcols[j][i];
+        return [makeSym(N, N, Array.from(Vd, (x) => sN(x))), J];
+      }
+      const { V } = generalEig(A, true); return [makeSym(N, N, Array.from(V!.data, (x) => sN(x))), J];
+    }
     return ret(J);
   },
   colspace: async (a) => {
@@ -7154,6 +7167,36 @@ function charpolyC(A: Mat): number[] {
   const n = A.rows; const c = [1]; let M = zeros(n, n); for (let i = 0; i < n; i++) M.data[i + i * n] = 1;
   for (let k = 1; k <= n; k++) { const AM = matmul(A, M); let tr = 0; for (let i = 0; i < n; i++) tr += AM.data[i + i * n]; const ck = -tr / k; c.push(ck); M = mat(n, n, Float64Array.from(AM.data)); for (let i = 0; i < n; i++) M.data[i + i * n] += ck; }
   return c;
+}
+
+/** Generalized-eigenvector (Jordan) chains for a real eigenvalue λ with given block sizes (desc).
+ *  Returns the V columns ordered to match J's blocks: each block is [eigvec, …, top-generalized],
+ *  built so that A·(chain) = (chain)·J_block (i.e. M·col_k = col_{k-1}, M = A−λI). No per-column
+ *  normalization — that would break the chain relation. */
+function jordanChainsReal(A: Mat, lambda: number, sizesDesc: number[]): number[][] {
+  const N = A.rows;
+  const M = zeros(N, N); for (let i = 0; i < N * N; i++) M.data[i] = A.data[i]; for (let i = 0; i < N; i++) M.data[i + i * N] -= lambda;
+  const I0 = zeros(N, N); for (let i = 0; i < N; i++) I0.data[i + i * N] = 1;
+  const pmax = Math.max(...sizesDesc); const Mpow: Mat[] = [I0];
+  for (let k = 1; k <= pmax; k++) Mpow[k] = matmul(Mpow[k - 1], M);
+  const colsOf = (Mt: Mat): number[][] => { const out: number[][] = []; for (let j = 0; j < Mt.cols; j++) { const v = new Array(Mt.rows); for (let i = 0; i < Mt.rows; i++) v[i] = Mt.data[i + j * Mt.rows]; out.push(v); } return out; };
+  const nb = (k: number): number[][] => (k <= 0 ? [] : colsOf(nullspace(Mpow[k])));
+  const dot = (a: number[], b: number[]) => { let s = 0; for (let i = 0; i < a.length; i++) s += a[i] * b[i]; return s; };
+  const nrm = (a: number[]) => Math.sqrt(dot(a, a));
+  const ortho = (vecs: number[][]): number[][] => { const Q: number[][] = []; for (const w of vecs) { const r = w.slice(); for (const q of Q) { const c = dot(r, q); for (let i = 0; i < r.length; i++) r[i] -= c * q[i]; } const nr = nrm(r); if (nr > 1e-9) { for (let i = 0; i < r.length; i++) r[i] /= nr; Q.push(r); } } return Q; };
+  const resid = (c: number[], Q: number[][]) => { const r = c.slice(); for (const q of Q) { const d = dot(r, q); for (let i = 0; i < r.length; i++) r[i] -= d * q[i]; } return r; };
+  const matvec = (x: number[]): number[] => { const y = new Array(N).fill(0); for (let i = 0; i < N; i++) { let s = 0; for (let j = 0; j < N; j++) s += M.data[i + j * N] * x[j]; y[i] = s; } return y; };
+  const existing: number[][] = []; const result: number[][] = [];
+  for (const s of sizesDesc) {
+    const cand = nb(s); const Q = ortho([...nb(s - 1), ...existing]);
+    let v: number[] | null = null;
+    for (const c of cand) { if (nrm(resid(c, Q)) > 1e-6) { v = c; break; } }
+    if (!v) continue;
+    const stack: number[][] = [v]; let w = v;
+    for (let k = 1; k < s; k++) { w = matvec(w); stack.push(w); }
+    for (let k = s - 1; k >= 0; k--) { result.push(stack[k]); existing.push(stack[k]); }
+  }
+  return result;
 }
 
 /** Generic (symbolic) rank: evaluate the symbolic matrix at a few non-degenerate substitutions

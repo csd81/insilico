@@ -1,4 +1,1089 @@
 {
+  "polyfit_line": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2.0000000000000004,
+        0.9999999999999994
+      ]
+    }
+  },
+  "polyval": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 12
+    }
+  },
+  "roots": {
+    "r": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        2
+      ]
+    }
+  },
+  "gauss2pt_quadrature": {
+    "I": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.3333333333333335
+    }
+  },
+  "interp1_linear_scalar": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.5
+    }
+  },
+  "interp1_linear_vector": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.5,
+        6.5
+      ]
+    }
+  },
+  "pchip_interp": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.21875
+    }
+  },
+  "spline_interp": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.25
+    }
+  },
+  "polyint_definite": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8
+    }
+  },
+  "approx_lagrange": {
+    "L": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 9
+    }
+  },
+  "approx_chebyshev_nodes": {
+    "xc": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        0.9659258262890683,
+        0.7071067811865476,
+        0.25881904510252074,
+        -0.25881904510252063,
+        -0.7071067811865475,
+        -0.9659258262890682
+      ]
+    }
+  },
+  "val_interp2": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "val_ppval": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.25
+    }
+  },
+  "val_gridded_interpolant": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "val_interp3": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.5
+    }
+  },
+  "val_scattered_interpolant": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.5
+    }
+  },
+  "val_griddata": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.5
+    }
+  },
+  "val_griddedInterpolant_1d": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.5
+    }
+  },
+  "val_residue": {
+    "ps": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        2
+      ]
+    },
+    "rs": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -1,
+        2
+      ]
+    }
+  },
+  "val_interpn": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "val_makima": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.229166666666667
+    }
+  },
+  "adv_runge_spline": {
+    "yq": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.042516165428920304
+    }
+  },
+  "adv_runge_pchip": {
+    "yq": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.042246053264491885
+    }
+  },
+  "na_pade_exp": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.6486486486486487
+    }
+  },
+  "na_bezier_decasteljau": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.75
+    }
+  },
+  "na_bspline_deboor": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.5
+    }
+  },
+  "cal_limit_oneside_right": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_limit_oneside_left": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -1
+    }
+  },
+  "cal_limit_removable_oneside": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_limit_at_infinity": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_symsum_default_var": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 55
+    }
+  },
+  "cal_symsum_square": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 30
+    }
+  },
+  "cal_symprod_default": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 120
+    }
+  },
+  "cal_power_rule": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 80
+    }
+  },
+  "cal_product_rule": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.2232442754839328
+    }
+  },
+  "cal_quotient_rule": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -0.3011686789397568
+    }
+  },
+  "cal_chain_rule": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.0806046117362795
+    }
+  },
+  "cal_transcendental": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8.816231451438373
+    }
+  },
+  "cal_second_derivative": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 108
+    }
+  },
+  "cal_taylor_cos": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5416666666666666
+    }
+  },
+  "cal_antiderivative_poly": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "cal_definite_integral": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 9
+    }
+  },
+  "cal_fundamental_theorem": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8.666666666666666
+    }
+  },
+  "cal_riemann_midpoint": {
+    "S": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3333332499999999
+    }
+  },
+  "cal_int_sqrt": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5.333333333333333
+    }
+  },
+  "cal_int_linear_sub": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_int_linear_base": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 10
+    }
+  },
+  "cal_int_byparts_exp": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_int_byparts_sin": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.141592653589793
+    }
+  },
+  "cal_int_byparts_poly_exp": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7182818284590452
+    }
+  },
+  "cal_int_byparts_log": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.6362943611198906
+    }
+  },
+  "cal_int_arctan": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7853981633974483
+    }
+  },
+  "cal_limit_lhopital": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5
+    }
+  },
+  "cal_int_partfrac": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.2876820724517809
+    }
+  },
+  "cal_int_partfrac_num": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.380898121294083
+    }
+  },
+  "cal_int_partfrac_diffsq": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.2027325540540822
+    }
+  },
+  "cal_limit_derivative": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5403023058681398
+    }
+  },
+  "cal_improper_exp": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_improper_power": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_improper_decay": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5
+    }
+  },
+  "cal_subst_gaussian": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.7182818284590453
+    }
+  },
+  "cal_subst_sincos": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5
+    }
+  },
+  "cal_subst_rational_log": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.34657359027997264
+    }
+  },
+  "cal_subst_tan": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.34657359027997264
+    }
+  },
+  "cal_subst_power": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.066666666666667
+    }
+  },
+  "cal_subst_nested": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.7182818284590453
+    }
+  },
+  "cal_cumtrapz": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        0,
+        1.5,
+        4,
+        7.5
+      ]
+    }
+  },
+  "coding_gf2_polymul": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "coding_hammgen": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        7,
+        4,
+        3
+      ]
+    }
+  },
+  "coding_biterr": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        0.5
+      ]
+    }
+  },
+  "coding_binary_entropy": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.8112781244591328
+    }
+  },
+  "coding_mutual_information": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.124511249783653
+    }
+  },
+  "coding_gf2_divide": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        0
+      ]
+    }
+  },
+  "coding_hamming_syndrome": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "coding_generator_paritycheck": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "complex_mul": {
+    "z": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5,
+      "imag": 5
+    }
+  },
+  "complex_conj_transpose": {
+    "c": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        3
+      ],
+      "imag": [
+        -2,
+        1
+      ]
+    }
+  },
+  "complex_abs": {
+    "m": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "sqrt_negative": {
+    "z": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0,
+      "imag": 1
+    }
+  },
+  "sqrt_negative_real": {
+    "z": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0,
+      "imag": 2
+    }
+  },
+  "log_negative": {
+    "z": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0,
+      "imag": 3.141592653589793
+    }
+  },
+  "asin_gt1": {
+    "z": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.5707963267948966,
+      "imag": -1.3169578969248166
+    }
+  },
+  "acos_gt1": {
+    "z": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0,
+      "imag": 1.3169578969248166
+    }
+  },
+  "cube_root_negative": {
+    "z": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1,
+      "imag": 1.732050807568877
+    }
+  },
+  "complex_matvec": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 22,
+      "imag": 19
+    }
+  },
+  "complex_exp": {
+    "z": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -1,
+      "imag": 1.2246467991473532e-16
+    }
+  },
+  "complex_lt": {
+    "x": {
+      "class": "logical",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "complex_sort": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        2
+      ],
+      "imag": [
+        1,
+        0
+      ]
+    }
+  },
+  "complex_max_mag": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "ctrl_tf_dcgain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "ctrl_zpk_dcgain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "ctrl_ss_dcgain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "ctrl_pole_sorted": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -2,
+        -1
+      ]
+    }
+  },
+  "ctrl_feedback_dcgain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "ctrl_step_final": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9995181183429719
+    }
+  },
+  "ctrl_impulse_integral": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.49857811913661043
+    }
+  },
+  "ctrl_lsim_steady": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5.999727600421419
+    }
+  },
+  "ctrl_lqr_gain": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.9999999999999993,
+        1.732050807568877
+      ]
+    }
+  },
+  "ctrl_bode_magnitude": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7071067811865475
+    }
+  },
+  "ctrl_margin_phase": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 81.71887200158994
+    }
+  },
   "colon_range": {
     "v": {
       "class": "double",
@@ -169,124 +1254,6 @@
       ]
     }
   },
-  "complex_mul": {
-    "z": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 5,
-      "imag": 5
-    }
-  },
-  "complex_conj_transpose": {
-    "c": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        3
-      ],
-      "imag": [
-        -2,
-        1
-      ]
-    }
-  },
-  "complex_abs": {
-    "m": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 5
-    }
-  },
-  "mldivide": {
-    "x": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        2,
-        3.0000000000000004,
-        -0.9999999999999999
-      ]
-    }
-  },
-  "det": {
-    "d": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -2.9999999999999982
-    }
-  },
-  "inv": {
-    "B": {
-      "class": "double",
-      "size": [
-        2,
-        2
-      ],
-      "real": [
-        -0.5,
-        1,
-        0.5,
-        -0.6666666666666666
-      ]
-    }
-  },
-  "eig_symmetric": {
-    "e": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        3
-      ]
-    }
-  },
-  "norm_vec": {
-    "n": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 13
-    }
-  },
-  "trace_rank": {
-    "t": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 34
-    },
-    "r": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3
-    }
-  },
   "sum_dim": {
     "c": {
       "class": "double",
@@ -440,42 +1407,6 @@
       "real": -1
     }
   },
-  "polyfit_line": {
-    "p": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        2.0000000000000004,
-        0.9999999999999994
-      ]
-    }
-  },
-  "polyval": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 12
-    }
-  },
-  "roots": {
-    "r": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        2
-      ]
-    }
-  },
   "sort_with_idx": {
     "s": {
       "class": "double",
@@ -513,39 +1444,6 @@
         1,
         2,
         3
-      ]
-    }
-  },
-  "newton_sqrt2": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.414213562373095
-    }
-  },
-  "trapz": {
-    "I": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.33333349999999995
-    }
-  },
-  "lu_solve": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        2
       ]
     }
   },
@@ -1017,191 +1915,6 @@
       "real": []
     }
   },
-  "sqrt_negative": {
-    "z": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0,
-      "imag": 1
-    }
-  },
-  "sqrt_negative_real": {
-    "z": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0,
-      "imag": 2
-    }
-  },
-  "log_negative": {
-    "z": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0,
-      "imag": 3.141592653589793
-    }
-  },
-  "asin_gt1": {
-    "z": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.5707963267948966,
-      "imag": -1.3169578969248166
-    }
-  },
-  "acos_gt1": {
-    "z": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0,
-      "imag": 1.3169578969248166
-    }
-  },
-  "cube_root_negative": {
-    "z": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1,
-      "imag": 1.732050807568877
-    }
-  },
-  "complex_matvec": {
-    "y": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 22,
-      "imag": 19
-    }
-  },
-  "complex_exp": {
-    "z": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -1,
-      "imag": 1.2246467991473532e-16
-    }
-  },
-  "mldivide_triangular": {
-    "x": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        1.1666666666666667,
-        0.6666666666666666,
-        2
-      ]
-    }
-  },
-  "mldivide_spd": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        1
-      ]
-    }
-  },
-  "mldivide_overdetermined": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        8.000000000000004,
-        -3.0000000000000004
-      ]
-    }
-  },
-  "mldivide_multi_rhs": {
-    "X": {
-      "class": "double",
-      "size": [
-        2,
-        2
-      ],
-      "real": [
-        0.6,
-        -0.2,
-        -0.2,
-        0.4
-      ]
-    }
-  },
-  "chol_factor": {
-    "R": {
-      "class": "double",
-      "size": [
-        2,
-        2
-      ],
-      "real": [
-        2,
-        0,
-        1,
-        1.4142135623730951
-      ]
-    }
-  },
-  "svd_values": {
-    "s": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        9.525518091565107,
-        0.514300580658644
-      ]
-    }
-  },
-  "eig_values_sorted": {
-    "e": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        0.585786437626905,
-        1.9999999999999998,
-        3.414213562373095
-      ]
-    }
-  },
   "broadcast_sub_colvec": {
     "A": {
       "class": "double",
@@ -1257,252 +1970,6 @@
         1,
         1
       ]
-    }
-  },
-  "sparse_construct": {
-    "S": {
-      "class": "double",
-      "size": [
-        3,
-        3
-      ],
-      "real": [
-        10,
-        0,
-        0,
-        0,
-        20,
-        0,
-        0,
-        0,
-        30
-      ]
-    }
-  },
-  "sparse_nnz": {
-    "n": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "sparse_speye": {
-    "F": {
-      "class": "double",
-      "size": [
-        3,
-        3
-      ],
-      "real": [
-        1,
-        0,
-        0,
-        0,
-        1,
-        0,
-        0,
-        0,
-        1
-      ]
-    }
-  },
-  "sparse_matvec": {
-    "y": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        3,
-        8
-      ]
-    }
-  },
-  "sparse_solve": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.8,
-        1.4
-      ]
-    }
-  },
-  "sparse_spdiags": {
-    "D": {
-      "class": "double",
-      "size": [
-        3,
-        3
-      ],
-      "real": [
-        1,
-        0,
-        0,
-        0,
-        2,
-        0,
-        0,
-        0,
-        3
-      ]
-    }
-  },
-  "bisection_sqrt2": {
-    "root": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.414213562373095
-    }
-  },
-  "gaussian_elimination": {
-    "x": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        2,
-        3.0000000000000004,
-        -0.9999999999999999
-      ]
-    }
-  },
-  "simpson_sin": {
-    "I": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.0000000108245044
-    }
-  },
-  "euler_exp": {
-    "y": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.7182682371744953
-    }
-  },
-  "secant_sqrt2": {
-    "root": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.414213562373095
-    }
-  },
-  "cholesky_solve": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        0.9999999999999999
-      ]
-    }
-  },
-  "newton_interp": {
-    "p": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 9
-    }
-  },
-  "rk4_exp": {
-    "y": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.718281828234404
-    }
-  },
-  "gauss2pt_quadrature": {
-    "I": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3.3333333333333335
-    }
-  },
-  "interp1_linear_scalar": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.5
-    }
-  },
-  "interp1_linear_vector": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        0.5,
-        6.5
-      ]
-    }
-  },
-  "pchip_interp": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.21875
-    }
-  },
-  "spline_interp": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.25
-    }
-  },
-  "polyint_definite": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 8
     }
   },
   "sprintf_int": {
@@ -2170,18 +2637,122 @@
       "real": 1
     }
   },
-  "complex_lt": {
-    "x": {
-      "class": "logical",
+  "adv_catastrophic_cancellation": {
+    "q": {
+      "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 1
+      "real": 0
+    },
+    "e1": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.000000082740371e-10
+    },
+    "e2": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.00000000005e-10
     }
   },
-  "complex_sort": {
-    "x": {
+  "adv_eps_rounding": {
+    "a": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.220446049250313e-16
+    },
+    "b": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "adv_ieee_flags": {
+    "f": {
+      "class": "logical",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "adv_nan_propagation": {
+    "flags": {
+      "class": "logical",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "lang_cellfun": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        2,
+        3,
+        1
+      ]
+    }
+  },
+  "lang_arrayfun": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        4,
+        9,
+        16
+      ]
+    }
+  },
+  "lang_set_operations": {
+    "ia": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        4
+      ]
+    },
+    "sd": {
       "class": "double",
       "size": [
         1,
@@ -2189,22 +2760,695 @@
       ],
       "real": [
         1,
-        2
-      ],
-      "imag": [
+        3
+      ]
+    },
+    "im": {
+      "class": "double",
+      "size": [
         1,
-        0
+        3
+      ],
+      "real": [
+        0,
+        1,
+        1
       ]
     }
   },
-  "complex_max_mag": {
+  "lang_flip_rot90_triu": {
+    "fl": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    "rt": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        2,
+        1,
+        4,
+        3
+      ]
+    },
+    "tu": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        2,
+        5,
+        0,
+        3,
+        6,
+        9
+      ]
+    }
+  },
+  "lang_nchoosek_factorial": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        15,
+        120
+      ]
+    }
+  },
+  "lang_fillmissing": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  "lang_discretize": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "err_dim_mismatch": {
+    "error": "Incorrect dimensions for matrix multiplication. Check that the number of columns in the first matrix matches the number of rows in the second matrix. To operate on each element of the matrix individually, use TIMES (.*) for elementwise multiplication."
+  },
+  "err_oob_index": {
+    "error": "Index exceeds the number of array elements. Index must not exceed 2."
+  },
+  "err_undefined_variable": {
+    "error": "Unrecognized function or variable 'undefined_xyz_var'."
+  },
+  "err_noninteger_index": {
+    "error": "Array indices must be positive integers or logical values."
+  },
+  "err_bad_concat": {
+    "error": "Dimensions of arrays being concatenated are not consistent."
+  },
+  "lang_setxor": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        4
+      ]
+    }
+  },
+  "lang_strsplit_contains": {
+    "n": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    },
+    "tf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "lang_closure_capture_by_value": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6
+    }
+  },
+  "lang_nested_function_handle": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 12
+    }
+  },
+  "lang_break_continue": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 12
+    }
+  },
+  "dyn_fixed_point": {
     "x": {
       "class": "double",
       "size": [
         1,
         1
       ],
+      "real": 0.7390851332151607
+    }
+  },
+  "dyn_logistic_map": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5130445095326298
+    }
+  },
+  "dyn_stability_eig": {
+    "ev": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -3,
+        -2
+      ]
+    }
+  },
+  "dyn_newton_fixed_point": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7142857142857143
+    }
+  },
+  "dyn_stable_cycle_period4": {
+    "v": {
+      "class": "double",
+      "size": [
+        4,
+        1
+      ],
+      "real": [
+        0.38281968301732416,
+        0.5008842103072179,
+        0.8269407065914387,
+        0.8749972636024641
+      ]
+    }
+  },
+  "grad_fft": {
+    "Y": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        10,
+        -2,
+        -2,
+        -2
+      ],
+      "imag": [
+        0,
+        2,
+        0,
+        -2
+      ]
+    }
+  },
+  "grad_conv": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        3,
+        3,
+        1
+      ]
+    }
+  },
+  "fft_ifft_roundtrip": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "fft_freq_detect": {
+    "freq": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "val_fft2": {
+    "Y": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        10,
+        -4,
+        -2,
+        0
+      ]
+    }
+  },
+  "val_fftshift": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        3,
+        4,
+        1,
+        2
+      ]
+    }
+  },
+  "val_hilbert_abs": {
+    "a": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1.4142135623730951,
+        2.23606797749979,
+        3.1622776601683795,
+        4.123105625617661
+      ]
+    }
+  },
+  "val_findpeaks": {
+    "pks": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "sig_filter": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        3,
+        5,
+        7
+      ]
+    }
+  },
+  "sig_xcorr": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        3.0000000000000004,
+        8,
+        14,
+        8,
+        3.0000000000000004
+      ]
+    }
+  },
+  "dsp_conv2_valid": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 12
+    }
+  },
+  "dsp_interpft": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7071067811865476
+    }
+  },
+  "geom_convhull_area": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "geom_convhull_perimeter": {
+    "per": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "geom_convhulln_volume_3d": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "geom_delaunay_triangles": {
+    "nt": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "geom_delaunay_triangulation_obj": {
+    "nt": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
       "real": 2
+    }
+  },
+  "geom_voronoi_cells": {
+    "nc": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "geom_polyarea": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        0.5
+      ]
+    }
+  },
+  "geom_inpolygon": {
+    "v": {
+      "class": "logical",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        0
+      ]
+    }
+  },
+  "geom_pdist": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "grad_graph_laplacian": {
+    "ev": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        3.9250536344271737e-17,
+        0.9999999999999998,
+        3
+      ]
+    }
+  },
+  "pde_distributed_consensus": {
+    "x": {
+      "class": "double",
+      "size": [
+        4,
+        1
+      ],
+      "real": [
+        2.5,
+        2.5,
+        2.500000000000001,
+        2.500000000000001
+      ]
+    }
+  },
+  "graph_adjacency_powers": {
+    "W": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        2,
+        3,
+        3,
+        3,
+        2,
+        3,
+        3,
+        3,
+        2
+      ]
+    }
+  },
+  "graph_pagerank": {
+    "r": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0.4,
+        0.19999999999999987,
+        0.4
+      ]
+    }
+  },
+  "val_graph_shortestpath": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "val_graph_conncomp": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        2,
+        2
+      ]
+    }
+  },
+  "val_graph_distances": {
+    "D": {
+      "class": "double",
+      "size": [
+        4,
+        4
+      ],
+      "real": [
+        0,
+        1,
+        2,
+        3,
+        1,
+        0,
+        1,
+        2,
+        2,
+        1,
+        0,
+        1,
+        3,
+        2,
+        1,
+        0
+      ]
+    }
+  },
+  "val_graph_toposort": {
+    "o": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "val_centrality": {
+    "c": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        3,
+        2,
+        3
+      ]
+    }
+  },
+  "val_maxflow": {
+    "f": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "val_minspantree": {
+    "w": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6
+    }
+  },
+  "opt_matchpairs_assignment": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        2
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        1,
+        2,
+        3
+      ]
     }
   },
   "vec_mag_2d": {
@@ -2346,6 +3590,710 @@
         1
       ],
       "real": 50.697326728681745
+    }
+  },
+  "mechanics_resultant": {
+    "FR": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        132,
+        132,
+        -1188
+      ]
+    }
+  },
+  "mechanics_moment": {
+    "Mx": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -792
+    },
+    "My": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 792
+    }
+  },
+  "apla_chemical_balance": {
+    "coeffs": {
+      "class": "double",
+      "size": [
+        4,
+        1
+      ],
+      "real": [
+        1,
+        5,
+        3,
+        3.999999999999999
+      ]
+    }
+  },
+  "apla_static_forces": {
+    "T": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        73.20508075688774,
+        89.65754721680536
+      ]
+    }
+  },
+  "apla_moments": {
+    "M": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0,
+        0,
+        50
+      ]
+    }
+  },
+  "apla_markov_weather": {
+    "s7": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.6672128000000005,
+        0.33278720000000017
+      ]
+    }
+  },
+  "apla_robotics_rotation": {
+    "R90": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        0,
+        0.9999999999999999,
+        -0.9999999999999999,
+        0
+      ]
+    }
+  },
+  "la_toeplitz_hankel": {
+    "tp": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        2,
+        1,
+        2,
+        3,
+        2,
+        1
+      ]
+    },
+    "hk": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        2,
+        3,
+        0,
+        3,
+        0,
+        0
+      ]
+    }
+  },
+  "la_blkdiag": {
+    "v": {
+      "class": "double",
+      "size": [
+        4,
+        4
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        4,
+        5
+      ]
+    }
+  },
+  "la_cayley_hamilton": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "la_cramer_numeric": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.220446049250313e-16
+    }
+  },
+  "la_rank_nullity": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "la_schur_complement": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.5
+    }
+  },
+  "la_outer_product_rank1": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        10
+      ]
+    }
+  },
+  "la_adjugate": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        4.000000000000002,
+        -3.0000000000000018,
+        -2,
+        1.0000000000000007
+      ]
+    }
+  },
+  "la_pfaffian": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "la_minor_cofactor": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "la_cauchy_binet": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -5.9999999999999964
+    }
+  },
+  "ml_kmeans_lloyd": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1.25,
+        3.9
+      ]
+    }
+  },
+  "ml_rbf_kernel": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0.6065306597126334,
+        1,
+        0.6065306597126334
+      ]
+    }
+  },
+  "ml_kernel_ridge": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9417277774642593
+    }
+  },
+  "ml_nn_forward": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.22
+    }
+  },
+  "grad_newton_system": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.7071067811865475,
+        0.7071067811865475
+      ]
+    }
+  },
+  "na_halley_method": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_broyden_root": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.7071067811865476,
+        0.7071067811865476
+      ]
+    }
+  },
+  "na_false_position": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.220446049250313e-16
+    }
+  },
+  "na_brent_fzero": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.0945514815423265
+    }
+  },
+  "nt_gcd_lcm": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        18,
+        12
+      ]
+    }
+  },
+  "nt_modular_exponentiation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "nt_modular_inverse": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "nt_primality": {
+    "v": {
+      "class": "logical",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        0
+      ]
+    }
+  },
+  "nt_integer_factorization": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        5
+      ]
+    }
+  },
+  "mldivide": {
+    "x": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        2,
+        3.0000000000000004,
+        -0.9999999999999999
+      ]
+    }
+  },
+  "det": {
+    "d": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -2.9999999999999982
+    }
+  },
+  "inv": {
+    "B": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        -0.5,
+        1,
+        0.5,
+        -0.6666666666666666
+      ]
+    }
+  },
+  "eig_symmetric": {
+    "e": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        3
+      ]
+    }
+  },
+  "norm_vec": {
+    "n": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 13
+    }
+  },
+  "trace_rank": {
+    "t": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 34
+    },
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "mldivide_triangular": {
+    "x": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        1.1666666666666667,
+        0.6666666666666666,
+        2
+      ]
+    }
+  },
+  "mldivide_spd": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        1
+      ]
+    }
+  },
+  "mldivide_overdetermined": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        8.000000000000004,
+        -3.0000000000000004
+      ]
+    }
+  },
+  "mldivide_multi_rhs": {
+    "X": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        0.6,
+        -0.2,
+        -0.2,
+        0.4
+      ]
+    }
+  },
+  "chol_factor": {
+    "R": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        2,
+        0,
+        1,
+        1.4142135623730951
+      ]
+    }
+  },
+  "svd_values": {
+    "s": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        9.525518091565107,
+        0.514300580658644
+      ]
+    }
+  },
+  "eig_values_sorted": {
+    "e": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0.585786437626905,
+        1.9999999999999998,
+        3.414213562373095
+      ]
+    }
+  },
+  "sparse_construct": {
+    "S": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        10,
+        0,
+        0,
+        0,
+        20,
+        0,
+        0,
+        0,
+        30
+      ]
+    }
+  },
+  "sparse_nnz": {
+    "n": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "sparse_speye": {
+    "F": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "sparse_matvec": {
+    "y": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        3,
+        8
+      ]
+    }
+  },
+  "sparse_solve": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.8,
+        1.4
+      ]
+    }
+  },
+  "sparse_spdiags": {
+    "D": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        3
+      ]
     }
   },
   "la_add_mul": {
@@ -2563,66 +4511,6 @@
       "real": 1.1102230246251565e-16
     }
   },
-  "markov_p10": {
-    "r10": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        0.28390202940000026,
-        0.4472503494,
-        0.2688476212
-      ]
-    }
-  },
-  "markov_eig": {
-    "ev": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        0.42679491924311225,
-        0.773205080756888,
-        1
-      ]
-    }
-  },
-  "mechanics_resultant": {
-    "FR": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        132,
-        132,
-        -1188
-      ]
-    }
-  },
-  "mechanics_moment": {
-    "Mx": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -792
-    },
-    "My": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 792
-    }
-  },
   "grad_cond_hilbert": {
     "c": {
       "class": "double",
@@ -2735,32 +4623,6 @@
       ]
     }
   },
-  "grad_newton_system": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.7071067811865475,
-        0.7071067811865475
-      ]
-    }
-  },
-  "grad_ridge": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.5836575875486378,
-        0.5317769130998704
-      ]
-    }
-  },
   "grad_expm": {
     "E": {
       "class": "double",
@@ -2773,722 +4635,6 @@
         0,
         1,
         1
-      ]
-    }
-  },
-  "grad_graph_laplacian": {
-    "ev": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        3.9250536344271737e-17,
-        0.9999999999999998,
-        3
-      ]
-    }
-  },
-  "grad_fft": {
-    "Y": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        10,
-        -2,
-        -2,
-        -2
-      ],
-      "imag": [
-        0,
-        2,
-        0,
-        -2
-      ]
-    }
-  },
-  "grad_conv": {
-    "c": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        3,
-        3,
-        1
-      ]
-    }
-  },
-  "grad_var_std": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 6.666666666666667
-    },
-    "s": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.581988897471611
-    }
-  },
-  "grad_corrcoef": {
-    "R": {
-      "class": "double",
-      "size": [
-        2,
-        2
-      ],
-      "real": [
-        1,
-        0.9827076298239908,
-        0.9827076298239908,
-        1
-      ]
-    }
-  },
-  "stat_entropy_kl": {
-    "H": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.5
-    },
-    "KL": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.25
-    }
-  },
-  "opt_golden_section": {
-    "xmin": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.000000000000144
-    }
-  },
-  "opt_gradient_descent": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        5.230919145657151e-31,
-        3.5275395543276595e-9
-      ]
-    }
-  },
-  "opt_newton_min": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "pde_poisson_1d": {
-    "u": {
-      "class": "double",
-      "size": [
-        5,
-        1
-      ],
-      "real": [
-        0.06944444444444445,
-        0.1111111111111111,
-        0.125,
-        0.11111111111111112,
-        0.06944444444444445
-      ]
-    }
-  },
-  "pde_heat_1d_step": {
-    "un": {
-      "class": "double",
-      "size": [
-        7,
-        1
-      ],
-      "real": [
-        0,
-        1,
-        2,
-        2.2,
-        2,
-        1,
-        0
-      ]
-    }
-  },
-  "pde_fem_1d_stiffness": {
-    "K": {
-      "class": "double",
-      "size": [
-        5,
-        5
-      ],
-      "real": [
-        1,
-        -1,
-        0,
-        0,
-        0,
-        -1,
-        2,
-        -1,
-        0,
-        0,
-        0,
-        -1,
-        2,
-        -1,
-        0,
-        0,
-        0,
-        -1,
-        2,
-        -1,
-        0,
-        0,
-        0,
-        -1,
-        1
-      ]
-    }
-  },
-  "pde_heat_ftcs_multistep": {
-    "u": {
-      "class": "double",
-      "size": [
-        5,
-        1
-      ],
-      "real": [
-        0,
-        0.059126271999999994,
-        0.0835994624,
-        0.059126271999999994,
-        0
-      ]
-    }
-  },
-  "pde_heat_backward_euler": {
-    "u": {
-      "class": "double",
-      "size": [
-        5,
-        1
-      ],
-      "real": [
-        0.4152650644043107,
-        0.6787189602081609,
-        0.7641011210542843,
-        0.6787189602081609,
-        0.41526506440431066
-      ]
-    }
-  },
-  "pde_heat_crank_nicolson": {
-    "u": {
-      "class": "double",
-      "size": [
-        5,
-        1
-      ],
-      "real": [
-        0.39156303973176515,
-        0.6648376356659205,
-        0.7600476990350785,
-        0.6648376356659206,
-        0.39156303973176526
-      ]
-    }
-  },
-  "pde_laplace_2d_stencil": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        9
-      ],
-      "real": [
-        0,
-        1,
-        0,
-        1,
-        -4,
-        1,
-        0,
-        1,
-        0
-      ]
-    }
-  },
-  "pde_poisson_2d_residual": {
-    "res": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.2412670766236366e-15
-    }
-  },
-  "pde_reaction_diffusion_step": {
-    "un": {
-      "class": "double",
-      "size": [
-        5,
-        1
-      ],
-      "real": [
-        0.1,
-        0.36000000000000004,
-        0.44999999999999996,
-        0.36,
-        0.1
-      ]
-    }
-  },
-  "pde_advection_upwind": {
-    "u": {
-      "class": "double",
-      "size": [
-        8,
-        1
-      ],
-      "real": [
-        0,
-        0,
-        0,
-        0,
-        1,
-        1,
-        1,
-        0
-      ]
-    }
-  },
-  "pde_parabolic_stability": {
-    "rho": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.8928203230275511
-    }
-  },
-  "pde_distributed_consensus": {
-    "x": {
-      "class": "double",
-      "size": [
-        4,
-        1
-      ],
-      "real": [
-        2.5,
-        2.5,
-        2.500000000000001,
-        2.500000000000001
-      ]
-    }
-  },
-  "pde_fd_hamiltonian_eig": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        4.925605634718173,
-        19.5923926483119,
-        43.67272925503311
-      ]
-    }
-  },
-  "pde_burgers_godunov": {
-    "u": {
-      "class": "double",
-      "size": [
-        11,
-        1
-      ],
-      "real": [
-        1,
-        1,
-        1,
-        1,
-        1,
-        0.8725090550940104,
-        0.46070498904901447,
-        0.22589674123474585,
-        0.2008768500719849,
-        0.20001236455024426,
-        0.2
-      ]
-    }
-  },
-  "pde_traffic_shock_speed": {
-    "s": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.29999999999999993
-    }
-  },
-  "pde_wave_leapfrog": {
-    "u": {
-      "class": "double",
-      "size": [
-        11,
-        1
-      ],
-      "real": [
-        0,
-        0.18236268757826488,
-        0.3468744447008122,
-        0.47743171435967574,
-        0.56125464135466,
-        0.5901380535628218,
-        0.5612546413546597,
-        0.4774317143596757,
-        0.34687444470081213,
-        0.18236268757826485,
-        0
-      ]
-    }
-  },
-  "pde_classification_discriminant": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        -4,
-        0,
-        4
-      ]
-    }
-  },
-  "pde_separation_of_variables": {
-    "u": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.7723116068585908
-    }
-  },
-  "pde_steady_heat_2d": {
-    "uc": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.25000000000000006
-    }
-  },
-  "pde_advection_upwind_periodic": {
-    "mass": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.17724441948741437
-    },
-    "peak": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.5767072072021943
-    }
-  },
-  "pde_advection_lax_friedrichs": {
-    "mass": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.23333333333333336
-    },
-    "tv": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.9952278211820682
-    }
-  },
-  "pde_advection_lax_wendroff": {
-    "mass": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.17724441948741437
-    },
-    "peak": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.9678824355078883
-    }
-  },
-  "pde_heat_cn_spdiags": {
-    "energy": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.6665612526431095
-    }
-  },
-  "pde_poisson_2d_kron": {
-    "resid": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 6.385471637914544e-15
-    }
-  },
-  "pde_finite_volume_advection": {
-    "mass": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.30000000000000004
-    },
-    "dm": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "pde_spectral_fft_derivative": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.3322676295501878e-15
-    }
-  },
-  "pde_laplacian_eig_2d": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.7639320225002108
-    }
-  },
-  "pde_cfl_monotonicity": {
-    "pk": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    },
-    "over": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "dyn_fixed_point": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.7390851332151607
-    }
-  },
-  "dyn_logistic_map": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.5130445095326298
-    }
-  },
-  "dyn_stability_eig": {
-    "ev": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        -3,
-        -2
-      ]
-    }
-  },
-  "ode_heun": {
-    "y": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.714080846608224
-    }
-  },
-  "ode_harmonic_rk4": {
-    "y": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.9999949269073476,
-        0.003185302316436201
-      ]
-    }
-  },
-  "approx_lagrange": {
-    "L": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 9
-    }
-  },
-  "approx_chebyshev_nodes": {
-    "xc": {
-      "class": "double",
-      "size": [
-        1,
-        6
-      ],
-      "real": [
-        0.9659258262890683,
-        0.7071067811865476,
-        0.25881904510252074,
-        -0.25881904510252063,
-        -0.7071067811865475,
-        -0.9659258262890682
-      ]
-    }
-  },
-  "fft_ifft_roundtrip": {
-    "y": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        2,
-        3,
-        4
-      ]
-    }
-  },
-  "fft_freq_detect": {
-    "freq": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3
-    }
-  },
-  "graph_adjacency_powers": {
-    "W": {
-      "class": "double",
-      "size": [
-        3,
-        3
-      ],
-      "real": [
-        2,
-        3,
-        3,
-        3,
-        2,
-        3,
-        3,
-        3,
-        2
-      ]
-    }
-  },
-  "graph_pagerank": {
-    "r": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        0.4,
-        0.19999999999999987,
-        0.4
       ]
     }
   },
@@ -3624,452 +4770,6 @@
       "real": 0
     }
   },
-  "val_normpdf_cdf": {
-    "p1": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.3989422804014327
-    },
-    "p2": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.9750021048517795
-    }
-  },
-  "val_binopdf": {
-    "p": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.3125
-    }
-  },
-  "val_poisspdf": {
-    "p": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.22404180765538775
-    }
-  },
-  "val_icdf_normal": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.959963984540054
-    }
-  },
-  "val_gampdf": {
-    "p": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.2706705664732254
-    }
-  },
-  "val_ode45": {
-    "yf": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.718281834797091
-    }
-  },
-  "val_bvp4c_sine": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.5697446182937784
-    }
-  },
-  "val_dde23": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.1582838165491695
-    }
-  },
-  "sde_euler_maruyama_gbm": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.1239457006249998
-    }
-  },
-  "ode_stiff_backward_euler": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.7351112277912544e-16
-    }
-  },
-  "ode_stability_functions": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.09090909090909091,
-        0.6666666666666666
-      ]
-    }
-  },
-  "ode_astability_trapezoidal": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        1,
-        1,
-        0.9999999999999999
-      ]
-    }
-  },
-  "ode_stiff_explicit_unstable": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1048576
-    }
-  },
-  "ode_stiff_amplification_ratio": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.16666666666666666,
-        4
-      ]
-    }
-  },
-  "val_fminbnd": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "val_fminsearch": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        0.9999730728660298,
-        2.000033824752417
-      ]
-    }
-  },
-  "val_fsolve": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.4142135623746874
-    }
-  },
-  "val_quadprog": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.9999999999749976,
-        1.999999999949995
-      ]
-    }
-  },
-  "val_lsqlin": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.6666666666666679,
-        0.49999999999999967
-      ]
-    }
-  },
-  "val_fminunc": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        2.0000000298023224,
-        3
-      ]
-    }
-  },
-  "val_fmincon_bounds": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.9999999499448299,
-        0.99999997499032
-      ]
-    }
-  },
-  "val_lsqnonlin": {
-    "x": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1.0000000000000002,
-        2.0000000000000004
-      ]
-    }
-  },
-  "val_lsqcurvefit": {
-    "c": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "val_fminunc_quadratic": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        2.000000034795861,
-        -0.9999999299527098
-      ]
-    }
-  },
-  "val_lsqnonlin_circle": {
-    "x": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        0.7071067827406002,
-        0.7071067827406001
-      ]
-    }
-  },
-  "val_fmincon_nonlcon": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.7071067738465495,
-        0.707106768525129
-      ]
-    }
-  },
-  "opt_ista_lasso": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0,
-        1.9199999999999997
-      ]
-    }
-  },
-  "opt_admm_lasso_small": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0,
-        1.9199999999999995
-      ]
-    }
-  },
-  "opt_projected_gradient_simplex": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0,
-        1
-      ]
-    },
-    "s": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "val_fmincon_bounds_nonlcon": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.49999905359719254,
-        0.8660255501888402
-      ]
-    }
-  },
-  "opt_lsqnonlin_inverse": {
-    "rfit": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 8.780543029780221e-10
-    }
-  },
-  "val_interp2": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4
-    }
-  },
-  "val_ppval": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.25
-    }
-  },
-  "val_gridded_interpolant": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 5
-    }
-  },
-  "val_interp3": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4.5
-    }
-  },
-  "val_scattered_interpolant": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.5
-    }
-  },
-  "val_griddata": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.5
-    }
-  },
-  "val_griddedInterpolant_1d": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.5
-    }
-  },
   "val_polyvalm": {
     "M": {
       "class": "double",
@@ -4082,65 +4782,6 @@
         0,
         0,
         8
-      ]
-    }
-  },
-  "val_fft2": {
-    "Y": {
-      "class": "double",
-      "size": [
-        2,
-        2
-      ],
-      "real": [
-        10,
-        -4,
-        -2,
-        0
-      ]
-    }
-  },
-  "val_fftshift": {
-    "y": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        3,
-        4,
-        1,
-        2
-      ]
-    }
-  },
-  "val_hilbert_abs": {
-    "a": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1.4142135623730951,
-        2.23606797749979,
-        3.1622776601683795,
-        4.123105625617661
-      ]
-    }
-  },
-  "val_findpeaks": {
-    "pks": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        2,
-        3,
-        4
       ]
     }
   },
@@ -4332,544 +4973,6 @@
         1
       ],
       "real": 4.440892098500626e-16
-    }
-  },
-  "val_graph_shortestpath": {
-    "p": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        2,
-        3,
-        4
-      ]
-    }
-  },
-  "val_graph_conncomp": {
-    "c": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        1,
-        2,
-        2
-      ]
-    }
-  },
-  "val_graph_distances": {
-    "D": {
-      "class": "double",
-      "size": [
-        4,
-        4
-      ],
-      "real": [
-        0,
-        1,
-        2,
-        3,
-        1,
-        0,
-        1,
-        2,
-        2,
-        1,
-        0,
-        1,
-        3,
-        2,
-        1,
-        0
-      ]
-    }
-  },
-  "val_graph_toposort": {
-    "o": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        1,
-        2,
-        3
-      ]
-    }
-  },
-  "val_ode23": {
-    "yf": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.7181833492485543
-    }
-  },
-  "val_ode113": {
-    "yf": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.71828097235354
-    }
-  },
-  "val_ode15s": {
-    "yf": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.3682957321509729
-    }
-  },
-  "val_deval": {
-    "yf": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.6487212726222376
-    }
-  },
-  "val_linprog_fval": {
-    "fval": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -1
-    }
-  },
-  "val_residue": {
-    "ps": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        2
-      ]
-    },
-    "rs": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        -1,
-        2
-      ]
-    }
-  },
-  "val_centrality": {
-    "c": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        3,
-        2,
-        3
-      ]
-    }
-  },
-  "val_maxflow": {
-    "f": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 5
-    }
-  },
-  "val_minspantree": {
-    "w": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 6
-    }
-  },
-  "val_interpn": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4
-    }
-  },
-  "val_makima": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.229166666666667
-    }
-  },
-  "val_sym_jacobian": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        2
-      ],
-      "real": [
-        12,
-        1,
-        4,
-        1
-      ]
-    }
-  },
-  "val_sym_hessian": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        2
-      ],
-      "real": [
-        6,
-        4,
-        4,
-        0
-      ]
-    }
-  },
-  "val_sym_taylor": {
-    "c": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.6666666666666665
-    }
-  },
-  "val_sym_laplace": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.2
-    }
-  },
-  "val_sym_dsolve": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.718281828459045
-    }
-  },
-  "val_sym_vpasolve": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        -1.4142135623730951,
-        1.4142135623730951
-      ]
-    }
-  },
-  "val_sym_solve_quadratic": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        2,
-        3
-      ]
-    }
-  },
-  "val_sym_solve_quadratic_monic": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        2
-      ]
-    }
-  },
-  "val_sym_solve_quadratic_nob": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        -2,
-        2
-      ]
-    }
-  },
-  "cal_limit_oneside_right": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "cal_limit_oneside_left": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -1
-    }
-  },
-  "cal_limit_removable_oneside": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "cal_limit_at_infinity": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "cal_symsum_default_var": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 55
-    }
-  },
-  "cal_symsum_square": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 30
-    }
-  },
-  "cal_symprod_default": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 120
-    }
-  },
-  "cal_expand_cube": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 27
-    }
-  },
-  "cal_collect": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 15
-    }
-  },
-  "cal_ilaplace": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.1353352832366127
-    }
-  },
-  "cal_taylor_order": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.6666666666666665
-    }
-  },
-  "cal_sym_curl": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        0,
-        0,
-        -2
-      ]
-    }
-  },
-  "cal_sym_divergence": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3
-    }
-  },
-  "cal_sym_gradient": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        12,
-        4
-      ]
-    }
-  },
-  "cal_coeffs": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        1,
-        2,
-        3
-      ]
-    }
-  },
-  "cal_numden": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        3,
-        1
-      ]
-    }
-  },
-  "cal_finverse": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "cal_equations_to_matrix": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        2,
-        1
-      ]
-    }
-  },
-  "cal_assume_simplify": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 5
-    }
-  },
-  "cal_fourier": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "cal_ztrans": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
     }
   },
   "mm_diagonalization_power": {
@@ -5128,116 +5231,6 @@
       ]
     }
   },
-  "cal_power_rule": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 80
-    }
-  },
-  "cal_product_rule": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.2232442754839328
-    }
-  },
-  "cal_quotient_rule": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -0.3011686789397568
-    }
-  },
-  "cal_chain_rule": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.0806046117362795
-    }
-  },
-  "cal_transcendental": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 8.816231451438373
-    }
-  },
-  "cal_second_derivative": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 108
-    }
-  },
-  "cal_taylor_cos": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.5416666666666666
-    }
-  },
-  "cal_antiderivative_poly": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4
-    }
-  },
-  "cal_definite_integral": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 9
-    }
-  },
-  "cal_fundamental_theorem": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 8.666666666666666
-    }
-  },
-  "cal_riemann_midpoint": {
-    "S": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.3333332499999999
-    }
-  },
   "adv_wilkinson_eig": {
     "rr": {
       "class": "double",
@@ -5300,170 +5293,6 @@
       ]
     }
   },
-  "adv_catastrophic_cancellation": {
-    "q": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    },
-    "e1": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.000000082740371e-10
-    },
-    "e2": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.00000000005e-10
-    }
-  },
-  "adv_eps_rounding": {
-    "a": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.220446049250313e-16
-    },
-    "b": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "adv_ieee_flags": {
-    "f": {
-      "class": "logical",
-      "size": [
-        1,
-        5
-      ],
-      "real": [
-        1,
-        1,
-        1,
-        1,
-        1
-      ]
-    }
-  },
-  "adv_nan_propagation": {
-    "flags": {
-      "class": "logical",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        1,
-        1,
-        1
-      ]
-    }
-  },
-  "adv_runge_spline": {
-    "yq": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.042516165428920304
-    }
-  },
-  "adv_runge_pchip": {
-    "yq": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.042246053264491885
-    }
-  },
-  "apla_chemical_balance": {
-    "coeffs": {
-      "class": "double",
-      "size": [
-        4,
-        1
-      ],
-      "real": [
-        1,
-        5,
-        3,
-        3.999999999999999
-      ]
-    }
-  },
-  "apla_static_forces": {
-    "T": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        73.20508075688774,
-        89.65754721680536
-      ]
-    }
-  },
-  "apla_moments": {
-    "M": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        0,
-        0,
-        50
-      ]
-    }
-  },
-  "apla_markov_weather": {
-    "s7": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        0.6672128000000005,
-        0.33278720000000017
-      ]
-    }
-  },
-  "apla_robotics_rotation": {
-    "R90": {
-      "class": "double",
-      "size": [
-        2,
-        2
-      ],
-      "real": [
-        0,
-        0.9999999999999999,
-        -0.9999999999999999,
-        0
-      ]
-    }
-  },
   "apla_svd_lowrank": {
     "err": {
       "class": "double",
@@ -5474,17 +5303,411 @@
       "real": 17.88854381999832
     }
   },
-  "cal_int_sqrt": {
+  "mateq_sylvester": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mateq_lyapunov": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mateq_riccati_care": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.676833230216817e-15
+    }
+  },
+  "geig_pencil": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.4999999999999999,
+        2
+      ]
+    }
+  },
+  "geig_sturm_liouville": {
     "v": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 5.333333333333333
+      "real": 9.646170927520425
     }
   },
-  "cal_int_linear_sub": {
+  "na_power_iteration": {
+    "lam": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.6180339887498953
+    }
+  },
+  "na_gauss_seidel": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_sor": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_thomas_tridiagonal": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.831026719408895e-15
+    }
+  },
+  "na_circulant_fft_solve": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.965068306494546e-16
+    }
+  },
+  "na_inverse_iteration": {
+    "lam": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.381966011250105
+    }
+  },
+  "na_rayleigh_quotient_iteration": {
+    "e": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_jacobi_eigenvalue": {
+    "ev": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        1.2679491924311226,
+        2.9999999999999996,
+        4.732050807568877
+      ]
+    }
+  },
+  "na_arnoldi_ritz": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.732050807568877
+    }
+  },
+  "na_lanczos_ritz": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        1.2679491924311228,
+        3.000000000000001,
+        4.732050807568877
+      ]
+    }
+  },
+  "na_kaczmarz": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_qr_algorithm_eigen": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1.3819660112501053,
+        3.618033988749895
+      ]
+    }
+  },
+  "la_balance_eig_invariant": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.3819660112501051,
+        2.618033988749895
+      ]
+    }
+  },
+  "la_qz_generalized_eig": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        3
+      ]
+    }
+  },
+  "sparse_condest": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 60.000000000000014
+    }
+  },
+  "sparse_find_triplet": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        1,
+        2,
+        1,
+        2
+      ]
+    }
+  },
+  "sparse_nonzeros": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        4,
+        3,
+        5
+      ]
+    }
+  },
+  "nla_cholupdate": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.7763568394002505e-15
+    }
+  },
+  "la_householder": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -4.440892098500626e-16
+    }
+  },
+  "la_woodbury_identity": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "la_polar_decomposition": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.070112049336638e-15
+    }
+  },
+  "la_spectral_theorem": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 7.771561172376097e-16
+    }
+  },
+  "la_positive_definite_chol": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_givens_rotation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -4.440892098500626e-16
+    }
+  },
+  "nla_jacobi_iteration": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_iterative_refinement": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_modified_richardson": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_ssor": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.440892098500626e-16
+    }
+  },
+  "nla_chebyshev_iteration": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_conjugate_residual": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_qr_pivoting": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.380240836061012e-15
+    }
+  },
+  "nla_wilkinson_matrix": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        6,
+        0
+      ]
+    }
+  },
+  "nla_diagonally_dominant": {
     "v": {
       "class": "double",
       "size": [
@@ -5494,17 +5717,31 @@
       "real": 1
     }
   },
-  "cal_int_linear_base": {
+  "nla_jordan_eigenvalues": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        4,
+        4,
+        5
+      ]
+    }
+  },
+  "nla_jordan_similarity": {
     "v": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 10
+      "real": 0
     }
   },
-  "cal_int_byparts_exp": {
+  "nla_jordan_defective_structure": {
     "v": {
       "class": "double",
       "size": [
@@ -5514,94 +5751,2020 @@
       "real": 1
     }
   },
-  "cal_int_byparts_sin": {
-    "v": {
+  "newton_sqrt2": {
+    "x": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 3.141592653589793
+      "real": 1.414213562373095
     }
   },
-  "cal_int_byparts_poly_exp": {
-    "v": {
+  "trapz": {
+    "I": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 0.7182818284590452
+      "real": 0.33333349999999995
     }
   },
-  "cal_int_byparts_log": {
-    "v": {
+  "lu_solve": {
+    "x": {
       "class": "double",
       "size": [
-        1,
+        2,
         1
       ],
-      "real": 0.6362943611198906
+      "real": [
+        1,
+        2
+      ]
     }
   },
-  "cal_int_arctan": {
-    "v": {
+  "bisection_sqrt2": {
+    "root": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 0.7853981633974483
+      "real": 1.414213562373095
     }
   },
-  "cal_limit_lhopital": {
-    "v": {
+  "gaussian_elimination": {
+    "x": {
       "class": "double",
       "size": [
-        1,
+        3,
         1
       ],
-      "real": 0.5
+      "real": [
+        2,
+        3.0000000000000004,
+        -0.9999999999999999
+      ]
     }
   },
-  "cal_int_partfrac": {
-    "v": {
+  "simpson_sin": {
+    "I": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 0.2876820724517809
+      "real": 2.0000000108245044
     }
   },
-  "cal_int_partfrac_num": {
-    "v": {
+  "euler_exp": {
+    "y": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 4.380898121294083
+      "real": 2.7182682371744953
     }
   },
-  "cal_int_partfrac_diffsq": {
-    "v": {
+  "secant_sqrt2": {
+    "root": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 0.2027325540540822
+      "real": 1.414213562373095
     }
   },
-  "cal_limit_derivative": {
+  "cholesky_solve": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        0.9999999999999999
+      ]
+    }
+  },
+  "newton_interp": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 9
+    }
+  },
+  "rk4_exp": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.718281828234404
+    }
+  },
+  "na_richardson_extrapolation": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1252948350914949e-7
+    }
+  },
+  "na_romberg_integration": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.3084646133829665e-14
+    }
+  },
+  "na_aitken_acceleration": {
     "v": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 0.5403023058681398
+      "real": 0.7390826625151952
+    }
+  },
+  "na_gauss_hermite_golub_welsch": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_adaptive_integral": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.7251534362449092e-12
+    }
+  },
+  "na_clenshaw_curtis": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "dg_arc_length": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6.283185307179586
+    }
+  },
+  "na_adaptive_simpson": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.7425831322934755e-9
+    }
+  },
+  "na_kahan_summation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.0000000000001
+    }
+  },
+  "poly_polyder_polyint": {
+    "d": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        0
+      ]
+    },
+    "i": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        0
+      ]
+    }
+  },
+  "poly_deconv": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        1
+      ]
+    }
+  },
+  "specfun_besselj": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.000013268284301200238
+    }
+  },
+  "specfun_legendre": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -0.12499999999999989
+    }
+  },
+  "specfun_gamma_half": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 52.342777784553526
+    }
+  },
+  "num_integral2": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "num_gradient_2d": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        4,
+        4
+      ]
+    }
+  },
+  "num_del2": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "ode_heun": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.714080846608224
+    }
+  },
+  "ode_harmonic_rk4": {
+    "y": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.9999949269073476,
+        0.003185302316436201
+      ]
+    }
+  },
+  "val_ode45": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.718281834797091
+    }
+  },
+  "val_bvp4c_sine": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5697446182937784
+    }
+  },
+  "val_dde23": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.1582838165491695
+    }
+  },
+  "sde_euler_maruyama_gbm": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1239457006249998
+    }
+  },
+  "ode_stiff_backward_euler": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.7351112277912544e-16
+    }
+  },
+  "ode_stability_functions": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.09090909090909091,
+        0.6666666666666666
+      ]
+    }
+  },
+  "ode_astability_trapezoidal": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        0.9999999999999999
+      ]
+    }
+  },
+  "ode_stiff_explicit_unstable": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1048576
+    }
+  },
+  "ode_stiff_amplification_ratio": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.16666666666666666,
+        4
+      ]
+    }
+  },
+  "val_ode23": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.7181833492485543
+    }
+  },
+  "val_ode113": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.71828097235354
+    }
+  },
+  "val_ode15s": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3682957321509729
+    }
+  },
+  "val_deval": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.6487212726222376
+    }
+  },
+  "ode_symplectic_verlet": {
+    "E": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.49971273371475067
+    }
+  },
+  "na_numerov_method": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9997837516005899
+    }
+  },
+  "na_adams_predictor_corrector": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.13432537004944223
+    }
+  },
+  "na_milstein_sde": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1039032157256938
+    }
+  },
+  "ode_mass_matrix_rk4": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.7602445970851343,
+        -0.9187253698496514
+      ]
+    }
+  },
+  "ode_ode15s_mass": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.759157569150769,
+        -0.9170538692092431
+      ]
+    }
+  },
+  "ode_shooting_bvp": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1883951058425322
+    }
+  },
+  "ode_exponential_integrator": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.6832623561226214,
+        0.3167376438773787
+      ]
+    }
+  },
+  "ode_analytic_jacobian": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.36761193514487017
+    }
+  },
+  "ode_tolerances": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3678794416037237
+    }
+  },
+  "pde_poisson_1d": {
+    "u": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0.06944444444444445,
+        0.1111111111111111,
+        0.125,
+        0.11111111111111112,
+        0.06944444444444445
+      ]
+    }
+  },
+  "pde_heat_1d_step": {
+    "un": {
+      "class": "double",
+      "size": [
+        7,
+        1
+      ],
+      "real": [
+        0,
+        1,
+        2,
+        2.2,
+        2,
+        1,
+        0
+      ]
+    }
+  },
+  "pde_fem_1d_stiffness": {
+    "K": {
+      "class": "double",
+      "size": [
+        5,
+        5
+      ],
+      "real": [
+        1,
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        2,
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        2,
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        2,
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        1
+      ]
+    }
+  },
+  "pde_heat_ftcs_multistep": {
+    "u": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0,
+        0.059126271999999994,
+        0.0835994624,
+        0.059126271999999994,
+        0
+      ]
+    }
+  },
+  "pde_heat_backward_euler": {
+    "u": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0.4152650644043107,
+        0.6787189602081609,
+        0.7641011210542843,
+        0.6787189602081609,
+        0.41526506440431066
+      ]
+    }
+  },
+  "pde_heat_crank_nicolson": {
+    "u": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0.39156303973176515,
+        0.6648376356659205,
+        0.7600476990350785,
+        0.6648376356659206,
+        0.39156303973176526
+      ]
+    }
+  },
+  "pde_laplace_2d_stencil": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        9
+      ],
+      "real": [
+        0,
+        1,
+        0,
+        1,
+        -4,
+        1,
+        0,
+        1,
+        0
+      ]
+    }
+  },
+  "pde_poisson_2d_residual": {
+    "res": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.2412670766236366e-15
+    }
+  },
+  "pde_reaction_diffusion_step": {
+    "un": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0.1,
+        0.36000000000000004,
+        0.44999999999999996,
+        0.36,
+        0.1
+      ]
+    }
+  },
+  "pde_advection_upwind": {
+    "u": {
+      "class": "double",
+      "size": [
+        8,
+        1
+      ],
+      "real": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    }
+  },
+  "pde_parabolic_stability": {
+    "rho": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.8928203230275511
+    }
+  },
+  "pde_fd_hamiltonian_eig": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        4.925605634718173,
+        19.5923926483119,
+        43.67272925503311
+      ]
+    }
+  },
+  "pde_burgers_godunov": {
+    "u": {
+      "class": "double",
+      "size": [
+        11,
+        1
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0.8725090550940104,
+        0.46070498904901447,
+        0.22589674123474585,
+        0.2008768500719849,
+        0.20001236455024426,
+        0.2
+      ]
+    }
+  },
+  "pde_traffic_shock_speed": {
+    "s": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.29999999999999993
+    }
+  },
+  "pde_wave_leapfrog": {
+    "u": {
+      "class": "double",
+      "size": [
+        11,
+        1
+      ],
+      "real": [
+        0,
+        0.18236268757826488,
+        0.3468744447008122,
+        0.47743171435967574,
+        0.56125464135466,
+        0.5901380535628218,
+        0.5612546413546597,
+        0.4774317143596757,
+        0.34687444470081213,
+        0.18236268757826485,
+        0
+      ]
+    }
+  },
+  "pde_classification_discriminant": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        -4,
+        0,
+        4
+      ]
+    }
+  },
+  "pde_separation_of_variables": {
+    "u": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7723116068585908
+    }
+  },
+  "pde_steady_heat_2d": {
+    "uc": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.25000000000000006
+    }
+  },
+  "pde_advection_upwind_periodic": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.17724441948741437
+    },
+    "peak": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5767072072021943
+    }
+  },
+  "pde_advection_lax_friedrichs": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.23333333333333336
+    },
+    "tv": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.9952278211820682
+    }
+  },
+  "pde_advection_lax_wendroff": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.17724441948741437
+    },
+    "peak": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9678824355078883
+    }
+  },
+  "pde_heat_cn_spdiags": {
+    "energy": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.6665612526431095
+    }
+  },
+  "pde_poisson_2d_kron": {
+    "resid": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6.385471637914544e-15
+    }
+  },
+  "pde_finite_volume_advection": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.30000000000000004
+    },
+    "dm": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "pde_spectral_fft_derivative": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.3322676295501878e-15
+    }
+  },
+  "pde_laplacian_eig_2d": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7639320225002108
+    }
+  },
+  "pde_cfl_monotonicity": {
+    "pk": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    },
+    "over": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "fem_1d_galerkin_solve": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.12500000000000008
+    }
+  },
+  "spectral_chebyshev_diff": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.909521395506488e-7
+    }
+  },
+  "pde_strang_splitting": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.6064270805530192,
+        -0.6625981444499104
+      ]
+    }
+  },
+  "pde_varcoef_diffusion": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.09316724934773803
+    }
+  },
+  "pde_maccormack": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.17724441948741437
+    },
+    "peak": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9678824355078883
+    }
+  },
+  "pde_method_of_lines": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.37573556255587387
+    }
+  },
+  "pde_adi_heat_2d": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.22429557559756658
+    }
+  },
+  "opt_golden_section": {
+    "xmin": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.000000000000144
+    }
+  },
+  "opt_gradient_descent": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        5.230919145657151e-31,
+        3.5275395543276595e-9
+      ]
+    }
+  },
+  "opt_newton_min": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "val_fminbnd": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "val_fminsearch": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.9999730728660298,
+        2.000033824752417
+      ]
+    }
+  },
+  "val_fsolve": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.4142135623746874
+    }
+  },
+  "val_quadprog": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.9999999999749976,
+        1.999999999949995
+      ]
+    }
+  },
+  "val_lsqlin": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.6666666666666679,
+        0.49999999999999967
+      ]
+    }
+  },
+  "val_fminunc": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2.0000000298023224,
+        3
+      ]
+    }
+  },
+  "val_fmincon_bounds": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.9999999499448299,
+        0.99999997499032
+      ]
+    }
+  },
+  "val_lsqnonlin": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1.0000000000000002,
+        2.0000000000000004
+      ]
+    }
+  },
+  "val_lsqcurvefit": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "val_fminunc_quadratic": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2.000000034795861,
+        -0.9999999299527098
+      ]
+    }
+  },
+  "val_lsqnonlin_circle": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.7071067827406002,
+        0.7071067827406001
+      ]
+    }
+  },
+  "val_fmincon_nonlcon": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.7071067738465495,
+        0.707106768525129
+      ]
+    }
+  },
+  "opt_ista_lasso": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0,
+        1.9199999999999997
+      ]
+    }
+  },
+  "opt_admm_lasso_small": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0,
+        1.9199999999999995
+      ]
+    }
+  },
+  "opt_projected_gradient_simplex": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0,
+        1
+      ]
+    },
+    "s": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "val_fmincon_bounds_nonlcon": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.49999905359719254,
+        0.8660255501888402
+      ]
+    }
+  },
+  "opt_lsqnonlin_inverse": {
+    "rfit": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8.780543029780221e-10
+    }
+  },
+  "val_linprog_fval": {
+    "fval": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -1
+    }
+  },
+  "na_gauss_newton": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        0.5
+      ]
+    }
+  },
+  "na_total_least_squares": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.13863482221582288,
+        0.9451414978539232
+      ]
+    }
+  },
+  "na_frank_wolfe": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.000024629328604502222,
+        0.9999753706713954
+      ]
+    }
+  },
+  "opt_intlinprog_knapsack": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 220
+    }
+  },
+  "opt_trust_region_dogleg": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.5,
+        3
+      ]
+    }
+  },
+  "opt_barrier_method": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9999500049993751
+    }
+  },
+  "opt_fgoalattain": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        -8.27227857808016e-9
+      ]
+    }
+  },
+  "opt_fminimax": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "markov_p10": {
+    "r10": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0.28390202940000026,
+        0.4472503494,
+        0.2688476212
+      ]
+    }
+  },
+  "markov_eig": {
+    "ev": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0.42679491924311225,
+        0.773205080756888,
+        1
+      ]
+    }
+  },
+  "grad_ridge": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.5836575875486378,
+        0.5317769130998704
+      ]
+    }
+  },
+  "grad_var_std": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6.666666666666667
+    },
+    "s": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.581988897471611
+    }
+  },
+  "grad_corrcoef": {
+    "R": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        1,
+        0.9827076298239908,
+        0.9827076298239908,
+        1
+      ]
+    }
+  },
+  "stat_entropy_kl": {
+    "H": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.5
+    },
+    "KL": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.25
+    }
+  },
+  "val_normpdf_cdf": {
+    "p1": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3989422804014327
+    },
+    "p2": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9750021048517795
+    }
+  },
+  "val_binopdf": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3125
+    }
+  },
+  "val_poisspdf": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.22404180765538775
+    }
+  },
+  "val_icdf_normal": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.959963984540054
+    }
+  },
+  "val_gampdf": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.2706705664732254
+    }
+  },
+  "qmc_van_der_corput": {
+    "I": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.33138276636600494
+    }
+  },
+  "stat_linreg_normal_qr": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        -1.4210854715202005e-15,
+        1.1000000000000005,
+        1.4888583356622763e-15
+      ]
+    }
+  },
+  "stat_logistic_irls": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -1.5581610551624732,
+        1.0904255602981154
+      ]
+    }
+  },
+  "stat_pca_svd": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2.6666666666666674,
+        0.6666666666666669
+      ]
+    }
+  },
+  "stat_ttest_onesample": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        1
+      ]
+    }
+  },
+  "stat_ttest2_twosample": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        0.07098765432098772
+      ]
+    }
+  },
+  "stat_bootstrap_fixed": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        4,
+        8.5,
+        6
+      ]
+    }
+  },
+  "stat_movmean_movmedian": {
+    "mm": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        1.5,
+        2,
+        3,
+        4,
+        4.5
+      ]
+    },
+    "md": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        3,
+        2,
+        5,
+        3,
+        5.5
+      ]
+    }
+  },
+  "stat_cov_matrix": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.166666666666667
+    }
+  },
+  "stat_cov_vectors": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.166666666666667
+    }
+  },
+  "lang_rng_reproducibility": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "val_sym_jacobian": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        12,
+        1,
+        4,
+        1
+      ]
+    }
+  },
+  "val_sym_hessian": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        6,
+        4,
+        4,
+        0
+      ]
+    }
+  },
+  "val_sym_taylor": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.6666666666666665
+    }
+  },
+  "val_sym_laplace": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.2
+    }
+  },
+  "val_sym_dsolve": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.718281828459045
+    }
+  },
+  "val_sym_vpasolve": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -1.4142135623730951,
+        1.4142135623730951
+      ]
+    }
+  },
+  "val_sym_solve_quadratic": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        3
+      ]
+    }
+  },
+  "val_sym_solve_quadratic_monic": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        2
+      ]
+    }
+  },
+  "val_sym_solve_quadratic_nob": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -2,
+        2
+      ]
+    }
+  },
+  "cal_expand_cube": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 27
+    }
+  },
+  "cal_collect": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 15
+    }
+  },
+  "cal_ilaplace": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.1353352832366127
+    }
+  },
+  "cal_taylor_order": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.6666666666666665
+    }
+  },
+  "cal_sym_curl": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0,
+        0,
+        -2
+      ]
+    }
+  },
+  "cal_sym_divergence": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "cal_sym_gradient": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        12,
+        4
+      ]
+    }
+  },
+  "cal_coeffs": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "cal_numden": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        3,
+        1
+      ]
+    }
+  },
+  "cal_finverse": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_equations_to_matrix": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        1
+      ]
+    }
+  },
+  "cal_assume_simplify": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "cal_fourier": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "cal_ztrans": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
     }
   },
   "cal_solve_linear": {
@@ -5662,36 +7825,6 @@
         1
       ],
       "real": 5
-    }
-  },
-  "cal_improper_exp": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "cal_improper_power": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "cal_improper_decay": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.5
     }
   },
   "cal_trig_pythagorean": {
@@ -5864,953 +7997,6 @@
       "real": 1
     }
   },
-  "cal_subst_gaussian": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.7182818284590453
-    }
-  },
-  "cal_subst_sincos": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.5
-    }
-  },
-  "cal_subst_rational_log": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.34657359027997264
-    }
-  },
-  "cal_subst_tan": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.34657359027997264
-    }
-  },
-  "cal_subst_power": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.066666666666667
-    }
-  },
-  "cal_subst_nested": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.7182818284590453
-    }
-  },
-  "mateq_sylvester": {
-    "r": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mateq_lyapunov": {
-    "r": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "mateq_riccati_care": {
-    "r": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.676833230216817e-15
-    }
-  },
-  "geig_pencil": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.4999999999999999,
-        2
-      ]
-    }
-  },
-  "geig_sturm_liouville": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 9.646170927520425
-    }
-  },
-  "fem_1d_galerkin_solve": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.12500000000000008
-    }
-  },
-  "ode_symplectic_verlet": {
-    "E": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.49971273371475067
-    }
-  },
-  "spectral_chebyshev_diff": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3.909521395506488e-7
-    }
-  },
-  "pde_strang_splitting": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.6064270805530192,
-        -0.6625981444499104
-      ]
-    }
-  },
-  "pde_varcoef_diffusion": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.09316724934773803
-    }
-  },
-  "qmc_van_der_corput": {
-    "I": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.33138276636600494
-    }
-  },
-  "geom_convhull_area": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "geom_convhull_perimeter": {
-    "per": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4
-    }
-  },
-  "geom_convhulln_volume_3d": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "geom_delaunay_triangles": {
-    "nt": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4
-    }
-  },
-  "geom_delaunay_triangulation_obj": {
-    "nt": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "geom_voronoi_cells": {
-    "nc": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 5
-    }
-  },
-  "geom_polyarea": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        0.5
-      ]
-    }
-  },
-  "geom_inpolygon": {
-    "v": {
-      "class": "logical",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        1,
-        0
-      ]
-    }
-  },
-  "geom_pdist": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 5
-    }
-  },
-  "ctrl_tf_dcgain": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "ctrl_zpk_dcgain": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3
-    }
-  },
-  "ctrl_ss_dcgain": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "ctrl_pole_sorted": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        -2,
-        -1
-      ]
-    }
-  },
-  "ctrl_feedback_dcgain": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "ctrl_step_final": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.9995181183429719
-    }
-  },
-  "ctrl_impulse_integral": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.49857811913661043
-    }
-  },
-  "ctrl_lsim_steady": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 5.999727600421419
-    }
-  },
-  "ctrl_lqr_gain": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        0.9999999999999993,
-        1.732050807568877
-      ]
-    }
-  },
-  "ctrl_bode_magnitude": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.7071067811865475
-    }
-  },
-  "ctrl_margin_phase": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 81.71887200158994
-    }
-  },
-  "pde_maccormack": {
-    "mass": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.17724441948741437
-    },
-    "peak": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.9678824355078883
-    }
-  },
-  "pde_method_of_lines": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.37573556255587387
-    }
-  },
-  "na_richardson_extrapolation": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.1252948350914949e-7
-    }
-  },
-  "na_romberg_integration": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3.3084646133829665e-14
-    }
-  },
-  "na_aitken_acceleration": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.7390826625151952
-    }
-  },
-  "na_power_iteration": {
-    "lam": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3.6180339887498953
-    }
-  },
-  "na_gauss_seidel": {
-    "r": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "na_sor": {
-    "r": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "na_halley_method": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "na_numerov_method": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.9997837516005899
-    }
-  },
-  "na_gauss_newton": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        2,
-        0.5
-      ]
-    }
-  },
-  "na_thomas_tridiagonal": {
-    "r": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.831026719408895e-15
-    }
-  },
-  "na_circulant_fft_solve": {
-    "r": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4.965068306494546e-16
-    }
-  },
-  "na_inverse_iteration": {
-    "lam": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.381966011250105
-    }
-  },
-  "na_rayleigh_quotient_iteration": {
-    "e": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "na_jacobi_eigenvalue": {
-    "ev": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        1.2679491924311226,
-        2.9999999999999996,
-        4.732050807568877
-      ]
-    }
-  },
-  "na_gauss_hermite_golub_welsch": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "na_adaptive_integral": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.7251534362449092e-12
-    }
-  },
-  "na_total_least_squares": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.13863482221582288,
-        0.9451414978539232
-      ]
-    }
-  },
-  "na_frank_wolfe": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.000024629328604502222,
-        0.9999753706713954
-      ]
-    }
-  },
-  "na_broyden_root": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.7071067811865476,
-        0.7071067811865476
-      ]
-    }
-  },
-  "na_adams_predictor_corrector": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.13432537004944223
-    }
-  },
-  "na_milstein_sde": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.1039032157256938
-    }
-  },
-  "stat_linreg_normal_qr": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        -1.4210854715202005e-15,
-        1.1000000000000005,
-        1.4888583356622763e-15
-      ]
-    }
-  },
-  "stat_logistic_irls": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        -1.5581610551624732,
-        1.0904255602981154
-      ]
-    }
-  },
-  "stat_pca_svd": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        2.6666666666666674,
-        0.6666666666666669
-      ]
-    }
-  },
-  "opt_intlinprog_knapsack": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 220
-    }
-  },
-  "ode_mass_matrix_rk4": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.7602445970851343,
-        -0.9187253698496514
-      ]
-    }
-  },
-  "ode_ode15s_mass": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.759157569150769,
-        -0.9170538692092431
-      ]
-    }
-  },
-  "na_arnoldi_ritz": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4.732050807568877
-    }
-  },
-  "na_lanczos_ritz": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        1.2679491924311228,
-        3.000000000000001,
-        4.732050807568877
-      ]
-    }
-  },
-  "na_clenshaw_curtis": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "coding_gf2_polymul": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        1,
-        1,
-        1
-      ]
-    }
-  },
-  "coding_hammgen": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        7,
-        4,
-        3
-      ]
-    }
-  },
-  "coding_biterr": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        2,
-        0.5
-      ]
-    }
-  },
-  "stat_ttest_onesample": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        0,
-        1
-      ]
-    }
-  },
-  "stat_ttest2_twosample": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        0,
-        0.07098765432098772
-      ]
-    }
-  },
-  "stat_bootstrap_fixed": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        4,
-        8.5,
-        6
-      ]
-    }
-  },
-  "ml_kmeans_lloyd": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1.25,
-        3.9
-      ]
-    }
-  },
-  "ml_rbf_kernel": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        0.6065306597126334,
-        1,
-        0.6065306597126334
-      ]
-    }
-  },
-  "ml_kernel_ridge": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.9417277774642593
-    }
-  },
-  "ml_nn_forward": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.22
-    }
-  },
-  "opt_matchpairs_assignment": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        2
-      ],
-      "real": [
-        1,
-        2,
-        3,
-        1,
-        2,
-        3
-      ]
-    }
-  },
-  "coding_binary_entropy": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.8112781244591328
-    }
-  },
-  "coding_mutual_information": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.124511249783653
-    }
-  },
-  "coding_gf2_divide": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        1,
-        1,
-        0
-      ]
-    }
-  },
-  "coding_hamming_syndrome": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        0,
-        0,
-        1
-      ]
-    }
-  },
   "cal_resultant": {
     "v": {
       "class": "double",
@@ -6831,67 +8017,24 @@
       "real": -4
     }
   },
-  "nt_gcd_lcm": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        18,
-        12
-      ]
-    }
-  },
-  "nt_modular_exponentiation": {
+  "dg_curve_curvature": {
     "v": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 4
+      "real": 0.5
     }
   },
-  "nt_modular_inverse": {
+  "dg_jacobian_polar_det": {
     "v": {
       "class": "double",
       "size": [
         1,
         1
       ],
-      "real": 5
-    }
-  },
-  "nt_primality": {
-    "v": {
-      "class": "logical",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        1,
-        0
-      ]
-    }
-  },
-  "nt_integer_factorization": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        6
-      ],
-      "real": [
-        2,
-        2,
-        2,
-        3,
-        3,
-        5
-      ]
+      "real": 3
     }
   },
   "topo_betti_hollow_triangle": {
@@ -6921,1115 +8064,6 @@
     }
   },
   "topo_euler_characteristic": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "dg_curve_curvature": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.5
-    }
-  },
-  "dg_jacobian_polar_det": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3
-    }
-  },
-  "dg_arc_length": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 6.283185307179586
-    }
-  },
-  "dyn_newton_fixed_point": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.7142857142857143
-    }
-  },
-  "dyn_stable_cycle_period4": {
-    "v": {
-      "class": "double",
-      "size": [
-        4,
-        1
-      ],
-      "real": [
-        0.38281968301732416,
-        0.5008842103072179,
-        0.8269407065914387,
-        0.8749972636024641
-      ]
-    }
-  },
-  "coding_generator_paritycheck": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "na_false_position": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.220446049250313e-16
-    }
-  },
-  "na_brent_fzero": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.0945514815423265
-    }
-  },
-  "na_adaptive_simpson": {
-    "err": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3.7425831322934755e-9
-    }
-  },
-  "na_pade_exp": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.6486486486486487
-    }
-  },
-  "na_bezier_decasteljau": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.75
-    }
-  },
-  "na_bspline_deboor": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.5
-    }
-  },
-  "na_kaczmarz": {
-    "r": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "na_qr_algorithm_eigen": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1.3819660112501053,
-        3.618033988749895
-      ]
-    }
-  },
-  "ode_shooting_bvp": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.1883951058425322
-    }
-  },
-  "ode_exponential_integrator": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.6832623561226214,
-        0.3167376438773787
-      ]
-    }
-  },
-  "pde_adi_heat_2d": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.22429557559756658
-    }
-  },
-  "opt_trust_region_dogleg": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.5,
-        3
-      ]
-    }
-  },
-  "opt_barrier_method": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.9999500049993751
-    }
-  },
-  "na_kahan_summation": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.0000000000001
-    }
-  },
-  "lang_cellfun": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        2,
-        3,
-        1
-      ]
-    }
-  },
-  "lang_arrayfun": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        4,
-        9,
-        16
-      ]
-    }
-  },
-  "lang_set_operations": {
-    "ia": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        2,
-        4
-      ]
-    },
-    "sd": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        1,
-        3
-      ]
-    },
-    "im": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        0,
-        1,
-        1
-      ]
-    }
-  },
-  "lang_flip_rot90_triu": {
-    "fl": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        4,
-        3,
-        2,
-        1
-      ]
-    },
-    "rt": {
-      "class": "double",
-      "size": [
-        2,
-        2
-      ],
-      "real": [
-        2,
-        1,
-        4,
-        3
-      ]
-    },
-    "tu": {
-      "class": "double",
-      "size": [
-        3,
-        3
-      ],
-      "real": [
-        1,
-        0,
-        0,
-        2,
-        5,
-        0,
-        3,
-        6,
-        9
-      ]
-    }
-  },
-  "lang_nchoosek_factorial": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        15,
-        120
-      ]
-    }
-  },
-  "lang_fillmissing": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        5
-      ],
-      "real": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ]
-    }
-  },
-  "lang_discretize": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        1,
-        2,
-        3
-      ]
-    }
-  },
-  "cal_cumtrapz": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        0,
-        1.5,
-        4,
-        7.5
-      ]
-    }
-  },
-  "poly_polyder_polyint": {
-    "d": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        2,
-        0
-      ]
-    },
-    "i": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        1,
-        1,
-        0
-      ]
-    }
-  },
-  "poly_deconv": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        3
-      ],
-      "real": [
-        1,
-        2,
-        1
-      ]
-    }
-  },
-  "la_toeplitz_hankel": {
-    "tp": {
-      "class": "double",
-      "size": [
-        3,
-        3
-      ],
-      "real": [
-        1,
-        2,
-        3,
-        2,
-        1,
-        2,
-        3,
-        2,
-        1
-      ]
-    },
-    "hk": {
-      "class": "double",
-      "size": [
-        3,
-        3
-      ],
-      "real": [
-        1,
-        2,
-        3,
-        2,
-        3,
-        0,
-        3,
-        0,
-        0
-      ]
-    }
-  },
-  "la_blkdiag": {
-    "v": {
-      "class": "double",
-      "size": [
-        4,
-        4
-      ],
-      "real": [
-        1,
-        0,
-        0,
-        0,
-        2,
-        0,
-        0,
-        0,
-        0,
-        3,
-        0,
-        0,
-        0,
-        0,
-        4,
-        5
-      ]
-    }
-  },
-  "stat_movmean_movmedian": {
-    "mm": {
-      "class": "double",
-      "size": [
-        1,
-        5
-      ],
-      "real": [
-        1.5,
-        2,
-        3,
-        4,
-        4.5
-      ]
-    },
-    "md": {
-      "class": "double",
-      "size": [
-        1,
-        5
-      ],
-      "real": [
-        3,
-        2,
-        5,
-        3,
-        5.5
-      ]
-    }
-  },
-  "sig_filter": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        1,
-        3,
-        5,
-        7
-      ]
-    }
-  },
-  "sig_xcorr": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        5
-      ],
-      "real": [
-        3.0000000000000004,
-        8,
-        14,
-        8,
-        3.0000000000000004
-      ]
-    }
-  },
-  "la_balance_eig_invariant": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        0.3819660112501051,
-        2.618033988749895
-      ]
-    }
-  },
-  "la_qz_generalized_eig": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        2,
-        3
-      ]
-    }
-  },
-  "opt_fgoalattain": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        1
-      ],
-      "real": [
-        1,
-        -8.27227857808016e-9
-      ]
-    }
-  },
-  "opt_fminimax": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "err_dim_mismatch": {
-    "error": "Incorrect dimensions for matrix multiplication. Check that the number of columns in the first matrix matches the number of rows in the second matrix. To operate on each element of the matrix individually, use TIMES (.*) for elementwise multiplication."
-  },
-  "err_oob_index": {
-    "error": "Index exceeds the number of array elements. Index must not exceed 2."
-  },
-  "err_undefined_variable": {
-    "error": "Unrecognized function or variable 'undefined_xyz_var'."
-  },
-  "err_noninteger_index": {
-    "error": "Array indices must be positive integers or logical values."
-  },
-  "err_bad_concat": {
-    "error": "Dimensions of arrays being concatenated are not consistent."
-  },
-  "specfun_besselj": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.000013268284301200238
-    }
-  },
-  "specfun_legendre": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -0.12499999999999989
-    }
-  },
-  "specfun_gamma_half": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 52.342777784553526
-    }
-  },
-  "stat_cov_matrix": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3.166666666666667
-    }
-  },
-  "stat_cov_vectors": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3.166666666666667
-    }
-  },
-  "dsp_conv2_valid": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 12
-    }
-  },
-  "dsp_interpft": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.7071067811865476
-    }
-  },
-  "num_integral2": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "num_gradient_2d": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        4,
-        4
-      ]
-    }
-  },
-  "num_del2": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "sparse_condest": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 60.000000000000014
-    }
-  },
-  "sparse_find_triplet": {
-    "v": {
-      "class": "double",
-      "size": [
-        2,
-        3
-      ],
-      "real": [
-        1,
-        2,
-        1,
-        2,
-        1,
-        2
-      ]
-    }
-  },
-  "sparse_nonzeros": {
-    "v": {
-      "class": "double",
-      "size": [
-        3,
-        1
-      ],
-      "real": [
-        4,
-        3,
-        5
-      ]
-    }
-  },
-  "nla_cholupdate": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1.7763568394002505e-15
-    }
-  },
-  "ode_analytic_jacobian": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.36761193514487017
-    }
-  },
-  "ode_tolerances": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0.3678794416037237
-    }
-  },
-  "lang_setxor": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        1,
-        4
-      ]
-    }
-  },
-  "lang_strsplit_contains": {
-    "n": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3
-    },
-    "tf": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 1
-    }
-  },
-  "lang_closure_capture_by_value": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 6
-    }
-  },
-  "lang_nested_function_handle": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 12
-    }
-  },
-  "lang_break_continue": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 12
-    }
-  },
-  "lang_rng_reproducibility": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "la_cayley_hamilton": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "la_cramer_numeric": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.220446049250313e-16
-    }
-  },
-  "la_rank_nullity": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 3
-    }
-  },
-  "la_schur_complement": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2.5
-    }
-  },
-  "la_householder": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -4.440892098500626e-16
-    }
-  },
-  "la_woodbury_identity": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "la_outer_product_rank1": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        1,
-        10
-      ]
-    }
-  },
-  "la_adjugate": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        4
-      ],
-      "real": [
-        4.000000000000002,
-        -3.0000000000000018,
-        -2,
-        1.0000000000000007
-      ]
-    }
-  },
-  "la_polar_decomposition": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4.070112049336638e-15
-    }
-  },
-  "la_pfaffian": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "la_minor_cofactor": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 2
-    }
-  },
-  "la_cauchy_binet": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -5.9999999999999964
-    }
-  },
-  "la_spectral_theorem": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 7.771561172376097e-16
-    }
-  },
-  "la_positive_definite_chol": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "nla_givens_rotation": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": -4.440892098500626e-16
-    }
-  },
-  "nla_jacobi_iteration": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "nla_iterative_refinement": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "nla_modified_richardson": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "nla_ssor": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4.440892098500626e-16
-    }
-  },
-  "nla_chebyshev_iteration": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "nla_conjugate_residual": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 0
-    }
-  },
-  "nla_qr_pivoting": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        1
-      ],
-      "real": 4.380240836061012e-15
-    }
-  },
-  "nla_wilkinson_matrix": {
-    "v": {
-      "class": "double",
-      "size": [
-        1,
-        2
-      ],
-      "real": [
-        6,
-        0
-      ]
-    }
-  },
-  "nla_diagonally_dominant": {
     "v": {
       "class": "double",
       "size": [

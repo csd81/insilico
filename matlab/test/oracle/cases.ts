@@ -485,6 +485,9 @@ export const CASES: OracleCase[] = [
   { name: 'nla-qr-pivoting', src: 'A = [1 2 3; 4 5 6; 7 8 9]; [Q, R, E] = qr(A); v = norm(A*E - Q*R);', vars: ['v'], tol: 1e-7, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['rrqr', 'column-pivoting', 'rank-revealing'] },
   { name: 'nla-wilkinson-matrix', src: 'W = wilkinson(5); v = [trace(W) W(3,3)];', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['wilkinson-matrix', 'eigenvalue-test'] },
   { name: 'nla-diagonally-dominant', src: 'A = [4 1; 1 3]; v = double(all(2*abs(diag(A)) > sum(abs(A), 2)));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'numerical-linear-algebra', tags: ['diagonally-dominant', 'convergence-criterion'] },
+  { name: 'nla-jordan-eigenvalues', src: 'A = [4 1 1; 0 4 0; 0 0 5]; v = sort(diag(double(jordan(A))));', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['jordan-form', 'eigenvalues'] },
+  { name: 'nla-jordan-similarity', src: 'A = [5 1 0; 0 5 1; 0 0 5]; [V, J] = jordan(A); Vd = double(V); Jd = double(J); v = norm(A*Vd - Vd*Jd);', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['jordan-form', 'generalized-eigenvectors', 'similarity-invariant'] },
+  { name: 'nla-jordan-defective-structure', src: 'A = [2 1 0; 0 2 0; 0 0 3]; J = double(jordan(A)); v = sum(sum(triu(J, 1)));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['jordan-form', 'defective', 'block-structure'] },
 
   // ══════════ numerical-methods (28) ══════════
   { name: 'newton-sqrt2', src: 'x = 1; for k = 1:20, x = x - (x^2 - 2)/(2*x); end', vars: ['x'], level: 'undergrad', domain: 'numerical-methods' },
