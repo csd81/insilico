@@ -6372,5 +6372,138 @@
         0.5
       ]
     }
+  },
+  "na_thomas_tridiagonal": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.831026719408895e-15
+    }
+  },
+  "na_circulant_fft_solve": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.965068306494546e-16
+    }
+  },
+  "na_inverse_iteration": {
+    "lam": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.381966011250105
+    }
+  },
+  "na_rayleigh_quotient_iteration": {
+    "e": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_jacobi_eigenvalue": {
+    "ev": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        1.2679491924311226,
+        2.9999999999999996,
+        4.732050807568877
+      ]
+    }
+  },
+  "na_gauss_hermite_golub_welsch": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_adaptive_integral": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.7251534362449092e-12
+    }
+  },
+  "na_total_least_squares": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.13863482221582288,
+        0.9451414978539232
+      ]
+    }
+  },
+  "na_frank_wolfe": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.000024629328604502222,
+        0.9999753706713954
+      ]
+    }
+  },
+  "na_broyden_root": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.7071067811865476,
+        0.7071067811865476
+      ]
+    }
+  },
+  "na_adams_predictor_corrector": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.13432537004944223
+    }
+  },
+  "na_milstein_sde": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1039032157256938
+    }
   }
 }
