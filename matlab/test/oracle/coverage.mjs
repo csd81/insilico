@@ -1,10 +1,12 @@
 /**
- * Coverage report for the oracle suite. Tallies tagged cases by topic and level
- * so coverage is measurable, not vibes ("we cover 9/14 graduate-applied areas").
+ * Coverage report for the oracle suite. Tallies cases by declared domain + level
+ * (and technique tags) so coverage is measurable, not vibes
+ * ("we cover 9/14 graduate-applied domains").
  *
- *   pnpm exec tsc -p tsconfig.test.json && node matlab/test/oracle/coverage.mjs
+ *   pnpm oracle:coverage
  *
- * Tags are declared per case in cases.ts; the taxonomy lives in docs/coverage-map.md.
+ * Metadata is declared per case in cases.ts (domain / level / tags);
+ * the taxonomy lives in docs/coverage-map.md.
  */
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -13,18 +15,21 @@ const here = dirname(fileURLToPath(import.meta.url));
 const repo = join(here, '..', '..', '..');
 const { CASES } = await import(pathToFileURL(join(repo, '.test-dist', 'test', 'oracle', 'cases.js')).href);
 
+const byDomain = new Map();
+const byLevel = new Map();
 const byTag = new Map();
-let tagged = 0;
+let classified = 0;
 for (const c of CASES) {
-  if (c.tags?.length) tagged++;
+  if (c.domain) { byDomain.set(c.domain, (byDomain.get(c.domain) ?? 0) + 1); classified++; }
+  if (c.level) byLevel.set(c.level, (byLevel.get(c.level) ?? 0) + 1);
   for (const t of c.tags ?? []) byTag.set(t, (byTag.get(t) ?? 0) + 1);
 }
 
-const LEVELS = new Set(['undergrad', 'graduate']);
-const topics = [...byTag.entries()].filter(([t]) => !LEVELS.has(t)).sort((a, b) => b[1] - a[1]);
+const sortDesc = (m) => [...m.entries()].sort((a, b) => b[1] - a[1]);
 
-console.log(`Oracle cases: ${CASES.length}  (tagged: ${tagged}, untagged: ${CASES.length - tagged})`);
+console.log(`Oracle cases: ${CASES.length}  (domain-classified: ${classified}, unclassified: ${CASES.length - classified})`);
 console.log(`\nBy level:`);
-for (const lvl of LEVELS) console.log(`  ${lvl.padEnd(12)} ${byTag.get(lvl) ?? 0}`);
-console.log(`\nBy topic (${topics.length} areas tagged):`);
-for (const [t, n] of topics) console.log(`  ${t.padEnd(28)} ${n}`);
+for (const [lvl, n] of sortDesc(byLevel)) console.log(`  ${lvl.padEnd(12)} ${n}`);
+console.log(`\nBy domain (${byDomain.size} declared):`);
+for (const [d, n] of sortDesc(byDomain)) console.log(`  ${d.padEnd(28)} ${n}`);
+console.log(`\nTechnique tags: ${byTag.size}`);

@@ -10,9 +10,13 @@ export interface OracleCase {
   /** Absolute tolerance for numeric comparison (default 1e-6). Tighten for exact
    *  arithmetic, loosen for least-squares / decomposition / ill-conditioned cases. */
   tol?: number;
-  /** Coverage taxonomy tags (topic area + level), e.g. ['linear-algebra','graduate'].
+  /** Coverage taxonomy tags (specific techniques), e.g. ['conditioning','mldivide'].
    *  See coverage.mjs for the report and docs/coverage-map.md for the declared areas. */
   tags?: string[];
+  /** Declared curriculum level. */
+  level?: 'undergrad' | 'graduate';
+  /** Declared domain area (e.g. 'numerical-linear-algebra', 'optimization', 'numerical-pde'). */
+  domain?: string;
 }
 
 export const CASES: OracleCase[] = [
@@ -284,38 +288,69 @@ export const CASES: OracleCase[] = [
   // ══════════ graduate-applied computational math ══════════
 
   // conditioning & stability
-  { name: 'grad-cond-hilbert', src: 'c = cond(hilb(5));', vars: ['c'], tol: 1, tags: ['conditioning', 'numerical-linear-algebra', 'graduate'] },
-  { name: 'grad-rref', src: 'R = rref([1 2 3; 2 4 6; 1 1 1]);', vars: ['R'], tol: 1e-9, tags: ['linear-algebra', 'undergrad'] },
+  { name: 'grad-cond-hilbert', src: 'c = cond(hilb(5));', vars: ['c'], tol: 1, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['conditioning', 'cond'] },
+  { name: 'grad-rref', src: 'R = rref([1 2 3; 2 4 6; 1 1 1]);', vars: ['R'], tol: 1e-9, level: 'undergrad', domain: 'numerical-linear-algebra', tags: ['rref'] },
 
   // orthogonal projection & orthonormalization
-  { name: 'grad-projection', src: "A = [1 0; 1 1; 1 2]; b = [1; 2; 2]; proj = A*((A'*A)\\(A'*b));", vars: ['proj'], tol: 1e-9, tags: ['projection', 'least-squares', 'undergrad'] },
-  { name: 'grad-qr-orthonormal', src: "[Q, R] = qr([1 1; 1 0; 0 1], 0); orth = Q'*Q;", vars: ['orth'], tol: 1e-9, tags: ['orthogonalization', 'numerical-linear-algebra', 'graduate'] },
+  { name: 'grad-projection', src: "A = [1 0; 1 1; 1 2]; b = [1; 2; 2]; proj = A*((A'*A)\\(A'*b));", vars: ['proj'], tol: 1e-9, level: 'undergrad', domain: 'numerical-linear-algebra', tags: ['projection', 'least-squares'] },
+  { name: 'grad-qr-orthonormal', src: "[Q, R] = qr([1 1; 1 0; 0 1], 0); orth = Q'*Q;", vars: ['orth'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['orthogonalization', 'qr'] },
 
   // SVD / low-rank
-  { name: 'grad-svd-values-3x3', src: 's = svd([2 0 0; 0 3 0; 0 0 6]);', vars: ['s'], tol: 1e-9, tags: ['svd', 'numerical-linear-algebra', 'graduate'] },
+  { name: 'grad-svd-values-3x3', src: 's = svd([2 0 0; 0 3 0; 0 0 6]);', vars: ['s'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['svd'] },
 
   // iterative linear solvers
-  { name: 'grad-jacobi', src: 'A = [4 1; 1 3]; b = [1; 2]; d = diag(A); R = A - diag(d); x = [0; 0]; for k = 1:100, x = (b - R*x) ./ d; end', vars: ['x'], tol: 1e-6, tags: ['iterative-solver', 'numerical-linear-algebra', 'graduate'] },
-  { name: 'grad-gauss-seidel', src: 'A = [4 1; 1 3]; b = [1; 2]; x = [0; 0]; for k = 1:50, x(1) = (b(1) - A(1,2)*x(2))/A(1,1); x(2) = (b(2) - A(2,1)*x(1))/A(2,2); end', vars: ['x'], tol: 1e-9, tags: ['iterative-solver', 'numerical-linear-algebra', 'graduate'] },
-  { name: 'grad-conjugate-gradient', src: "A = [4 1; 1 3]; b = [1; 2]; x = [0; 0]; r = b - A*x; p = r; for k = 1:2, Ap = A*p; alpha = (r'*r)/(p'*Ap); x = x + alpha*p; rn = r - alpha*Ap; beta = (rn'*rn)/(r'*r); p = rn + beta*p; r = rn; end", vars: ['x'], tol: 1e-9, tags: ['krylov', 'iterative-solver', 'graduate'] },
+  { name: 'grad-jacobi', src: 'A = [4 1; 1 3]; b = [1; 2]; d = diag(A); R = A - diag(d); x = [0; 0]; for k = 1:100, x = (b - R*x) ./ d; end', vars: ['x'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['iterative-solver', 'jacobi'] },
+  { name: 'grad-gauss-seidel', src: 'A = [4 1; 1 3]; b = [1; 2]; x = [0; 0]; for k = 1:50, x(1) = (b(1) - A(1,2)*x(2))/A(1,1); x(2) = (b(2) - A(2,1)*x(1))/A(2,2); end', vars: ['x'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['iterative-solver', 'gauss-seidel'] },
+  { name: 'grad-conjugate-gradient', src: "A = [4 1; 1 3]; b = [1; 2]; x = [0; 0]; r = b - A*x; p = r; for k = 1:2, Ap = A*p; alpha = (r'*r)/(p'*Ap); x = x + alpha*p; rn = r - alpha*Ap; beta = (rn'*rn)/(r'*r); p = rn + beta*p; r = rn; end", vars: ['x'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['krylov', 'conjugate-gradient'] },
 
   // nonlinear systems (Newton with Jacobian)
-  { name: 'grad-newton-system', src: 'F = @(x) [x(1)^2 + x(2)^2 - 1; x(1) - x(2)]; J = @(x) [2*x(1) 2*x(2); 1 -1]; x = [1; 1]; for k = 1:10, x = x - J(x)\\F(x); end', vars: ['x'], tol: 1e-9, tags: ['nonlinear-systems', 'newton', 'graduate'] },
+  { name: 'grad-newton-system', src: 'F = @(x) [x(1)^2 + x(2)^2 - 1; x(1) - x(2)]; J = @(x) [2*x(1) 2*x(2); 1 -1]; x = [1; 1]; for k = 1:10, x = x - J(x)\\F(x); end', vars: ['x'], tol: 1e-9, level: 'graduate', domain: 'nonlinear-systems', tags: ['newton', 'jacobian'] },
 
   // regularization / inverse problems
-  { name: 'grad-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, tags: ['regularization', 'inverse-problems', 'graduate'] },
+  { name: 'grad-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, level: 'graduate', domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
 
   // matrix functions
-  { name: 'grad-expm', src: 'E = expm([0 1; 0 0]);', vars: ['E'], tol: 1e-9, tags: ['matrix-functions', 'graduate'] },
+  { name: 'grad-expm', src: 'E = expm([0 1; 0 0]);', vars: ['E'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['matrix-functions', 'expm'] },
 
   // spectral graph theory
-  { name: 'grad-graph-laplacian', src: 'A = [0 1 0; 1 0 1; 0 1 0]; D = diag(sum(A, 2)); L = D - A; ev = sort(eig(L));', vars: ['ev'], tol: 1e-9, tags: ['spectral-graph', 'graduate'] },
+  { name: 'grad-graph-laplacian', src: 'A = [0 1 0; 1 0 1; 0 1 0]; D = diag(sum(A, 2)); L = D - A; ev = sort(eig(L));', vars: ['ev'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['spectral-graph', 'laplacian'] },
 
   // Fourier analysis & signals
-  { name: 'grad-fft', src: 'Y = fft([1 2 3 4]);', vars: ['Y'], tol: 1e-9, tags: ['fourier', 'signal-processing', 'undergrad'] },
-  { name: 'grad-conv', src: 'c = conv([1 2 1], [1 1]);', vars: ['c'], tol: 1e-9, tags: ['signal-processing', 'undergrad'] },
+  { name: 'grad-fft', src: 'Y = fft([1 2 3 4]);', vars: ['Y'], tol: 1e-9, level: 'undergrad', domain: 'fourier', tags: ['fft'] },
+  { name: 'grad-conv', src: 'c = conv([1 2 1], [1 1]);', vars: ['c'], tol: 1e-9, level: 'undergrad', domain: 'fourier', tags: ['convolution'] },
 
   // computational statistics
-  { name: 'grad-var-std', src: 'v = var([2 4 6 8]); s = std([2 4 6 8]);', vars: ['v', 's'], tol: 1e-9, tags: ['statistics', 'undergrad'] },
-  { name: 'grad-corrcoef', src: 'R = corrcoef([1 2 3 4], [1 2 3 5]);', vars: ['R'], tol: 1e-6, tags: ['statistics', 'undergrad'] },
+  { name: 'grad-var-std', src: 'v = var([2 4 6 8]); s = std([2 4 6 8]);', vars: ['v', 's'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['variance'] },
+  { name: 'grad-corrcoef', src: 'R = corrcoef([1 2 3 4], [1 2 3 5]);', vars: ['R'], tol: 1e-6, level: 'undergrad', domain: 'statistics', tags: ['correlation'] },
+
+  // ══════════ optimization ══════════
+  { name: 'opt-golden-section', src: 'f = @(x)(x-2).^2; a = 0; b = 5; g = (sqrt(5)-1)/2; c = b-g*(b-a); d = a+g*(b-a); for k = 1:60, if f(c) < f(d), b = d; else, a = c; end, c = b-g*(b-a); d = a+g*(b-a); end; xmin = (a+b)/2;', vars: ['xmin'], tol: 1e-6, level: 'graduate', domain: 'optimization', tags: ['line-search', 'golden-section'] },
+  { name: 'opt-gradient-descent', src: 'Q = [3 0; 0 1]; x = [5; 5]; for k = 1:200, x = x - 0.1*(Q*x); end', vars: ['x'], tol: 1e-6, level: 'graduate', domain: 'optimization', tags: ['gradient-descent', 'quadratic'] },
+  { name: 'opt-newton-min', src: 'x = 3; for k = 1:20, x = x - (2*(x-2))/2; end', vars: ['x'], tol: 1e-9, level: 'graduate', domain: 'optimization', tags: ['newton', 'minimization'] },
+
+  // ══════════ numerical PDEs ══════════
+  { name: 'pde-poisson-1d', src: 'n = 5; h = 1/(n+1); A = 2*eye(n) - diag(ones(n-1,1),1) - diag(ones(n-1,1),-1); f = ones(n,1)*h^2; u = A\\f;', vars: ['u'], tol: 1e-9, level: 'graduate', domain: 'numerical-pde', tags: ['finite-difference', 'poisson', 'dirichlet'] },
+  { name: 'pde-heat-1d-step', src: "u = [0 1 2 3 2 1 0]'; r = 0.4; n = numel(u); un = u; for i = 2:n-1, un(i) = u(i) + r*(u(i+1) - 2*u(i) + u(i-1)); end; un(1) = 0; un(end) = 0;", vars: ['un'], tol: 1e-9, level: 'graduate', domain: 'numerical-pde', tags: ['finite-difference', 'heat-equation', 'explicit'] },
+  { name: 'pde-fem-1d-stiffness', src: 'n = 4; K = zeros(n+1); for e = 1:n, K(e,e) = K(e,e)+1; K(e,e+1) = K(e,e+1)-1; K(e+1,e) = K(e+1,e)-1; K(e+1,e+1) = K(e+1,e+1)+1; end', vars: ['K'], tol: 1e-9, level: 'graduate', domain: 'numerical-pde', tags: ['finite-element', 'stiffness-assembly'] },
+
+  // ══════════ dynamical systems ══════════
+  { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, level: 'undergrad', domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },
+  { name: 'dyn-logistic-map', src: 'x = 0.5; r = 3.2; for k = 1:200, x = r*x*(1-x); end', vars: ['x'], tol: 1e-6, level: 'graduate', domain: 'dynamical-systems', tags: ['logistic-map', 'period-2'] },
+  { name: 'dyn-stability-eig', src: 'A = [-2 1; 0 -3]; ev = sort(real(eig(A)));', vars: ['ev'], tol: 1e-9, level: 'graduate', domain: 'dynamical-systems', tags: ['stability', 'eigenvalues'] },
+
+  // ══════════ numerical ODEs (extensions) ══════════
+  { name: 'ode-heun', src: 'h = 0.1; y = 1; for k = 1:10, yp = y + h*y; y = y + h/2*(y + yp); end', vars: ['y'], tol: 1e-9, level: 'undergrad', domain: 'numerical-ode', tags: ['improved-euler', 'heun'] },
+  { name: 'ode-harmonic-rk4', src: 'h = 0.01; y = [1; 0]; A = [0 1; -1 0]; for k = 1:628, k1 = A*y; k2 = A*(y+h/2*k1); k3 = A*(y+h/2*k2); k4 = A*(y+h*k3); y = y + h/6*(k1+2*k2+2*k3+k4); end', vars: ['y'], tol: 1e-6, level: 'graduate', domain: 'numerical-ode', tags: ['rk4', 'harmonic-oscillator', 'system'] },
+
+  // ══════════ approximation theory (extensions) ══════════
+  { name: 'approx-lagrange', src: 'xn = [1 2 4]; yn = [1 4 16]; t = 3; L = 0; for i = 1:3, li = 1; for j = 1:3, if j ~= i, li = li*(t-xn(j))/(xn(i)-xn(j)); end, end, L = L + yn(i)*li; end', vars: ['L'], tol: 1e-9, level: 'undergrad', domain: 'approximation', tags: ['lagrange-interpolation'] },
+  { name: 'approx-chebyshev-nodes', src: 'n = 5; k = 0:n; xc = cos((2*k+1)*pi/(2*(n+1)));', vars: ['xc'], tol: 1e-9, level: 'graduate', domain: 'approximation', tags: ['chebyshev-nodes'] },
+
+  // ══════════ Fourier / spectral (extensions) ══════════
+  { name: 'fft-ifft-roundtrip', src: 'x = [1 2 3 4]; y = real(ifft(fft(x)));', vars: ['y'], tol: 1e-9, level: 'undergrad', domain: 'fourier', tags: ['fft', 'ifft', 'roundtrip'] },
+  { name: 'fft-freq-detect', src: 'N = 16; t = (0:N-1)/N; s = sin(2*pi*3*t); Y = abs(fft(s)); [~, idx] = max(Y(1:N/2)); freq = idx - 1;', vars: ['freq'], tol: 1e-9, level: 'graduate', domain: 'fourier', tags: ['fft', 'frequency-detection'] },
+
+  // ══════════ graph / network ══════════
+  { name: 'graph-adjacency-powers', src: 'A = [0 1 1; 1 0 1; 1 1 0]; W = A^3;', vars: ['W'], tol: 1e-9, level: 'undergrad', domain: 'graph', tags: ['adjacency', 'walk-counts'] },
+  { name: 'graph-pagerank', src: 'A = [0 0 1; 1 0 0; 1 1 0]; M = A ./ sum(A, 1); r = ones(3,1)/3; for k = 1:100, r = M*r; end', vars: ['r'], tol: 1e-6, level: 'graduate', domain: 'graph', tags: ['pagerank', 'power-iteration'] },
 ];

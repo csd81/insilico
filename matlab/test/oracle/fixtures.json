@@ -2858,5 +2858,250 @@
         1
       ]
     }
+  },
+  "opt_golden_section": {
+    "xmin": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.000000000000144
+    }
+  },
+  "opt_gradient_descent": {
+    "x": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        5.230919145657151e-31,
+        3.5275395543276595e-9
+      ]
+    }
+  },
+  "opt_newton_min": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "pde_poisson_1d": {
+    "u": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0.06944444444444445,
+        0.1111111111111111,
+        0.125,
+        0.11111111111111112,
+        0.06944444444444445
+      ]
+    }
+  },
+  "pde_heat_1d_step": {
+    "un": {
+      "class": "double",
+      "size": [
+        7,
+        1
+      ],
+      "real": [
+        0,
+        1,
+        2,
+        2.2,
+        2,
+        1,
+        0
+      ]
+    }
+  },
+  "pde_fem_1d_stiffness": {
+    "K": {
+      "class": "double",
+      "size": [
+        5,
+        5
+      ],
+      "real": [
+        1,
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        2,
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        2,
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        2,
+        -1,
+        0,
+        0,
+        0,
+        -1,
+        1
+      ]
+    }
+  },
+  "dyn_fixed_point": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7390851332151607
+    }
+  },
+  "dyn_logistic_map": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5130445095326298
+    }
+  },
+  "dyn_stability_eig": {
+    "ev": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -3,
+        -2
+      ]
+    }
+  },
+  "ode_heun": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.714080846608224
+    }
+  },
+  "ode_harmonic_rk4": {
+    "y": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.9999949269073476,
+        0.003185302316436201
+      ]
+    }
+  },
+  "approx_lagrange": {
+    "L": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 9
+    }
+  },
+  "approx_chebyshev_nodes": {
+    "xc": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        0.9659258262890683,
+        0.7071067811865476,
+        0.25881904510252074,
+        -0.25881904510252063,
+        -0.7071067811865475,
+        -0.9659258262890682
+      ]
+    }
+  },
+  "fft_ifft_roundtrip": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  },
+  "fft_freq_detect": {
+    "freq": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "graph_adjacency_powers": {
+    "W": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        2,
+        3,
+        3,
+        3,
+        2,
+        3,
+        3,
+        3,
+        2
+      ]
+    }
+  },
+  "graph_pagerank": {
+    "r": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0.4,
+        0.19999999999999987,
+        0.4
+      ]
+    }
   }
 }
