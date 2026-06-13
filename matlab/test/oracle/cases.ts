@@ -483,4 +483,23 @@ export const CASES: OracleCase[] = [
   { name: 'cal-definite-integral', src: 'syms x; v = double(int(x^2, 0, 3));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'definite'] },
   { name: 'cal-fundamental-theorem', src: 'syms x; F = int(x^2); v = double(subs(F, x, 3) - subs(F, x, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'fundamental-theorem'] },
   { name: 'cal-riemann-midpoint', src: 'n = 1000; a = 0; b = 1; h = (b-a)/n; xm = (a+h/2):h:b; S = sum(xm.^2)*h;', vars: ['S'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'riemann-sum'] },
+
+  // ══════════ adversarial numerical robustness (deterministic — no RNG) ══════════
+  // LA pathologies validated by robust invariants (residuals), not unstable solutions
+  { name: 'adv-wilkinson-eig', src: "W = wilkinson(21); [V, D] = eig(W); rr = norm(W*V - V*D);", vars: ['rr'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['adversarial', 'wilkinson', 'clustered-eigenvalues'] },
+  // near-collinear (cond ~1e10): the residual diverges between TS (exact 0) and MATLAB
+  // LAPACK (~7e-6) — both valid; the tol reflects the conditioning bound, not a defect.
+  { name: 'adv-collinear-leastsq', src: 'A = [1 1; 1 1+1e-10; 1 1+2e-10]; b = [1; 2; 3]; x = A\\b; rr = norm(A*x - b);', vars: ['rr'], tol: 1e-5, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['adversarial', 'near-collinear', 'least-squares', 'conditioning-divergent'] },
+  { name: 'adv-vander-cond', src: 'c = cond(vander(linspace(0, 1, 8)));', vars: ['c'], tol: 1, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['adversarial', 'conditioning', 'vandermonde'] },
+  { name: 'adv-empty-decomp', src: 'szs = size(svd([])); r = rank([]); szc = size(chol([]));', vars: ['szs', 'r', 'szc'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['adversarial', 'empty', 'decomposition'] },
+
+  // IEEE-754 edge cases (flags/finite values — Inf/NaN serialize as JSON null, so test via predicates)
+  { name: 'adv-catastrophic-cancellation', src: 'q = (1e16 + 1) - 1e16; e1 = exp(1e-10) - 1; e2 = expm1(1e-10);', vars: ['q', 'e1', 'e2'], tol: 1e-12, level: 'graduate', domain: 'core-language', tags: ['adversarial', 'floating-point', 'cancellation'] },
+  { name: 'adv-eps-rounding', src: 'a = (1 + eps) - 1; b = (1 + eps/2) - 1;', vars: ['a', 'b'], tol: 1e-20, level: 'graduate', domain: 'core-language', tags: ['adversarial', 'floating-point', 'machine-epsilon'] },
+  { name: 'adv-ieee-flags', src: 'f = [isnan(Inf-Inf) isinf(1/0) isnan(0*Inf) isinf(-1/0) isnan(Inf/Inf)];', vars: ['f'], tol: 1e-9, level: 'graduate', domain: 'core-language', tags: ['adversarial', 'floating-point', 'ieee754'] },
+  { name: 'adv-nan-propagation', src: 'M = [1 NaN; 0 1]; iv = inv(M); F = fft([1 NaN 2 3]); s = sum([1 NaN 3]); flags = [any(isnan(iv(:))) all(isnan(F)) isnan(s)];', vars: ['flags'], tol: 1e-9, level: 'graduate', domain: 'core-language', tags: ['adversarial', 'floating-point', 'nan-propagation'] },
+
+  // interpolation pathology (Runge phenomenon on equidistant nodes)
+  { name: 'adv-runge-spline', src: 'x = linspace(-1, 1, 15); y = 1./(1 + 25*x.^2); yq = spline(x, y, 0.95);', vars: ['yq'], tol: 1e-6, level: 'graduate', domain: 'approximation', tags: ['adversarial', 'runge-phenomenon', 'spline'] },
+  { name: 'adv-runge-pchip', src: 'x = linspace(-1, 1, 15); y = 1./(1 + 25*x.^2); yq = pchip(x, y, 0.95);', vars: ['yq'], tol: 1e-6, level: 'graduate', domain: 'approximation', tags: ['adversarial', 'runge-phenomenon', 'pchip'] },
 ];

@@ -4151,5 +4151,161 @@
       ],
       "real": 0.3333332499999999
     }
+  },
+  "adv_wilkinson_eig": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5.783977902978075e-15
+    }
+  },
+  "adv_collinear_leastsq": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.000006877043295791605
+    }
+  },
+  "adv_vander_cond": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 267816.7009078718
+    }
+  },
+  "adv_empty_decomp": {
+    "szs": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        1
+      ]
+    },
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    },
+    "szc": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        0
+      ]
+    }
+  },
+  "adv_catastrophic_cancellation": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    },
+    "e1": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.000000082740371e-10
+    },
+    "e2": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.00000000005e-10
+    }
+  },
+  "adv_eps_rounding": {
+    "a": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.220446049250313e-16
+    },
+    "b": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "adv_ieee_flags": {
+    "f": {
+      "class": "logical",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "adv_nan_propagation": {
+    "flags": {
+      "class": "logical",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "adv_runge_spline": {
+    "yq": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.042516165428920304
+    }
+  },
+  "adv_runge_pchip": {
+    "yq": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.042246053264491885
+    }
   }
 }

@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 431 tests green · 296 MATLAB oracle fixtures ·
-296/296 cases classified · 202 undergrad / 94 graduate across 16 domains.
+**Status (as of this revision):** 441 tests green · 306 MATLAB oracle fixtures ·
+306/306 cases classified · 202 undergrad / 104 graduate across 16 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -37,6 +37,7 @@ pnpm oracle:coverage
 |---|---|
 | Conditioning & stability (Hilbert, `cond`) | ✓ |
 | Stress / adversarial (ill-conditioned `\`, rank-deficient, defective eigenvalues) | ✓ |
+| Adversarial robustness (Wilkinson, IEEE NaN/Inf, cancellation, Runge) | ✓ |
 | Orthogonalization (QR orthonormality, Gram–Schmidt) | ✓ |
 | Iterative solvers (Jacobi, Gauss–Seidel) | ✓ |
 | Krylov methods (Conjugate Gradient) | ✓ |
