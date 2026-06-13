@@ -753,7 +753,8 @@ async function fgoalattain(args: Value[]): Promise<Value[]> {
   const xaug = toArray(m(xaugV));
   const xOut = xaug.slice(0, n);
   const fRes = await hUser.call([rowVec(xOut)], 1);
-  return [rowVec(xOut), rowVec(toArray(m(fRes[0]))), scalar(xaug[n]), exitV];
+  const shapeX = m(args[1]).cols === 1 ? colVec(xOut) : rowVec(xOut);   // preserve x0 orientation
+  return [shapeX, rowVec(toArray(m(fRes[0]))), scalar(xaug[n]), exitV];
 }
 
 // fminimax: minimise max_i F_i(x). Reformulate as min γ s.t. F_i(x) ≤ γ (and user constraints),
@@ -779,7 +780,8 @@ async function fminimax(args: Value[]): Promise<Value[]> {
   const [xaugV, , exitV] = await fmincon([augFn as unknown as Value, rowVec([...x0, Math.max(...F0)]), augRows(args[2]), passVec(3), augRows(args[4]), passVec(5), bnd(6, -Infinity), bnd(7, Infinity), nlconFn as unknown as Value]);
   const xaug = toArray(m(xaugV)); const xOut = xaug.slice(0, n);
   const Fres = toArray(m((await hUser.call([rowVec(xOut)], 1))[0]));
-  return [rowVec(xOut), rowVec(Fres), scalar(Math.max(...Fres)), exitV];
+  const shapeX = m(args[1]).cols === 1 ? colVec(xOut) : rowVec(xOut);   // preserve x0 orientation
+  return [shapeX, rowVec(Fres), scalar(Math.max(...Fres)), exitV];
 }
 
 // secondordercone(A,b,d,gamma): cone ‖A·x − b‖ ≤ dᵀx − gamma.

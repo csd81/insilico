@@ -7504,5 +7504,28 @@
         3
       ]
     }
+  },
+  "opt_fgoalattain": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        -8.27227857808016e-9
+      ]
+    }
+  },
+  "opt_fminimax": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
   }
 }

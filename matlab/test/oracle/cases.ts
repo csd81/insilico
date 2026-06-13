@@ -822,4 +822,7 @@ export const CASES: OracleCase[] = [
   { name: 'sig-xcorr', src: 'v = xcorr([1 2 3]);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'fourier', tags: ['xcorr', 'cross-correlation'] },
   { name: 'la-balance-eig-invariant', src: 'A = [1 100; 0.01 2]; v = sort(real(eig(balance(A))));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['balance', 'scaling', 'eigenvalue-invariant'] },
   { name: 'la-qz-generalized-eig', src: 'A = [6 0; 0 6]; B = [2 0; 0 3]; [AA, BB] = qz(A, B); v = sort(real(diag(AA)./diag(BB)));', vars: ['v'], tol: 1e-7, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['qz', 'generalized-eigenvalue', 'invariant'] },
+  // multiobjective optimization solvers — well-posed (competing objectives), validated after a silently-wrong hunt
+  { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, level: 'graduate', domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment', 'oracle-validation'] },
+  { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, level: 'graduate', domain: 'optimization', tags: ['fminimax', 'minimax', 'oracle-validation'] },
 ];
