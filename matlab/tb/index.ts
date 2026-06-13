@@ -3,9 +3,10 @@
 // the base entries are spread, so base MATLAB always wins on a name collision (see plan §3).
 //
 // NOTE: only validated, oracle-checked toolbox modules are registered here.
-// Out-of-scope domain toolboxes (aerospace, antenna/rf, audio, bioinfo, financial/fininst,
-// lidar/radar, textanalytics, vision) have been removed — they are outside the numerical
-// analysis and matrix computation focus of this engine.
+// Out-of-scope domain toolboxes have been removed to keep the engine focused on numerical
+// analysis and matrix computation: aerospace, antenna/rf, audio, bioinfo, financial/fininst,
+// lidar/radar, textanalytics, vision (earlier), and comm-adjacent/industry domains
+// fixedpoint, fusion, fuzzy, gads, ident, parallel, phased, risk, robotics, wavelet.
 import type { Builtin } from '../builtins';
 import type { Value } from '../values';
 import type { HelpEntry } from '../help/types';
@@ -15,11 +16,6 @@ import { CONTROL } from './control';
 import { CURVEFIT } from './curvefit';
 import { DSP } from './dsp';
 import { ECON } from './econ';
-import { FIXEDPOINT } from './fixedpoint';
-import { FUSION } from './fusion';
-import { FUZZY } from './fuzzy';
-import { GADS } from './gads';
-import { IDENT } from './ident';
 import { IMAGES } from './images';
 import { MAPPING } from './mapping';
 import { NAV } from './nav';
@@ -27,22 +23,16 @@ import { NNET } from './nnet';
 // OPTIM registered for fgoalattain ONLY (no base equivalent); the other 13 builtins are
 // quarantined inside optim.ts (11 duplicate correct base builtins, optimvar/optimproblem stubs).
 import { OPTIM } from './optim';
-import { PARALLEL } from './parallel';
 import { Pde } from './pde';
-import { PHASED } from './phased';
-import { RISK } from './risk';
 import { RL } from './rl';
-import { ROBOTICS } from './robotics';
 import { SIGNAL } from './signal';
 import { STATS } from './stats';
 import { SYMBOLIC } from './symbolic';
-import { WAVELET } from './wavelet';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
-  COMM, CONTROL, CURVEFIT, DSP, ECON, FIXEDPOINT,
-  FUSION, FUZZY, GADS, IDENT, IMAGES, MAPPING, NAV, NNET, OPTIM, PARALLEL, Pde,
-  PHASED, RISK, RL, ROBOTICS, SIGNAL, STATS, SYMBOLIC, WAVELET,
+  COMM, CONTROL, CURVEFIT, DSP, ECON, IMAGES, MAPPING, NAV, NNET, OPTIM, Pde,
+  RL, SIGNAL, STATS, SYMBOLIC,
 ];
 
 export const TOOLBOX_BUILTINS: Record<string, Builtin> = {};

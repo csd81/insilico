@@ -22,7 +22,7 @@ of generated content with no runtime value.
 - Symbolic math subset: `sym`, `syms`, `diff`, `int`, `solve`, `simplify`, `subs`, …
 - Datetime/duration, table/timetable, categorical, cell, struct operations
 
-### Registered Toolboxes (`matlab/tb/index.ts`) — 36 modules
+### Registered Toolboxes (`matlab/tb/index.ts`) — 15 modules
 | Module | Key functions |
 |---|---|
 | CONTROL | `tf`, `ss`, `bode`, `nyquist`, `rlocus`, `lsim`, `step`, `pole`, `zero` |
@@ -35,26 +35,11 @@ of generated content with no runtime value.
 | DSP | `dsp.FIRFilter`, `dsp.FFT`, `dsp.IIRFilter` |
 | IMAGES | `imresize`, `imfilter`, `fspecial`, `edge`, `imadjust` |
 | PDE | `solvepde`, `createpde`, basic FEM setup |
-| FUZZY | `fis`, `addMF`, `evalfis` |
 | RL | `rlDDPGAgent`, `rlTrainingOptions`, `train` stubs |
-| GADS | `ga`, `particleswarm`, `simulannealbnd` |
-| IDENT | `tfest`, `ssest`, `arx` |
 | MAPPING | `deg2rad`, `rad2deg`, geodetic helpers |
 | NAV | Navigation filter utilities |
-| PARALLEL | `parfor` stub, `parfeval` |
-| FUSION | Sensor fusion / tracking object stubs |
 | COMM | Modulation, channel, coding utilities |
 | ECON | Time series / econometrics |
-| FINANCIAL | Option pricing, cash flow utilities |
-| FININST | Additional financial instruments |
-| FIXEDPOINT | `fi`, `fimath` |
-| WAVELET | `wavedec`, `waverec`, `cwt` |
-| BIOINFO | Sequence / alignment utilities |
-| LIDAR | Point cloud primitives |
-| RADAR | Radar equation, clutter models |
-| PHASED | Phased array signal processing |
-| ROBOTICS | Rigid body tree, joint, transformations |
-| RISK | Credit risk utility stubs |
 
 ---
 
@@ -75,6 +60,7 @@ of generated content with no runtime value.
 | **LIDAR / RADAR** | Out of scope. Deleted. |
 | **TEXTANALYTICS** | Out of scope. Deleted. |
 | **VISION** | Out of scope. Deleted. |
+| **FIXEDPOINT, FUSION, FUZZY, GADS, IDENT, PARALLEL, PHASED, RISK, ROBOTICS, WAVELET** | Industry/domain-specific; outside the numerical-analysis + matrix focus. Registering them implied whole-toolbox support — the wrong promise. Deleted. |
 
 ---
 
