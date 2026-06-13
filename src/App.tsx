@@ -16,7 +16,7 @@ export default function App() {
   const { lines, fig, busy, prompt, completions, runSource, submit, clearConsole, resetSession, abort } = useSandbox('standalone');
 
   return (
-    <div className="app" data-theme={theme}>
+    <div className="app">
       <header className="app-header">
         <span className="app-logo">insilico</span>
         <span className="app-sub">MATLAB sandbox</span>
