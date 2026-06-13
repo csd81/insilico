@@ -4577,5 +4577,78 @@
       ],
       "real": 5
     }
+  },
+  "cal_improper_exp": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_improper_power": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_improper_decay": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5
+    }
+  },
+  "cal_trig_pythagorean": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "cal_trig_double_angle": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.8253356149096783
+    }
+  },
+  "cal_factor": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        3
+      ]
+    }
+  },
+  "cal_symbolic_inv": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5
+    }
   }
 }

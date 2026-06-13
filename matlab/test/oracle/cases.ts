@@ -539,4 +539,15 @@ export const CASES: OracleCase[] = [
   { name: 'cal-symbolic-solve-cramer', src: 'syms a b; A = [a 1; 1 b]; x = A\\[1; 0]; v = double(subs(subs(x(1), a, 2), b, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['linear-solve', 'cramer', 'symbolic-matrix'] },
   { name: 'cal-symbolic-solve-verify', src: 'syms a b; A = [a 1; 1 b]; x = A\\[1; 0]; r = A*x; v = double(subs(subs(r(1), a, 2), b, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['linear-solve', 'matrix-product', 'symbolic-matrix'] },
   { name: 'cal-symbolic-matmul', src: 'syms a; M = [a 1; 0 a]*[1; 1]; v = double(subs(M(1), a, 4));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['matrix-product', 'symbolic-matrix'] },
+
+  // ── improper integrals (bounds at infinity) ──
+  { name: 'cal-improper-exp', src: 'syms x; v = double(int(exp(-x), 0, inf));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'improper'] },
+  { name: 'cal-improper-power', src: 'syms x; v = double(int(1/x^2, 1, inf));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'improper'] },
+  { name: 'cal-improper-decay', src: 'syms x; v = double(int(exp(-2*x), 0, inf));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'improper'] },
+
+  // ── trig simplification & symbolic algebra (already present; locked against MATLAB) ──
+  { name: 'cal-trig-pythagorean', src: 'syms x; v = double(simplify(sin(x)^2 + cos(x)^2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['simplify', 'trig-identity'] },
+  { name: 'cal-trig-double-angle', src: 'syms x; s = simplify(diff(sin(x)*cos(x))); v = double(subs(s, x, 0.3));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['simplify', 'trig-identity'] },
+  { name: 'cal-factor', src: 'syms x; v = sort(double(subs(factor(x^2 - 5*x + 6), x, 5)));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'symbolic', tags: ['factor', 'polynomial'] },
+  { name: 'cal-symbolic-inv', src: 'syms a b; I = inv([a 0; 0 b]); v = double(subs(subs(I(1,1), a, 2), b, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['inverse', 'symbolic-matrix'] },
 ];
