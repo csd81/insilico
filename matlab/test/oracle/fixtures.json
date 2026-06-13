@@ -7143,5 +7143,366 @@
       ],
       "real": 1.0000000000001
     }
+  },
+  "lang_cellfun": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        2,
+        3,
+        1
+      ]
+    }
+  },
+  "lang_arrayfun": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        4,
+        9,
+        16
+      ]
+    }
+  },
+  "lang_set_operations": {
+    "ia": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        4
+      ]
+    },
+    "sd": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        3
+      ]
+    },
+    "im": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "lang_flip_rot90_triu": {
+    "fl": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        4,
+        3,
+        2,
+        1
+      ]
+    },
+    "rt": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        2,
+        1,
+        4,
+        3
+      ]
+    },
+    "tu": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        2,
+        5,
+        0,
+        3,
+        6,
+        9
+      ]
+    }
+  },
+  "lang_nchoosek_factorial": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        15,
+        120
+      ]
+    }
+  },
+  "lang_fillmissing": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  },
+  "lang_discretize": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "cal_cumtrapz": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        0,
+        1.5,
+        4,
+        7.5
+      ]
+    }
+  },
+  "poly_polyder_polyint": {
+    "d": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        0
+      ]
+    },
+    "i": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        0
+      ]
+    }
+  },
+  "poly_deconv": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        1
+      ]
+    }
+  },
+  "la_toeplitz_hankel": {
+    "tp": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        2,
+        1,
+        2,
+        3,
+        2,
+        1
+      ]
+    },
+    "hk": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        2,
+        3,
+        0,
+        3,
+        0,
+        0
+      ]
+    }
+  },
+  "la_blkdiag": {
+    "v": {
+      "class": "double",
+      "size": [
+        4,
+        4
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        0,
+        0,
+        4,
+        5
+      ]
+    }
+  },
+  "stat_movmean_movmedian": {
+    "mm": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        1.5,
+        2,
+        3,
+        4,
+        4.5
+      ]
+    },
+    "md": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        3,
+        2,
+        5,
+        3,
+        5.5
+      ]
+    }
+  },
+  "sig_filter": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        3,
+        5,
+        7
+      ]
+    }
+  },
+  "sig_xcorr": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        3.0000000000000004,
+        8,
+        14,
+        8,
+        3.0000000000000004
+      ]
+    }
+  },
+  "la_balance_eig_invariant": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.3819660112501051,
+        2.618033988749895
+      ]
+    }
+  },
+  "la_qz_generalized_eig": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        3
+      ]
+    }
   }
 }
