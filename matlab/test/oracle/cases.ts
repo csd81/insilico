@@ -502,4 +502,12 @@ export const CASES: OracleCase[] = [
   // interpolation pathology (Runge phenomenon on equidistant nodes)
   { name: 'adv-runge-spline', src: 'x = linspace(-1, 1, 15); y = 1./(1 + 25*x.^2); yq = spline(x, y, 0.95);', vars: ['yq'], tol: 1e-6, level: 'graduate', domain: 'approximation', tags: ['adversarial', 'runge-phenomenon', 'spline'] },
   { name: 'adv-runge-pchip', src: 'x = linspace(-1, 1, 15); y = 1./(1 + 25*x.^2); yq = pchip(x, y, 0.95);', vars: ['yq'], tol: 1e-6, level: 'graduate', domain: 'approximation', tags: ['adversarial', 'runge-phenomenon', 'pchip'] },
+
+  // ══════════ Applied Linear Algebra — application workflows ══════════
+  { name: 'apla-chemical-balance', src: 'M = [3 0 -1 0; 8 0 0 -2; 0 2 -2 -1]; n = null(M); coeffs = n/n(1);', vars: ['coeffs'], tol: 1e-6, level: 'undergrad', domain: 'linear-algebra', tags: ['applied', 'chemical-balancing', 'null-space'] },
+  { name: 'apla-static-forces', src: 'A = [cosd(30) -cosd(45); sind(30) sind(45)]; b = [0; 100]; T = A\\b;', vars: ['T'], tol: 1e-6, level: 'undergrad', domain: 'linear-algebra', tags: ['applied', 'statics', 'linear-system'] },
+  { name: 'apla-moments', src: 'r1 = [2 0 0]; F1 = [0 100 0]; r2 = [0 3 0]; F2 = [50 0 0]; M = cross(r1, F1) + cross(r2, F2);', vars: ['M'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['applied', 'moments', 'cross-product'] },
+  { name: 'apla-markov-weather', src: 'P = [0.8 0.2; 0.4 0.6]; s0 = [1 0]; s7 = s0*P^7;', vars: ['s7'], tol: 1e-6, level: 'undergrad', domain: 'linear-algebra', tags: ['applied', 'markov-chain'] },
+  { name: 'apla-robotics-rotation', src: 'R = @(t) [cosd(t) -sind(t); sind(t) cosd(t)]; R90 = R(30)*R(60);', vars: ['R90'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['applied', 'robotics', 'rotation-matrix'] },
+  { name: 'apla-svd-lowrank', src: "A = magic(4); [U, S, V] = svd(A); A1 = U(:,1)*S(1,1)*V(:,1)'; err = norm(A - A1); s = svd(A);", vars: ['err'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['applied', 'svd', 'low-rank'] },
 ];

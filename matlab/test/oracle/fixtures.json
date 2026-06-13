@@ -4307,5 +4307,85 @@
       ],
       "real": 0.042246053264491885
     }
+  },
+  "apla_chemical_balance": {
+    "coeffs": {
+      "class": "double",
+      "size": [
+        4,
+        1
+      ],
+      "real": [
+        1,
+        5,
+        3,
+        3.999999999999999
+      ]
+    }
+  },
+  "apla_static_forces": {
+    "T": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        73.20508075688774,
+        89.65754721680536
+      ]
+    }
+  },
+  "apla_moments": {
+    "M": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0,
+        0,
+        50
+      ]
+    }
+  },
+  "apla_markov_weather": {
+    "s7": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.6672128000000005,
+        0.33278720000000017
+      ]
+    }
+  },
+  "apla_robotics_rotation": {
+    "R90": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        0,
+        0.9999999999999999,
+        -0.9999999999999999,
+        0
+      ]
+    }
+  },
+  "apla_svd_lowrank": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 17.88854381999832
+    }
   }
 }
