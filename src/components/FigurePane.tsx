@@ -1,7 +1,7 @@
 /** Figure pane: SVG renderer (no external dependency). */
 import { useState } from 'react';
-import { useTheme } from '../shared/providers/ThemeProvider';
-import type { FigureSpec } from './matlab/graphics';
+import { useTheme } from '../providers/ThemeProvider';
+import type { FigureSpec } from '../../matlab/graphics';
 import SvgFigure, { type ScaleOverride } from './SvgFigure';
 
 export default function FigurePane({ fig }: { fig: FigureSpec }) {

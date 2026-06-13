@@ -92,6 +92,3 @@ export function folderById(id: string): MFolder | undefined { return folderMap.g
 export function folderSources(folderId: string): string[] {
   return folderMap.get(folderId)?.files.map((f) => f.source) ?? [];
 }
-
-/** Sources for a chapter slug (used by the embedded ChapterSandbox). */
-export function chapterSources(slug: string): string[] { return folderSources('chapter/' + slug); }

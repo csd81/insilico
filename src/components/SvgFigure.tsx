@@ -6,7 +6,7 @@
  *             log scale, custom ticks/labels, legend, subplots, sgtitle.
  * Placeholder: 3-D (surf/mesh/trisurf), polar, pie, box, violin, parcoords.
  */
-import type { FigureSpec, Panel, Series } from './matlab/graphics';
+import type { FigureSpec, Panel, Series } from '../../matlab/graphics';
 
 export type ScaleOverride = 'auto' | 'linear' | 'log';
 

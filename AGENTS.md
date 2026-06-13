@@ -2,9 +2,11 @@
 
 ## Project Structure & Module Organization
 
-This repository contains a browser-oriented MATLAB-like sandbox module. The core engine lives in `matlab/`: `lexer.ts`, `parser.ts`, `ast.ts`, `interp.ts`, `values.ts`, `builtins.ts`, `linalg.ts`, `graphics.ts`, `io.ts`, and toolbox modules under `matlab/tb/`. Help data is under `matlab/help/`. Tests live in `matlab/test/`, with shared test utilities in `matlab/test/harness.ts`. React-facing shell files are at the repository root, including `useSandbox.ts`, `CommandWindow.tsx`, `CodeEditor.tsx`, `FigurePane.tsx`, and `PlotlyFigure.tsx`.
+This repository is a standalone browser MATLAB-like sandbox (Vite + React). The framework-free engine lives in `matlab/`: `lexer.ts`, `parser.ts`, `ast.ts`, `interp.ts`, `values.ts`, `builtins.ts`, `linalg.ts`, `graphics.ts`, `io.ts`, `worker.ts`, plus toolbox modules under `matlab/tb/` and help data under `matlab/help/`. Tests live in `matlab/test/`, with shared utilities in `matlab/test/harness.ts`.
 
-Generated output goes to `.test-dist/`; do not edit or commit it.
+The React app lives under `src/`: `main.tsx` (entry), `App.tsx`, `style.css`, `library.ts` (`.m` preload sources), plus `src/components/` (`CodeEditor`, `CommandWindow`, `FigurePane`, `SvgFigure`), `src/hooks/useSandbox.ts` (drives the Web Worker), `src/providers/ThemeProvider.tsx`, and `src/ui/Math.tsx`. The HTML entry is `index.html`.
+
+Generated output goes to `.test-dist/` and `dist/`; do not edit or commit them.
 
 ## Build, Test, and Development Commands
 
@@ -12,17 +14,18 @@ Use pnpm 11, pinned in `package.json`.
 
 ```bash
 pnpm install
+pnpm dev      # Vite dev server
+pnpm build    # production build to dist/ (deployed to GitHub Pages)
+pnpm preview  # serve the built app locally
 pnpm test
 pnpm clean
 ```
 
-`pnpm test` compiles TypeScript with `tsconfig.test.json`, writes a CommonJS marker into `.test-dist/`, then runs Node’s built-in test runner. `pnpm clean` removes `.test-dist/`.
-
-There is no standalone dev server in this module. The browser UI is expected to be embedded by a parent app.
+`pnpm test` compiles TypeScript with `tsconfig.test.json`, writes a CommonJS marker into `.test-dist/`, then runs Node’s built-in test runner. `pnpm clean` removes `.test-dist/` and `dist/`.
 
 ## Coding Style & Naming Conventions
 
-Use TypeScript throughout. Keep runtime code framework-free inside `matlab/`; React belongs only in root UI adapter files. Prefer discriminated unions and explicit type guards for `Value` handling. Preserve MATLAB semantics: column-major matrices, 1-based indexing, value-copy behavior, and tolerance-aware numeric comparisons.
+Use TypeScript throughout. Keep runtime code framework-free inside `matlab/`; React belongs only under `src/`. Prefer discriminated unions and explicit type guards for `Value` handling. Preserve MATLAB semantics: column-major matrices, 1-based indexing, value-copy behavior, and tolerance-aware numeric comparisons.
 
 Use two-space indentation, single quotes, and concise comments only where they clarify non-obvious MATLAB behavior.
 

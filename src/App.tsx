@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { useSandbox } from '../useSandbox';
-import { useTheme } from '../shared/providers/ThemeProvider';
-import CodeEditor from '../CodeEditor';
-import CommandWindow from '../CommandWindow';
-import FigurePane from '../FigurePane';
+import { useSandbox } from './hooks/useSandbox';
+import { useTheme } from './providers/ThemeProvider';
+import CodeEditor from './components/CodeEditor';
+import CommandWindow from './components/CommandWindow';
+import FigurePane from './components/FigurePane';
 
 const STARTER = `x = linspace(0, 2*pi, 100);
 plot(x, sin(x), x, cos(x));

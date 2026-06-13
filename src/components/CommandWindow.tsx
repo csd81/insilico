@@ -1,9 +1,9 @@
 /** The interactive command window (REPL scrollback + input line with history). */
 import { Fragment, useEffect, useRef, useState } from 'react';
-import type { ConsoleLine } from './useSandbox';
-import { TEX_OPEN, TEX_CLOSE, HELP_OPEN, HELP_CLOSE } from './matlab/format';
-import { highlightMatlab } from './matlab/highlight';
-import { Math as Tex } from '../shared/ui/Math';
+import type { ConsoleLine } from '../hooks/useSandbox';
+import { TEX_OPEN, TEX_CLOSE, HELP_OPEN, HELP_CLOSE } from '../../matlab/format';
+import { highlightMatlab } from '../../matlab/highlight';
+import { Math as Tex } from '../ui/Math';
 
 /** Turn http(s) URLs in console text into clickable links. */
 function linkify(text: string, key: number) {

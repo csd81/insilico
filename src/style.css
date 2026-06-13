@@ -167,17 +167,3 @@ body { background: var(--bg); color: var(--fg); font-family: var(--font); font-s
   height: 100%; color: var(--fg2); font-size: 0.85rem;
 }
 .mlab__fig-empty code { background: var(--bg3); padding: 1px 5px; border-radius: 3px; }
-
-/* ── Embed variant (ChapterSandbox) ─────────────────────────────────────── */
-.mlab-embed { border: 1px solid var(--border); border-radius: 8px; margin: 1.5rem 0; overflow: hidden; }
-.mlab-embed__summary { padding: 10px 14px; cursor: pointer; font-weight: 600; font-size: 0.9rem; background: var(--bg2); }
-.mlab-embed__body { display: flex; flex-direction: column; }
-.mlab-embed__bar { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: var(--bg2); border-bottom: 1px solid var(--border); }
-.mlab-embed__select { font-size: 0.8rem; padding: 2px 6px; }
-.mlab-embed__full { font-size: 0.8rem; color: var(--accent); }
-.mlab-embed__cols { display: grid; grid-template-columns: 1fr 1fr; min-height: 240px; }
-.mlab-embed__code { min-height: 0; }
-.mlab-embed__fig  { border-left: 1px solid var(--border); min-height: 0; }
-.mlab__run { padding: 3px 10px; background: var(--accent); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
-.mlab__run:disabled { opacity: 0.5; cursor: not-allowed; }
-.mlab__spacer { flex: 1; }

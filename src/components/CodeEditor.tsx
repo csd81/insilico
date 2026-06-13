@@ -1,6 +1,6 @@
 /** Code editor with MATLAB syntax highlighting (highlighted <pre> behind a transparent <textarea>). */
 import { useMemo, useRef } from 'react';
-import { highlightMatlab } from './matlab/highlight';
+import { highlightMatlab } from '../../matlab/highlight';
 
 export default function CodeEditor({
   value, textareaRef, onChange, onKeyDown, onKeyUp, onClick, wrapClassName,

@@ -1,8 +1,8 @@
 /** React hook wrapping the MATLAB Web Worker: command window state, figure, workspace, files, abort. */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { FigureSpec } from './matlab/index';
-import { folderSources } from './library';
-import { parseMlx } from './matlab/io';
+import type { FigureSpec } from '../../matlab/index';
+import { folderSources } from '../library';
+import { parseMlx } from '../../matlab/io';
 
 export interface ConsoleLine { kind: 'cmd' | 'out' | 'err' | 'prompt'; text: string }
 export interface WsVar { name: string; size: string; klass: string; preview: string }
@@ -138,7 +138,7 @@ export function useSandbox(folderId: string) {
   const replayFiles = useCallback((worker: Worker) => { for (const [name, bytes] of vfsRef.current) worker.postMessage({ type: 'putFile', name, bytes }); }, []);
 
   const spawn = useCallback(() => {
-    const worker = new Worker(new URL('./matlab/worker.ts', import.meta.url), { type: 'module' });
+    const worker = new Worker(new URL('../../matlab/worker.ts', import.meta.url), { type: 'module' });
     attach(worker);
     worker.postMessage({ type: 'reset', preload: folderSources(folderId) });
     replayFiles(worker);
@@ -146,7 +146,7 @@ export function useSandbox(folderId: string) {
   }, [attach, folderId, replayFiles]);
 
   useEffect(() => {
-    const worker = new Worker(new URL('./matlab/worker.ts', import.meta.url), { type: 'module' });
+    const worker = new Worker(new URL('../../matlab/worker.ts', import.meta.url), { type: 'module' });
     attach(worker);
     // Preload the toolbox/library BEFORE replaying user files (same order as spawn()), otherwise the
     // VFS replay can race ahead of the reset/preload and get wiped. Initial folderId captured here;
