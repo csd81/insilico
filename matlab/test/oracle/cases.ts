@@ -200,4 +200,30 @@ export const CASES: OracleCase[] = [
   // ── string class ──
   { name: 'string-concat-plus', src: 's = "foo" + "bar";', vars: ['s'] },
   { name: 'string-equality', src: 'e = ("abc" == "abc");', vars: ['e'] },
+
+  // ── empty-reduction shapes along a dimension ──
+  { name: 'sum-empty-dim1', src: 'x = sum([], 1);', vars: ['x'] },
+  { name: 'sum-empty-dim2', src: 'x = sum([], 2);', vars: ['x'] },
+  { name: 'prod-empty-dim1', src: 'x = prod([], 1);', vars: ['x'] },
+  { name: 'prod-empty-dim2', src: 'x = prod([], 2);', vars: ['x'] },
+  { name: 'max-empty-dim1', src: 'x = max([], [], 1);', vars: ['x'] },
+  { name: 'max-empty-dim2', src: 'x = max([], [], 2);', vars: ['x'] },
+  { name: 'grow-empty-linear', src: 'A = []; A(1) = 5;', vars: ['A'] },
+  { name: 'flatten-2x2', src: 'A = [1 2; 3 4]; x = A(:);', vars: ['x'] },
+  { name: 'logical-linear-mask', src: 'A = [1 2; 3 4]; m = A([true false true false]);', vars: ['m'] },
+  { name: 'matrix-gt2-mask', src: 'A = [1 2; 3 4]; m = A(A > 2);', vars: ['m'] },
+
+  // ── NaN / 'omitnan' ──
+  { name: 'sum-nan', src: 'x = sum([1 NaN]);', vars: ['x'] },
+  { name: 'sum-omitnan', src: "x = sum([1 NaN], 'omitnan');", vars: ['x'] },
+  { name: 'mean-nan', src: 'x = mean([1 NaN]);', vars: ['x'] },
+  { name: 'mean-omitnan', src: "x = mean([1 NaN], 'omitnan');", vars: ['x'] },
+  { name: 'max-nan', src: 'x = max([NaN 1]);', vars: ['x'] },
+  { name: 'min-nan', src: 'x = min([NaN 1]);', vars: ['x'] },
+  { name: 'max-omitnan', src: "x = max([NaN 1], [], 'omitnan');", vars: ['x'] },
+
+  // ── complex relational / ordering (MATLAB compares real parts for </>, magnitude for sort/max) ──
+  { name: 'complex-lt', src: 'x = (1+1i) < 2;', vars: ['x'] },
+  { name: 'complex-sort', src: 'x = sort([1+1i 2]);', vars: ['x'] },
+  { name: 'complex-max-mag', src: 'x = max([1+1i 2]);', vars: ['x'] },
 ];

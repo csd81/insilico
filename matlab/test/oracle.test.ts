@@ -7,13 +7,17 @@ import { CASES } from './oracle/cases';
 import { type Value, type Mat, isMat, isStr, isSparse, sparseToDense } from '../values';
 
 // Committed ground truth from real MATLAB (see oracle/generate.mjs).
-type Fix = { class: string; size: number[]; real?: number | number[]; imag?: number | number[]; value?: string; error?: string };
+// MATLAB jsonencode serializes NaN (and Inf) as null; we map null → NaN below.
+type Num = number | null;
+type Fix = { class: string; size: number[]; real?: Num | Num[]; imag?: Num | Num[]; value?: string; error?: string };
 const FIXTURES: Record<string, Record<string, Fix>> = JSON.parse(
   readFileSync(join(process.cwd(), 'matlab/test/oracle/fixtures.json'), 'utf8'),
 );
 
 const DEFAULT_TOL = 1e-6;
-const arr = (x: number | number[] | undefined): number[] => (x === undefined ? [] : Array.isArray(x) ? x : [x]);
+// Flatten to number[], mapping JSON null (MATLAB NaN/Inf) → NaN.
+const arr = (x: Num | Num[] | undefined): number[] =>
+  (x === undefined ? [] : Array.isArray(x) ? x : [x]).map((z) => (z === null ? NaN : z));
 // MATLAB struct field names go through makeValidName; our case names only use '-'.
 const key = (name: string) => name.replace(/-/g, '_');
 
@@ -66,8 +70,11 @@ describe('MATLAB oracle (committed fixtures)', () => {
           // numeric value (column-major, tolerance)
           const er = arr(exp.real), ei = arr(exp.imag);
           assert.equal(d.real.length, er.length, `${c.name}.${name} numel: ${d.real.length} ≠ ${er.length}`);
-          er.forEach((e, i) => assert.ok(Math.abs(d.real[i] - e) <= tol, `${c.name}.${name} real[${i}]: ${d.real[i]} ≠ ${e}`));
-          ei.forEach((e, i) => assert.ok(Math.abs((d.imag[i] ?? 0) - e) <= tol, `${c.name}.${name} imag[${i}]: ${d.imag[i]} ≠ ${e}`));
+          const close = (got: number, e: number, where: string) =>
+            Number.isNaN(e) ? assert.ok(Number.isNaN(got), `${where} expected NaN, got ${got}`)
+                            : assert.ok(Math.abs(got - e) <= tol, `${where}: ${got} ≠ ${e}`);
+          er.forEach((e, i) => close(d.real[i], e, `${c.name}.${name} real[${i}]`));
+          ei.forEach((e, i) => close(d.imag[i] ?? 0, e, `${c.name}.${name} imag[${i}]`));
           // TS must not carry imaginary parts MATLAB doesn't have
           if (!ei.length) d.imag.forEach((im, i) => assert.ok(Math.abs(im) <= tol, `${c.name}.${name} unexpected imag[${i}]=${im}`));
         }

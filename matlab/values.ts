@@ -516,7 +516,14 @@ export function indexGet(m: Mat, subs: Sub[]): Mat {
     const sl = s as IdxList; const aVec = m.rows === 1 || m.cols === 1;
     const idxVec = sl.srcRows === undefined || sl.srcRows === 1 || sl.srcCols === 1;
     let oR: number, oC: number;
-    if (sl.srcLogical) { if (aVec && m.rows === 1) { oR = 1; oC = s.length; } else { oR = s.length; oC = 1; } }
+    if (sl.srcLogical) {
+      // Logical mask: a vector A follows A's orientation; for a matrix A the result follows
+      // the MASK's orientation when the mask is a vector, else (full-matrix mask) a column.
+      const maskRow = sl.srcRows === 1, maskCol = sl.srcCols === 1;
+      if (aVec) { if (m.rows === 1) { oR = 1; oC = s.length; } else { oR = s.length; oC = 1; } }
+      else if (maskRow && !maskCol) { oR = 1; oC = s.length; }
+      else { oR = s.length; oC = 1; }
+    }
     else if (aVec && idxVec) { if (m.rows === 1) { oR = 1; oC = s.length; } else { oR = s.length; oC = 1; } }
     else { oR = sl.srcRows ?? 1; oC = sl.srcCols ?? s.length; }
     const out = zeros(oR, oC); out.data.set(vals); if (im) out.idata = im; out.isChar = m.isChar;

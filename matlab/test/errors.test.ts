@@ -55,6 +55,27 @@ describe('parse errors', () => {
   });
 });
 
+describe('singular system contract (warn, do not crash)', () => {
+  it('A\\b on a singular matrix returns 2x1 without throwing', async () => {
+    const r = await run('A = [1 2; 2 4]; b = [3; 6]; x = A\\b;');
+    assert.equal(r.error, undefined, 'must not throw');
+    const x = r.get('x');
+    assert.ok(x && x.kind === 'num' && x.rows === 2 && x.cols === 1, 'result is 2x1');
+  });
+
+  it('emits a singular/conditioning warning to output (wording not pinned)', async () => {
+    const r = await run('A = [1 2; 2 4]; b = [3; 6]; x = A\\b;');
+    assert.match(r.output, /singular|condition/i);
+  });
+});
+
+describe('empty indexing', () => {
+  it('A(end) on an empty array errors', async () => {
+    const r = await run('A = []; y = A(end);');
+    fails(r.error);
+  });
+});
+
 describe('quarantine guards', () => {
   it('sim (Simulink) is undefined', async () => {
     const r = await run("sim('model');");
