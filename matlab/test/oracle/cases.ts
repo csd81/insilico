@@ -322,6 +322,7 @@ export const CASES: OracleCase[] = [
   // computational statistics
   { name: 'grad-var-std', src: 'v = var([2 4 6 8]); s = std([2 4 6 8]);', vars: ['v', 's'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['variance'] },
   { name: 'grad-corrcoef', src: 'R = corrcoef([1 2 3 4], [1 2 3 5]);', vars: ['R'], tol: 1e-6, level: 'undergrad', domain: 'statistics', tags: ['correlation'] },
+  { name: 'stat-entropy-kl', src: 'p = [0.5 0.25 0.25]; q = [0.25 0.25 0.5]; H = -sum(p.*log2(p)); KL = sum(p.*log2(p./q));', vars: ['H', 'KL'], tol: 1e-9, level: 'graduate', domain: 'statistics', tags: ['information-theory', 'entropy', 'kl-divergence'] },
 
   // ══════════ optimization ══════════
   { name: 'opt-golden-section', src: 'f = @(x)(x-2).^2; a = 0; b = 5; g = (sqrt(5)-1)/2; c = b-g*(b-a); d = a+g*(b-a); for k = 1:60, if f(c) < f(d), b = d; else, a = c; end, c = b-g*(b-a); d = a+g*(b-a); end; xmin = (a+b)/2;', vars: ['xmin'], tol: 1e-6, level: 'graduate', domain: 'optimization', tags: ['line-search', 'golden-section'] },
@@ -358,6 +359,10 @@ export const CASES: OracleCase[] = [
   { name: 'pde-advection-lax-friedrichs', src: 'N = 60; x = linspace(0,1,N+1); x(end) = []; dx = 1/N; dt = 0.8*dx; u = double(x>0.25 & x<0.5); for n = 1:20, u = 0.5*(circshift(u,-1)+circshift(u,1)) - dt/(2*dx)*(circshift(u,-1)-circshift(u,1)); end; mass = sum(u)*dx; tv = sum(abs(diff([u u(1)])));', vars: ['mass', 'tv'], tol: 1e-6, level: 'graduate', domain: 'numerical-pde', tags: ['advection', 'lax-friedrichs', 'total-variation'] },
   { name: 'pde-heat-cn-spdiags', src: "n = 8; h = 1/(n+1); r = 0.4; e = ones(n,1); T = spdiags([e -2*e e], -1:1, n, n); A = speye(n) - r/2*T; B = speye(n) + r/2*T; u = sin(pi*(1:n)'*h); for k = 1:5, u = A\\(B*u); end; energy = norm(u);", vars: ['energy'], tol: 1e-6, level: 'graduate', domain: 'numerical-pde', tags: ['heat-equation', 'crank-nicolson', 'spdiags', 'sparse'] },
   { name: 'pde-poisson-2d-kron', src: 'n = 5; e = ones(n,1); T = spdiags([e -2*e e], -1:1, n, n); A = kron(speye(n), T) + kron(T, speye(n)); b = ones(n*n, 1); u = A\\b; resid = norm(A*u - b);', vars: ['resid'], tol: 1e-9, level: 'graduate', domain: 'numerical-pde', tags: ['poisson', 'finite-difference', 'kron', 'sparse'] },
+  // ── finite-volume conservation, spectral (FFT) differentiation, PDE eigenproblem ──
+  { name: 'pde-finite-volume-advection', src: "N = 40; dx = 1/N; x = ((1:N)' - 0.5)*dx; c = 1; dt = 0.5*dx; u = double(x>0.3 & x<0.6); m0 = sum(u)*dx; for n = 1:30, u = u - c*dt/dx*(u - circshift(u,1)); end; mass = sum(u)*dx; dm = mass - m0;", vars: ['mass', 'dm'], tol: 1e-7, level: 'graduate', domain: 'numerical-pde', tags: ['finite-volume', 'upwind-flux', 'conservation'] },
+  { name: 'pde-spectral-fft-derivative', src: 'N = 16; x = 2*pi*(0:N-1)/N; u = sin(x); k = [0:N/2-1 0 -N/2+1:-1]; du = real(ifft(1i*k.*fft(u))); err = max(abs(du - cos(x)));', vars: ['err'], tol: 1e-8, level: 'graduate', domain: 'numerical-pde', tags: ['spectral', 'pseudospectral', 'fft-differentiation'] },
+  { name: 'pde-laplacian-eig-2d', src: 'n = 4; e = ones(n,1); T = spdiags([e -2*e e], -1:1, n, n); I = speye(n); L = kron(I, T) + kron(T, I); ev = sort(eig(full(-L))); v = ev(1);', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'numerical-pde', tags: ['pde-eigenvalue', 'laplacian-modes', 'finite-difference'] },
 
   // ══════════ dynamical systems ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, level: 'undergrad', domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },
@@ -407,6 +412,7 @@ export const CASES: OracleCase[] = [
 
   // ── validation: ODE solvers (adaptive — loose tol absorbs step-control differences) ──
   { name: 'val-ode45', src: '[t, y] = ode45(@(t, y) y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, level: 'graduate', domain: 'numerical-ode', tags: ['ode45', 'oracle-validation'] },
+  { name: 'val-bvp4c-sine', src: "solinit = bvpinit(linspace(0,1,5), [0 1]); sol = bvp4c(@(x,y)[y(2); -y(1)], @(ya,yb)[ya(1); yb(1)-1], solinit); yy = deval(sol, 0.5); v = yy(1);", vars: ['v'], tol: 1e-3, level: 'graduate', domain: 'numerical-ode', tags: ['bvp4c', 'boundary-value-problem', 'deval', 'oracle-validation'] },
 
   // ── validation: optimization (unique minimizers; iterative tol) ──
   { name: 'val-fminbnd', src: 'x = fminbnd(@(x)(x-2).^2, 0, 5);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fminbnd', 'oracle-validation'] },
@@ -420,6 +426,8 @@ export const CASES: OracleCase[] = [
   { name: 'val-lsqcurvefit', src: 'c = lsqcurvefit(@(c, xd) c*xd, 1, [1 2 3], [2 4 6]);', vars: ['c'], tol: 1e-5, level: 'graduate', domain: 'optimization', tags: ['lsqcurvefit', 'least-squares', 'oracle-validation'] },
   { name: 'val-fminunc-quadratic', src: 'x = fminunc(@(v)(v(1)-2)^2 + 3*(v(2)+1)^2, [0 0]);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fminunc', 'anisotropic', 'oracle-validation'] },
   { name: 'val-lsqnonlin-circle', src: 'x = lsqnonlin(@(v)[v(1)^2+v(2)^2-1; v(1)-v(2)], [1 0]);', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['lsqnonlin', 'nonlinear-least-squares', 'oracle-validation'] },
+  { name: 'val-fmincon-nonlcon', src: "nl = @(x) deal(x(1)^2 + x(2)^2 - 1, []); x = fmincon(@(x) -x(1) - x(2), [0.1; 0.1], [], [], [], [], [], [], nl); v = x;", vars: ['v'], tol: 1e-4, level: 'graduate', domain: 'optimization', tags: ['fmincon', 'nonlinear-constraint', 'kkt', 'oracle-validation'] },
+  { name: 'opt-ista-lasso', src: "A = [1 0.5; 0.5 1]; b = [1; 2]; lam = 0.1; x = [0; 0]; Lc = norm(A)^2; for k = 1:500, z = x - (A'*(A*x - b))/Lc; x = sign(z).*max(abs(z) - lam/Lc, 0); end; v = x;", vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'optimization', tags: ['proximal-gradient', 'ista', 'lasso', 'soft-threshold'] },
 
   // ── validation: interpolation / polynomials ──
   { name: 'val-interp2', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X + Y; q = interp2(X, Y, Z, 1.5, 2.5);', vars: ['q'], tol: 1e-9, level: 'undergrad', domain: 'approximation', tags: ['interp2', 'oracle-validation'] },
@@ -448,6 +456,7 @@ export const CASES: OracleCase[] = [
   { name: 'val-ichol', src: 'A = sparse([4 1; 1 3]); L = ichol(A); rr = norm(full(L*L.\x27) - full(A));', vars: ['rr'], tol: 1e-7, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ichol', 'preconditioner', 'reconstruction', 'oracle-validation'] },
   { name: 'val-ldl', src: 'A = [4 1; 1 3]; [L, D] = ldl(A); rr = norm(L*D*L.\x27 - A);', vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ldl', 'factorization', 'reconstruction', 'oracle-validation'] },
   { name: 'sparse-pcg-ichol-residual', src: "n = 5; e = ones(n,1); T = spdiags([e -2*e e], -1:1, n, n); A = -(kron(speye(n), T) + kron(T, speye(n))); b = ones(n*n, 1); L = ichol(A); x = pcg(A, b, 1e-8, 200, L, L'); rr = norm(A*x - b);", vars: ['rr'], tol: 1e-5, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['pcg', 'ichol', 'preconditioner', 'sparse', 'oracle-validation'] },
+  { name: 'sparse-gmres-ilu-residual', src: "n = 5; e = ones(n,1); T = spdiags([e -2*e e], -1:1, n, n); A = -(kron(speye(n), T) + kron(T, speye(n))); b = ones(n*n, 1); [L, U] = ilu(A); x = gmres(A, b, 10, 1e-8, 50, L, U); rr = norm(A*x - b);", vars: ['rr'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['gmres', 'ilu', 'preconditioner', 'sparse', 'oracle-validation'] },
   { name: 'val-eigs', src: 'ev = sort(eigs([2 0 0; 0 3 0; 0 0 6], 3));', vars: ['ev'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['eigs', 'oracle-validation'] },
   { name: 'val-svds', src: 's = sort(svds([2 0; 0 3], 2));', vars: ['s'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['svds', 'oracle-validation'] },
   { name: 'val-orth', src: "Q = orth([1 0; 1 0; 0 1]); rr = norm(Q'*Q - eye(size(Q,2)));", vars: ['rr'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['orth', 'oracle-validation'] },

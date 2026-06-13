@@ -2859,6 +2859,24 @@
       ]
     }
   },
+  "stat_entropy_kl": {
+    "H": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.5
+    },
+    "KL": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.25
+    }
+  },
   "opt_golden_section": {
     "xmin": {
       "class": "double",
@@ -3258,6 +3276,44 @@
       "real": 6.385471637914544e-15
     }
   },
+  "pde_finite_volume_advection": {
+    "mass": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.30000000000000004
+    },
+    "dm": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "pde_spectral_fft_derivative": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.3322676295501878e-15
+    }
+  },
+  "pde_laplacian_eig_2d": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7639320225002108
+    }
+  },
   "dyn_fixed_point": {
     "x": {
       "class": "double",
@@ -3600,6 +3656,16 @@
       "real": 2.718281834797091
     }
   },
+  "val_bvp4c_sine": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5697446182937784
+    }
+  },
   "val_fminbnd": {
     "x": {
       "class": "double",
@@ -3731,6 +3797,32 @@
       "real": [
         0.7071067827406002,
         0.7071067827406001
+      ]
+    }
+  },
+  "val_fmincon_nonlcon": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.7071067738465495,
+        0.707106768525129
+      ]
+    }
+  },
+  "opt_ista_lasso": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0,
+        1.9199999999999997
       ]
     }
   },
@@ -3956,6 +4048,16 @@
         1
       ],
       "real": 3.0852715702514386e-8
+    }
+  },
+  "sparse_gmres_ilu_residual": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.111274187663886e-8
     }
   },
   "val_eigs": {
