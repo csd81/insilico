@@ -75,6 +75,21 @@ describe('symbolic (asserted through double of a substitution)', () => {
     const r = await run('syms x; y = double(subs(x + x, x, 5));');
     assert.equal(num(r.get('y')), 10);
   });
+
+  it('calculus smoke: f, diff, int evaluated at points', async () => {
+    const r = await run(`
+      syms x
+      f = x^3 - 2*x + 1;
+      df = diff(f, x);
+      F = int(f, x);
+      fv = double(subs(f, x, 2));
+      dfv = double(subs(df, x, 2));
+      Fv = double(subs(F, x, 2));
+    `);
+    assert.equal(num(r.get('fv')), 5);    // 8 - 4 + 1
+    assert.equal(num(r.get('dfv')), 10);  // 3x^2 - 2 at 2 → 10
+    assert.ok(Math.abs(num(r.get('Fv')) - 2) < 1e-9);  // x^4/4 - x^2 + x at 2 → 4-4+2 = 2
+  });
 });
 
 describe('graphics handle smoke (FigureSpec is sandbox-specific)', () => {

@@ -32,7 +32,8 @@ Behavior is mechanically verified against **real MATLAB** via the oracle suite
 
 **Linear algebra**
 - `\` (polymorphic `mldivide`: triangular / square LU / least-squares), multiple RHS
-- `inv`, `det`, `lu`, `qr`, `chol`, `eig`, `svd`, `norm`, `rank`, `trace`
+- `inv`, `det`, `lu`, `qr`, `chol`, `eig`, `svd`, `norm`, `rank`, `trace`, `null`
+- Matrix power `A^n`, `dot`, `cross`; eigenanalysis and Markov-chain workflows
 
 **Control flow**
 - `if/elseif/else`, `for`, `while`, `break`, `continue`, early `return`

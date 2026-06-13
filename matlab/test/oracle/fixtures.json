@@ -2347,5 +2347,280 @@
       ],
       "real": 50.697326728681745
     }
+  },
+  "la_add_mul": {
+    "C": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        3,
+        5,
+        12,
+        2,
+        8,
+        14,
+        4,
+        10,
+        10
+      ]
+    },
+    "D": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        19,
+        43,
+        72,
+        24,
+        51,
+        84,
+        9,
+        24,
+        39
+      ]
+    }
+  },
+  "la_transpose": {
+    "E": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10
+      ]
+    },
+    "F": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10
+      ]
+    }
+  },
+  "la_det_inv_rank": {
+    "detA": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -1
+    },
+    "invA": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        2,
+        0,
+        -1,
+        5,
+        -4,
+        -2,
+        -2,
+        1,
+        1
+      ]
+    },
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "la_inv_check": {
+    "check": {
+      "class": "double",
+      "size": [
+        3,
+        3
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "la_solve_backslash": {
+    "x1": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        3.413793103448276,
+        -1.5517241379310345,
+        -0.8965517241379308
+      ]
+    },
+    "residual": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 9.930136612989092e-16
+    }
+  },
+  "la_solve_inv": {
+    "x2": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        3.413793103448276,
+        -1.5517241379310347,
+        -0.8965517241379306
+      ]
+    }
+  },
+  "la_null_space": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    },
+    "nc": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5.23691153334427e-16
+    },
+    "dn": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "la_eig_invariants": {
+    "ev": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        2,
+        5
+      ]
+    },
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1102230246251565e-16
+    }
+  },
+  "markov_p10": {
+    "r10": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0.28390202940000026,
+        0.4472503494,
+        0.2688476212
+      ]
+    }
+  },
+  "markov_eig": {
+    "ev": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0.42679491924311225,
+        0.773205080756888,
+        1
+      ]
+    }
+  },
+  "mechanics_resultant": {
+    "FR": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        132,
+        132,
+        -1188
+      ]
+    }
+  },
+  "mechanics_moment": {
+    "Mx": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -792
+    },
+    "My": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 792
+    }
   }
 }

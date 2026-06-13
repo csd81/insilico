@@ -251,4 +251,30 @@ export const CASES: OracleCase[] = [
   { name: 'cross-product', src: 'c = cross([1 3 6], [1 0 2]);', vars: ['c'] },
   { name: 'normalize-vector', src: 'a = [-0.077 0.038 9.538]; an = a / norm(a);', vars: ['an'], tol: 1e-9 },
   { name: 'vector-frame-chain', src: 'a = [-0.077 0.038 9.538]; m = [-15.188 12.563 -49.625]; an = a/norm(a); mn = m/norm(m); d = -an; dxm = cross(d, mn); e = dxm/norm(dxm); n = cross(e, d); psi = acosd(dot([0 1 0], n) / (norm([0 1 0])*norm(n)));', vars: ['e', 'psi'], tol: 1e-6 },
+
+  // ── linear algebra: core matrix operations ──
+  { name: 'la-add-mul', src: 'A = [1 2 3; 4 5 6; 7 8 10]; B = [2 0 1; 1 3 4; 5 6 0]; C = A + B; D = A * B;', vars: ['C', 'D'] },
+  { name: 'la-transpose', src: "A = [1 2 3; 4 5 6; 7 8 10]; E = A.'; F = A';", vars: ['E', 'F'] },
+
+  // ── linear algebra: determinant / inverse / rank ──
+  { name: 'la-det-inv-rank', src: 'A = [2 1 3; 1 0 2; 4 1 8]; detA = det(A); invA = inv(A); r = rank(A);', vars: ['detA', 'invA', 'r'], tol: 1e-9 },
+  { name: 'la-inv-check', src: 'A = [2 1 3; 1 0 2; 4 1 8]; check = A * inv(A);', vars: ['check'], tol: 1e-9 },
+
+  // ── linear algebra: solving systems ──
+  { name: 'la-solve-backslash', src: 'A = [3 -1 2; 1 4 -2; 2 -3 5]; b = [10; -1; 7]; x1 = A\\b; residual = norm(A*x1 - b);', vars: ['x1', 'residual'], tol: 1e-9 },
+  { name: 'la-solve-inv', src: 'A = [3 -1 2; 1 4 -2; 2 -3 5]; b = [10; -1; 7]; x2 = inv(A) * b;', vars: ['x2'], tol: 1e-9 },
+
+  // ── linear algebra: rank-deficient / null space (invariants, not the basis) ──
+  { name: 'la-null-space', src: 'A = [1 2 3; 2 4 6; 1 1 1]; r = rank(A); N = null(A); nc = norm(A*N); dn = size(N, 2);', vars: ['r', 'nc', 'dn'], tol: 1e-9 },
+
+  // ── linear algebra: eigenanalysis (sorted values + reconstruction residual, not raw V) ──
+  { name: 'la-eig-invariants', src: 'A = [4 1; 2 3]; [V, D] = eig(A); ev = sort(diag(D)); rr = norm(V*D*inv(V) - A);', vars: ['ev', 'rr'], tol: 1e-9 },
+
+  // ── linear algebra: Markov chains ──
+  { name: 'markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6 },
+  { name: 'markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6 },
+
+  // ── vector mechanics (resultant force + moment about origin) ──
+  { name: 'mechanics-resultant', src: 'A = [0 0 6]; B = [0 2.5 0]; C = [2 -3 0]; uAC = (C-A)/norm(C-A); uAB = (B-A)/norm(B-A); FR = uAC*462 + uAB*858;', vars: ['FR'], tol: 1e-6 },
+  { name: 'mechanics-moment', src: 'A = [0 0 6]; B = [0 2.5 0]; C = [2 -3 0]; FR = (C-A)/norm(C-A)*462 + (B-A)/norm(B-A)*858; MR = cross(A, FR); Mx = dot(MR, [1 0 0]); My = dot(MR, [0 1 0]);', vars: ['Mx', 'My'], tol: 1e-6 },
 ];
