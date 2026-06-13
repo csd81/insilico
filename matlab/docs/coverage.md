@@ -52,13 +52,8 @@ of generated content with no runtime value.
 | BIOINFO | Sequence / alignment utilities |
 | LIDAR | Point cloud primitives |
 | RADAR | Radar equation, clutter models |
-| RF | S-parameters, network analysis |
-| ANTENNA | Array factor, element patterns |
-| AUDIO | `audioread`/`audiowrite` stubs, spectrogram |
 | PHASED | Phased array signal processing |
 | ROBOTICS | Rigid body tree, joint, transformations |
-| TEXTANALYTICS | `tokenizedDocument`, `bagOfWords` |
-| VISION | `detectSURFFeatures`, basic CV stubs |
 | RISK | Credit risk utility stubs |
 
 ---
@@ -72,6 +67,14 @@ of generated content with no runtime value.
 | **MPC Toolbox** | Entirely stubs. `mpcmove` ignored constraints; real QP solver was dead code. Deleted previously. |
 | **Quantum / QUBO** | Not a MATLAB toolbox. Baked into base builtins; now removed from BUILTINS registry and help index. Implementation remains in `builtins.ts` but is unreachable. |
 | **OPTIM (partial)** | 11 of 14 builtins duplicate base MATLAB. `optimvar`/`optimproblem` are stubs. Only `fgoalattain` is registered. |
+| **AEROSPACE** | Out of scope for numerical computing focus. Deleted. |
+| **ANTENNA / RF** | Out of scope. Deleted. |
+| **AUDIO** | Out of scope. Deleted. |
+| **BIOINFO** | Out of scope. Deleted. |
+| **FINANCIAL / FININST** | Out of scope. Deleted. |
+| **LIDAR / RADAR** | Out of scope. Deleted. |
+| **TEXTANALYTICS** | Out of scope. Deleted. |
+| **VISION** | Out of scope. Deleted. |
 
 ---
 
