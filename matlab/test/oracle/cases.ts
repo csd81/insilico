@@ -510,4 +510,15 @@ export const CASES: OracleCase[] = [
   { name: 'apla-markov-weather', src: 'P = [0.8 0.2; 0.4 0.6]; s0 = [1 0]; s7 = s0*P^7;', vars: ['s7'], tol: 1e-6, level: 'undergrad', domain: 'linear-algebra', tags: ['applied', 'markov-chain'] },
   { name: 'apla-robotics-rotation', src: 'R = @(t) [cosd(t) -sind(t); sind(t) cosd(t)]; R90 = R(30)*R(60);', vars: ['R90'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['applied', 'robotics', 'rotation-matrix'] },
   { name: 'apla-svd-lowrank', src: "A = magic(4); [U, S, V] = svd(A); A1 = U(:,1)*S(1,1)*V(:,1)'; err = norm(A - A1); s = svd(A);", vars: ['err'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['applied', 'svd', 'low-rank'] },
+
+  // ══════════ calculus — extended symbolic integration + limits (engine improvements) ══════════
+  { name: 'cal-int-sqrt', src: 'syms x; v = double(int(sqrt(x), 0, 4));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'power-rule', 'sqrt'] },
+  { name: 'cal-int-linear-sub', src: 'syms x; v = double(int(sin(2*x), 0, pi/2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'linear-substitution'] },
+  { name: 'cal-int-linear-base', src: 'syms x; v = double(int((2*x+1)^3, 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'linear-substitution'] },
+  { name: 'cal-int-byparts-exp', src: 'syms x; v = double(int(x*exp(x), 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'by-parts'] },
+  { name: 'cal-int-byparts-sin', src: 'syms x; v = double(int(x*sin(x), 0, pi));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'by-parts'] },
+  { name: 'cal-int-byparts-poly-exp', src: 'syms x; v = double(int(x^2*exp(x), 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'by-parts', 'recursive'] },
+  { name: 'cal-int-byparts-log', src: 'syms x; v = double(int(x*log(x), 1, 2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'by-parts', 'logarithm'] },
+  { name: 'cal-int-arctan', src: 'syms x; v = double(int(1/(1+x^2), 0, 1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['integration', 'arctan-form'] },
+  { name: 'cal-limit-lhopital', src: 'syms x; v = double(limit((1-cos(x))/x^2, x, 0));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'calculus', tags: ['limit', 'lhopital'] },
 ];

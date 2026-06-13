@@ -291,37 +291,133 @@ export function transformVars(a: Value[], defIndep: string, defTrans: string): {
 }
 export function symNames(v: Value): string[] { if (isSym(v)) return v.exprs.map((e) => (e.t === 'v' ? e.name : symVars(e)[0] ?? 'x')); if (isCell(v)) return v.items.map((x) => asString(x)); if (isStr(v)) return v.items.slice(); return [asString(v)]; }
 /** Basic symbolic integration: linearity + xⁿ, 1/x, sin/cos/exp of the variable. */
+/** Rewrite sqrt(u) → u^(1/2) so the power rule covers square roots (Step 2). */
+function normSqrt(e: SymExpr): SymExpr {
+  if (e.t === 'fn' && e.name === 'sqrt') return sPow(normSqrt(e.args[0]), sN(0.5));
+  if (e.t === 'fn') return sFn(e.name, ...e.args.map(normSqrt));
+  if (e.t === 'add') return sAdd(...e.args.map(normSqrt));
+  if (e.t === 'mul') return sMul(...e.args.map(normSqrt));
+  if (e.t === 'pow') return sPow(normSqrt(e.base), normSqrt(e.exp));
+  return e;
+}
+/** If `arg` is a*x+b with constant a≠0, b, return {a, b}; else null (linear substitution). */
+function linearArg(arg: SymExpr, x: string): { a: number; b: number } | null {
+  if (symVars(arg).indexOf(x) < 0) return null;
+  const c = polyCoeffs(arg, x);
+  if (c.length >= 2 && Math.abs(c[1]) > 1e-12 && c.slice(2).every((v) => Math.abs(v) < 1e-12)) return { a: c[1], b: c[0] };
+  return null;
+}
+/** Antiderivative of a bare elementary function (the 1/a linear-arg scaling is the caller's). */
+function elemAntideriv(name: string, arg: SymExpr): SymExpr | null {
+  if (name === 'sin') return sNeg(sFn('cos', arg));
+  if (name === 'cos') return sFn('sin', arg);
+  if (name === 'exp') return sFn('exp', arg);
+  return null;
+}
+/** Tabular by-parts reduction for ∫ x^n · f(a·x+b) dx (f ∈ {exp,sin,cos}); terminates at n=0. */
+function reduceByParts(n: number, fname: string, a: number, arg: SymExpr, x: string): SymExpr {
+  if (n === 0) return sMul(sN(1 / a), elemAntideriv(fname, arg)!);
+  const xn = sPow(sV(x), sN(n));
+  if (fname === 'exp') return sSub(sMul(sN(1 / a), xn, sFn('exp', arg)), sMul(sN(n / a), reduceByParts(n - 1, 'exp', a, arg, x)));
+  if (fname === 'sin') return sAdd(sMul(sN(-1 / a), xn, sFn('cos', arg)), sMul(sN(n / a), reduceByParts(n - 1, 'cos', a, arg, x)));
+  return sSub(sMul(sN(1 / a), xn, sFn('sin', arg)), sMul(sN(n / a), reduceByParts(n - 1, 'sin', a, arg, x)));   // cos
+}
+/** ∫ x^n·exp/sin/cos(a·x+b) and ∫ x^n·log(x) via explicit by-parts patterns (Step 4). */
+function integrateByParts(e: SymExpr, x: string): SymExpr | null {
+  if (e.t !== 'mul') return null;
+  let n = 0; let fn: SymExpr | null = null;
+  for (const f of e.args) {
+    if (f.t === 'v' && f.name === x) n += 1;
+    else if (f.t === 'pow' && f.base.t === 'v' && f.base.name === x && f.exp.t === 'n') n += f.exp.v;
+    else if (f.t === 'fn' && !fn) fn = f;
+    else return null;
+  }
+  if (!fn || !Number.isInteger(n) || n < 1) return null;
+  if (fn.name === 'log' && fn.args[0].t === 'v' && fn.args[0].name === x) {
+    const np1 = n + 1;   // ∫x^n log(x) = x^(n+1)/(n+1)·(log(x) − 1/(n+1))
+    return sMul(sN(1 / np1), sPow(sV(x), sN(np1)), sSub(sFn('log', sV(x)), sN(1 / np1)));
+  }
+  if (fn.name === 'exp' || fn.name === 'sin' || fn.name === 'cos') {
+    const lin = linearArg(fn.args[0], x);
+    if (lin) return reduceByParts(n, fn.name, lin.a, fn.args[0], x);
+  }
+  return null;
+}
+/** ∫ k/(x^2 + a^2) dx = (k/a)·atan(x/a). */
+function arctanPattern(e: SymExpr, x: string): SymExpr | null {
+  const { num, den } = numDen(e);
+  if (symVars(num).indexOf(x) >= 0) return null;
+  const k = symEval(num, new Map()); if (!Number.isFinite(k)) return null;
+  const c = polyCoeffs(den, x);
+  if (c.length >= 3 && Math.abs(c[2] - 1) < 1e-12 && Math.abs(c[1]) < 1e-12 && c[0] > 1e-12 && c.slice(3).every((v) => Math.abs(v) < 1e-12)) {
+    const a = Math.sqrt(c[0]);
+    return sMul(sN(k / a), sFn('atan', sMul(sN(1 / a), sV(x))));
+  }
+  return null;
+}
+
 export function integrate(e: SymExpr, x: string): SymExpr {
-  e = simplifyExpr(e);
+  e = simplifyExpr(normSqrt(e));
   if (e.t === 'fn' && e.name === 'piecewise') return sFn('piecewise', ...e.args.map((a, i) => (i % 2 === 0 ? a : integrate(a, x))));
   if (e.t === 'add') return sAdd(...e.args.map((a) => integrate(a, x)));
-  if (e.t === 'mul') { const consts = e.args.filter((a) => symVars(a).indexOf(x) < 0); const rest = e.args.filter((a) => symVars(a).indexOf(x) >= 0); if (consts.length && rest.length) return sMul(sMul(...consts), integrate(rest.length === 1 ? rest[0] : sMul(...rest), x)); }
+  if (e.t === 'mul') {
+    const consts = e.args.filter((a) => symVars(a).indexOf(x) < 0);
+    const rest = e.args.filter((a) => symVars(a).indexOf(x) >= 0);
+    if (consts.length && rest.length) return sMul(sMul(...consts), integrate(rest.length === 1 ? rest[0] : sMul(...rest), x));
+    const bp = integrateByParts(e, x); if (bp) return simplifyExpr(bp);   // Step 4
+  }
+  const at = arctanPattern(e, x); if (at) return simplifyExpr(at);          // Step 4 (1/(x²+a²))
   if (symVars(e).indexOf(x) < 0) return sMul(e, sV(x));                                  // constant → c·x
   if (e.t === 'v' && e.name === x) return sMul(sN(0.5), sPow(sV(x), sN(2)));
-  if (e.t === 'pow' && e.base.t === 'v' && e.base.name === x && e.exp.t === 'n') { const n = e.exp.v; return n === -1 ? sFn('log', sV(x)) : sMul(sN(1 / (n + 1)), sPow(sV(x), sN(n + 1))); }
-  if (e.t === 'fn' && e.args[0].t === 'v' && e.args[0].name === x) {
-    if (e.name === 'sin') return sNeg(sFn('cos', sV(x)));
-    if (e.name === 'cos') return sFn('sin', sV(x));
-    if (e.name === 'exp') return sFn('exp', sV(x));
+  if (e.t === 'pow' && e.exp.t === 'n') {
+    const lin = linearArg(e.base, x);
+    if (lin) { const n = e.exp.v; return n === -1 ? sMul(sN(1 / lin.a), sFn('log', e.base)) : sMul(sN(1 / (lin.a * (n + 1))), sPow(e.base, sN(n + 1))); }   // power rule incl. linear base (Step 3)
+  }
+  if (e.t === 'fn') {                                                       // elementary fn of a linear argument (Step 3)
+    const lin = linearArg(e.args[0], x);
+    const base = lin && elemAntideriv(e.name, e.args[0]);
+    if (base) return sMul(sN(1 / lin!.a), base);
   }
   return sFn('int', e);   // unevaluated
 }
-/** Limit by substitution; one round of L'Hôpital for 0/0. */
+/** Limit by substitution; multi-round L'Hôpital for 0/0 and ∞/∞, then a cancellation-safe
+ *  numeric fallback. Returns an unevaluated `limit(...)` when the result isn't a number. */
 export function limitAt(e: SymExpr, x: string, pt: SymExpr): SymExpr {
-  const p = symEval(pt, new Map()); const env = new Map([[x, p]]);
-  const v = symEval(e, env); if (Number.isFinite(v)) return sN(v);
-  // L'Hôpital for f/g → f'/g' if both → 0
-  if (e.t === 'mul') { const inv = e.args.find((a) => a.t === 'pow' && a.exp.t === 'n' && a.exp.v < 0); const num = e.args.filter((a) => a !== inv); if (inv) { const g = (inv as { base: SymExpr }).base; const f = num.length === 1 ? num[0] : sMul(...num); const fp = symEval(f, env), gp = symEval(g, env); if (Math.abs(fp) < 1e-9 && Math.abs(gp) < 1e-9) { const lv = symEval(sMul(diffExpr(f, x), sPow(diffExpr(g, x), sN(-1))), env); if (Number.isFinite(lv)) return sN(lv); } } }
-  // numeric fallback: sample toward pt and check convergence (handles ±∞ and stubborn 0/0)
+  const p = symEval(pt, new Map());
   const snap = (val: number) => (Math.abs(val - Math.round(val)) < 1e-7 ? Math.round(val) : val);
   const at = (xv: number) => symEval(e, new Map([[x, xv]]));
+
+  // direct substitution
+  const v = symEval(e, new Map([[x, p]]));
+  if (Number.isFinite(v)) return sN(v);
+
+  // multi-round L'Hôpital: differentiate f/g until the ratio at p is determinate (e.g.
+  // (1-cos x)/x^2 needs two rounds → cos(x)/2 → 1/2). numDen splits the denominator correctly.
+  if (Number.isFinite(p)) {
+    let { num: f, den: g } = numDen(e);
+    for (let round = 0; round < 5; round++) {
+      const fp = symEval(f, new Map([[x, p]])), gp = symEval(g, new Map([[x, p]]));
+      const zeroZero = Math.abs(fp) < 1e-9 && Math.abs(gp) < 1e-9;
+      const infInf = !Number.isFinite(fp) && !Number.isFinite(gp);
+      if (!zeroZero && !infInf) break;
+      f = simplifyExpr(diffExpr(f, x));
+      g = simplifyExpr(diffExpr(g, x));
+      const lv = symEval(sDiv(f, g), new Map([[x, p]]));
+      if (Number.isFinite(lv)) return sN(snap(lv));
+    }
+  }
+
+  // numeric fallback. For finite p, stay at MODERATE eps (≥1e-4) — sampling closer triggers
+  // catastrophic cancellation (e.g. 1-cos(1e-6)) and yields wrong limits — and require the
+  // two-sided estimate to agree across two scales before trusting it.
   if (!Number.isFinite(p)) {
     const sgn = p > 0 ? 1 : -1; let prev = NaN, conv = NaN, ok = false;
     for (const mag of [1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8]) { const sv = at(sgn * mag); if (!Number.isFinite(sv)) { ok = false; break; } if (Number.isFinite(prev) && Math.abs(sv - prev) < 1e-6 * (1 + Math.abs(sv))) { conv = sv; ok = true; } prev = sv; }
     if (ok) return sN(snap(conv));
   } else {
-    let lv = NaN, rv = NaN; for (const eps of [1e-2, 1e-3, 1e-4, 1e-5, 1e-6]) { lv = at(p - eps); rv = at(p + eps); }
-    if (Number.isFinite(lv) && Number.isFinite(rv) && Math.abs(lv - rv) < 1e-4 * (1 + Math.abs(lv))) return sN(snap((lv + rv) / 2));
+    const ests: number[] = [];
+    for (const eps of [1e-2, 1e-3, 1e-4]) { const lv = at(p - eps), rv = at(p + eps); if (Number.isFinite(lv) && Number.isFinite(rv) && Math.abs(lv - rv) < 1e-3 * (1 + Math.abs(lv))) ests.push((lv + rv) / 2); }
+    if (ests.length >= 2 && Math.abs(ests[ests.length - 1] - ests[0]) < 1e-3 * (1 + Math.abs(ests[0]))) return sN(snap(ests[ests.length - 1]));
   }
   return sFn('limit', e);
 }
