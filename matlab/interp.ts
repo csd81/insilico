@@ -911,6 +911,8 @@ export class Interpreter implements Env {
       const vals: Value[] = [];
       for (const el of row) {
         if (el.t === 'cell') { for (const v of await this.evalCellContent(el.target, el.args, scope)) vals.push(v); continue; }
+        // `S.field` on a struct array is a comma-separated list — expand it (e.g. `[S.v]`).
+        if (el.t === 'field') { for (const v of await this.evalValues(el, scope, 1)) vals.push(v); continue; }
         vals.push(await this.evalExpr(el, scope));
       }
       for (const v of vals) if (isStr(v)) anyStr = true;

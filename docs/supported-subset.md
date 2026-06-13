@@ -35,10 +35,14 @@ Behavior is mechanically verified against **real MATLAB** via the oracle suite
 - `inv`, `det`, `lu`, `qr`, `chol`, `eig`, `svd`, `norm`, `rank`, `trace`
 
 **Control flow**
-- `if/elseif/else`, `for`, `while`, `break`, `continue`, `switch/case/otherwise`, `try/catch`
+- `if/elseif/else`, `for`, `while`, `break`, `continue`, early `return`
+- `switch/case/otherwise`, including cell-array cases (`case {1,2,3}`)
+- `try/catch`; `catch ME` exposes `ME.message` and `ME.identifier`
+- Short-circuit `&&` / `||` (the right operand is not evaluated when skipped)
 
 **Functions**
-- Function files, multiple outputs `[a,b]=f(...)`, `nargin`/`nargout`
+- Function files, multiple outputs `[a,b]=f(...)`, ignored outputs `[~,b]=f(...)`
+- `nargin`/`nargout`
 - Anonymous functions with **snapshot** closures (capture-by-value at definition)
 - Function handles, `feval`, `arrayfun`, `cellfun`
 - Comma-separated-list expansion: `foo(C{:})`, `[a,b]=deal(...)`
@@ -48,7 +52,8 @@ Behavior is mechanically verified against **real MATLAB** via the oracle suite
 - Exceptions match MATLAB: `containers.Map` is a handle (shared); `dictionary` is a value (copied)
 
 **Cells & structs**
-- Construction, indexing, static field access (`s.f`), nesting, `fieldnames`
+- Construction, indexing, static field access (`s.f`), nested assignment (`S.a.b=1`)
+- Struct arrays (`S(2).x=5`) with auto-filled empty fields; field extraction `[S.field]`; `fieldnames`
 
 **Strings**
 - Char arrays and the `string` class; `sprintf`, `num2str`, `strcat`, `strrep`,

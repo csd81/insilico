@@ -177,4 +177,27 @@ export const CASES: OracleCase[] = [
   // ── fundamentals: elementary-function domains ──
   { name: 'atan2', src: 'a = atan2(1, 1);', vars: ['a'], tol: 1e-9 },
   { name: 'hypot', src: 'h = hypot(3, 4);', vars: ['h'] },
+
+  // ── structs ──
+  { name: 'struct-nested-assign', src: 'S.a.b = 7; x = S.a.b;', vars: ['x'] },
+  { name: 'struct-array-rw', src: 'S(1).x = 1; S(2).x = 5; n = numel(S); y = S(2).x;', vars: ['n', 'y'] },
+  { name: 'struct-array-default-empty', src: 'S(3).x = 9; e = isempty(S(1).x);', vars: ['e'] },
+  { name: 'struct-field-extract', src: 'S(1).v = 10; S(2).v = 20; w = [S.v];', vars: ['w'] },
+
+  // ── short-circuit operators (RHS must not be evaluated) ──
+  { name: 'shortcircuit-and', src: 'a = false && nosuchfn();', vars: ['a'] },
+  { name: 'shortcircuit-or', src: 'b = true || nosuchfn();', vars: ['b'] },
+  { name: 'shortcircuit-combined', src: 'c = (3 > 2) && (1 < 2);', vars: ['c'] },
+
+  // ── ignored outputs (~) ──
+  { name: 'ignored-output-max', src: '[~, idx] = max([3 9 1]);', vars: ['idx'] },
+  { name: 'ignored-output-size', src: '[~, nc] = size([1 2 3; 4 5 6]);', vars: ['nc'] },
+
+  // ── switch with cell-array cases ──
+  { name: 'switch-cell-hit', src: 'x = 2; switch x, case {1, 2, 3}, y = 10; otherwise, y = 0; end', vars: ['y'] },
+  { name: 'switch-cell-miss', src: 'x = 7; switch x, case {1, 2, 3}, y = 10; otherwise, y = 0; end', vars: ['y'] },
+
+  // ── string class ──
+  { name: 'string-concat-plus', src: 's = "foo" + "bar";', vars: ['s'] },
+  { name: 'string-equality', src: 'e = ("abc" == "abc");', vars: ['e'] },
 ];

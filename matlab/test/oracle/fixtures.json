@@ -1741,5 +1741,146 @@
       ],
       "real": 5
     }
+  },
+  "struct_nested_assign": {
+    "x": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 7
+    }
+  },
+  "struct_array_rw": {
+    "n": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    },
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "struct_array_default_empty": {
+    "e": {
+      "class": "logical",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "struct_field_extract": {
+    "w": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        10,
+        20
+      ]
+    }
+  },
+  "shortcircuit_and": {
+    "a": {
+      "class": "logical",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "shortcircuit_or": {
+    "b": {
+      "class": "logical",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "shortcircuit_combined": {
+    "c": {
+      "class": "logical",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "ignored_output_max": {
+    "idx": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
+    }
+  },
+  "ignored_output_size": {
+    "nc": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "switch_cell_hit": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 10
+    }
+  },
+  "switch_cell_miss": {
+    "y": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "string_concat_plus": {
+    "s": {
+      "class": "string",
+      "size": [
+        1,
+        1
+      ],
+      "value": "foobar"
+    }
+  },
+  "string_equality": {
+    "e": {
+      "class": "logical",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
   }
 }
