@@ -10,6 +10,9 @@ export interface OracleCase {
   /** Absolute tolerance for numeric comparison (default 1e-6). Tighten for exact
    *  arithmetic, loosen for least-squares / decomposition / ill-conditioned cases. */
   tol?: number;
+  /** Coverage taxonomy tags (topic area + level), e.g. ['linear-algebra','graduate'].
+   *  See coverage.mjs for the report and docs/coverage-map.md for the declared areas. */
+  tags?: string[];
 }
 
 export const CASES: OracleCase[] = [
@@ -277,4 +280,42 @@ export const CASES: OracleCase[] = [
   // ── vector mechanics (resultant force + moment about origin) ──
   { name: 'mechanics-resultant', src: 'A = [0 0 6]; B = [0 2.5 0]; C = [2 -3 0]; uAC = (C-A)/norm(C-A); uAB = (B-A)/norm(B-A); FR = uAC*462 + uAB*858;', vars: ['FR'], tol: 1e-6 },
   { name: 'mechanics-moment', src: 'A = [0 0 6]; B = [0 2.5 0]; C = [2 -3 0]; FR = (C-A)/norm(C-A)*462 + (B-A)/norm(B-A)*858; MR = cross(A, FR); Mx = dot(MR, [1 0 0]); My = dot(MR, [0 1 0]);', vars: ['Mx', 'My'], tol: 1e-6 },
+
+  // ══════════ graduate-applied computational math ══════════
+
+  // conditioning & stability
+  { name: 'grad-cond-hilbert', src: 'c = cond(hilb(5));', vars: ['c'], tol: 1, tags: ['conditioning', 'numerical-linear-algebra', 'graduate'] },
+  { name: 'grad-rref', src: 'R = rref([1 2 3; 2 4 6; 1 1 1]);', vars: ['R'], tol: 1e-9, tags: ['linear-algebra', 'undergrad'] },
+
+  // orthogonal projection & orthonormalization
+  { name: 'grad-projection', src: "A = [1 0; 1 1; 1 2]; b = [1; 2; 2]; proj = A*((A'*A)\\(A'*b));", vars: ['proj'], tol: 1e-9, tags: ['projection', 'least-squares', 'undergrad'] },
+  { name: 'grad-qr-orthonormal', src: "[Q, R] = qr([1 1; 1 0; 0 1], 0); orth = Q'*Q;", vars: ['orth'], tol: 1e-9, tags: ['orthogonalization', 'numerical-linear-algebra', 'graduate'] },
+
+  // SVD / low-rank
+  { name: 'grad-svd-values-3x3', src: 's = svd([2 0 0; 0 3 0; 0 0 6]);', vars: ['s'], tol: 1e-9, tags: ['svd', 'numerical-linear-algebra', 'graduate'] },
+
+  // iterative linear solvers
+  { name: 'grad-jacobi', src: 'A = [4 1; 1 3]; b = [1; 2]; d = diag(A); R = A - diag(d); x = [0; 0]; for k = 1:100, x = (b - R*x) ./ d; end', vars: ['x'], tol: 1e-6, tags: ['iterative-solver', 'numerical-linear-algebra', 'graduate'] },
+  { name: 'grad-gauss-seidel', src: 'A = [4 1; 1 3]; b = [1; 2]; x = [0; 0]; for k = 1:50, x(1) = (b(1) - A(1,2)*x(2))/A(1,1); x(2) = (b(2) - A(2,1)*x(1))/A(2,2); end', vars: ['x'], tol: 1e-9, tags: ['iterative-solver', 'numerical-linear-algebra', 'graduate'] },
+  { name: 'grad-conjugate-gradient', src: "A = [4 1; 1 3]; b = [1; 2]; x = [0; 0]; r = b - A*x; p = r; for k = 1:2, Ap = A*p; alpha = (r'*r)/(p'*Ap); x = x + alpha*p; rn = r - alpha*Ap; beta = (rn'*rn)/(r'*r); p = rn + beta*p; r = rn; end", vars: ['x'], tol: 1e-9, tags: ['krylov', 'iterative-solver', 'graduate'] },
+
+  // nonlinear systems (Newton with Jacobian)
+  { name: 'grad-newton-system', src: 'F = @(x) [x(1)^2 + x(2)^2 - 1; x(1) - x(2)]; J = @(x) [2*x(1) 2*x(2); 1 -1]; x = [1; 1]; for k = 1:10, x = x - J(x)\\F(x); end', vars: ['x'], tol: 1e-9, tags: ['nonlinear-systems', 'newton', 'graduate'] },
+
+  // regularization / inverse problems
+  { name: 'grad-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, tags: ['regularization', 'inverse-problems', 'graduate'] },
+
+  // matrix functions
+  { name: 'grad-expm', src: 'E = expm([0 1; 0 0]);', vars: ['E'], tol: 1e-9, tags: ['matrix-functions', 'graduate'] },
+
+  // spectral graph theory
+  { name: 'grad-graph-laplacian', src: 'A = [0 1 0; 1 0 1; 0 1 0]; D = diag(sum(A, 2)); L = D - A; ev = sort(eig(L));', vars: ['ev'], tol: 1e-9, tags: ['spectral-graph', 'graduate'] },
+
+  // Fourier analysis & signals
+  { name: 'grad-fft', src: 'Y = fft([1 2 3 4]);', vars: ['Y'], tol: 1e-9, tags: ['fourier', 'signal-processing', 'undergrad'] },
+  { name: 'grad-conv', src: 'c = conv([1 2 1], [1 1]);', vars: ['c'], tol: 1e-9, tags: ['signal-processing', 'undergrad'] },
+
+  // computational statistics
+  { name: 'grad-var-std', src: 'v = var([2 4 6 8]); s = std([2 4 6 8]);', vars: ['v', 's'], tol: 1e-9, tags: ['statistics', 'undergrad'] },
+  { name: 'grad-corrcoef', src: 'R = corrcoef([1 2 3 4], [1 2 3 5]);', vars: ['R'], tol: 1e-6, tags: ['statistics', 'undergrad'] },
 ];
