@@ -3926,5 +3926,120 @@
         3
       ]
     }
+  },
+  "stress_hilbert_resid": {
+    "resid": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.577566798522237e-16
+    }
+  },
+  "stress_hilbert_solve": {
+    "x": {
+      "class": "double",
+      "size": [
+        6,
+        1
+      ],
+      "real": [
+        0.9999999999990725,
+        1.0000000000266982,
+        0.9999999998182658,
+        1.000000000474873,
+        0.9999999994739622,
+        1.0000000002078724
+      ]
+    }
+  },
+  "stress_rankdef_consistent": {
+    "resid": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.0350724194510405e-15
+    },
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "stress_rankdef_inconsistent": {
+    "resid": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.6546536707079772
+    }
+  },
+  "stress_vandermonde_resid": {
+    "rn": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.0005246383849488545
+    }
+  },
+  "stress_backslash_vs_pinv": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.210086317136976e-15
+    }
+  },
+  "stress_jordan_eig": {
+    "ev": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        1
+      ]
+    }
+  },
+  "stress_repeated_eig": {
+    "ev": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        2,
+        2,
+        5
+      ]
+    }
+  },
+  "stress_near_defective_eig": {
+    "ev": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        1.0001
+      ]
+    }
   }
 }

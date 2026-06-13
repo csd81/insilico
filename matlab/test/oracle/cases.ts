@@ -450,4 +450,23 @@ export const CASES: OracleCase[] = [
   { name: 'mm-matrix-chain', src: "A = [1 2; 3 4]; B = [5 6; 7 8]; C = (A*B + B*A)'; D = inv(A)*B - B*inv(A); s = trace(C) + norm(D, 'fro');", vars: ['s'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['matrix-operations', 'end-to-end'] },
   { name: 'mm-lsq-twoways', src: "t = [0 1 2 3 4]'; y = [1 3 2 5 4]'; A = [ones(5,1) t]; c = A\\y; cn = (A'*A)\\(A'*y); err = norm(c - cn);", vars: ['c', 'err'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['least-squares', 'normal-equations', 'end-to-end'] },
   { name: 'mm-diag-recon', src: 'A = [2 1; 0 3]; [V, D] = eig(A); rr = norm(V*D/V - A); ev = sort(diag(D));', vars: ['rr', 'ev'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['diagonalization', 'reconstruction', 'end-to-end'] },
+
+  // ══════════ stress / edge — adversarial (invariants where outputs are non-unique) ══════════
+
+  // nearly singular / ill-conditioned solves (residual is backward-stable; solution may not be)
+  { name: 'stress-hilbert-resid', src: 'A = hilb(8); b = A*ones(8,1); x = A\\b; resid = norm(A*x - b);', vars: ['resid'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ill-conditioned', 'hilbert', 'backward-stability', 'stress'] },
+  { name: 'stress-hilbert-solve', src: 'A = hilb(6); b = A*ones(6,1); x = A\\b;', vars: ['x'], tol: 1e-4, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ill-conditioned', 'hilbert', 'stress'] },
+
+  // rank-deficient systems (tall — clean least-squares basic solution; residual invariant)
+  { name: 'stress-rankdef-consistent', src: 'A = [1 2; 2 4; 3 6]; b = [3; 6; 9]; x = A\\b; resid = norm(A*x - b); r = rank(A);', vars: ['resid', 'r'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['rank-deficient', 'consistent', 'stress'] },
+  { name: 'stress-rankdef-inconsistent', src: 'A = [1; 2; 3]; b = [1; 1; 1]; x = A\\b; resid = norm(A*x - b);', vars: ['resid'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['rank-deficient', 'least-squares-residual', 'stress'] },
+
+  // ill-conditioned least squares (Vandermonde; residual + backslash-vs-pinv agreement)
+  { name: 'stress-vandermonde-resid', src: "x = linspace(0,1,6)'; A = vander(x); A = A(:,3:6); b = cos(x); xa = A\\b; rn = norm(A*xa - b);", vars: ['rn'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['ill-conditioned', 'vandermonde', 'least-squares', 'stress'] },
+  { name: 'stress-backslash-vs-pinv', src: "x = linspace(0,1,6)'; A = vander(x); A = A(:,3:6); b = cos(x); err = norm(A\\b - pinv(A)*b);", vars: ['err'], tol: 1e-4, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['least-squares', 'pinv', 'stress'] },
+
+  // repeated / defective eigenvalues (eigenvalues only — vectors are degenerate)
+  { name: 'stress-jordan-eig', src: 'ev = sort(eig([1 1; 0 1]));', vars: ['ev'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['defective', 'jordan-block', 'repeated-eigenvalues', 'stress'] },
+  { name: 'stress-repeated-eig', src: 'ev = sort(eig(diag([2 2 5])));', vars: ['ev'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['repeated-eigenvalues', 'stress'] },
+  { name: 'stress-near-defective-eig', src: 'ev = sort(eig([1 1000; 0 1.0001]));', vars: ['ev'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['near-defective', 'stress'] },
 ];
