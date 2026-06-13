@@ -1442,6 +1442,69 @@
       "real": 2.718281828234404
     }
   },
+  "gauss2pt_quadrature": {
+    "I": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.3333333333333335
+    }
+  },
+  "interp1_linear_scalar": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.5
+    }
+  },
+  "interp1_linear_vector": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.5,
+        6.5
+      ]
+    }
+  },
+  "pchip_interp": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.21875
+    }
+  },
+  "spline_interp": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.25
+    }
+  },
+  "polyint_definite": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8
+    }
+  },
   "sprintf_int": {
     "s": {
       "class": "char",

@@ -150,6 +150,14 @@ export const CASES: OracleCase[] = [
   { name: 'newton-interp', src: 'x = [1 2 4]; y = [1 4 16]; n = numel(x); c = y; for j = 2:n, for i = n:-1:j, c(i) = (c(i)-c(i-1))/(x(i)-x(i-j+1)); end, end; t = 3; p = c(n); for i = n-1:-1:1, p = p*(t-x(i)) + c(i); end', vars: ['p'], tol: 1e-9 },
   { name: 'rk4-exp', src: 'f = @(t, y) y; h = 0.01; y = 1; t = 0; for k = 1:100, k1 = f(t,y); k2 = f(t+h/2, y+h/2*k1); k3 = f(t+h/2, y+h/2*k2); k4 = f(t+h, y+h*k3); y = y + h/6*(k1+2*k2+2*k3+k4); t = t + h; end', vars: ['y'], tol: 1e-6 },
 
+  // ── quadrature & interpolation (curriculum algorithms; independently authored) ──
+  { name: 'gauss2pt-quadrature', src: 'f = @(x) x.^3 + 2*x.^2 + 1; nodes = [-1/sqrt(3), 1/sqrt(3)]; I = f(nodes(1)) + f(nodes(2));', vars: ['I'], tol: 1e-9 },
+  { name: 'interp1-linear-scalar', src: 'x = [0 1 2 3]; y = [0 1 4 9]; q = interp1(x, y, 1.5);', vars: ['q'], tol: 1e-9 },
+  { name: 'interp1-linear-vector', src: 'x = [0 1 2 3]; y = [0 1 4 9]; q = interp1(x, y, [0.5 2.5]);', vars: ['q'], tol: 1e-9 },
+  { name: 'pchip-interp', src: 'x = [0 1 2 3]; y = [0 1 4 9]; q = pchip(x, y, 1.5);', vars: ['q'], tol: 1e-6 },
+  { name: 'spline-interp', src: 'x = [0 1 2 3]; y = [0 1 4 9]; q = spline(x, y, 1.5);', vars: ['q'], tol: 1e-6 },
+  { name: 'polyint-definite', src: 'p = polyint([3 0 0]); v = polyval(p, 2) - polyval(p, 0);', vars: ['v'], tol: 1e-9 },
+
   // ── fundamentals: string / char operations (char-row & string outputs) ──
   { name: 'sprintf-int', src: "s = sprintf('%d/%d', 3, 4);", vars: ['s'] },
   { name: 'sprintf-float', src: "s = sprintf('%.2f', pi);", vars: ['s'] },
