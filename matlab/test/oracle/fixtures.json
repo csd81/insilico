@@ -6994,5 +6994,154 @@
       ],
       "real": 0
     }
+  },
+  "na_false_position": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.220446049250313e-16
+    }
+  },
+  "na_brent_fzero": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.0945514815423265
+    }
+  },
+  "na_adaptive_simpson": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.7425831322934755e-9
+    }
+  },
+  "na_pade_exp": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.6486486486486487
+    }
+  },
+  "na_bezier_decasteljau": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.75
+    }
+  },
+  "na_bspline_deboor": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.5
+    }
+  },
+  "na_kaczmarz": {
+    "r": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "na_qr_algorithm_eigen": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1.3819660112501053,
+        3.618033988749895
+      ]
+    }
+  },
+  "ode_shooting_bvp": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1883951058425322
+    }
+  },
+  "ode_exponential_integrator": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.6832623561226214,
+        0.3167376438773787
+      ]
+    }
+  },
+  "pde_adi_heat_2d": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.22429557559756658
+    }
+  },
+  "opt_trust_region_dogleg": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.5,
+        3
+      ]
+    }
+  },
+  "opt_barrier_method": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9999500049993751
+    }
+  },
+  "na_kahan_summation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.0000000000001
+    }
   }
 }
