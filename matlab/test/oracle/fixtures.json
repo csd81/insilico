@@ -6657,5 +6657,178 @@
         0.5
       ]
     }
+  },
+  "stat_ttest_onesample": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        1
+      ]
+    }
+  },
+  "stat_ttest2_twosample": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        0.07098765432098772
+      ]
+    }
+  },
+  "stat_bootstrap_fixed": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        4,
+        8.5,
+        6
+      ]
+    }
+  },
+  "ml_kmeans_lloyd": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1.25,
+        3.9
+      ]
+    }
+  },
+  "ml_rbf_kernel": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0.6065306597126334,
+        1,
+        0.6065306597126334
+      ]
+    }
+  },
+  "ml_kernel_ridge": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.9417277774642593
+    }
+  },
+  "ml_nn_forward": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.22
+    }
+  },
+  "opt_matchpairs_assignment": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        2
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "coding_binary_entropy": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.8112781244591328
+    }
+  },
+  "coding_mutual_information": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.124511249783653
+    }
+  },
+  "coding_gf2_divide": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        0
+      ]
+    }
+  },
+  "coding_hamming_syndrome": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "cal_resultant": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    }
+  },
+  "cal_discriminant_resultant": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -4
+    }
   }
 }
