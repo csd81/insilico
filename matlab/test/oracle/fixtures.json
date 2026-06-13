@@ -8072,5 +8072,195 @@
       ],
       "real": 1
     }
+  },
+  "mat_hadamard": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_pascal": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.9999999999999991,
+        20
+      ]
+    }
+  },
+  "mat_companion": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        1.0000000000000002,
+        1.999999999999998,
+        3.0000000000000018
+      ]
+    }
+  },
+  "mat_dftmtx": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_lehmer": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        9
+      ],
+      "real": [
+        1,
+        0.5,
+        0.3333333333333333,
+        0.5,
+        1,
+        0.6666666666666666,
+        0.3333333333333333,
+        0.6666666666666666,
+        1
+      ]
+    }
+  },
+  "mat_permutation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_exchange": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_projection_idempotent": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_involutory": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_nilpotent": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_normal": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "mat_rotation": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        1
+      ]
+    }
+  },
+  "mat_gram_psd": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "mat_hurwitz_stable": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "mat_convergent": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "mat_hat_matrix": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4.1570953281997524e-16
+    }
+  },
+  "mat_centering": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
   }
 }

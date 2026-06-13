@@ -310,7 +310,7 @@ export const CASES: OracleCase[] = [
   { name: 'val-minspantree', src: 'G = graph([1 1 2 3], [2 3 3 4], [1 4 2 3]); T = minspantree(G); w = sum(T.Edges.Weight);', vars: ['w'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['minspantree', 'oracle-validation'] },
   { name: 'opt-matchpairs-assignment', src: 'C = [1 5 4; 3 2 6; 5 4 3]; M = matchpairs(C, 100); v = sortrows(M);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['assignment-problem', 'bipartite-matching', 'matchpairs'] },
 
-  // ══════════ linear-algebra (29) ══════════
+  // ══════════ linear-algebra (42) ══════════
   { name: 'vec-mag-2d', src: 'v = [2 2]; mag = sqrt(v(1)^2 + v(2)^2);', vars: ['mag'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra' },
   { name: 'vec-mag-3d', src: 'v = [4 5 5]; mag = sqrt(v(1)^2 + v(2)^2 + v(3)^2);', vars: ['mag'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra' },
   { name: 'atand-neg', src: 't = atand(-3/2);', vars: ['t'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra' },
@@ -340,6 +340,19 @@ export const CASES: OracleCase[] = [
   { name: 'la-pfaffian', src: 'A = [0 2; -2 0]; pf = 2; v = pf^2 - det(A);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'linear-algebra', tags: ['pfaffian', 'skew-symmetric', 'determinant'] },
   { name: 'la-minor-cofactor', src: 'A = [1 2 3; 4 5 6; 7 8 10]; v = det(A([2 3], [2 3]));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['minor', 'cofactor', 'submatrix'] },
   { name: 'la-cauchy-binet', src: 'A = [1 2 3; 4 5 6]; B = [1 0; 0 1; 1 1]; v = det(A*B);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'linear-algebra', tags: ['cauchy-binet', 'determinant', 'product'] },
+  { name: 'mat-hadamard', src: "H = hadamard(4); v = norm(H*H' - 4*eye(4));", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['hadamard-matrix', 'orthogonality'] },
+  { name: 'mat-pascal', src: 'P = pascal(4); v = [det(P) P(4,4)];', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['pascal-matrix', 'unimodular'] },
+  { name: 'mat-companion', src: 'A = compan([1 -6 11 -6]); v = sort(eig(A));', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'linear-algebra', tags: ['companion-matrix', 'eigenvalues-are-roots'] },
+  { name: 'mat-dftmtx', src: "F = dftmtx(4); v = norm(F*F'/4 - eye(4));", vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'linear-algebra', tags: ['dft-matrix', 'unitary'] },
+  { name: 'mat-lehmer', src: "L = gallery('lehmer', 3); v = L(:)';", vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'linear-algebra', tags: ['lehmer-matrix', 'gallery'] },
+  { name: 'mat-permutation', src: "P = eye(4); P = P([2 3 4 1], :); v = norm(P'*P - eye(4));", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['permutation-matrix', 'orthogonality'] },
+  { name: 'mat-exchange', src: 'Jx = fliplr(eye(3)); v = norm(Jx*Jx - eye(3));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['exchange-matrix', 'involutory'] },
+  { name: 'mat-projection-idempotent', src: "u = [1; 1]; P = u*u'/(u'*u); v = norm(P*P - P);", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['projection', 'idempotent'] },
+  { name: 'mat-involutory', src: 'A = [0 1; 1 0]; v = norm(A*A - eye(2));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['involutory', 'self-inverse'] },
+  { name: 'mat-nilpotent', src: 'A = [0 1 0; 0 0 1; 0 0 0]; v = norm(A^3);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['nilpotent'] },
+  { name: 'mat-normal', src: "A = [1 2; -2 1]; v = norm(A*A' - A'*A);", vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'linear-algebra', tags: ['normal-matrix'] },
+  { name: 'mat-rotation', src: "th = 0.5; R = [cos(th) -sin(th); sin(th) cos(th)]; v = [norm(R'*R - eye(2)) det(R)];", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['rotation-matrix', 'special-orthogonal'] },
+  { name: 'mat-gram-psd', src: "A = [1 2; 3 4]; G = A'*A; v = double(all(eig(G) >= -1e-9));", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'linear-algebra', tags: ['gram-matrix', 'positive-semidefinite'] },
 
   // ══════════ machine-learning (4) ══════════
   { name: 'ml-kmeans-lloyd', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; C = [1 1; 5 7]; for it = 1:10, d1 = sum((X - C(1,:)).^2, 2); d2 = sum((X - C(2,:)).^2, 2); a = d2 < d1; C(1,:) = mean(X(~a,:)); C(2,:) = mean(X(a,:)); end; v = sort(C(:,1));", vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'machine-learning', tags: ['k-means', 'lloyd', 'clustering', 'fixed-init'] },
@@ -361,7 +374,7 @@ export const CASES: OracleCase[] = [
   { name: 'nt-primality', src: 'v = [isprime(97) isprime(100)];', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'number-theory', tags: ['primality', 'isprime'] },
   { name: 'nt-integer-factorization', src: 'v = factor(360);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'number-theory', tags: ['integer-factorization', 'factor'] },
 
-  // ══════════ numerical-linear-algebra (123) ══════════
+  // ══════════ numerical-linear-algebra (128) ══════════
   { name: 'mldivide', src: 'A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; x = A\\b;', vars: ['x'], level: 'undergrad', domain: 'numerical-linear-algebra' },
   { name: 'det', src: 'd = det([1 2 3; 4 5 6; 7 8 10]);', vars: ['d'], level: 'undergrad', domain: 'numerical-linear-algebra' },
   { name: 'inv', src: 'B = inv([4 3; 6 3]);', vars: ['B'], level: 'undergrad', domain: 'numerical-linear-algebra' },
@@ -488,6 +501,8 @@ export const CASES: OracleCase[] = [
   { name: 'nla-jordan-eigenvalues', src: 'A = [4 1 1; 0 4 0; 0 0 5]; v = sort(diag(double(jordan(A))));', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['jordan-form', 'eigenvalues'] },
   { name: 'nla-jordan-similarity', src: 'A = [5 1 0; 0 5 1; 0 0 5]; [V, J] = jordan(A); Vd = double(V); Jd = double(J); v = norm(A*Vd - Vd*Jd);', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['jordan-form', 'generalized-eigenvectors', 'similarity-invariant'] },
   { name: 'nla-jordan-defective-structure', src: 'A = [2 1 0; 0 2 0; 0 0 3]; J = double(jordan(A)); v = sum(sum(triu(J, 1)));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['jordan-form', 'defective', 'block-structure'] },
+  { name: 'mat-hurwitz-stable', src: 'A = [-1 1; 0 -2]; v = double(all(real(eig(A)) < 0));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['hurwitz-stable', 'eigenvalue-condition'] },
+  { name: 'mat-convergent', src: 'A = [0.5 0.1; 0 0.3]; v = double(max(abs(eig(A))) < 1);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['convergent-matrix', 'spectral-radius'] },
 
   // ══════════ numerical-methods (28) ══════════
   { name: 'newton-sqrt2', src: 'x = 1; for k = 1:20, x = x - (x^2 - 2)/(2*x); end', vars: ['x'], level: 'undergrad', domain: 'numerical-methods' },
@@ -613,7 +628,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, level: 'graduate', domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment', 'oracle-validation'] },
   { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, level: 'graduate', domain: 'optimization', tags: ['fminimax', 'minimax', 'oracle-validation'] },
 
-  // ══════════ statistics (22) ══════════
+  // ══════════ statistics (24) ══════════
   { name: 'markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, level: 'graduate', domain: 'statistics' },
   { name: 'markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, level: 'graduate', domain: 'statistics' },
   { name: 'grad-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, level: 'graduate', domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -636,6 +651,8 @@ export const CASES: OracleCase[] = [
   { name: 'stat-cov-matrix', src: 'X = [1 2; 3 5; 4 6]; C = cov(X); v = C(1,2);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['covariance', 'cov'] },
   { name: 'stat-cov-vectors', src: 'x = [1; 3; 4]; y = [2; 5; 6]; C = cov(x, y); v = C(1,2);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['covariance', 'two-vectors'] },
   { name: 'lang-rng-reproducibility', src: 'rng(42); a = rand(1, 5); rng(42); b = rand(1, 5); v = norm(a - b);', vars: ['v'], tol: 1e-15, level: 'undergrad', domain: 'statistics', tags: ['rng', 'seed', 'reproducibility-invariant'] },
+  { name: 'mat-hat-matrix', src: "X = [1 1; 1 2; 1 3]; H = X/(X'*X)*X'; v = norm(H*H - H);", vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'statistics', tags: ['hat-matrix', 'projection', 'regression'] },
+  { name: 'mat-centering', src: 'n = 4; C = eye(n) - ones(n)/n; v = norm(C*ones(n,1));', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['centering-matrix'] },
 
   // ══════════ symbolic (48) ══════════
   { name: 'val-sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['jacobian', 'oracle-validation'] },
