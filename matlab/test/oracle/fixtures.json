@@ -3584,5 +3584,206 @@
         3
       ]
     }
+  },
+  "val_ode23": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.7181833492485543
+    }
+  },
+  "val_ode113": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.71828097235354
+    }
+  },
+  "val_ode15s": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3682957321509729
+    }
+  },
+  "val_deval": {
+    "yf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.6487212726222376
+    }
+  },
+  "val_linprog_fval": {
+    "fval": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -1
+    }
+  },
+  "val_residue": {
+    "ps": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        2
+      ]
+    },
+    "rs": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -1,
+        2
+      ]
+    }
+  },
+  "val_centrality": {
+    "c": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        3,
+        2,
+        3
+      ]
+    }
+  },
+  "val_maxflow": {
+    "f": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "val_minspantree": {
+    "w": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6
+    }
+  },
+  "val_interpn": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 4
+    }
+  },
+  "val_makima": {
+    "q": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.229166666666667
+    }
+  },
+  "val_sym_jacobian": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        12,
+        1,
+        4,
+        1
+      ]
+    }
+  },
+  "val_sym_hessian": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        2
+      ],
+      "real": [
+        6,
+        4,
+        4,
+        0
+      ]
+    }
+  },
+  "val_sym_taylor": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.6666666666666665
+    }
+  },
+  "val_sym_laplace": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.2
+    }
+  },
+  "val_sym_dsolve": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.718281828459045
+    }
+  },
+  "val_sym_vpasolve": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -1.4142135623730951,
+        1.4142135623730951
+      ]
+    }
   }
 }

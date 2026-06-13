@@ -412,4 +412,33 @@ export const CASES: OracleCase[] = [
   { name: 'val-graph-conncomp', src: 'G = graph([1 3], [2 4]); c = conncomp(G);', vars: ['c'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['conncomp', 'oracle-validation'] },
   { name: 'val-graph-distances', src: 'G = graph([1 2 3], [2 3 4]); D = distances(G);', vars: ['D'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['distances', 'oracle-validation'] },
   { name: 'val-graph-toposort', src: 'G = digraph([1 2 1], [2 3 3]); o = toposort(G);', vars: ['o'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['toposort', 'oracle-validation'] },
+
+  // ── validation: remaining ODE solvers + deval (adaptive — loose tol) ──
+  { name: 'val-ode23', src: '[t, y] = ode23(@(t, y) y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, level: 'graduate', domain: 'numerical-ode', tags: ['ode23', 'oracle-validation'] },
+  { name: 'val-ode113', src: '[t, y] = ode113(@(t, y) y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, level: 'graduate', domain: 'numerical-ode', tags: ['ode113', 'oracle-validation'] },
+  { name: 'val-ode15s', src: '[t, y] = ode15s(@(t, y) -y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, level: 'graduate', domain: 'numerical-ode', tags: ['ode15s', 'stiff', 'oracle-validation'] },
+  { name: 'val-deval', src: 'sol = ode45(@(t, y) y, [0 1], 1); yf = deval(sol, 0.5);', vars: ['yf'], tol: 1e-2, level: 'graduate', domain: 'numerical-ode', tags: ['deval', 'oracle-validation'] },
+
+  // ── validation: linprog (objective value — non-unique vertex) ──
+  { name: 'val-linprog-fval', src: '[x, fval] = linprog([-1; -1], [1 1], 1, [], [], [0; 0]);', vars: ['fval'], tol: 1e-6, level: 'graduate', domain: 'optimization', tags: ['linprog', 'objective-invariant', 'oracle-validation'] },
+
+  // ── validation: residue (sorted poles + residues — order convention) ──
+  { name: 'val-residue', src: '[r, p, k] = residue([1 0], [1 -3 2]); ps = sort(p); rs = sort(r);', vars: ['ps', 'rs'], tol: 1e-9, level: 'graduate', domain: 'approximation', tags: ['residue', 'partial-fractions', 'oracle-validation'] },
+
+  // ── validation: graph metrics ──
+  { name: 'val-centrality', src: "G = graph([1 2 3 1], [2 3 1 3]); c = centrality(G, 'degree');", vars: ['c'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['centrality', 'oracle-validation'] },
+  { name: 'val-maxflow', src: 'G = digraph([1 1 2 3], [2 3 4 4], [2 3 2 3]); f = maxflow(G, 1, 4);', vars: ['f'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['maxflow', 'oracle-validation'] },
+  { name: 'val-minspantree', src: 'G = graph([1 1 2 3], [2 3 3 4], [1 4 2 3]); T = minspantree(G); w = sum(T.Edges.Weight);', vars: ['w'], tol: 1e-9, level: 'graduate', domain: 'graph', tags: ['minspantree', 'oracle-validation'] },
+
+  // ── validation: N-D interpolation ──
+  { name: 'val-interpn', src: '[X, Y] = ndgrid(1:3, 1:3); V = X + Y; q = interpn(X, Y, V, 1.5, 2.5);', vars: ['q'], tol: 1e-9, level: 'graduate', domain: 'approximation', tags: ['interpn', 'oracle-validation'] },
+  { name: 'val-makima', src: 'q = makima([0 1 2 3], [0 1 4 9], 1.5);', vars: ['q'], tol: 1e-6, level: 'graduate', domain: 'approximation', tags: ['makima', 'oracle-validation'] },
+
+  // ── validation: symbolic CAS (numeric finals via double(subs(...))) ──
+  { name: 'val-sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['jacobian', 'oracle-validation'] },
+  { name: 'val-sym-hessian', src: 'syms x y; H = hessian(x^2*y, [x y]); v = double(subs(H, [x y], [2 3]));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['hessian', 'oracle-validation'] },
+  { name: 'val-sym-taylor', src: "syms x; T = taylor(exp(x), x, 'Order', 4); c = double(subs(T, x, 1));", vars: ['c'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['taylor', 'oracle-validation'] },
+  { name: 'val-sym-laplace', src: 'syms t s; L = laplace(exp(-2*t)); v = double(subs(L, s, 3));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['laplace', 'oracle-validation'] },
+  { name: 'val-sym-dsolve', src: 'syms y(t); S = dsolve(diff(y, t) == y, y(0) == 1); v = double(subs(S, t, 1));', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'symbolic', tags: ['dsolve', 'oracle-validation'] },
+  { name: 'val-sym-vpasolve', src: 'syms x; v = sort(double(vpasolve(x^2 - 2 == 0, x)));', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'symbolic', tags: ['vpasolve', 'oracle-validation'] },
 ];
