@@ -3666,6 +3666,26 @@
       "real": 0.5697446182937784
     }
   },
+  "val_dde23": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.1582838165491695
+    }
+  },
+  "sde_euler_maruyama_gbm": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1239457006249998
+    }
+  },
   "val_fminbnd": {
     "x": {
       "class": "double",
@@ -4058,6 +4078,26 @@
         1
       ],
       "real": 3.111274187663886e-8
+    }
+  },
+  "mg_multigrid_vcycle": {
+    "ratio": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.0730380220135763
+    }
+  },
+  "dd_schwarz_1d": {
+    "err": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.00009985368988618675
     }
   },
   "val_eigs": {
