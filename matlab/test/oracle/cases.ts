@@ -17,6 +17,9 @@ export interface OracleCase {
   level?: 'undergrad' | 'graduate';
   /** Declared domain area (e.g. 'numerical-linear-algebra', 'optimization', 'numerical-pde'). */
   domain?: string;
+  /** Negative test: assert BOTH real MATLAB and the TS interpreter error on this src
+   *  (validates the engine fails where MATLAB fails). When set, `vars` is ignored. */
+  expectError?: boolean;
 }
 
 export const CASES: OracleCase[] = [
@@ -825,4 +828,35 @@ export const CASES: OracleCase[] = [
   // multiobjective optimization solvers — well-posed (competing objectives), validated after a silently-wrong hunt
   { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, level: 'graduate', domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment', 'oracle-validation'] },
   { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, level: 'graduate', domain: 'optimization', tags: ['fminimax', 'minimax', 'oracle-validation'] },
+
+  // ══════════ negative tests (expectError): the engine must fail where MATLAB fails ══════════
+  { name: 'err-dim-mismatch', src: 'A = [1 2] * [3 4 5];', vars: [], expectError: true, level: 'undergrad', domain: 'core-language', tags: ['error', 'dimension-mismatch'] },
+  { name: 'err-oob-index', src: 'v = [1 2]; x = v(5);', vars: [], expectError: true, level: 'undergrad', domain: 'core-language', tags: ['error', 'out-of-bounds'] },
+  { name: 'err-undefined-variable', src: 'y = undefined_xyz_var + 1;', vars: [], expectError: true, level: 'undergrad', domain: 'core-language', tags: ['error', 'undefined'] },
+  { name: 'err-noninteger-index', src: 'A = [1 2 3]; x = A(1.5);', vars: [], expectError: true, level: 'undergrad', domain: 'core-language', tags: ['error', 'index-type'] },
+  { name: 'err-bad-concat', src: 'A = [1 2; 3];', vars: [], expectError: true, level: 'undergrad', domain: 'core-language', tags: ['error', 'concatenation'] },
+
+  // ══════════ hardening coverage: special functions, stats, 2-D, sparse utils, closures, control flow ══════════
+  { name: 'specfun-besselj', src: 'v = besselj(0, 2.4048);', vars: ['v'], tol: 1e-4, level: 'undergrad', domain: 'numerical-methods', tags: ['bessel', 'special-functions'] },
+  { name: 'specfun-legendre', src: 'P = legendre(2, 0.5); v = P(1);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-methods', tags: ['legendre', 'special-functions'] },
+  { name: 'specfun-gamma-half', src: 'v = gamma(5.5);', vars: ['v'], tol: 1e-6, level: 'graduate', domain: 'numerical-methods', tags: ['gamma-function', 'special-functions'] },
+  { name: 'stat-cov-matrix', src: 'X = [1 2; 3 5; 4 6]; C = cov(X); v = C(1,2);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['covariance', 'cov'] },
+  { name: 'stat-cov-vectors', src: 'x = [1; 3; 4]; y = [2; 5; 6]; C = cov(x, y); v = C(1,2);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'statistics', tags: ['covariance', 'two-vectors'] },
+  { name: 'dsp-conv2-valid', src: "A = [1 2 3; 4 5 6; 7 8 9]; K = [1 1; 1 1]; C = conv2(A, K, 'valid'); v = C(1,1);", vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'fourier', tags: ['conv2', '2d-convolution'] },
+  { name: 'dsp-interpft', src: 'y = [0 1 0 -1]; yq = interpft(y, 8); v = yq(2);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'fourier', tags: ['interpft', 'spectral-interpolation'] },
+  { name: 'num-integral2', src: 'v = integral2(@(x,y) x.*y, 0, 1, 0, 2);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-methods', tags: ['integral2', 'cubature'] },
+  { name: 'num-gradient-2d', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X.^2 + Y.^2; [FX, FY] = gradient(Z); v = [FX(2,2) FY(2,2)];', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'numerical-methods', tags: ['gradient', 'finite-difference'] },
+  { name: 'num-del2', src: '[X, Y] = meshgrid(1:4, 1:4); Z = X.^2 - Y.^2; L = del2(Z); v = L(2,2);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-methods', tags: ['del2', 'discrete-laplacian'] },
+  { name: 'sparse-condest', src: 'e = ones(10,1); S = spdiags([e -2*e e], -1:1, 10, 10); v = condest(S);', vars: ['v'], tol: 1e-1, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['condest', '1-norm-estimate'] },
+  { name: 'sparse-find-triplet', src: 'S = sparse([1 0; 0 2]); [r, c, vv] = find(S); v = [r c vv];', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'numerical-linear-algebra', tags: ['sparse', 'find', 'coordinate-format'] },
+  { name: 'sparse-nonzeros', src: 'S = sparse([0 3 0; 4 0 5]); v = nonzeros(S);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'numerical-linear-algebra', tags: ['sparse', 'nonzeros'] },
+  { name: 'nla-cholupdate', src: "A = [4 1; 1 3]; R = chol(A); x = [1; 1]; R1 = cholupdate(R, x, '+'); v = norm(R1'*R1 - (A + x*x'));", vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'numerical-linear-algebra', tags: ['cholupdate', 'rank-1-update'] },
+  { name: 'ode-analytic-jacobian', src: "opts = odeset('Jacobian', @(t,y) [-1000 1; 0 -1]); [t, y] = ode15s(@(t,y) [-1000*y(1) + y(2); -y(2)], [0 1], [1; 1], opts); v = y(end,2);", vars: ['v'], tol: 1e-3, level: 'graduate', domain: 'numerical-ode', tags: ['ode15s', 'analytic-jacobian', 'stiff'] },
+  { name: 'ode-tolerances', src: "opts = odeset('RelTol', 1e-8, 'AbsTol', 1e-10); [t, y] = ode45(@(t,y) -y, [0 1], 1, opts); v = y(end);", vars: ['v'], tol: 1e-7, level: 'graduate', domain: 'numerical-ode', tags: ['ode45', 'tolerances'] },
+  { name: 'lang-setxor', src: 'v = setxor([1 2 3], [2 3 4]);', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'core-language', tags: ['setxor', 'symmetric-difference'] },
+  { name: 'lang-strsplit-contains', src: "n = numel(strsplit('a,b,c', ',')); tf = double(contains('fminsearch', 'search'));", vars: ['n', 'tf'], tol: 1e-9, level: 'undergrad', domain: 'core-language', tags: ['strsplit', 'contains', 'text'] },
+  { name: 'lang-closure-capture-by-value', src: 'a = 1; f = @(x) x + a; a = 2; v = f(5);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'core-language', tags: ['anonymous-function', 'lexical-scoping', 'snapshot-closure'] },
+  { name: 'lang-nested-function-handle', src: 'f = @(a) @(x) a*x.^2; g = f(3); v = g(2);', vars: ['v'], tol: 1e-9, level: 'graduate', domain: 'core-language', tags: ['anonymous-function', 'currying'] },
+  { name: 'lang-break-continue', src: 's = 0; for k = 1:10, if k == 3, continue; end; if k == 6, break; end; s = s + k; end; v = s;', vars: ['v'], tol: 1e-9, level: 'undergrad', domain: 'core-language', tags: ['break', 'continue', 'control-flow'] },
+  { name: 'lang-rng-reproducibility', src: 'rng(42); a = rand(1, 5); rng(42); b = rand(1, 5); v = norm(a - b);', vars: ['v'], tol: 1e-15, level: 'undergrad', domain: 'statistics', tags: ['rng', 'seed', 'reproducibility-invariant'] },
 ];

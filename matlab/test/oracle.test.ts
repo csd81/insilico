@@ -46,8 +46,16 @@ describe('MATLAB oracle (committed fixtures)', () => {
       const tol = c.tol ?? DEFAULT_TOL;
       const fix = FIXTURES[key(c.name)];
       assert.ok(fix, `no fixture for ${c.name} — run pnpm oracle:generate`);
-      assert.ok(!fix.error, `MATLAB errored on this case: ${fix.error}`);
 
+      // Negative test: both MATLAB and the TS interpreter must error on this case.
+      if (c.expectError) {
+        assert.ok(fix.error, `${c.name}: expected MATLAB to error, but the fixture has none`);
+        const rr = await run(c.src);
+        assert.ok(rr.error, `${c.name}: expected TS interpreter to error, but it succeeded`);
+        return;
+      }
+
+      assert.ok(!fix.error, `MATLAB errored on this case: ${fix.error}`);
       const r = await run(c.src);
       assert.equal(r.error, undefined, `TS interpreter errored: ${r.error}`);
 

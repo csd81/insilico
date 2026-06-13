@@ -7527,5 +7527,265 @@
       ],
       "real": 1
     }
+  },
+  "err_dim_mismatch": {
+    "error": "Incorrect dimensions for matrix multiplication. Check that the number of columns in the first matrix matches the number of rows in the second matrix. To operate on each element of the matrix individually, use TIMES (.*) for elementwise multiplication."
+  },
+  "err_oob_index": {
+    "error": "Index exceeds the number of array elements. Index must not exceed 2."
+  },
+  "err_undefined_variable": {
+    "error": "Unrecognized function or variable 'undefined_xyz_var'."
+  },
+  "err_noninteger_index": {
+    "error": "Array indices must be positive integers or logical values."
+  },
+  "err_bad_concat": {
+    "error": "Dimensions of arrays being concatenated are not consistent."
+  },
+  "specfun_besselj": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.000013268284301200238
+    }
+  },
+  "specfun_legendre": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -0.12499999999999989
+    }
+  },
+  "specfun_gamma_half": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 52.342777784553526
+    }
+  },
+  "stat_cov_matrix": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.166666666666667
+    }
+  },
+  "stat_cov_vectors": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.166666666666667
+    }
+  },
+  "dsp_conv2_valid": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 12
+    }
+  },
+  "dsp_interpft": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.7071067811865476
+    }
+  },
+  "num_integral2": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "num_gradient_2d": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        4,
+        4
+      ]
+    }
+  },
+  "num_del2": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "sparse_condest": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 60.000000000000014
+    }
+  },
+  "sparse_find_triplet": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        3
+      ],
+      "real": [
+        1,
+        2,
+        1,
+        2,
+        1,
+        2
+      ]
+    }
+  },
+  "sparse_nonzeros": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        4,
+        3,
+        5
+      ]
+    }
+  },
+  "nla_cholupdate": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.7763568394002505e-15
+    }
+  },
+  "ode_analytic_jacobian": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.36761193514487017
+    }
+  },
+  "ode_tolerances": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.3678794416037237
+    }
+  },
+  "lang_setxor": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        4
+      ]
+    }
+  },
+  "lang_strsplit_contains": {
+    "n": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3
+    },
+    "tf": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "lang_closure_capture_by_value": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 6
+    }
+  },
+  "lang_nested_function_handle": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 12
+    }
+  },
+  "lang_break_continue": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 12
+    }
+  },
+  "lang_rng_reproducibility": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
   }
 }
