@@ -6072,6 +6072,140 @@
       "real": 2.275280134513746e-15
     }
   },
+  "nla_pagemtimes": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        8
+      ],
+      "real": [
+        1,
+        3,
+        2,
+        4,
+        2,
+        1,
+        2,
+        2
+      ]
+    }
+  },
+  "nla_pagetranspose": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        16
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        1,
+        2,
+        3,
+        0,
+        -1,
+        0,
+        0,
+        -4
+      ]
+    }
+  },
+  "nla_pageinv": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        0
+      ]
+    }
+  },
+  "nla_pagemldivide": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        0
+      ]
+    }
+  },
+  "nla_pagepinv": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        6.389493650100279e-16,
+        4.965068306494546e-16
+      ]
+    }
+  },
+  "nla_pageeig": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        0,
+        0,
+        2,
+        3,
+        3,
+        5
+      ]
+    }
+  },
+  "nla_pagesvd": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        0,
+        0,
+        1,
+        2,
+        1,
+        3
+      ]
+    }
+  },
+  "nla_pagenorm": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        5,
+        3.1622776601683795,
+        5,
+        2.9999999999999996
+      ]
+    }
+  },
   "nla_illcond_sparse_solve": {
     "r": {
       "class": "double",

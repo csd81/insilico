@@ -3191,7 +3191,14 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   pageinv: async (a) => ret(pageUnary(m(a[0]), (X) => inv(X))),
   pagepinv: async (a) => { const tol = a.length >= 2 ? asScalar(a[1]) : undefined; return ret(pageUnary(m(a[0]), (X) => pinvFn(X, tol))); },
-  pagenorm: async (a) => { const p = a.length >= 2 ? (isMat(a[1]) ? asScalar(a[1]) : (asString(a[1]) === 'fro' ? 'fro' : 2)) : 2; return ret(pageUnary(m(a[0]), (X) => mat(1, 1, new Float64Array([norm(X, p as number | 'fro')])))); },
+  pagenorm: async (a) => {
+    const arg = a.length >= 2 ? a[1] : undefined;
+    const isCharArg = arg !== undefined && (isStr(arg) || (isMat(arg) && (arg as Mat).isChar));
+    let p: number | 'fro' = 2;   // a char 2nd arg is a norm type ('fro'/'inf'), not a numeric p
+    if (isCharArg) { const s = asString(arg!).toLowerCase(); p = s === 'fro' ? 'fro' : s === 'inf' ? Infinity : 2; }
+    else if (arg !== undefined) p = asScalar(arg!);
+    return ret(pageUnary(m(a[0]), (X) => mat(1, 1, new Float64Array([norm(X, p as number | 'fro')]))));
+  },
   pagelsqminnorm: async (a) => {
     const { tol, regularization } = parseLsqminnormOptions(a, 2);
     return ret(pageBinary(m(a[0]), m(a[1]), (X, Y) => lsqminnormSolve(X, Y, { tol, regularization }).x));

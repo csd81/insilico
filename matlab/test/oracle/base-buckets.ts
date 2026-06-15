@@ -163,4 +163,8 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   ...bulkD('needs-oracle', 'direct', 'statistics', 'corrcoef cov discretize fillmissing histcounts movmean movmedian'),
   ...bulkD('needs-oracle', 'direct', 'symbolic', 'resultant simplify solve'),
   ...bulkD('ts-only-ok', 'ts-only', 'core-language', 'clear sprintf'),
+
+  // ── Pass 2A: pagewise N-D linear algebra (validated; pagenorm 'fro' bug fixed). ──
+  ...bulkD('needs-oracle', 'direct', 'numerical-linear-algebra', 'pagemtimes pagetranspose pagectranspose pagenorm'),
+  ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'pageinv pagemldivide pagepinv pageeig pagesvd'),
 };
