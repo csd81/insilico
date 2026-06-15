@@ -56,9 +56,12 @@ Known fixed bugs from this category: `tensorprod` N-D result shape, typed bit-op
 width/class preservation, `pagenorm(A,'fro')` char-argument parsing, `corr(x,y)`
 scalar cross-correlation, and `spectrogram` scalar window length.
 
-Declined as not-in-MATLAB-R2026a (`exist == 0`): `isposdef`, `sumsq`, `iscomplex`,
-`meansq`. `bin2gray`/`gray2bin` were registered in the `comm` allow-list but are
-undefined in this MATLAB — now **unregistered** so the engine errors to match.
+**Removed to match MATLAB R2026a** (all `exist == 0` — the engine previously implemented
+them, overstating compatibility): `isposdef`, `sumsq`, `meansq`, `iscomplex` (use
+`~isreal`) are now deleted from `builtins.ts` so the engine errors "undefined function"
+exactly like MATLAB. Likewise `bin2gray`/`gray2bin` were **unregistered** from the `comm`
+allow-list. (Probed directly: each errors in MATLAB R2026a; `normest`/`mink`/`maxk` are
+real and validated.)
 
 ## Numerical Linear Algebra
 
@@ -223,10 +226,10 @@ breadth.
 
 | Category | Status / Decision |
 |---|---|
-| Core predicates | High ROI: `isscalar`, `isvector`, `isrow`, `iscolumn`, `ismatrix`, `isfinite`, `isreal`, `iscomplex`, `issparse`. |
-| Matrix predicates | High ROI: `issymmetric`, `ishermitian`, `isdiag`, `istriu`, `istril`, `isbanded`, `isposdef`. |
-| Named operator forms | Bucket as indirect or add compact direct cases: `plus`, `minus`, `times`, `mtimes`, `rdivide`, `ldivide`, `power`, `mpower`, transpose forms. |
-| Norm / reduction helpers | Validate when needed: `vecnorm`, `normest`, `sumsq`, `meansq`, `mink`, `maxk`. |
+| Core predicates | ✓ validated: `isscalar`, `isvector`, `isrow`, `iscolumn`, `ismatrix`, `isfinite`, `isreal`, `issparse`. (`iscomplex` removed — not a MATLAB function; use `~isreal`.) |
+| Matrix predicates | ✓ validated: `issymmetric`, `ishermitian`, `isdiag`, `istriu`, `istril`, `isbanded`. (`isposdef` removed — not a MATLAB function; use `chol`/`eig`.) |
+| Named operator forms | ✓ validated: `plus`, `minus`, `times`, `mtimes`, `rdivide`, `ldivide`, `mpower`, `uplus`, `uminus`. |
+| Norm / reduction helpers | ✓ validated: `vecnorm`, `normest`, `mink`, `maxk`. (`sumsq`/`meansq` removed — not MATLAB functions.) |
 | Remaining string/text helpers | Lower priority unless course examples require them. |
 | Symbolic display/introspection | Mostly unregister/defer candidates unless needed: `pretty`, `latex`, `sympref`, `argnames`, `children`, `assumptions`, `symType`, etc. |
 | Plot-only helpers | Prefer numeric APIs; plot-object helpers like `bodemag` are low priority. |

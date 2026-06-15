@@ -698,7 +698,6 @@ export const BUILTINS: Record<string, Builtin> = {
   imag: async (a) => ret(imagPart(m(a[0]))),
   angle: async (a) => { const A = m(a[0]); return ret(isComplex(A) ? cmapReal(A, (re, im) => Math.atan2(im, re)) : map(A, (x) => (x < 0 ? Math.PI : 0))); },
   complex: async (a) => { const A = m(a[0]); const B = a.length >= 2 ? m(a[1]) : zeros(A.rows, A.cols); const re = new Float64Array(A.data); const im = new Float64Array(A.data.length); for (let i = 0; i < im.length; i++) im[i] = B.data.length === 1 ? B.data[0] : B.data[i]; return ret({ kind: 'num', rows: A.rows, cols: A.cols, data: re, idata: im }); },
-  iscomplex: async (a) => ret(bool(isComplex(m(a[0])))),
   floor: async (a) => (isTemporal(a[0]) && a[0].tkind === 'duration' ? [durRound(a[0], Math.floor, a)] : ewRoundApply(a, Math.floor)),
   ceil: async (a) => (isTemporal(a[0]) && a[0].tkind === 'duration' ? [durRound(a[0], Math.ceil, a)] : ewRoundApply(a, Math.ceil)),
   round: async (a) => {
@@ -2440,7 +2439,6 @@ export const BUILTINS: Record<string, Builtin> = {
   cummin: async (a) => ret(cumulative(a, Infinity, Math.min)),
   // ── matrix algebra extras ──
   polyvalm: async (a) => { const p = toArray(m(a[0])); const A = m(a[1]); const n = A.rows; let R = zeros(n, n); for (const c of p) { R = matmul(A, R); R.data[0] += 0; for (let i = 0; i < n; i++) R.data[i + i * n] += c; } return ret(R); },
-  isposdef: async (a) => { const A = m(a[0]); if (!isSymmetric(A)) return ret(bool(false)); const { values } = jacobiEigSym(A); return ret(bool(values.every((v) => v > 1e-12))); },
   planerot: async (a, n) => { const v = toArray(m(a[0])); const [x, y] = v; const r = Math.hypot(x, y); const c = r === 0 ? 1 : x / r, s = r === 0 ? 0 : y / r; const G = fromRows([[c, s], [-s, c]]); return n >= 2 ? [G, colVec([r, 0])] : [G]; },
   house: async (a, n) => { const x = toArray(m(a[0])); const nrm = Math.hypot(...x); const alpha = -Math.sign(x[0] || 1) * nrm; const v = x.slice(); v[0] -= alpha; let vn = 0; for (const e of v) vn += e * e; const beta = vn === 0 ? 0 : 2 / vn; return n >= 2 ? [colVec(v), scalar(beta)] : [colVec(v)]; },
   funm: async (a, _n, env) => {
@@ -2601,11 +2599,9 @@ export const BUILTINS: Record<string, Builtin> = {
   // ── more scalar math / reductions ──
   cbrt: ew(Math.cbrt),
   sinc: ew((x) => (x === 0 ? 1 : Math.sin(Math.PI * x) / (Math.PI * x))),
-  sumsq: async (a) => ret(colReduce(m(a[0]), (c) => c.reduce((s, x) => s + x * x, 0))),
   range: async (a) => ret(colReduce(m(a[0]), (c) => Math.max(...c) - Math.min(...c))),
   zscore: async (a) => ret(colMap(m(a[0]), (c) => normalizeVec(c, 'zscore'))),
   center: async (a) => ret(colMap(m(a[0]), (c) => normalizeVec(c, 'center'))),
-  meansq: async (a) => ret(colReduce(m(a[0]), (c) => c.reduce((s, x) => s + x * x, 0) / c.length)),
   issorted: async (a) => {
     const v = toArray(m(a[0]));
     const dir = a.length >= 2 && (isStr(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar)) ? asString(a[1]).toLowerCase() : 'ascend';
