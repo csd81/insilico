@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 956 tests green · 821 MATLAB oracle fixtures ·
-821/821 cases classified across 22 domains.
+**Status (as of this revision):** 960 tests green · 825 MATLAB oracle fixtures ·
+825/825 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -229,17 +229,26 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   `mat2cell`/`num2cell` (splitting), `struct2cell`/`cell2struct` (round-trip),
   `fieldnames`/`rmfield`/`isfield`/`orderfields`/`setfield`/`getfield`, `structfun`, and
   struct arrays with comma-list expansion (`[sa.v]`) + nested structs + `cellfun`. All exact.
-- **Totals after Pass 2:** 956 tests / 821 fixtures; base/core `uncategorized` 579 → 462.
+- **Pass 2M — bit / integer operators:** 4 cases over `bitand`/`bitor`/`bitxor`/`bitshift`/
+  `bitget`/`bitset`/`bitcmp` in the double domain and with typed integers. **Fixed a silent
+  bug:** the bit ops ignored the operand's integer class — no width truncation and the result
+  came back `double`. They now preserve the integer class and **wrap** the result to the type
+  width (MATLAB drops bits past the boundary, not saturate): `bitshift(uint8(200),2)=32`,
+  `bitshift(uint8(1),10)=0`, `bitand(uint8,…)` stays `uint8`. Two MATLAB edges noted and
+  side-stepped (not silent bugs): `bitset(uint8,9)` (bit position past the type width) errors
+  in MATLAB; and concatenating mixed integer classes in one array casts/saturates to the first
+  class — cases `double()`-wrap each term to test the bit-op result, not concat semantics.
+- **Totals after Pass 2:** 960 tests / 825 fixtures; base/core `uncategorized` 579 → 455.
 
 **The high-risk numerical-linear-algebra sweep is done; the broader core-math/semantics
 triage is not.** The remaining `uncategorized` is *not* dismissed as breadth — most of it
 is core computational math or core MATLAB semantics, and it continues in **prioritized
 passes** (done: 2H geometry, 2I N-D/shape, 2J interpolation/spline, 2K special functions,
-2L struct/cell; next: 2M bit/integer operators → 2N optimization/solver variants
-→ 2O stats/data utilities). Genuinely lower-priority tails (display/format, UI-ish helpers,
-table/timetable breadth, VFS/file, compatibility aliases, path/host) stay deferred.
+2L struct/cell, 2M bit/integer; next: 2N optimization/solver variants → 2O stats/data
+utilities). Genuinely lower-priority tails (display/format, UI-ish helpers, table/timetable
+breadth, VFS/file, compatibility aliases, path/host) stay deferred.
 
-### Remaining base/core backlog (~462 uncategorized)
+### Remaining base/core backlog (~455 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -252,9 +261,10 @@ shape, for demand-driven triage — not a TODO list:
   `gegenbauerC`), `hypergeom`, `zeta`/`dilog`/`psi`, `heaviside`/`lambertw`, and
   `fresnels`/`fresnelc`/`sinint`/`cosint`/`expint`. Remainder: bessel/`ellip*` variants
   not in Pass 2E, `hurwitzZeta`/`polylog`, and `dirac` (distributional — needs care).
-- **elementary math, operators, bit ops:** `cosh`/`sinh`/`tanh`/`sec`/`csc`/`cot`
-  families, `plus`/`minus`/`times`/`mtimes`/`mrdivide`/`power`, `bitand`/`bitor`/
-  `bitxor`/`bitshift`/`bitget`/`bitset`.
+- **elementary math, operators:** `cosh`/`sinh`/`tanh`/`sec`/`csc`/`cot` families,
+  `plus`/`minus`/`times`/`mtimes`/`mrdivide`/`power` (operator-named forms, exercised via
+  the operators but rarely named). Bit ops (`bitand`/`bitor`/`bitxor`/`bitshift`/`bitget`/
+  `bitset`/`bitcmp`) validated in Pass 2M.
 - **solver variants:** `ode23s`/`ode23t`/`ode23tb`/`ode78`/`ode89`, `bvp5c`, `dde*`,
   `pdepe`/`pdeval`; **optimization:** `particleswarm`/`patternsearch`/`simulannealbnd`/
   `lsqnonneg`/`lsqminnorm`.

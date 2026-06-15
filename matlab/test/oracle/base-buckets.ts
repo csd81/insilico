@@ -208,4 +208,8 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
 
   // ── Pass 2L: struct / cell semantics (conversions, field ops, struct arrays, nesting). Exact. ──
   ...bulkD('needs-oracle', 'direct', 'core-language', 'cell2mat mat2cell num2cell struct2cell cell2struct fieldnames rmfield orderfields setfield getfield structfun isfield'),
+
+  // ── Pass 2M: bit / integer operators. Typed-integer width truncation (wrap) + class preserved.
+  // Fixed: bit ops previously ignored the input itype (no truncation, returned double). ──
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'bitand bitor bitxor bitshift bitget bitset bitcmp'),
 };

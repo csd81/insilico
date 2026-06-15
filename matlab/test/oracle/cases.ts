@@ -190,7 +190,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (145) ══════════
+  // ══════════ core-language (149) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -341,6 +341,15 @@ export const CASES: OracleCase[] = [
   { name: 'sc-cell2struct-rmfield', src: "C = {1; 2; 3}; st = cell2struct(C, {'a','b','c'}, 1); t = rmfield(st, 'b'); f = fieldnames(t); v = [st.a st.b st.c numel(f) isfield(t,'b') t.c];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['cell2struct', 'rmfield', 'fieldnames', 'isfield'] },
   { name: 'sc-structfun-orderfields', src: "s.b = 2; s.a = 1; ord = orderfields(s); fo = fieldnames(ord); s2.a = 1; s2.b = 4; s2.c = 9; r = structfun(@sqrt, s2); s3 = setfield(s2, 'd', 5); v = [double(fo{1}=='a') double(fo{2}=='b') r.\x27 getfield(s3,'d')];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['orderfields', 'structfun', 'setfield', 'getfield'] },
   { name: 'sc-structarray-nested', src: 'sa(1).v = 10; sa(2).v = 20; sa(3).v = 30; nn.inner.x = 5; nn.inner.y = 7; C = {[1 2], [3 4 5]}; r = cellfun(@numel, C); v = [numel(sa) [sa.v] nn.inner.x nn.inner.y r];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['struct-array', 'comma-list', 'nested-struct', 'cellfun'] },
+  // ── Pass 2M: bit / integer operators. Double-domain bit ops + MATLAB typed-integer semantics:
+  // bit ops preserve the operand's integer class and mask the result to that width (bits past the
+  // boundary wrap, not saturate — bitshift(uint8(200),2)=32, bitshift(uint8(1),10)=0). Fixed: bit
+  // ops previously ignored the input itype (no width truncation, returned double). Terms are
+  // double()-wrapped to avoid MATLAB's mixed-integer-concatenation cast/saturation artifact. ──
+  { name: 'bit-logical-ops', src: 'v = [bitand(12,10) bitor(12,10) bitxor(12,10) bitshift(1,4) bitshift(240,-3) bitget(13,1:4) bitset(8,1) bitset(13,3,0)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['bitand', 'bitor', 'bitxor', 'bitshift', 'bitget', 'bitset'] },
+  { name: 'bit-typed-width', src: "a = bitand(uint8(200),uint8(15)); b = bitshift(uint8(200),2); c = bitshift(uint8(1),10); d = bitor(int16(256),int16(1)); v = [double(a) isa(a,'uint8') double(b) double(c) double(d) isa(d,'int16')];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['bitshift', 'integer-width', 'class-preservation', 'wrap'] },
+  { name: 'bit-cmp-set-get', src: "e = bitcmp(uint8(5)); g = bitget(uint8(13),1:8); s = bitset(uint8(8),1); v = double([e isa(e,'uint8') g s]);", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['bitcmp', 'bitget', 'bitset', 'typed-integer'] },
+  { name: 'bit-flip-u16', src: 'p = uint16(43981); bits = bitget(p,16:-1:1); val = uint16(0); for k = 1:16, val = bitset(val,17-k,bits(k)); end; v = double([bits(1:4) val==p]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['bitget', 'bitset', 'roundtrip', 'uint16'] },
 
   // ══════════ dynamical-systems (5) ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },

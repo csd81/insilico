@@ -4100,6 +4100,83 @@
       ]
     }
   },
+  "bit_logical_ops": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        11
+      ],
+      "real": [
+        8,
+        14,
+        6,
+        16,
+        30,
+        1,
+        0,
+        1,
+        1,
+        9,
+        9
+      ]
+    }
+  },
+  "bit_typed_width": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        8,
+        1,
+        32,
+        0,
+        257,
+        1
+      ]
+    }
+  },
+  "bit_cmp_set_get": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        11
+      ],
+      "real": [
+        250,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        9
+      ]
+    }
+  },
+  "bit_flip_u16": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        1,
+        0,
+        1,
+        0,
+        1
+      ]
+    }
+  },
   "dyn_fixed_point": {
     "x": {
       "class": "double",

@@ -188,6 +188,14 @@ function typeArg(args: Value[]): string | null {
   for (const v of args) if ((isStr(v) || (isMat(v) && (v as Mat).isChar)) && INT_BITS[asString(v).toLowerCase()] !== undefined) return asString(v).toLowerCase();
   return null;
 }
+/** Integer class governing a bit op: an operand's itype if any, else an explicit assumedtype arg. */
+function bitTy(operands: Value[], typeArgs: Value[] = []): string | undefined {
+  for (const v of operands) { const it = isMat(v) ? (v as Mat).itype : undefined; if (it && it !== 'single') return it; }
+  return typeArg(typeArgs) ?? undefined;
+}
+/** Finalize a bit-op result under its governing integer class: modulo-mask to the type width
+ * (MATLAB drops bits past the boundary — wrap, not saturate) and tag the integer class. */
+function bitFin(out: Mat, ty: string | undefined): Mat { if (!ty) return out; const r = map(out, (x) => intMask(x, ty)); (r as Mat).itype = ty; return r; }
 
 // Complex inverse trig (principal branch, MATLAB-compatible). Used when the input is
 // complex or a real argument falls outside the real domain (|x|>1 for asin/acos).
@@ -3053,17 +3061,19 @@ export const BUILTINS: Record<string, Builtin> = {
   matches: async (a) => { const s = asStrArr(a[0]); const p = asString(a[1]); const o = zeros(s.rows, s.cols); o.isBool = true; s.items.forEach((x, i) => { o.data[i] = x === p ? 1 : 0; }); return [o]; },
 
   // ── Batch H: bitwise + legacy string/data (MATLAB v6 reference) ──
-  bitand: async (a) => ret(elementwise(m(a[0]), m(a[1]), (x, y) => Number(BigInt(Math.round(x)) & BigInt(Math.round(y))))),
-  bitor: async (a) => ret(elementwise(m(a[0]), m(a[1]), (x, y) => Number(BigInt(Math.round(x)) | BigInt(Math.round(y))))),
-  bitxor: async (a) => ret(elementwise(m(a[0]), m(a[1]), (x, y) => Number(BigInt(Math.round(x)) ^ BigInt(Math.round(y))))),
-  bitshift: async (a) => { const t = typeArg(a.slice(2)); return ret(elementwise(m(a[0]), m(a[1]), (x, k) => { const b = BigInt(Math.round(x)), kk = Math.round(k); const r = Number(kk >= 0 ? b << BigInt(kk) : b >> BigInt(-kk)); return t ? intMask(r, t) : r; })); },
-  bitget: async (a) => ret(elementwise(m(a[0]), m(a[1]), (x, p) => Number((BigInt(Math.round(x)) >> BigInt(Math.round(p) - 1)) & 1n))),
+  // Bit ops preserve the operand's integer class and mask the result to that width (MATLAB
+  // drops bits past the boundary — modulo wrap, not saturate). bitTy/bitFin do both.
+  bitand: async (a) => ret(bitFin(elementwise(m(a[0]), m(a[1]), (x, y) => Number(BigInt(Math.round(x)) & BigInt(Math.round(y)))), bitTy([a[0], a[1]]))),
+  bitor: async (a) => ret(bitFin(elementwise(m(a[0]), m(a[1]), (x, y) => Number(BigInt(Math.round(x)) | BigInt(Math.round(y)))), bitTy([a[0], a[1]]))),
+  bitxor: async (a) => ret(bitFin(elementwise(m(a[0]), m(a[1]), (x, y) => Number(BigInt(Math.round(x)) ^ BigInt(Math.round(y)))), bitTy([a[0], a[1]]))),
+  bitshift: async (a) => { const ty = bitTy([a[0]], a.slice(2)); return ret(bitFin(elementwise(m(a[0]), m(a[1]), (x, k) => { const b = BigInt(Math.round(x)), kk = Math.round(k); return Number(kk >= 0 ? b << BigInt(kk) : b >> BigInt(-kk)); }), ty)); },
+  bitget: async (a) => ret(bitFin(elementwise(m(a[0]), m(a[1]), (x, p) => Number((BigInt(Math.round(x)) >> BigInt(Math.round(p) - 1)) & 1n)), bitTy([a[0]], a.slice(2)))),
   bitset: async (a) => {
-    const t = typeArg(a.slice(2));
+    const ty = bitTy([a[0]], a.slice(2));
     const valArg = a.slice(2).find((v) => isMat(v) && !(v as Mat).isChar);   // bit value (default 1); a type string is not it
     const V = valArg ? m(valArg) : scalar(1);
-    const f = (x: number, p: number, v: number) => { const b = BigInt(Math.round(x)), bit = 1n << BigInt(Math.round(p) - 1); const r = Number(v ? (b | bit) : (b & ~bit)); return t ? intMask(r, t) : r; };
-    return ret(broadcast3(m(a[0]), m(a[1]), V, f));
+    const f = (x: number, p: number, v: number) => { const b = BigInt(Math.round(x)), bit = 1n << BigInt(Math.round(p) - 1); return Number(v ? (b | bit) : (b & ~bit)); };
+    return ret(bitFin(broadcast3(m(a[0]), m(a[1]), V, f), ty));
   },
   bitcmp: async (a) => { const A = m(a[0]); const inTy = A.itype && A.itype !== 'single' ? A.itype : undefined; const argTy = a.length >= 2 && (isStr(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar)) ? asString(a[1]) : undefined; const ty = inTy ?? argTy ?? 'uint64'; const bits = { uint8: 8, int8: 8, uint16: 16, int16: 16, uint32: 32, int32: 32, uint64: 64, int64: 64 }[ty] ?? 64; const mask = (1n << BigInt(bits)) - 1n; const out = map(A, (x) => Number((~BigInt(Math.round(x))) & mask)); return ret(inTy ? applyClass(out, inTy) : argTy && argTy in INT_LIMITS ? applyClass(out, argTy) : out); },
   blanks: async (a) => ret(str(' '.repeat(Math.max(0, Math.round(asScalar(a[0])))))),
