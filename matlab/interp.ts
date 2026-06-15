@@ -859,6 +859,13 @@ export class Interpreter implements Env {
         if (owners.includes(id)) { const fn = TOOLBOX_BY_ID.get(id)!.builtins[name]; if (fn) return fn(args, nargout, this); }
       }
     }
+    // Same-name symbolic/numeric collision: when a name exists in BOTH base (numeric) and the
+    // Symbolic toolbox, base wins by default — but the numeric impl chokes on a symbolic argument.
+    // If any arg is a sym, route to the symbolic implementation instead (e.g. hypergeom([1 2],3,x)).
+    if (name in BUILTINS && args.some(isSym) && NAME_OWNERS.get(name)?.includes('symbolic') && BUILTINS[name] !== TOOLBOX_BUILTINS[name]) {
+      const symFn = TOOLBOX_BY_ID.get('symbolic')!.builtins[name];
+      if (symFn) return symFn(args, nargout, this);
+    }
     if (name in BUILTINS) return BUILTINS[name](args, nargout, this);
     if (args.length === 0 && name in CONSTANTS) return [CONSTANTS[name]()];
     throw new MatError(`undefined function or variable '${name}'`);

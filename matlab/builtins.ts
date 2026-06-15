@@ -2385,6 +2385,7 @@ export const BUILTINS: Record<string, Builtin> = {
   char: async (a) => {
     // char(string)/char(cellstr) → char; several inputs stack as rows of a char matrix.
     const rowsOf = (v: Value): string[] => {
+      if (isSym(v)) return (v as Sym).exprs.map((e) => exprToStr(e));
       if (isStr(v)) return v.items.slice();
       if (isCell(v)) return v.items.map(asString);
       const A = m(v); if (A.isChar) { const out: string[] = []; for (let r = 0; r < A.rows; r++) { let s = ''; for (let c = 0; c < A.cols; c++) s += String.fromCharCode(A.data[r + c * A.rows]); out.push(s); } return out.length ? out : ['']; }

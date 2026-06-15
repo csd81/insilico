@@ -1454,8 +1454,8 @@ export const STATS: ToolboxModule = {
     },
 
     // ── Normal ──
-    normpdf: (a) => dist(a, [0, 1], (x, mu, s) => s > 0 ? Math.exp(-0.5 * ((x - mu) / s) ** 2) / (s * Math.sqrt(2 * Math.PI)) : NaN),
-    normcdf: (a) => dist(a, [0, 1], (x, mu, s) => s > 0 ? 0.5 * erfc(-(x - mu) / (s * Math.SQRT2)) : NaN),
+    // normpdf/normcdf are identical to the base builtins (incl. the (x,mu,sigma) form) — removed to
+    // avoid duplicate code (base wins). See DUPLICATE_POLICY.
     norminv: (a) => dist(a, [0, 1], (p, mu, s) => s > 0 ? mu + s * norminvStd(p) : NaN),
     // ── Student's t ──
     tpdf: (a) => dist(a, [1], (x, v) => Math.exp(logGamma((v + 1) / 2) - logGamma(v / 2)) / Math.sqrt(v * Math.PI) * (1 + x * x / v) ** (-(v + 1) / 2)),
@@ -1835,30 +1835,10 @@ export const STATS: ToolboxModule = {
     nanmedian: (a) => ret(colReduceNan(m(a[0]), (c) => median_(noNan(c)))),
     nanmax: (a) => ret(colReduceNan(m(a[0]), (c) => Math.max(...noNan(c)))),
     nanmin: (a) => ret(colReduceNan(m(a[0]), (c) => Math.min(...noNan(c)))),
-    range: (a) => ret(colReduceNan(m(a[0]), (c) => { const n = noNan(c); return Math.max(...n) - Math.min(...n); })),
+    // range is identical to the base builtin — removed to avoid duplicate code (base wins). See DUPLICATE_POLICY.
     // ── distances / clustering ──
-    /** pdist(X[,metric]) → 1×(m choose 2) row of pairwise distances (i<j, column-major upper). */
-    pdist: (a) => {
-      const X = matRows(m(a[0])); const name = a.length >= 2 ? asString(a[1]).toLowerCase() : 'euclidean';
-      const f = METRICS[name] ?? METRICS.euclidean; const p = a.length >= 3 ? asScalar(a[2]) : 2;
-      const out: number[] = [];
-      for (let i = 0; i < X.length; i++) for (let j = i + 1; j < X.length; j++) out.push(f(X[i], X[j], p));
-      return ret(rowVec(out));
-    },
-    /** squareform: vector↔symmetric distance matrix. */
-    squareform: (a) => {
-      const A = m(a[0]);
-      if (A.rows === 1 || A.cols === 1) {
-        const v = toArray(A); const n = Math.round((1 + Math.sqrt(1 + 8 * v.length)) / 2);
-        if (n * (n - 1) / 2 !== v.length) throw new MatError('squareform: input is not a valid condensed distance vector');
-        const D = zeros(n, n); let k = 0;
-        for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) { D.data[i + j * n] = v[k]; D.data[j + i * n] = v[k]; k++; }
-        return ret(D);
-      }
-      const M = matRows(A); const out: number[] = [];
-      for (let i = 0; i < M.length; i++) for (let j = i + 1; j < M.length; j++) out.push(M[i][j]);
-      return ret(rowVec(out));
-    },
+    // pdist/squareform are identical to the base builtins (base pdist honours the metric arg) —
+    // removed to avoid duplicate code (base wins). See DUPLICATE_POLICY.
     /** haltonset(d[,'Skip',s][,'Leap',l]) — deterministic Halton low-discrepancy point set
      *  (base = the first d primes; unscrambled, matching MATLAB's default). */
     haltonset: (a) => {

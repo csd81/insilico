@@ -1035,6 +1035,7 @@ export const CASES: OracleCase[] = [
 
   // ══════════ symbolic (67) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
+  { name: 'sym-char', src: 'syms x; v = char(x^2 + 1);', vars: ['v'], domain: 'symbolic', tags: ['char', 'sym2str'] },
   { name: 'sym-diag-matrix', src: 'syms a b c; M = [a 1 2; 3 b 4; 5 6 c]; d = diag(M); D = diag(d); val = double(subs(D, [a b c], [7 8 9])); v = val(:).\x27;', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['diag', 'symbolic-matrix'] },
   { name: 'sym-poly-gcd', src: 'syms x; g = gcd(x^2 - 1, x^2 - 2*x + 1); c = sym2poly(g);', vars: ['c'], tol: 1e-9, domain: 'symbolic', tags: ['gcd', 'polynomial'] },
   { name: 'sym-hessian', src: 'syms x y; H = hessian(x^2*y, [x y]); v = double(subs(H, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['hessian'] },

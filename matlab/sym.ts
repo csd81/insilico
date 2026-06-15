@@ -203,6 +203,7 @@ function render(e: SymExpr, prec: number): string {
     case 'fn': {
       const REL: Record<string, string> = { lt: '<', gt: '>', le: '<=', ge: '>=' };
       if (REL[e.name]) return `${render(e.args[0], 0)} ${REL[e.name]} ${render(e.args[1], 0)}`;
+      if (e.name === 'list') return e.args.length === 1 ? render(e.args[0], 0) : `[${e.args.map((a) => render(a, 0)).join(', ')}]`;
       if (e.name === 'piecewise') { const rows: string[] = []; for (let i = 0; i + 1 < e.args.length; i += 2) rows.push(`${render(e.args[i + 1], 0)} if ${render(e.args[i], 0)}`); if (e.args.length % 2) rows.push(`${render(e.args[e.args.length - 1], 0)} otherwise`); return `piecewise(${rows.join(', ')})`; }
       const dm = e.name.match(/^((?:diff_)+)(.+)$/); const args = e.args.map((a) => render(a, 0)).join(', '); if (dm) return `${dm[2]}${"'".repeat(dm[1].length / 5)}(${args})`; return `${e.name}(${args})`;
     }
@@ -250,6 +251,7 @@ function tex(e: SymExpr, prec: number): string {
       if (e.name === 'abs') return `\\left|${tex(e.args[0], 0)}\\right|`;
       const REL: Record<string, string> = { lt: '<', gt: '>', le: '\\le', ge: '\\ge' };
       if (REL[e.name]) return `${tex(e.args[0], 0)} ${REL[e.name]} ${tex(e.args[1], 0)}`;
+      if (e.name === 'list') return e.args.length === 1 ? tex(e.args[0], 0) : `\\left[${e.args.map((a) => tex(a, 0)).join(', ')}\\right]`;
       if (e.name === 'piecewise') { const rows: string[] = []; for (let i = 0; i + 1 < e.args.length; i += 2) rows.push(`${tex(e.args[i + 1], 0)} & \\text{if } ${tex(e.args[i], 0)}`); if (e.args.length % 2) rows.push(`${tex(e.args[e.args.length - 1], 0)} & \\text{otherwise}`); return `\\begin{cases}${rows.join(' \\\\ ')}\\end{cases}`; }
       const args = e.args.map((a) => tex(a, 0)).join(', ');
       const dm = e.name.match(/^((?:diff_)+)(.+)$/);

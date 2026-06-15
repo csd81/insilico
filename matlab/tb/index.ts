@@ -59,10 +59,10 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
   // (PID family, LQG/lqi/lqrd, random-model gen, frd/dss objects, gensig/filt/nichols/dsort).
   control: new Set([
     'tf', 'ss', 'zpk', 'tfdata', 'ssdata', 'zpkdata',
-    'tf2ss', 'ss2tf', 'tf2zp', 'zp2tf', 'ss2ss',
+    'tf2ss', 'tf2zp', 'zp2tf', 'ss2ss',   // ss2tf removed (identical to base)
     'pole', 'zero', 'damp', 'dcgain', 'order', 'isstable', 'isct', 'isdt',
     'minreal', 'sminreal', 'canon', 'ctrbf', 'obsvf', 'ctrb', 'obsv', 'gram',
-    'care', 'dare', 'idare', 'lyap', 'dlyap', 'lyapchol', 'lqr', 'dlqr', 'lqe', 'kalman',
+    'care', 'dare', 'idare', 'lyapchol', 'lqr', 'dlqr', 'lqe', 'kalman',   // lyap/dlyap removed (identical to base)
     'acker', 'place', 'c2d',
     'step', 'impulse', 'lsim', 'lsiminfo', 'bode', 'bodemag', 'margin', 'stepinfo', 'feedback',
   ]),
@@ -72,7 +72,7 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
   signal: new Set([
     'hilbert', 'findpeaks', 'butter', 'freqz', 'filtfilt', 'fir1',
     'periodogram', 'pwelch', 'spectrogram', 'stft', 'czt', 'dct',
-    'hamming', 'hann', 'hanning', 'kaiser', 'blackman', 'bartlett', 'rectwin', 'triang', 'gausswin',
+    'hanning', 'kaiser', 'rectwin', 'triang', 'gausswin',   // hamming/hann/blackman/bartlett removed (identical to base)
     'dftmtx', 'interp', 'levinson', 'overshoot', 'square',
   ]),
   // stats: the 8 core distribution families (cdf/pdf/inv/fit/stat), the validated inference suite,
@@ -80,7 +80,7 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
   // distributions (extreme-value, noncentral, multivariate, copulas), nan*-helpers and niche
   // modeling utilities are de-registered.
   stats: new Set([
-    'normcdf', 'normpdf', 'norminv', 'normfit', 'normstat',
+    'norminv', 'normfit', 'normstat',   // normcdf/normpdf removed (identical to base)
     'tcdf', 'tpdf', 'tinv', 'tstat',
     'chi2cdf', 'chi2pdf', 'chi2inv', 'chi2stat',
     'fcdf', 'fpdf', 'finv', 'fstat',
@@ -90,8 +90,8 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
     'binocdf', 'binopdf', 'binoinv', 'binofit', 'binostat',
     'cdf', 'pdf', 'icdf', 'random', 'makedist', 'fitdist',
     'ttest', 'ttest2', 'kstest', 'kstest2', 'vartest', 'chi2gof', 'anova1', 'ranksum', 'signrank',
-    'pca', 'knnsearch', 'pdist', 'squareform', 'robustfit', 'glmfit', 'ksdensity', 'kmeans',
-    'haltonset', 'net', 'moment', 'range',
+    'pca', 'knnsearch', 'robustfit', 'glmfit', 'ksdensity', 'kmeans',   // pdist/squareform removed (identical to base)
+    'haltonset', 'net', 'moment',   // range removed (identical to base)
   ]),
 };
 
@@ -114,22 +114,14 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
  *  qualified `toolbox.name(...)` call, and `differs` explains the divergence. */
 export interface DuplicatePolicy { defaultOwner: 'base' | string; sameBehavior: boolean; differs?: string; note?: string; }
 export const DUPLICATE_POLICY: Record<string, DuplicatePolicy> = {
-  // ── identical to base (toolbox copy shadowed/dead — delete candidates) ──
-  bartlett: { defaultOwner: 'base', sameBehavior: true, note: 'signal copy identical to base.' },
-  blackman: { defaultOwner: 'base', sameBehavior: true, note: 'signal copy identical to base.' },
-  hamming: { defaultOwner: 'base', sameBehavior: true, note: 'signal copy identical to base.' },
-  hann: { defaultOwner: 'base', sameBehavior: true, note: 'signal copy identical to base.' },
-  dlyap: { defaultOwner: 'base', sameBehavior: true, note: 'control copy identical to base.' },
-  lyap: { defaultOwner: 'base', sameBehavior: true, note: 'control copy identical to base.' },
-  ss2tf: { defaultOwner: 'base', sameBehavior: true, note: 'control copy identical to base.' },
-  normcdf: { defaultOwner: 'base', sameBehavior: true, note: 'stats copy identical to base (incl. (x,mu,sigma) form).' },
-  normpdf: { defaultOwner: 'base', sameBehavior: true, note: 'stats copy identical to base (incl. (x,mu,sigma) form).' },
-  pdist: { defaultOwner: 'base', sameBehavior: true, note: 'base now honours the distance-metric arg (was Euclidean-only); matches stats copy.' },
-  range: { defaultOwner: 'base', sameBehavior: true, note: 'stats copy identical to base.' },
-  squareform: { defaultOwner: 'base', sameBehavior: true, note: 'stats copy identical to base.' },
-  hypergeom: { defaultOwner: 'base', sameBehavior: true, note: 'symbolic copy identical to base.' },
+  // The 13 former same-behavior duplicates (bartlett/blackman/hamming/hann, dlyap/lyap/ss2tf,
+  // normcdf/normpdf/pdist/range/squareform) were deleted from their toolbox modules — base is the
+  // single implementation now, so they are no longer duplicates. Only genuine, kept divergences remain:
   // ── genuine difference — base is the MATLAB-correct one ──
   hanning: { defaultOwner: 'base', sameBehavior: false, differs: 'signal.hanning returns the hann window (zero endpoints, symmetric over N-1); base matches MATLAB hanning (symmetric over N+1, nonzero endpoints). Base is correct; the signal copy is shadowed.' },
+  // ── different DOMAINS, dispatched by argument type (both kept; the interpreter routes a symbolic
+  //    argument to the symbolic impl, a numeric argument to the numeric base) ──
+  hypergeom: { defaultOwner: 'base', sameBehavior: false, differs: 'base hypergeom evaluates the pFq series numerically; symbolic.hypergeom returns a symbolic expression. resolveCall routes a sym argument to the symbolic version and numeric arguments to base — they are complementary, not interchangeable.' },
 };
 
 export const TOOLBOX_BUILTINS: Record<string, Builtin> = {};

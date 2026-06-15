@@ -1150,15 +1150,7 @@ export const CONTROL: ToolboxModule = {
       return Promise.resolve([fromRows(A), fromRows(B), fromRows(C), scalar(D)]);
     },
     /** [num,den] = ss2tf(A,B,C,D) — state-space to transfer function (Faddeev-LeVerrier). */
-    ss2tf: (a, n) => {
-      const A = matRows(m(a[0])), B = matRows(m(a[1])), C = matRows(m(a[2])); const D = a.length >= 4 ? asScalar(a[3]) : 0; const N = A.length;
-      const p = [1]; let M = eye(N); const Ms = [eye(N)];
-      for (let k = 1; k <= N; k++) { const AM = mmul(A, M); p[k] = -traceM(AM) / k; M = AM.map((row, i) => row.map((v, j) => v + (i === j ? p[k] : 0))); if (k < N) Ms.push(M); }
-      const den = p; const numAdj = new Array(N).fill(0);
-      for (let k = 0; k < N; k++) { const CMk = mmul(mmul(C, Ms[k]), B); numAdj[k] = CMk[0][0]; }
-      const num = polyAdd(numAdj, den.map((v) => v * D));
-      return n >= 2 ? Promise.resolve([rowVec(num), rowVec(den)]) : ret(rowVec(num));
-    },
+    // ss2tf is identical to the base builtin — removed to avoid duplicate code (base wins). See DUPLICATE_POLICY.
     /** [wn,zeta] = damp(sys) — natural frequencies and damping ratios of the poles. */
     damp: (a, n) => {
       const r = polesOf(a[0]); const wn = r.re.map((re, i) => Math.hypot(re, r.im[i])); const zeta = r.re.map((re, i) => (wn[i] > 0 ? -re / wn[i] : 0));
@@ -1396,14 +1388,7 @@ export const CONTROL: ToolboxModule = {
         fields.set(key, [scalar(info.get(key) ?? NaN)]);
       return ret({ kind: 'struct', rows: 1, cols: 1, fields } as StructV);
     },
-    /** X = lyap(A,Q) solves A*X+X*A'+Q=0; X = lyap(A,B,C) solves the Sylvester eqn A*X+X*B+C=0. */
-    lyap: (a) => {
-      const A = matRows(m(a[0]));
-      if (a.length >= 3) { const B = matRows(m(a[1])), C = matRows(m(a[2])); return ret(fromRows(sylvSolve(A, B, C))); }
-      return ret(fromRows(lyapSolve(A, matRows(m(a[1])))));
-    },
-    /** X = dlyap(A,Q) solves the discrete Lyapunov equation A*X*A'-X+Q=0. */
-    dlyap: (a) => ret(fromRows(dlyapSolve(matRows(m(a[0])), matRows(m(a[1]))))),
+    // lyap/dlyap are identical to the base builtins — removed to avoid duplicate code (base wins). See DUPLICATE_POLICY.
     /** R = lyapchol(A,B) returns the Cholesky factor R (R'*R = X) of lyap(A,B*B'). */
     lyapchol: (a) => {
       const A = matRows(m(a[0])), B = matRows(m(a[1]));

@@ -212,24 +212,25 @@ describe('functions', () => {
   });
 });
 
-// Function-registry resolution: base wins by default for a cross-layer duplicate; the toolbox
-// copy stays reachable via the qualified `toolbox.name(...)` call. See DUPLICATE_POLICY.
+// Function-registry resolution. Identical cross-layer duplicates were deleted from their toolbox
+// modules (base is the single implementation); only genuine divergences keep both copies, with the
+// alternative reachable via the qualified `toolbox.name(...)` call. See DUPLICATE_POLICY.
 describe('function registry', () => {
-  it('base wins by default for a duplicate name', async () => {
-    const r = await run("v = hamming(4)';");   // base.hamming
+  it('base implementation answers an unqualified name', async () => {
+    const r = await run("v = hamming(4)';");   // base.hamming (the only hamming now)
     expectMat(r.get('v'), { rows: 1, cols: 4, data: [0.08, 0.77, 0.77, 0.08], tol: 1e-2 });
   });
 
-  it('qualified toolbox call reaches the toolbox copy', async () => {
-    const r = await run("v = signal.hamming(4)';");
-    expectMat(r.get('v'), { rows: 1, cols: 4, data: [0.08, 0.77, 0.77, 0.08], tol: 1e-2 });
-  });
-
-  it('a genuinely-different duplicate: base.hanning ≠ signal.hanning', async () => {
+  it('a kept divergent duplicate: base.hanning ≠ signal.hanning, qualified call reaches the toolbox copy', async () => {
     const b = await run("v = hanning(5)';");    // base = MATLAB hanning (nonzero endpoints)
     const s = await run("v = signal.hanning(5)';");  // signal = hann window (zero endpoints)
     expectMat(b.get('v'), { rows: 1, cols: 5, data: [0.25, 0.75, 1, 0.75, 0.25], tol: 1e-9 });
     expectMat(s.get('v'), { rows: 1, cols: 5, data: [0, 0.5, 1, 0.5, 0], tol: 1e-9 });
+  });
+
+  it('a deduplicated former-duplicate is base-only (toolbox copy removed)', async () => {
+    const r = await run("v = signal.hamming(4);");   // hamming was deleted from signal; no longer namespace-addressable
+    assert.ok(r.error, 'signal.hamming should no longer resolve (it is base-only now)');
   });
 
   it('an unregistered restored-toolbox function is not callable', async () => {

@@ -225,15 +225,20 @@ validated; coverage is per oracle case.
 ### Function registry — cross-layer duplicates
 
 A few names are implemented in both base (`builtins.ts`) and a toolbox. **Base wins by
-default** (it is spread last into `BUILTINS`); a toolbox never silently overwrites base. The
-toolbox copy stays reachable via the **qualified `toolbox.name(...)` call** (e.g.
-`signal.hamming(4)`). Every cross-layer duplicate is documented in `DUPLICATE_POLICY`
-(`tb/index.ts`) and enforced by **`pnpm registry:audit`**, which fails on any undocumented or
-stale duplicate. Today there are 14: 13 are behaviorally identical (the toolbox copy is a dead
-delete-candidate) and 1 genuinely differs — `hanning` (base matches MATLAB's symmetric window;
-`signal.hanning` returns the `hann` window). Fixed in passing: base `pdist` ignored its
-distance-metric argument (always Euclidean); it now honours `cityblock`/`chebychev`/`minkowski`/
-`cosine`, matching MATLAB and the stats copy.
+default** (it is spread last into `BUILTINS`); a toolbox never silently overwrites base. When a
+duplicate genuinely differs, the toolbox copy stays reachable via the **qualified
+`toolbox.name(...)` call** (e.g. `signal.hanning(5)`). Every cross-layer duplicate is documented
+in `DUPLICATE_POLICY` (`tb/index.ts`) and enforced by **`pnpm registry:audit`**, which fails on
+any undocumented or stale duplicate. The 13 former behaviorally-identical duplicates
+(`bartlett`/`blackman`/`hamming`/`hann`, `dlyap`/`lyap`/`ss2tf`,
+`normcdf`/`normpdf`/`pdist`/`range`/`squareform`) were **deleted from their toolbox modules** —
+base is the single implementation, so they are no longer duplicates. Two genuine divergences
+remain (both kept): `hanning` (base matches MATLAB's symmetric window; `signal.hanning` returns
+the `hann` window) and `hypergeom` (base evaluates the `pFq` series numerically; `symbolic.hypergeom`
+returns a symbolic expression — the interpreter routes a symbolic argument to the symbolic impl
+and numeric arguments to base). Fixed in passing: base `pdist` ignored its distance-metric
+argument (always Euclidean); it now honours `cityblock`/`chebychev`/`minkowski`/`cosine`, matching
+MATLAB. Also fixed: `char(sym)` now returns the expression string (was erroring).
 
 The next migration steps (a single `buildRegistry` that owns base + toolbox registration with
 qualified-name resolution and `which -all`/`functionInfo` introspection, then deleting the

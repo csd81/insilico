@@ -1062,14 +1062,13 @@ export const SIGNAL: ToolboxModule = {
     },
     // ── window functions (return L×1 columns, MATLAB convention) ──
     rectwin: (a) => ret(colVec(new Array(Math.max(0, Math.round(asScalar(a[0])))).fill(1))),
-    hann: (a) => window(a, 1, (n, N) => 0.5 - 0.5 * Math.cos((2 * Math.PI * n) / N)),
+    // hann/hamming/blackman/bartlett are identical to the base builtins — deleted here to avoid
+    // duplicate code (base wins anyway). hanning is KEPT: it genuinely differs (returns the hann
+    // window: zero endpoints), whereas base hanning matches MATLAB's hanning. See DUPLICATE_POLICY.
     hanning: (a) => window(a, 1, (n, N) => 0.5 - 0.5 * Math.cos((2 * Math.PI * n) / N)),
-    hamming: (a) => window(a, 1, (n, N) => 0.54 - 0.46 * Math.cos((2 * Math.PI * n) / N)),
-    blackman: (a) => window(a, 1, (n, N) => 0.42 - 0.5 * Math.cos((2 * Math.PI * n) / N) + 0.08 * Math.cos((4 * Math.PI * n) / N)),
     blackmanharris: (a) => window(a, 1, (n, N) => { const x = (2 * Math.PI * n) / N; return 0.35875 - 0.48829 * Math.cos(x) + 0.14128 * Math.cos(2 * x) - 0.01168 * Math.cos(3 * x); }),
     nuttallwin: (a) => window(a, 1, (n, N) => { const x = (2 * Math.PI * n) / N; return 0.3635819 - 0.4891775 * Math.cos(x) + 0.1365995 * Math.cos(2 * x) - 0.0106411 * Math.cos(3 * x); }),
     flattopwin: (a) => window(a, 1, (n, N) => { const x = (2 * Math.PI * n) / N; return 0.21557895 - 0.41663158 * Math.cos(x) + 0.277263158 * Math.cos(2 * x) - 0.083578947 * Math.cos(3 * x) + 0.006947368 * Math.cos(4 * x); }),
-    bartlett: (a) => window(a, 1, (n, N) => 1 - Math.abs((n - N / 2) / (N / 2))),
     triang: (a) => { const L = Math.round(asScalar(a[0])); const w: number[] = []; for (let n = 1; n <= L; n++) w.push(L % 2 ? 1 - Math.abs((2 * n - L - 1) / (L + 1)) : 1 - Math.abs((2 * n - L - 1) / L)); return ret(colVec(w)); },
     // ── windows ported from the pure .m sources (parzen/bohman/taylor) ──
     parzenwin: (a) => {
