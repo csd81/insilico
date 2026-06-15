@@ -17,6 +17,18 @@ not a full MATLAB clone.
 > computational-mathematics subset across the declared domains — not all of
 > graduate mathematics, and not MATLAB parity.
 
+The base/core triage campaign (**Pass 2A–2O**) systematically swept the bug-prone
+math-core and MATLAB-semantics surface — pagewise N-D linear algebra, sparse
+structure/reordering, N-D FFT, dense decompositions, special functions, moving-window
+reductions, integer/cast semantics, computational geometry/triangulation, N-D/shape,
+interpolation/spline internals, struct/cell semantics, bit/integer operators, solver
+variants, and stats/data utilities. It fixed **4 real silently-wrong/crashing bugs** and
+documented every convention divergence and decline rather than papering over them. With
+that core swept, **further validation is example/course-driven**: add a case when a
+specific workflow needs a function, not to chase a percentage. See
+[docs/validation-strategy.md](docs/validation-strategy.md) for how cases are chosen and
+[docs/coverage-map.md](docs/coverage-map.md) for the authoritative per-area status.
+
 ## Goals
 
 The aim is a browser-only MATLAB-language interpreter that **mechanically proves**

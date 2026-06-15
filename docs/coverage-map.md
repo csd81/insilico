@@ -165,7 +165,7 @@ error at runtime — the source-vs-registry gap). Kept-but-unreferenced toolbox
 functions are core-math candidates scheduled for validation; `symbolic` is the
 largest remaining toolbox tail.
 
-### Base/core high-risk sweep — Pass 2 (complete)
+### Base/core triage campaign — Pass 2A–2O (complete)
 
 Pass 2 swept the **bug-prone math-core** of base/core — functions with non-unique
 outputs, N-D shape semantics, or MATLAB-specific conventions — validating by
@@ -250,6 +250,22 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   `fillmissing`/`standardizeMissing`/`anynan`. All match MATLAB R2026a exactly. `trimmean`
   declined — not implemented (`exist == 0` in the engine).
 - **Totals after Pass 2:** 971 tests / 836 fixtures; base/core `uncategorized` 579 → 434.
+
+**Campaign rollup (Pass 2A–2O).** The systematic sweep found and fixed **4 real bugs** — all
+silently-wrong or crashing, the highest-value class because they were plausible-but-wrong
+rather than honest errors:
+1. `pagenorm(A,'fro')` — char norm-type arg parsed as a numeric `p`, threw (2A).
+2. `tensorprod` — N-D result flattened to 2-D (`[6 3]` instead of `[2 3 3]`); data was
+   column-major-correct, only the shape was wrong (2I).
+3. bit ops (`bitand`/`bitor`/`bitxor`/`bitshift`/`bitget`/`bitset`) — ignored the operand's
+   integer class: no width truncation, returned `double` (2M).
+4. `neighbors(DT)` (all-simplices form) — crashed on the unguarded triangle index (2H).
+
+And **documented (not papered-over) divergences**, each side-stepped with a robust invariant
+or a deliberate decline: `gsvd` 1-output only; `spline` 3-point not-a-knot representation
+(values agree); `histcounts` auto-binning; mixed-integer concatenation cast/saturation;
+the `[]`-whitespace parser quirk; RNG global optimizers / RNG-stream parity; and the declines
+`griddatan`, `trimmean`, `sobolset`, `khatriRao`, `wronskian`, `gammapdf`.
 
 **The high-risk numerical-linear-algebra sweep is done, and the prioritized core-math/
 semantics triage (2H–2O) is now complete.** The remaining `uncategorized` was *never*

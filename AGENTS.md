@@ -38,6 +38,10 @@ Use TypeScript with strict types. Prefer existing value helpers and runtime patt
 
 Every semantic change needs tests. Prefer MATLAB oracle cases for deterministic MATLAB behavior. Use TS-only tests (in `matlab/test/ts-only/`) for worker/UI behavior, graphics specs, error plumbing, and intentionally unsupported features. Add per-case tolerances for numerical results and avoid raw comparison when MATLAB permits multiple valid outputs.
 
+`docs/validation-strategy.md` is the method reference: the three validation modes (oracle / invariant / TS-only), when to decline, the probe-first → regenerate → leak-check → sync-counts workflow for adding a case, and the table of what *not* to lock for non-unique outputs. Read it before adding tests.
+
+The systematic base/core triage campaign (**Pass 2A–2O**, recorded in `docs/coverage-map.md`) is **complete**: the bug-prone math-core and MATLAB-semantics surface has been swept by oracle/invariant tests, fixing 4 real silently-wrong/crashing bugs and documenting every divergence and decline. Further base/core validation is now **example/course-driven** — add a case when a specific workflow needs a function, not to drive down the uncategorized count. The remaining unclassified surface is the lower-priority display/UI/table/VFS/alias tail.
+
 ## Commit & Pull Request Guidelines
 
 Keep commits focused and descriptive. PRs should state the runtime surface changed, tests added, oracle fixtures updated, and any unsupported behavior intentionally left out. Link screenshots only for UI changes.
