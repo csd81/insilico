@@ -237,11 +237,20 @@ Registered toolboxes are limited to in-scope numerical/matrix domains:
   diagonal / symmetric / full 2×2 tensor; scalar `a`,`f`), plus the structural invariants `K=K'`
   and zero row-sums. `assemb` and the `assempde`/`adaptmesh`/`pdeasmc`/`pdeasmf` /
   PDEModel-object / mesh-generation surface stay unregistered (see Declined).
+- `radar` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): the closed-form
+  spherical-earth geometry on the 4/3 effective-earth-radius model — `el2height`/`height2el`,
+  `depressionang`/`grazingang`, `horizonrange`, the `grnd2slantrange`/`slant2grndrange` ground↔slant
+  projection, and `range2height`/`height2range`/`height2grndrange` propagated-range conversions
+  (Curved default + Flat earth model) — plus the radar-range-equation family
+  `radareqrng`/`radareqpow`/`radareqsnr` (positional form, MATLAB defaults Gain 20 dB, Ts 290 K,
+  RCS 1, loss 0). Verified to exact MATLAB R2026a parity (~1e-6) with el↔height and range↔height
+  round-trip invariants. The product's signal-processing / detector / clutter-model / system-object
+  surface stays unregistered.
 
 **Restored source pool (source-only, NOT registered).** The previously-deleted toolbox source
 files were brought back as a curated pool under `matlab/tb/` (antenna, audio,
 bioinfo, financial, fininst, fixedpoint, gads, ident, lidar, parallel, phased,
-radar, rf, risk, robotics, textanalytics, uav, vision, wavelet; simulink skipped). A restored
+rf, risk, robotics, textanalytics, uav, vision, wavelet; simulink skipped). A restored
 toolbox is exposed at runtime **only** via `RESTORED_TOOLBOX_KEEP`, and only after each function
 is probed against MATLAB R2026a and oracle/invariant-validated. Source presence is not a
 correctness promise — registration is. Help files follow registration (not wired into base help

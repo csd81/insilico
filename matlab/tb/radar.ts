@@ -88,6 +88,128 @@ function radareqrng(a: Value[]): Promise<Value[]> {
   return ret(scalar(rng));
 }
 
+// ── spherical-earth closed-form geometry (4/3 effective-earth-radius model) ──
+// effearthradius (MATLAB physconst default): the 4/3-Earth effective radius used by all of these
+// when no re is supplied. Hardcoded to the exact R2026a value.
+const EFF_EARTH_RADIUS = 8477361.5459641721;
+const D2R = Math.PI / 180;
+const R2D = 180 / Math.PI;
+const sind = (d: number) => Math.sin(d * D2R);
+const cosd = (d: number) => Math.cos(d * D2R);
+const tand = (d: number) => Math.tan(d * D2R);
+const asind = (x: number) => Math.asin(x) * R2D;
+
+// Optional trailing earth-model + re. model is 'Curved' (default) | 'Flat'. el2height/height2el/
+// depressionang/grazingang/horizonrange take a positional re after an explicit model token;
+// range2height/height2range/height2grndrange take Method=/EffectiveEarthRadius= name/value pairs
+// (Curved default). Both shapes parse leniently here.
+function parseModelRe(args: Value[], start: number): { flat: boolean; Re: number } {
+  let flat = false, Re = EFF_EARTH_RADIUS;
+  for (let i = start; i < args.length; i++) {
+    const a = args[i];
+    if (a == null) continue;
+    let s: string | null = null;
+    try { s = asString(a); } catch { s = null; }
+    if (s != null && /^[a-zA-Z]/.test(s)) {
+      const k = s.toLowerCase();
+      if (k === 'flat') flat = true;
+      else if (k === 'curved' || k === 'crpl') flat = false;
+      else if (k === 'method') { const v = asString(args[++i]).toLowerCase(); flat = v === 'flat'; }
+      else if (k === 'effectiveearthradius' || k === 're') Re = num(args[++i], 're');
+      continue;
+    }
+    Re = num(a, 're');   // bare positional re (valid only after a model token)
+  }
+  return { flat, Re };
+}
+
+// el2height(el,anht,R[,model][,re]) → target height. Curved: law-of-cosines on the effective sphere.
+function el2height(args: Value[]): Promise<Value[]> {
+  const anht = num(args[1], 'anht'), R = num(args[2], 'R');
+  const { flat, Re } = parseModelRe(args, 3);
+  return ret(elementwise(args[0], (el) => flat
+    ? anht + R * sind(el)
+    : Math.sqrt(R * R + (Re + anht) ** 2 + 2 * R * (Re + anht) * sind(el)) - Re));
+}
+
+// height2el(tgtht,anht,R[,model][,re]) → elevation angle (inverse of el2height).
+function height2el(args: Value[]): Promise<Value[]> {
+  const anht = num(args[1], 'anht'), R = num(args[2], 'R');
+  const { flat, Re } = parseModelRe(args, 3);
+  return ret(elementwise(args[0], (tgtht) => flat
+    ? asind((tgtht - anht) / R)
+    : asind(((tgtht + Re) ** 2 - R * R - (Re + anht) ** 2) / (2 * R * (Re + anht)))));
+}
+
+// depressionang(H,R[,model][,re]) → depression angle of a surface target (TargetHeight 0).
+function depressionang(args: Value[]): Promise<Value[]> {
+  const R = num(args[1], 'R');
+  const { flat, Re } = parseModelRe(args, 2);
+  return ret(elementwise(args[0], (H) => flat
+    ? asind(H / R)
+    : asind((2 * Re * H + H * H + R * R) / (2 * R * (Re + H)))));
+}
+
+// grazingang(H,R[,model][,re]) → grazing angle at a surface target (TargetHeight 0).
+function grazingang(args: Value[]): Promise<Value[]> {
+  const R = num(args[1], 'R');
+  const { flat, Re } = parseModelRe(args, 2);
+  return ret(elementwise(args[0], (H) => flat
+    ? asind(H / R)
+    : asind((2 * Re * H + H * H - R * R) / (2 * R * Re))));
+}
+
+// horizonrange(H[,re]) → distance to the radar horizon = sqrt(2*Re*H + H^2).
+function horizonrange(args: Value[]): Promise<Value[]> {
+  const { Re } = parseModelRe(args, 1);
+  return ret(elementwise(args[0], (H) => Math.sqrt(2 * Re * H + H * H)));
+}
+
+// slant2grndrange(slrng,grazang) → ground-range projection = slrng*cosd(grazang) (inverse of grnd2slantrange).
+const slant2grndrange = (a: Value[]) => {
+  const cg = cosd(num(a[1], 'GRAZANG'));
+  return ret(elementwise(a[0], (s) => s * cg));
+};
+
+// range2height(r,anht,el[,Method=][,EffectiveEarthRadius=]) → target height. Curved default; same
+// effective-sphere law-of-cosines as el2height (el is the sensor elevation, r the propagated range).
+function range2height(args: Value[]): Promise<Value[]> {
+  const anht = num(args[1], 'anht'), el = num(args[2], 'el');
+  const { flat, Re } = parseModelRe(args, 3);
+  return ret(elementwise(args[0], (r) => flat
+    ? anht + r * sind(el)
+    : Math.sqrt(r * r + (Re + anht) ** 2 + 2 * r * (Re + anht) * sind(el)) - Re));
+}
+
+// Curved propagated range from a target height: positive root of
+// r^2 + 2(Re+anht)·sind(el)·r + (Re+anht)^2 - (tgtht+Re)^2 = 0.
+function curvedRange(tgtht: number, anht: number, el: number, Re: number): number {
+  const b = 2 * (Re + anht) * sind(el);
+  const c = (Re + anht) ** 2 - (tgtht + Re) ** 2;
+  return (-b + Math.sqrt(b * b - 4 * c)) / 2;
+}
+
+// height2range(tgtht,anht,el[,Method=][,EffectiveEarthRadius=]) → propagated range (inverse of range2height).
+function height2range(args: Value[]): Promise<Value[]> {
+  const anht = num(args[1], 'anht'), el = num(args[2], 'el');
+  const { flat, Re } = parseModelRe(args, 3);
+  return ret(elementwise(args[0], (tgtht) => flat
+    ? (tgtht - anht) / sind(el)
+    : curvedRange(tgtht, anht, el, Re)));
+}
+
+// height2grndrange(tgtht,anht,el[,Method=][,EffectiveEarthRadius=]) → ground range along the surface.
+// Curved: central angle gamma = asin(r·cosd(el)/(Re+tgtht)); ground range = Re·gamma. Flat: (tgtht-anht)/tand(el).
+function height2grndrange(args: Value[]): Promise<Value[]> {
+  const anht = num(args[1], 'anht'), el = num(args[2], 'el');
+  const { flat, Re } = parseModelRe(args, 3);
+  return ret(elementwise(args[0], (tgtht) => {
+    if (flat) return (tgtht - anht) / tand(el);
+    const r = curvedRange(tgtht, anht, el, Re);
+    return Re * Math.asin((r * cosd(el)) / (Re + tgtht));
+  }));
+}
+
 // ── steervec(pos,ang) : array steering vector ──
 // ── aperture/gain, SAR & MTI converters (closed-form, MATLAB defaults) ──
 
@@ -392,6 +514,15 @@ export const RADAR: ToolboxModule = {
     radareqrng,
     aperture2gain,
     grnd2slantrange,
+    slant2grndrange,
+    el2height,
+    height2el,
+    depressionang,
+    grazingang,
+    horizonrange,
+    range2height,
+    height2range,
+    height2grndrange,
     sarnoiserefl,
     mtifactor,
     steervec,

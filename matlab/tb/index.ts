@@ -22,9 +22,11 @@
 //   mapping     — geodesy (great-circle distance, km↔rad)
 //   robotics    — Euler→homogeneous transform (eul2tform)
 //   images      — RGB↔NTSC (YIQ) colour-space conversion (rgb2ntsc/ntsc2rgb)
+//   radar       — closed-form spherical-earth geometry + range-equation (el2height/height2el/
+//                 depressionang/grazingang/horizonrange/slant↔grnd↔height range conversions/radareq*)
 //
 // NOT registered (source kept under matlab/tb/ but not exposed): antenna, bioinfo, fininst,
-// lidar, radar, textanalytics, vision, gads, ident, parallel, phased, risk, nnet, rl, uav.
+// lidar, textanalytics, vision, gads, ident, parallel, phased, risk, nnet, rl, uav.
 // Within the registered toolboxes individual functions may
 // still be unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per toolbox.
 import type { Builtin } from '../builtins';
@@ -57,6 +59,7 @@ import { FINANCIAL } from './financial';
 import { MAPPING } from './mapping';
 import { ROBOTICS } from './robotics';
 import { IMAGES } from './images';
+import { RADAR } from './radar';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
@@ -76,6 +79,7 @@ export const TOOLBOXES: ToolboxModule[] = [
   MAPPING,     // restored — deterministic geodesy (great-circle distance, km↔rad) (allow-list below)
   ROBOTICS,    // restored — Euler→homogeneous transform (eul2tform) (allow-list below)
   IMAGES,      // restored — deterministic RGB↔NTSC colour-space conversion (allow-list below)
+  RADAR,       // restored — closed-form spherical-earth geometry + range-equation (allow-list below)
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -195,6 +199,15 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   mapping: new Set(['distance', 'km2rad', 'nm2deg', 'km2sm']),   // distance + unit conversions (deg2nm differs)
   robotics: new Set(['eul2tform']),              // Euler angles → homogeneous transform
   images: new Set(['rgb2ntsc', 'ntsc2rgb']),     // RGB↔NTSC (YIQ) colour-space matrix transform
+  // radar: closed-form spherical-earth geometry (4/3 effective-earth-radius model, exact MATLAB
+  // R2026a parity) + the radar-range-equation family. Curved (default) and Flat earth models;
+  // optional positional/name-value effective Earth radius. The product's signal-processing,
+  // detector, clutter-model and system-object surface stays unregistered.
+  radar: new Set([
+    'el2height', 'height2el', 'depressionang', 'grazingang', 'horizonrange',
+    'grnd2slantrange', 'slant2grndrange', 'range2height', 'height2range', 'height2grndrange',
+    'radareqrng', 'radareqpow', 'radareqsnr',
+  ]),
 };
 
 /** Intentional-duplicate policy. A name implemented in BOTH base and a toolbox is a cross-layer
