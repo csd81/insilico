@@ -1025,6 +1025,9 @@ export const CASES: OracleCase[] = [
   // map is checked directly; auction must reach the same optimal cost.
   { name: 'fusion-assignment', src: "cost = [10 5 8; 7 9 6; 4 3 2]; A = assignmunkres(cost, 100); [~, ix] = sort(A(:,1)); cols = double(A(ix,2)'); tot = sum(cost(sub2ind(size(cost), double(A(:,1)), double(A(:,2))))); B = assignauction(cost, 100); totB = sum(cost(sub2ind(size(cost), double(B(:,1)), double(B(:,2))))); v = double([cols tot totB]);", vars: ['v'], tol: 1e-9, domain: 'optimization', tags: ['assignmunkres', 'assignauction', 'assignment', 'min-cost'] },
   { name: 'fusion-covint', src: "xs = [1 2; 2 3]; Ps = cat(3, [2 0; 0 2], [1 0; 0 1]); [xf, Pf] = fusecovint(xs, Ps); xs2 = [0 4; 0 0]; Ps2 = cat(3, [4 0; 0 1], [1 0; 0 9]); [xf2, Pf2] = fusecovint(xs2, Ps2); v = [xf' Pf(:)' xf2' Pf2(:)'];", vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['fusecovint', 'covariance-intersection', 'sensor-fusion'] },
+  // Murty k-best assignment: the K lowest total assignment costs (the costs are the unique invariant;
+  // the assignment cells are non-unique under ties).
+  { name: 'fusion-assignkbest', src: "cost = [10 5 8; 7 9 6; 4 3 2]; [A, ur, uc, c] = assignkbest(cost, 100, 5); v = double(c(:)');", vars: ['v'], tol: 1e-9, domain: 'optimization', tags: ['assignkbest', 'murty', 'k-best-assignment'] },
 
   // ══════════ statistics (69) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },

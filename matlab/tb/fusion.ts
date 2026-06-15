@@ -1,7 +1,7 @@
 // Sensor Fusion and Tracking Toolbox — motion models, assignment algorithms, Allan variance.
 import {
   type Value, scalar, rowVec, colVec, toArray, asScalar, toMat as m, isMat, MatError,
-  mat, zeros, makeObject, fromRows, bool,
+  mat, zeros, makeObject, fromRows, bool, makeCell,
 } from '../values';
 import type { ToolboxModule } from './types';
 import { HELP_FUSION } from '../help';
@@ -92,6 +92,57 @@ async function assignauction(args: Value[]): Promise<Value[]> {
 // ── Jonker-Volgenant (JV) assignment ───────────────────────────────────────────────────
 async function assignjv(args: Value[]): Promise<Value[]> {
   return assignmunkres(args);
+}
+
+// ── Murty's k-best assignment ───────────────────────────────────────────────────────────
+// Enumerates the K lowest-cost assignments by recursively partitioning the solution space:
+// solve the best assignment, then for each of its free pairs spawn a subproblem that excludes
+// that pair (and forces the earlier ones), re-solve, and keep a cost-ordered frontier.
+async function assignkbest(args: Value[]): Promise<Value[]> {
+  if (args.length < 2) throw new MatError('assignkbest: requires costmatrix and costofnonassignment');
+  const costM = m(args[0]); if (!isMat(costM)) throw new MatError('assignkbest: costmatrix must be numeric');
+  const nR = costM.rows, nC = costM.cols;
+  const cost: number[][] = Array.from({ length: nR }, (_, i) => Array.from({ length: nC }, (__, j) => costM.data[i + j * nR]));
+  const cNa = asScalar(m(args[1]));
+  const K = args.length >= 3 ? Math.max(1, Math.round(asScalar(m(args[2])))) : 1;
+
+  type Node = { forced: [number, number][]; excluded: [number, number][]; assign: [number, number][]; cost: number };
+  // Solve one constrained subproblem: excluded pairs → Inf; forced pair (r,c) → blank its row r and
+  // col c elsewhere so the matching must keep it. Returns null when forced pairs can't all be kept.
+  const solveNode = (forced: [number, number][], excluded: [number, number][]): { assign: [number, number][]; cost: number } | null => {
+    const c = cost.map((r) => r.slice());
+    for (const [r, col] of excluded) c[r][col] = Infinity;
+    for (const [r, col] of forced) { for (let j = 0; j < nC; j++) if (j !== col) c[r][j] = Infinity; for (let i = 0; i < nR; i++) if (i !== r) c[i][col] = Infinity; }
+    const { assign } = hungarianAssign(c, cNa);
+    for (const [r, col] of forced) if (!assign.some((a) => a[0] === r + 1 && a[1] === col + 1)) return null;
+    let tot = 0; for (const [r, col] of assign) { if (!Number.isFinite(cost[r - 1][col - 1])) return null; tot += cost[r - 1][col - 1]; }
+    tot += ((nR - assign.length) + (nC - assign.length)) * cNa;   // unassigned rows + cols pay cNa
+    return { assign, cost: tot };
+  };
+
+  const init = solveNode([], []);
+  const out: Node[] = [];
+  if (init) {
+    const pq: Node[] = [{ forced: [], excluded: [], assign: init.assign, cost: init.cost }];
+    while (pq.length && out.length < K) {
+      let bi = 0; for (let i = 1; i < pq.length; i++) if (pq[i].cost < pq[bi].cost) bi = i;
+      const node = pq.splice(bi, 1)[0]; out.push(node);
+      const forcedSet = new Set(node.forced.map(([r, c]) => `${r},${c}`));
+      const free = node.assign.filter(([r, c]) => !forcedSet.has(`${r - 1},${c - 1}`));   // assign is 1-based
+      let forced = node.forced.slice();
+      for (const [r1, c1] of free) {
+        const r = r1 - 1, col = c1 - 1;
+        const child = solveNode(forced, [...node.excluded, [r, col]]);
+        if (child) pq.push({ forced: forced.slice(), excluded: [...node.excluded, [r, col]], assign: child.assign, cost: child.cost });
+        forced = [...forced, [r, col]];
+      }
+    }
+  }
+  // Outputs mirror MATLAB: assignments (K×1 cell of P×2), unassigned rows/cols (K×1 cells), costs (K×1).
+  const asg = out.map((n) => (n.assign.length ? fromRows(n.assign.map((a) => [a[0], a[1]])) : zeros(0, 2)) as Value);
+  const unR = out.map((n) => { const a = new Set(n.assign.map((p) => p[0])); return rowVec(Array.from({ length: nR }, (_, i) => i + 1).filter((i) => !a.has(i))) as Value; });
+  const unC = out.map((n) => { const a = new Set(n.assign.map((p) => p[1])); return rowVec(Array.from({ length: nC }, (_, j) => j + 1).filter((j) => !a.has(j))) as Value; });
+  return [makeCell(out.length, 1, asg), makeCell(out.length, 1, unR), makeCell(out.length, 1, unC), colVec(out.map((n) => n.cost))];
 }
 
 // ── Covariance intersection (small dense N×N helpers) ───────────────────────────────────
@@ -361,6 +412,7 @@ export const FUSION: ToolboxModule = {
     assignmunkres,
     assignauction,
     assignjv,
+    assignkbest,
     fusecovint,
     allanvar,
     constvel,

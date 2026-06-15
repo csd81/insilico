@@ -11642,6 +11642,22 @@
       ]
     }
   },
+  "fusion_assignkbest": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        14,
+        15,
+        18,
+        19,
+        21
+      ]
+    }
+  },
   "stat_markov_p10": {
     "r10": {
       "class": "double",

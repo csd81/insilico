@@ -140,7 +140,7 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   econ: new Set(['autocorr', 'crosscorr', 'parcorr', 'adftest', 'archtest']),
   // fusion: discrete-optimization assignment (Munkres/auction, optimal min-cost) + covariance-
   // intersection track fusion. The Sensor-Fusion product's tracker/object surface stays unregistered.
-  fusion: new Set(['assignmunkres', 'assignauction', 'fusecovint']),
+  fusion: new Set(['assignmunkres', 'assignauction', 'assignkbest', 'fusecovint']),
   // nav: deterministic WGS84 geodetic ↔ ECEF transforms. (lookangles deferred — its satPos
   // convention couldn't be pinned cleanly against MATLAB; lla2ned/lla2enu pending verification.)
   nav: new Set(['lla2ecef', 'ecef2lla']),
