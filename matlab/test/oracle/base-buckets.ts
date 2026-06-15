@@ -71,6 +71,8 @@ const CONTRACT_CORE: Record<string, BaseMeta> = {
 const names = (s: string): string[] => s.trim().split(/\s+/).filter(Boolean);
 const bulk = (bucket: Bucket, validation: Validation, list: string): Record<string, BaseMeta> =>
   Object.fromEntries(names(list).map((n) => [n, { bucket, validation }]));
+const bulkD = (bucket: Bucket, validation: Validation, domain: string, list: string): Record<string, BaseMeta> =>
+  Object.fromEntries(names(list).map((n) => [n, { bucket, validation, domain }]));
 
 // ts-only-ok: MATLAB oracle is the wrong validator (graphics/FigureSpec, VFS/file, display/format,
 // argument-validation guards, UI, and RNG — random streams aren't reproducible against MATLAB).
@@ -136,4 +138,29 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   ...bulk('alias-helper', 'none', ALIAS),
   ...bulk('defer', 'none', DEFER),
   ...bulk('out-of-scope', 'none', OUT_OF_SCOPE),
+
+  // ── Pass 1.5: backfill the 203 already-oracle-referenced base builtins (validation:direct). ──
+  // No tests/runtime change — just records that these are already covered, so they leave the
+  // `uncategorized` pool and stop polluting the needs-oracle (pass-2) queue.
+  ...bulkD('contract-core', 'direct', 'complex-arithmetic', 'acos acosd asin atan2 atand cosd expm1 hypot log2 sind'),
+  ...bulkD('contract-core', 'direct', 'core-language', 'Inf NaN all any blkdiag ceil char circshift conv conv2 cross cumprod cumsum cumtrapz deconv diff dot double eps false fix flip fliplr flipud floor gradient inf intersect isempty isinf ismember isnan kron linspace meshgrid mod ndgrid polyder polyint rem rot90 round setdiff setxor sign sort sortrows trapz triu true unique'),
+  ...bulkD('contract-core', 'direct', 'fourier', 'fft fft2 fftshift ifft'),
+  ...bulkD('contract-core', 'direct', 'linear-algebra', 'cond norm pinv rref trace'),
+  ...bulkD('contract-core', 'direct', 'statistics', 'median'),
+  ...bulkD('defer', 'direct', 'core-language', 'dictionary'),
+  ...bulkD('needs-oracle', 'direct', 'approximation', 'griddata griddedInterpolant interp2 interp3 interpft interpn makima pchip ppval scatteredInterpolant spline'),
+  ...bulkD('needs-oracle', 'direct', 'calculus', 'besselj beta curl del2 divergence gamma legendre psi'),
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'accumarray arrayfun cellfun contains deal filter find lower matchpairs regexprep strcat strrep strsplit strtrim upper'),
+  ...bulkD('needs-oracle', 'direct', 'fourier', 'xcorr'),
+  ...bulkD('needs-oracle', 'direct', 'geometry', 'convhull convhulln delaunay inpolygon polyarea voronoin'),
+  ...bulkD('needs-oracle', 'direct', 'graph', 'centrality conncomp degree distances maxflow minspantree shortestpath toposort'),
+  ...bulkD('needs-oracle', 'direct', 'linear-algebra', 'adjoint balance charpoly cholupdate compan condest eigs expm gallery hadamard hankel hess hilb jordan ldl logm magic pascal polyeig polyvalm qz schur sqrtm svds sylvester toeplitz vander wilkinson'),
+  ...bulkD('needs-oracle', 'direct', 'number-theory', 'factor factorial gcd isprime lcm nchoosek powermod primes'),
+  ...bulkD('needs-oracle', 'direct', 'numerical-linear-algebra', 'bicg bicgstab cgs gmres ichol ilu lsqr minres nonzeros pcg'),
+  ...bulkD('needs-oracle', 'direct', 'numerical-methods', 'integral2 residue'),
+  ...bulkD('needs-oracle', 'direct', 'numerical-ode', 'bvp4c bvpinit dde23 decic deval ode113 ode15i ode15s ode23 odeset'),
+  ...bulkD('needs-oracle', 'direct', 'optimization', 'fminbnd fmincon fminsearch fminunc fsolve ga intlinprog linprog lsqcurvefit lsqlin lsqnonlin quadprog'),
+  ...bulkD('needs-oracle', 'direct', 'statistics', 'corrcoef cov discretize fillmissing histcounts movmean movmedian'),
+  ...bulkD('needs-oracle', 'direct', 'symbolic', 'resultant simplify solve'),
+  ...bulkD('ts-only-ok', 'ts-only', 'core-language', 'clear sprintf'),
 };

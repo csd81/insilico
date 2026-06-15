@@ -47,7 +47,7 @@ for (const b of BUCKETS) {
   if (!arr.length) continue;
   const note = b === 'uncategorized' ? '← triage backlog'
     : b === 'contract-core' ? 'must stay covered (direct or indirect)'
-    : b === 'needs-oracle' ? '← priority: add oracle/invariant cases'
+    : b === 'needs-oracle' ? 'oracle-validatable math (untested subset = the queue, below)'
     : b === 'out-of-scope' ? 'candidate to move/quarantine/delete' : '';
   console.log(`  ${b.padEnd(16)} ${pad(arr.length, 5)}  ${pad(refd(arr), 12)}   ${note}`);
 }
@@ -59,8 +59,17 @@ console.log(`\ncontract-core: ${byBucket['contract-core'].length} total, `
   + `${refd(byBucket['contract-core'])} directly referenced, ${ccIndirect.length} rely on indirect exercise:`);
 console.log(`  ${ccIndirect.map((n) => `${n} (${BASE_BUCKETS[n].validation})`).join(', ') || '(none — all directly referenced)'}`);
 
+// needs-oracle: some are already validated (validation:direct, referenced); the rest is the queue.
+const noRef = byBucket['needs-oracle'].filter((n) => referenced.has(n));
+const noQueue = byBucket['needs-oracle'].filter((n) => !referenced.has(n));
 if (byBucket['needs-oracle'].length)
-  console.log(`\nneeds-oracle (priority queue): ${byBucket['needs-oracle'].join(' ')}`);
+  console.log(`\nneeds-oracle: ${byBucket['needs-oracle'].length} total — ${noRef.length} already validated (direct), ${noQueue.length} untested`);
+if (noQueue.length) console.log(`  needs-oracle untested (queue): ${noQueue.join(' ')}`);
+
+// The real pass-2 queue = anything not yet oracle-referenced and not parked in ts-only/defer/alias/out.
+const queue = [...byBucket['needs-oracle'], ...byBucket['uncategorized']].filter((n) => !referenced.has(n));
+console.log(`\nPass-2 queue (untested, oracle/invariant candidates): ${queue.length}`
+  + ` = needs-oracle-untested (${noQueue.length}) + uncategorized-unreferenced (${queue.length - noQueue.length})`);
 
 // metadata hygiene
 const stale = Object.keys(BASE_BUCKETS).filter((n) => !baseSet.has(n));
