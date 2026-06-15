@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { run, expectMat, num, dataOf } from './harness';
+import { run, expectMat, num, dataOf } from '../harness';
 
 describe('solve & inverse', () => {
   it('A\\b solves a linear system', async () => {

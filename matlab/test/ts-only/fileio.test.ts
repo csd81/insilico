@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { run, expectMat } from './harness';
-import { parseMlx } from '../io';
+import { run, expectMat } from '../harness';
+import { parseMlx } from '../../io';
 
 describe('matrix VFS round-trips', () => {
   it('writematrix then readmatrix round-trips', async () => {

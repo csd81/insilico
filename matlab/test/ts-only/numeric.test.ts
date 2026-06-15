@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { run, expectMat, num } from './harness';
-import { type Mat } from '../values';
+import { run, expectMat, num } from '../harness';
+import { type Mat } from '../../values';
 
 describe('elementwise vs matrix operators', () => {
   it('* (matmul) vs .* (elementwise)', async () => {

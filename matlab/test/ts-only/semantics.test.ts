@@ -5,8 +5,8 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { run, expectMat, num } from './harness';
-import { type Mat } from '../values';
+import { run, expectMat, num } from '../harness';
+import { type Mat } from '../../values';
 
 describe('function-argument value semantics', () => {
   it('mutating a parameter does not affect the caller', async () => {

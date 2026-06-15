@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { runSnippet } from './harness';
+import { runSnippet } from '../harness';
 
 // ── Scalar arithmetic ────────────────────────────────────────────────────────
 describe('scalar arithmetic', () => {

@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { run } from './harness';
+import { run } from '../harness';
 
 const fails = (e?: string) => assert.ok(e && e.length > 0, 'expected an error');
 

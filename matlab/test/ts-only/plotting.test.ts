@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { run } from './harness';
+import { run } from '../harness';
 
 const panel0 = (fig: { panels?: unknown[] }) => (fig.panels?.[0] ?? {}) as Record<string, unknown>;
 

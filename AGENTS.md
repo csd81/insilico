@@ -11,7 +11,7 @@ A browser-only MATLAB-language interpreter that **mechanically proves** it corre
 
 ## Project Structure & Module Organization
 
-This repository is a standalone React/Vite MATLAB-like sandbox. UI code lives in `src/`: components in `src/components/`, hooks in `src/hooks/`, providers in `src/providers/`, and shared styling in `src/style.css`. The interpreter/runtime lives in `matlab/`, with parser, values, builtins, linear algebra, graphics, I/O, symbolic helpers, and curated toolbox modules under `matlab/tb/`. Tests live in `matlab/test/`; MATLAB oracle cases are in `matlab/test/oracle/`.
+This repository is a standalone React/Vite MATLAB-like sandbox. UI code lives in `src/`: components in `src/components/`, hooks in `src/hooks/`, providers in `src/providers/`, and shared styling in `src/style.css`. The interpreter/runtime lives in `matlab/`, with parser, values, builtins, linear algebra, graphics, I/O, symbolic helpers, and curated toolbox modules under `matlab/tb/`. Tests live in `matlab/test/`, split by kind: `matlab/test/oracle.test.ts` runs the MATLAB-oracle suite (one test per committed fixture in `matlab/test/oracle/`), and `matlab/test/ts-only/` holds the fixture-free TS-only tests (parser/semantics, FigureSpec, VFS I/O, error plumbing). So total tests = oracle fixtures + TS-only tests.
 
 ## Build, Test, And Development Commands
 
@@ -36,7 +36,7 @@ Use TypeScript with strict types. Prefer existing value helpers and runtime patt
 
 ## Testing Guidelines
 
-Every semantic change needs tests. Prefer MATLAB oracle cases for deterministic MATLAB behavior. Use TS-only tests for worker/UI behavior, graphics specs, error plumbing, and intentionally unsupported features. Add per-case tolerances for numerical results and avoid raw comparison when MATLAB permits multiple valid outputs.
+Every semantic change needs tests. Prefer MATLAB oracle cases for deterministic MATLAB behavior. Use TS-only tests (in `matlab/test/ts-only/`) for worker/UI behavior, graphics specs, error plumbing, and intentionally unsupported features. Add per-case tolerances for numerical results and avoid raw comparison when MATLAB permits multiple valid outputs.
 
 ## Commit & Pull Request Guidelines
 

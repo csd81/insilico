@@ -5,7 +5,7 @@
  */
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { run, num } from './harness';
+import { run, num } from '../harness';
 
 describe('function control flow', () => {
   it('early return takes the first branch', async () => {
