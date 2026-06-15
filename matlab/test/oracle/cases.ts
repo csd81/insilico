@@ -687,7 +687,7 @@ export const CASES: OracleCase[] = [
   { name: 'num-gradient-2d', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X.^2 + Y.^2; [FX, FY] = gradient(Z); v = [FX(2,2) FY(2,2)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['gradient', 'finite-difference'] },
   { name: 'num-del2', src: '[X, Y] = meshgrid(1:4, 1:4); Z = X.^2 - Y.^2; L = del2(Z); v = L(2,2);', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['del2', 'discrete-laplacian'] },
 
-  // ══════════ numerical-ode (28) ══════════
+  // ══════════ numerical-ode (29) ══════════
   { name: 'ode-heun', src: 'h = 0.1; y = 1; for k = 1:10, yp = y + h*y; y = y + h/2*(y + yp); end', vars: ['y'], tol: 1e-9, domain: 'numerical-ode', tags: ['improved-euler', 'heun'] },
   { name: 'ode-harmonic-rk4', src: 'h = 0.01; y = [1; 0]; A = [0 1; -1 0]; for k = 1:628, k1 = A*y; k2 = A*(y+h/2*k1); k3 = A*(y+h/2*k2); k4 = A*(y+h*k3); y = y + h/6*(k1+2*k2+2*k3+k4); end', vars: ['y'], tol: 1e-6, domain: 'numerical-ode', tags: ['rk4', 'harmonic-oscillator', 'system'] },
   { name: 'ode-ode45', src: '[t, y] = ode45(@(t, y) y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, domain: 'numerical-ode', tags: ['ode45'] },
@@ -716,6 +716,9 @@ export const CASES: OracleCase[] = [
   { name: 'ode-exponential-integrator', src: "A = [-2 1; 0 -3]; b = [1; 1]; y = [1; 0]; h = 0.1; E = expm(A*h); Pp = (E - eye(2))*(A\\b); for k = 1:10, y = E*y + Pp; end; v = y;", vars: ['v'], tol: 1e-7, domain: 'numerical-ode', tags: ['exponential-integrator', 'matrix-exponential', 'exact-linear'] },
   { name: 'ode-analytic-jacobian', src: "opts = odeset('Jacobian', @(t,y) [-1000 1; 0 -1]); [t, y] = ode15s(@(t,y) [-1000*y(1) + y(2); -y(2)], [0 1], [1; 1], opts); v = y(end,2);", vars: ['v'], tol: 1e-3, domain: 'numerical-ode', tags: ['ode15s', 'analytic-jacobian', 'stiff'] },
   { name: 'ode-tolerances', src: "opts = odeset('RelTol', 1e-8, 'AbsTol', 1e-10); [t, y] = ode45(@(t,y) -y, [0 1], 1, opts); v = y(end);", vars: ['v'], tol: 1e-7, domain: 'numerical-ode', tags: ['ode45', 'tolerances'] },
+  // ── Pass 2N: ODE solver variants. y'=-y on [0,1] → e^-1; each variant integrates to its order
+  // (validated by an accuracy bar both engines clear, not by step-by-step state which differs). ──
+  { name: 'opt-ode-variants', src: 'f = @(t,y) -y; e = exp(-1); [~, y1] = ode23s(f, [0 1], 1); [~, y2] = ode23t(f, [0 1], 1); [~, y3] = ode78(f, [0 1], 1); [~, y4] = ode89(f, [0 1], 1); v = double([abs(y1(end)-e)<1e-2 abs(y2(end)-e)<1e-2 abs(y3(end)-e)<1e-3 abs(y4(end)-e)<1e-3]);', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['ode23s', 'ode23t', 'ode78', 'ode89', 'accuracy-invariant'] },
 
   // ══════════ numerical-pde (34) ══════════
   { name: 'pde-poisson-1d', src: 'n = 5; h = 1/(n+1); A = 2*eye(n) - diag(ones(n-1,1),1) - diag(ones(n-1,1),-1); f = ones(n,1)*h^2; u = A\\f;', vars: ['u'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-difference', 'poisson', 'dirichlet'] },
@@ -753,7 +756,7 @@ export const CASES: OracleCase[] = [
   { name: 'pde-method-of-lines', src: "n = 9; h = 1/(n+1); A = (diag(ones(n-1,1),1) - 2*eye(n) + diag(ones(n-1,1),-1))/h^2; u = sin(pi*(1:n)'*h); dt = 0.0005; for k = 1:200, k1 = A*u; k2 = A*(u+dt/2*k1); k3 = A*(u+dt/2*k2); k4 = A*(u+dt*k3); u = u + dt/6*(k1+2*k2+2*k3+k4); end; v = max(u);", vars: ['v'], tol: 1e-7, domain: 'numerical-pde', tags: ['method-of-lines', 'semi-discretization', 'rk4'] },
   { name: 'pde-adi-heat-2d', src: "n = 5; h = 1/(n+1); dt = 0.01; r = dt/(2*h^2); e = ones(n,1); T = full(spdiags([e -2*e e], -1:1, n, n)); I = eye(n); u = ones(n,n); for st = 1:10, us = (I - r*T)\\(u + r*(u*T)); u = (us + r*(T*us))/(I - r*T); end; v = u(3,3);", vars: ['v'], tol: 1e-6, domain: 'numerical-pde', tags: ['adi', 'peaceman-rachford', 'operator-splitting', 'heat-2d'] },
 
-  // ══════════ optimization (29) ══════════
+  // ══════════ optimization (33) ══════════
   { name: 'opt-golden-section', src: 'f = @(x)(x-2).^2; a = 0; b = 5; g = (sqrt(5)-1)/2; c = b-g*(b-a); d = a+g*(b-a); for k = 1:60, if f(c) < f(d), b = d; else, a = c; end, c = b-g*(b-a); d = a+g*(b-a); end; xmin = (a+b)/2;', vars: ['xmin'], tol: 1e-6, domain: 'optimization', tags: ['line-search', 'golden-section'] },
   { name: 'opt-gradient-descent', src: 'Q = [3 0; 0 1]; x = [5; 5]; for k = 1:200, x = x - 0.1*(Q*x); end', vars: ['x'], tol: 1e-6, domain: 'optimization', tags: ['gradient-descent', 'quadratic'] },
   { name: 'opt-newton-min', src: 'x = 3; for k = 1:20, x = x - (2*(x-2))/2; end', vars: ['x'], tol: 1e-9, domain: 'optimization', tags: ['newton', 'minimization'] },
@@ -783,6 +786,12 @@ export const CASES: OracleCase[] = [
   { name: 'opt-barrier-method', src: 'x = 0.5; for mu = [1 0.1 0.01 0.001 1e-4], for it = 1:30, g = 2*(x-2) - mu*(1/x - 1/(1-x)); Hh = 2 + mu*(1/x^2 + 1/(1-x)^2); dx = -g/Hh; al = 1; while x + al*dx <= 0 || x + al*dx >= 1, al = al/2; end; x = x + al*dx; end; end; v = x;', vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['barrier-method', 'interior-point', 'log-barrier'] },
   { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment'] },
   { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fminimax', 'minimax'] },
+  // ── Pass 2N: least-squares solver variants validated by unique solution + KKT/residual
+  // invariants (nonnegativity, min-norm, exact linear recovery). All deterministic. ──
+  { name: 'opt-lsqnonneg', src: "x = lsqnonneg([1 1; 1 -1; 1 2], [2; 1; 3]); v = [x.\x27 all(x>=0) norm([1 1; 1 -1; 1 2]*x - [2; 1; 3])];", vars: ['v'], tol: 1e-5, domain: 'optimization', tags: ['lsqnonneg', 'nonnegativity', 'residual'] },
+  { name: 'opt-lsqminnorm', src: "A = [1 1 1; 1 1 1]; b = [3; 3]; x = lsqminnorm(A, b); v = [norm(A*x - b) norm(x) x.\x27];", vars: ['v'], tol: 1e-5, domain: 'optimization', tags: ['lsqminnorm', 'min-norm', 'underdetermined'] },
+  { name: 'opt-lsqlin-lsqnonlin', src: 'x1 = lsqlin([1 1; 1 -1], [2; 0], [], []); x2 = lsqnonlin(@(x) [x(1)-1; x(2)-2], [0 0]); v = [x1.\x27 x2];', vars: ['v'], tol: 1e-5, domain: 'optimization', tags: ['lsqlin', 'lsqnonlin', 'known-solution'] },
+  { name: 'opt-curvefit', src: 'b = lsqcurvefit(@(b,xd) b(1)*xd + b(2), [0 0], [1; 2; 3], [3; 5; 7]); v = round(b);', vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['lsqcurvefit', 'exact-line-recovery'] },
 
   // ══════════ statistics (58) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },

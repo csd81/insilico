@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 960 tests green · 825 MATLAB oracle fixtures ·
-825/825 cases classified across 22 domains.
+**Status (as of this revision):** 965 tests green · 830 MATLAB oracle fixtures ·
+830/830 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -238,17 +238,23 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   side-stepped (not silent bugs): `bitset(uint8,9)` (bit position past the type width) errors
   in MATLAB; and concatenating mixed integer classes in one array casts/saturates to the first
   class — cases `double()`-wrap each term to test the bit-op result, not concat semantics.
-- **Totals after Pass 2:** 960 tests / 825 fixtures; base/core `uncategorized` 579 → 455.
+- **Pass 2N — optimization / solver variants:** 5 cases. Least-squares variants `lsqnonneg`/
+  `lsqminnorm`/`lsqlin`/`lsqnonlin`/`lsqcurvefit` validated by unique-solution + KKT/residual
+  invariants (nonnegativity, min-norm, zero residual, exact-line recovery); ODE solver variants
+  `ode23s`/`ode23t`/`ode78`/`ode89` on `y'=-y` validated by an accuracy bar both engines clear
+  (step-by-step state differs by integrator). RNG-based global optimizers (`particleswarm`/
+  `simulannealbnd`/`ga`) left out — not deterministically oracle-checkable.
+- **Totals after Pass 2:** 965 tests / 830 fixtures; base/core `uncategorized` 579 → 449.
 
 **The high-risk numerical-linear-algebra sweep is done; the broader core-math/semantics
 triage is not.** The remaining `uncategorized` is *not* dismissed as breadth — most of it
 is core computational math or core MATLAB semantics, and it continues in **prioritized
 passes** (done: 2H geometry, 2I N-D/shape, 2J interpolation/spline, 2K special functions,
-2L struct/cell, 2M bit/integer; next: 2N optimization/solver variants → 2O stats/data
+2L struct/cell, 2M bit/integer, 2N optimization/solver variants; next: 2O stats/data
 utilities). Genuinely lower-priority tails (display/format, UI-ish helpers, table/timetable
 breadth, VFS/file, compatibility aliases, path/host) stay deferred.
 
-### Remaining base/core backlog (~455 uncategorized)
+### Remaining base/core backlog (~449 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -265,9 +271,10 @@ shape, for demand-driven triage — not a TODO list:
   `plus`/`minus`/`times`/`mtimes`/`mrdivide`/`power` (operator-named forms, exercised via
   the operators but rarely named). Bit ops (`bitand`/`bitor`/`bitxor`/`bitshift`/`bitget`/
   `bitset`/`bitcmp`) validated in Pass 2M.
-- **solver variants:** `ode23s`/`ode23t`/`ode23tb`/`ode78`/`ode89`, `bvp5c`, `dde*`,
-  `pdepe`/`pdeval`; **optimization:** `particleswarm`/`patternsearch`/`simulannealbnd`/
-  `lsqnonneg`/`lsqminnorm`.
+- **solver variants:** Pass 2N validated `ode23s`/`ode23t`/`ode78`/`ode89` (accuracy invariant)
+  and the least-squares family `lsqnonneg`/`lsqminnorm`/`lsqlin`/`lsqnonlin`/`lsqcurvefit`
+  (KKT/residual). Remainder: `ode23tb`, `bvp5c`, `dde*`, `pdepe`/`pdeval`, and the RNG-based
+  global optimizers `particleswarm`/`patternsearch`/`simulannealbnd` (not deterministic).
 - **interpolation / spline:** core validated in Pass 2J (`spline`/`pchip`/`ppval`/`mkpp`/
   `unmkpp`/`griddedInterpolant`/`scatteredInterpolant`/`interp2`/`interp3`); remainder is
   the Curve-Fitting-Toolbox B-spline helpers `csape`/`csapi`/`fn*` and `interp1q`

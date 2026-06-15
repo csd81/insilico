@@ -212,4 +212,9 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // ── Pass 2M: bit / integer operators. Typed-integer width truncation (wrap) + class preserved.
   // Fixed: bit ops previously ignored the input itype (no truncation, returned double). ──
   ...bulkD('needs-oracle', 'direct', 'core-language', 'bitand bitor bitxor bitshift bitget bitset bitcmp'),
+
+  // ── Pass 2N: optimization / solver variants — least-squares (KKT/residual invariants) +
+  // ODE solver variants (accuracy invariant). All deterministic and MATLAB-present. ──
+  ...bulkD('needs-oracle', 'invariant', 'optimization', 'lsqnonneg lsqminnorm lsqlin lsqnonlin lsqcurvefit'),
+  ...bulkD('needs-oracle', 'invariant', 'numerical-ode', 'ode23s ode23t ode78 ode89'),
 };
