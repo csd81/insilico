@@ -124,14 +124,16 @@ Recently closed (multi-output forms now implemented + oracle-validated):
 `[p,S,mu] = polyfit` (centered/scaled), `[L,U,P,Q] = lu` (sparse, `P*A*Q = L*U`),
 `diag` of a symbolic matrix (extract + construct), symbolic polynomial `gcd`.
 
-**Registered toolboxes (9):** comm, control, curvefit, dsp, optim, pde, signal,
-stats, symbolic — the in-scope numerical/matrix domains. Out-of-scope domain
-toolboxes are **de-registered** (source kept under `matlab/tb/`, not exposed at
-runtime) so the "oracle-checked toolbox" claim isn't overstated: images (image
-processing), mapping (geodesy), nav (navigation/coordinate frames), nnet
-(deep-learning layers/training), rl (reinforcement learning), econ (econometrics).
-None were used by any oracle case. Calling them now returns "undefined function",
-matching MATLAB without those toolboxes.
+**Registered toolboxes (7):** comm, control, dsp, optim, signal, stats, symbolic —
+the in-scope numerical/matrix domains. Out-of-scope / low-value domain toolboxes are
+**de-registered** (source kept under `matlab/tb/`, not exposed at runtime) so the
+"oracle-checked toolbox" claim isn't overstated: images (image processing), mapping
+(geodesy), nav (navigation/coordinate frames), nnet (deep-learning layers/training),
+rl (reinforcement learning), econ (econometrics), pde (PDE-Toolbox object/mesh
+machinery — PDEs are covered by the `numerical-pde` domain's inline finite-difference
+cases), curvefit (B-spline object subsystem — base `spline`/`polyfit`/`interp` cover
+the workflows). None were used by any oracle case. Calling them now returns
+"undefined function", matching MATLAB without those toolboxes.
 
 `signal`, `stats`, and `dsp` are additionally **curated per function** via the
 `TOOLBOX_KEEP` allow-list in `tb/index.ts`: `signal` 167→25 (filter design/response,
@@ -139,13 +141,13 @@ filtering, spectral estimation, common windows), `stats` 181→64 (the 8 core
 distribution families + the validated inference suite + statistical-algebra core),
 `dsp` 24→1 (only the validated overlap `resample`). The peripheral tail (pulse/radar
 generators, telecom helpers, exotic windows, niche/multivariate distributions) is
-de-registered, source preserved. Registry total: 855→346 registered builtins.
+de-registered, source preserved. Registry total: 855→299 registered builtins.
 
 Note: registered ≠ validated. `pnpm oracle:audit` reports, per toolbox, registered
-vs oracle-referenced counts and the unvalidated tail (currently 29% of registered
+vs oracle-referenced counts and the unvalidated tail (currently 34% of registered
 surface is oracle-referenced). Kept-but-unreferenced functions are core-math
-candidates scheduled for validation; the remaining tails (symbolic, control, comm,
-pde, curvefit) are the next curation/validation targets.
+candidates scheduled for validation; the remaining tails (symbolic, control, comm)
+are the next curation/validation targets.
 
 ### Validate existing (implemented + oracle-validated)
 All oracle-validated — no validation backlog remains:

@@ -8,28 +8,29 @@
 // textanalytics, vision (earlier); fixedpoint, fusion, fuzzy, gads, ident, parallel, phased,
 // risk, robotics, wavelet; and — de-registered as low-value breadth — econ (econometrics),
 // images (image processing), mapping (geodesy), nav (navigation/coord frames), nnet
-// (deep-learning layers/training), rl (reinforcement learning). None of these were used by
-// any oracle case. Within the registered toolboxes individual functions may still be
-// unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per toolbox.
+// (deep-learning layers/training), rl (reinforcement learning), pde (PDE-Toolbox object/mesh
+// machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases),
+// curvefit (B-spline object subsystem — base spline/polyfit/interp cover the workflows). None
+// of these were used by any oracle case. Within the registered toolboxes individual functions
+// may still be unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per
+// toolbox.
 import type { Builtin } from '../builtins';
 import type { Value } from '../values';
 import type { HelpEntry } from '../help/types';
 import type { ToolboxModule } from './types';
 import { COMM } from './comm';
 import { CONTROL } from './control';
-import { CURVEFIT } from './curvefit';
 import { DSP } from './dsp';
 // OPTIM registered for fgoalattain ONLY (no base equivalent); the other 13 builtins are
 // quarantined inside optim.ts (11 duplicate correct base builtins, optimvar/optimproblem stubs).
 import { OPTIM } from './optim';
-import { Pde } from './pde';
 import { SIGNAL } from './signal';
 import { STATS } from './stats';
 import { SYMBOLIC } from './symbolic';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
-  COMM, CONTROL, CURVEFIT, DSP, OPTIM, Pde, SIGNAL, STATS, SYMBOLIC,
+  COMM, CONTROL, DSP, OPTIM, SIGNAL, STATS, SYMBOLIC,
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
