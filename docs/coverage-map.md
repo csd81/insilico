@@ -13,8 +13,8 @@ pnpm oracle:base-audit
 pnpm oracle:audit
 ```
 
-**Status (as of this revision):** 1057 tests green · 917 MATLAB oracle fixtures ·
-917/917 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1058 tests green · 918 MATLAB oracle fixtures ·
+918/918 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.
@@ -76,7 +76,7 @@ real and validated.)
 | Pagewise N-D linear algebra | ✓ | `pagemtimes`, `pageinv`, `pagemldivide`, `pagepinv`, `pageeig`, `pagesvd`, etc. |
 | Structured LA | ✓ | `toeplitz`, `levinson`, `hankel`, `compan`, `vander`, `hilb`, `pascal`, `wilkinson`. |
 | Test matrices | ✓ | `invhilb`, `rosser`, `peaks`, `bucky`, `membrane`, `magic`, `gallery` (validated by exact entries + structural invariants). |
-| Partial gaps | ~ | `gsvd` is validated for the one-output generalized singular values form; 5-output CS form is deferred. |
+| Generalized SVD | ✓ | `gsvd` one-output values **and** the full 5-output `[U,V,X,C,S]` for the real full-column-rank case (validated by factorization invariants `A=U·C·X'`, `B=V·S·X'`, `U/V` orthonormal, `C'C+S'S=I` + MATLAB shapes). Honest errors for complex / rank-deficient / degenerate / mismatched-column inputs. |
 
 ## Approximation, Interpolation, And Numerical Methods
 

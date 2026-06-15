@@ -586,7 +586,7 @@ export const CASES: OracleCase[] = [
   { name: 'nt-chinese-remainder', src: 'n = [3 5 7]; a = [2 3 2]; N = prod(n); x = 0; for k = 1:numel(n), Nk = N/n(k); t = 0; nt = 1; rr = n(k); nr = mod(Nk, n(k)); while nr ~= 0, q = floor(rr/nr); tmp = t - q*nt; t = nt; nt = tmp; tmp = rr - q*nr; rr = nr; nr = tmp; end; inv = mod(t, n(k)); x = x + a(k)*Nk*inv; end; v = mod(x, N);', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['chinese-remainder-theorem', 'modular-arithmetic'] },
   { name: 'nt-carmichael-fermat-witness', src: 'v = [powermod(2, 10, 341) powermod(2, 340, 341) isprime(341)];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['carmichael', 'fermat-test', 'powermod', 'composite'] },
 
-  // ══════════ numerical-linear-algebra (164) ══════════
+  // ══════════ numerical-linear-algebra (165) ══════════
   { name: 'nla-mldivide', src: 'A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; x = A\\b;', vars: ['x'], domain: 'numerical-linear-algebra' },
   { name: 'nla-det', src: 'd = det([1 2 3; 4 5 6; 7 8 10]);', vars: ['d'], domain: 'numerical-linear-algebra' },
   { name: 'nla-inv', src: 'B = inv([4 3; 6 3]);', vars: ['B'], domain: 'numerical-linear-algebra' },
@@ -754,6 +754,10 @@ export const CASES: OracleCase[] = [
   // ── Demand-driven sparse remainder: structural rank + fill-reducing orderings. The orderings
   // (colperm/symamd) are non-unique permutations — locked by permutation length, sprank is unique. ──
   { name: 'sparse-remainder', src: 'v = [sprank(sparse([1 0 1; 0 1 0; 0 0 1])) numel(colperm(sparse(magic(4)))) numel(symamd(sparse(magic(4) + eye(4))))];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['sprank', 'colperm', 'symamd', 'structural-rank', 'ordering'] },
+  // ── Full 5-output GSVD [U,V,X,C,S]=gsvd(A,B) for the real full-column-rank case. Validated by the
+  // factorization invariants (A=U·C·X', B=V·S·X', U/V orthonormal, C'C+S'S=I) + MATLAB output shapes
+  // + the generalized singular values. Now a real factorization, not a shape-compatible placeholder. ──
+  { name: 'nla-gsvd-full', src: "A = [1 2; 3 4; 5 6; 7 8]; B = [1 0; 0 1; 1 1]; [U, V, X, C, S] = gsvd(A, B); g = gsvd(A, B); v = [double(norm(A - U*C*X', 'fro') < 1e-9) double(norm(B - V*S*X', 'fro') < 1e-9) double(norm(U'*U - eye(size(U,2)), 'fro') < 1e-9) double(norm(V'*V - eye(size(V,2)), 'fro') < 1e-9) double(norm(C'*C + S'*S - eye(size(A,2)), 'fro') < 1e-9) size(C) size(S) sort(g)'];", vars: ['v'], tol: 1e-5, domain: 'numerical-linear-algebra', tags: ['gsvd', 'generalized-svd', 'factorization-invariant', 'multi-output'] },
   // ── Course-workflow integration case: Gaussian elimination with back-substitution (original
   // hand-rolled, NOT copied), cross-checked against MATLAB's `\` by residual + solution-difference. ──
   { name: 'mla-linear-systems', src: "A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; n = 3; M = [A b]; for k = 1:n-1, for i = k+1:n, f = M(i,k)/M(k,k); M(i,:) = M(i,:) - f*M(k,:); end; end; x = zeros(n,1); for i = n:-1:1, x(i) = (M(i,end) - M(i,1:n)*x)/M(i,i); end; xref = A\\b; v = [x' norm(x - xref) norm(A*x - b)];", vars: ['v'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['course-workflow', 'gaussian-elimination', 'back-substitution'] },

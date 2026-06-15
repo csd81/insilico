@@ -1889,7 +1889,11 @@ export const BUILTINS: Record<string, Builtin> = {
     const { AA, BB, Q, Z } = ordqzFn(AA0, BB0, Q0, Z0, sel);
     return n >= 4 ? [AA, BB, Q, Z] : n >= 2 ? [AA, BB] : [AA];
   },
-  gsvd: async (a) => { const A = m(a[0]), B = m(a[1]); const ata = matmul(transpose(A), A), btb = matmul(transpose(B), B); const { values } = jacobiEigSym(mldivide(btb, ata)); return ret(colVec(values.map((v) => Math.sqrt(Math.max(0, v))).sort((x, y) => x - y))); },
+  gsvd: async (a, nargout) => {
+    const A = m(a[0]), B = m(a[1]);
+    if (nargout >= 2) { const { U, V, X, C, S } = gsvdFull(A, B); return [U, V, X, C, S].slice(0, Math.max(nargout, 5)); }
+    const ata = matmul(transpose(A), A), btb = matmul(transpose(B), B); const { values } = jacobiEigSym(mldivide(btb, ata)); return ret(colVec(values.map((v) => Math.sqrt(Math.max(0, v))).sort((x, y) => x - y)));
+  },
   svdsketch: async (a, n) => { const A = m(a[0]); const { U, s, V } = svdReal(A); const tol = a.length >= 2 ? asScalar(a[1]) : 1e-3; const smax = s[0] ?? 0; const k = Math.max(1, s.filter((x) => x > tol * smax).length); const Uk = subcols(U, k), Vk = subcols(V, k); const S = zeros(k, k); for (let i = 0; i < k; i++) S.data[i + i * k] = s[i]; return n >= 3 ? [Uk, S, Vk] : [colVec(s.slice(0, k))]; },
   padecoef: async (a, n) => { const T = asScalar(a[0]); const N = a.length >= 2 ? Math.round(asScalar(a[1])) : 1; const c: number[] = []; for (let k = 0; k <= N; k++) c.push(factorialN(2 * N - k) * factorialN(N) / (factorialN(2 * N) * factorialN(k) * factorialN(N - k))); const num: number[] = [], den: number[] = []; for (let k = 0; k <= N; k++) { num[N - k] = c[k] * Math.pow(-T, k); den[N - k] = c[k] * Math.pow(T, k); } const scale = den[0] || 1; for (let k = 0; k <= N; k++) { num[k] /= scale; den[k] /= scale; } return n >= 2 ? [rowVec(num), rowVec(den)] : [rowVec(num)]; },
   ss2tf: async (a, n) => { const A = m(a[0]), B = m(a[1]), C = m(a[2]), D = m(a[3]); const iu = (a.length >= 5 ? Math.round(asScalar(a[4])) : 1) - 1; const den = A.rows ? charpolyC(A) : [1]; const bcol = colOf(B, iu); const ny = C.rows; const num = zeros(ny, den.length); for (let i = 0; i < ny; i++) { const crow = Array.from({ length: C.cols }, (_, c) => C.data[i + c * C.rows]); const Acl = ewSub(A, matmul(bcol, rowVec(crow))); const pc = A.rows ? charpolyC(Acl) : [1]; const di = D.data[i + iu * D.rows] ?? 0; for (let k = 0; k < den.length; k++) num.data[i + k * ny] = pc[k] + (di - 1) * den[k]; } return n >= 2 ? [num, rowVec(den)] : [num]; },
@@ -7999,6 +8003,50 @@ function nudft(xr: number[], xi: number[], t: number[], f: number[]): Mat {
   const M = f.length, N = xr.length; const Fr = new Float64Array(M), Fi = new Float64Array(M);
   for (let k = 0; k < M; k++) { let sr = 0, si = 0; for (let j = 0; j < N; j++) { const ph = -2 * Math.PI * t[j] * f[k] / N; const c = Math.cos(ph), s = Math.sin(ph); sr += xr[j] * c - xi[j] * s; si += xr[j] * s + xi[j] * c; } Fr[k] = sr; Fi[k] = si; }
   return { kind: 'num', rows: M, cols: 1, data: Fr, idata: Fi };
+}
+/** Full 5-output GSVD [U,V,X,C,S] = gsvd(A,B) for the real, full-column-rank case:
+ *  A = U·C·X', B = V·S·X', U'U=I, V'V=I, C'C+S'S=I. Errors honestly outside that envelope. */
+function gsvdFull(A: Mat, B: Mat): { U: Mat; V: Mat; X: Mat; C: Mat; S: Mat } {
+  const mm = A.rows, n = A.cols, p = B.rows;
+  if (B.cols !== n) throw new MatError('gsvd: A and B must have the same number of columns.');
+  if (isComplex(A) || isComplex(B)) throw new MatError('gsvd: complex GSVD is not supported (real A, B only).');
+  if (mm + p < n) throw new MatError('gsvd: [A;B] must have at least as many rows as columns.');
+  const diagM = (d: number[]): Mat => { const o = zeros(d.length, d.length); for (let i = 0; i < d.length; i++) o.data[i + i * d.length] = d[i]; return o; };
+  const AtA = matmul(transpose(A), A), BtB = matmul(transpose(B), B);
+  const H = zeros(n, n); for (let i = 0; i < n * n; i++) H.data[i] = AtA.data[i] + BtB.data[i];   // n×n SPD
+  const { values: hval, V: HQ } = jacobiEigSym(H);
+  const hmax = Math.max(...hval.map(Math.abs));
+  if (hval.some((v) => v <= 1e-12 * hmax)) throw new MatError('gsvd: [A;B] is rank-deficient (only the full-column-rank case is supported).');
+  const Hhalf = matmul(matmul(HQ, diagM(hval.map(Math.sqrt))), transpose(HQ));      // H^{1/2}
+  const Hinv2 = matmul(matmul(HQ, diagM(hval.map((v) => 1 / Math.sqrt(v)))), transpose(HQ));  // H^{-1/2}
+  const M = matmul(matmul(Hinv2, AtA), Hinv2);                                       // M = H^{-1/2} A'A H^{-1/2}, eig in [0,1]
+  const eig = jacobiEigSym(M);
+  // sort generalized singular values ascending (MATLAB convention): c/s increasing ⇔ λ increasing
+  const order = eig.values.map((l, i) => i).sort((i, j) => eig.values[i] - eig.values[j]);
+  const lam = order.map((i) => Math.min(1, Math.max(0, eig.values[i])));
+  const Q = zeros(n, n); for (let c = 0; c < n; c++) for (let r = 0; r < n; r++) Q.data[r + c * n] = eig.V.data[r + order[c] * n];
+  const cs = lam.map(Math.sqrt), ss = lam.map((l) => Math.sqrt(1 - l));
+  if (cs.some((c) => c < 1e-12) || ss.some((s) => s < 1e-12)) throw new MatError('gsvd: a generalized singular value is 0 or ∞ (degenerate case not supported).');
+  const X = matmul(Hhalf, Q);                                                        // n×n
+  const Un = matmul(matmul(matmul(A, Hinv2), Q), diagM(cs.map((c) => 1 / c)));        // m×n, orthonormal columns
+  const Vn = matmul(matmul(matmul(B, Hinv2), Q), diagM(ss.map((s) => 1 / s)));        // p×n
+  const C = zeros(mm, n); for (let i = 0; i < n; i++) C.data[i + i * mm] = cs[i];     // [diag(c); 0]
+  const S = zeros(p, n); for (let i = 0; i < n; i++) S.data[i + i * p] = ss[i];       // [diag(s); 0]
+  return { U: completeOrtho(Un, mm), V: completeOrtho(Vn, p), X, C, S };
+}
+/** Extend a matrix of k orthonormal columns to a full d×d orthonormal basis (Gram–Schmidt against
+ *  the standard basis), keeping the original columns. */
+function completeOrtho(Q: Mat, d: number): Mat {
+  const k = Q.cols; const cols: number[][] = [];
+  for (let c = 0; c < k; c++) { const col: number[] = []; for (let r = 0; r < d; r++) col.push(Q.data[r + c * Q.rows]); cols.push(col); }
+  for (let e = 0; e < d && cols.length < d; e++) {
+    const v = new Array(d).fill(0); v[e] = 1;
+    for (const q of cols) { let dotp = 0; for (let r = 0; r < d; r++) dotp += q[r] * v[r]; for (let r = 0; r < d; r++) v[r] -= dotp * q[r]; }
+    let nrm = 0; for (let r = 0; r < d; r++) nrm += v[r] * v[r]; nrm = Math.sqrt(nrm);
+    if (nrm > 1e-9) { for (let r = 0; r < d; r++) v[r] /= nrm; cols.push(v); }
+  }
+  const out = zeros(d, cols.length); for (let c = 0; c < cols.length; c++) for (let r = 0; r < d; r++) out.data[r + c * d] = cols[c][r];
+  return out;
 }
 /** Tensor product / contraction (tensorprod). */
 function tensorProd(A: Mat, B: Mat, opts: Value[]): Mat {
