@@ -749,7 +749,7 @@ export const CASES: OracleCase[] = [
   { name: 'stat-dist-fit2', src: 'v = [betafit([0.1 0.2 0.3 0.4 0.5 0.6]) gamfit([1 2 3 2 1 4])];', vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['distribution-fitting', 'betafit', 'gamfit', 'mle'] },
   { name: 'stat-fitdist-makedist', src: "pd = makedist('Normal', 'mu', 2, 'sigma', 3); pd2 = fitdist([2 3 4 5]', 'Normal'); v = [pd.mu pd2.mu pd2.sigma];", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['makedist', 'fitdist', 'distribution-object'] },
 
-  // ══════════ symbolic (50) ══════════
+  // ══════════ symbolic (57) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
   { name: 'sym-diag-matrix', src: 'syms a b c; M = [a 1 2; 3 b 4; 5 6 c]; d = diag(M); D = diag(d); val = double(subs(D, [a b c], [7 8 9])); v = val(:).\x27;', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['diag', 'symbolic-matrix'] },
   { name: 'sym-poly-gcd', src: 'syms x; g = gcd(x^2 - 1, x^2 - 2*x + 1); c = sym2poly(g);', vars: ['c'], tol: 1e-9, domain: 'symbolic', tags: ['gcd', 'polynomial'] },
@@ -800,6 +800,13 @@ export const CASES: OracleCase[] = [
   { name: 'sym-discriminant-resultant', src: 'syms x; p = x^3 - 6*x^2 + 11*x - 6; v = double(resultant(p, diff(p, x), x));', vars: ['v'], tol: 1e-6, domain: 'symbolic', tags: ['discriminant', 'resultant', 'symbolic'] },
   { name: 'sym-dg-curve-curvature', src: 'syms t; x = 2*cos(t); y = 2*sin(t); xp = diff(x,t); yp = diff(y,t); xpp = diff(xp,t); ypp = diff(yp,t); k = abs(xp*ypp - yp*xpp)/(xp^2 + yp^2)^(3/2); v = double(subs(k, t, 0.5));', vars: ['v'], tol: 1e-7, domain: 'symbolic', tags: ['differential-geometry', 'curvature', 'parametric-curve'] },
   { name: 'sym-dg-jacobian-polar-det', src: 'syms r th; J = jacobian([r*cos(th); r*sin(th)], [r th]); d = simplify(det(J)); v = double(subs(d, [r th], [3 0.5]));', vars: ['v'], tol: 1e-7, domain: 'symbolic', tags: ['differential-geometry', 'jacobian', 'coordinate-transform'] },
+  { name: 'sym-vpa', src: 'v = double(vpa(pi, 10));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['vpa', 'variable-precision'] },
+  { name: 'sym-matlabfunction', src: 'syms x; f = matlabFunction(x^2 + 1); v = f(3);', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['matlabFunction', 'codegen', 'function-handle'] },
+  { name: 'sym-partfrac', src: 'syms x; v = double(subs(partfrac(1/(x^2 - 1), x), x, 3));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['partfrac', 'partial-fractions'] },
+  { name: 'sym-poly2sym-str2sym', src: "syms x; a = double(subs(poly2sym([1 2 3], x), x, 2)); e = str2sym('x^2 + 1'); b = double(subs(e, sym('x'), 3)); v = [a b];", vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['poly2sym', 'str2sym', 'construction'] },
+  { name: 'sym-horner', src: 'syms x; v = double(subs(horner(x^3 + 2*x^2 + x), x, 2));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['horner', 'nested-form'] },
+  { name: 'sym-rewrite', src: "syms x; v = double(subs(rewrite(tan(x), 'sincos'), x, 1));", vars: ['v'], tol: 1e-6, domain: 'symbolic', tags: ['rewrite', 'sincos'] },
+  { name: 'sym-polydegree-simplifyfraction', src: 'syms x; a = polynomialDegree(x^4 + x); b = double(subs(simplifyFraction((x^2 - 1)/(x - 1)), x, 3)); v = [a b];', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['polynomialDegree', 'simplifyFraction'] },
 
   // ══════════ topology (6) ══════════
   { name: 'topo-betti-hollow-triangle', src: 'B1 = [-1 0 1; 1 -1 0; 0 1 -1]; r1 = rank(B1); v = [3 - r1; 3 - r1];', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['betti-numbers', 'simplicial-complex', 'boundary-matrix', 'homology'] },

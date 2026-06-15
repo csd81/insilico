@@ -9728,6 +9728,82 @@
       "real": 3
     }
   },
+  "sym_vpa": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 3.141592653589793
+    }
+  },
+  "sym_matlabfunction": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 10
+    }
+  },
+  "sym_partfrac": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.125
+    }
+  },
+  "sym_poly2sym_str2sym": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        11,
+        10
+      ]
+    }
+  },
+  "sym_horner": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 18
+    }
+  },
+  "sym_rewrite": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.5574077246549023
+    }
+  },
+  "sym_polydegree_simplifyfraction": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        4,
+        4
+      ]
+    }
+  },
   "topo_betti_hollow_triangle": {
     "v": {
       "class": "double",
