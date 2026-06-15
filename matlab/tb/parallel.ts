@@ -6,7 +6,7 @@ import {
   mat, zeros, makeObject, isObject, str, bool,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_PARALLEL } from '../help/help-parallel';
+import { HELP_PARALLEL } from '../help/toolbox-help';
 
 const noop = async (_args: Value[]): Promise<Value[]> => [scalar(0)];
 

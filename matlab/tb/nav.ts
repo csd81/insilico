@@ -7,7 +7,7 @@ import type { Builtin } from '../builtins';
 import { type Value, type Mat, rowVec, toMat as m, isMat, mat, makeND } from '../values';
 import type { ToolboxModule } from './types';
 import { WGS84_A, WGS84_F } from '../physconst';
-import { HELP_NAV } from '../help/help-nav';
+import { HELP_NAV } from '../help/toolbox-help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 

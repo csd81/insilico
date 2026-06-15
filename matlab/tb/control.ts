@@ -7,7 +7,7 @@ import {
 } from '../values';
 import { schur, schurEig, expm } from '../linalg';   // shared robust LA core (Francis QR / scaling-squaring), not a local reimpl
 import type { ToolboxModule } from './types';
-import { HELP_CONTROL } from '../help/help-control';
+import { HELP_CONTROL } from '../help/toolbox-help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 

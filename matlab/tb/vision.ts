@@ -6,7 +6,7 @@ import {
   MatError, mat, zeros, makeObject, fromRows, str, bool, isStr, asString,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_VISION } from '../help/help-vision';
+import { HELP_VISION } from '../help/toolbox-help';
 
 // ── Image helpers ──────────────────────────────────────────────────────────────────────
 function getImg(v: Value): { data: Float64Array; rows: number; cols: number } {

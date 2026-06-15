@@ -5,7 +5,7 @@ import {
   MatError, mat, zeros, makeObject, str, bool,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_TEXTANALYTICS } from '../help/help-textanalytics';
+import { HELP_TEXTANALYTICS } from '../help/toolbox-help';
 
 // ── English stop words ─────────────────────────────────────────────────────────────────
 const STOP_WORDS = new Set([

@@ -13,7 +13,7 @@ import {
   MatError, mat, zeros, makeObject, str, bool, isObject, asString,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_RL } from '../help/help-rl';
+import { HELP_RL } from '../help/toolbox-help';
 
 const ret  = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 const retv = (...vs: Value[]): Promise<Value[]> => Promise.resolve(vs);

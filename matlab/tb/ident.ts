@@ -5,7 +5,7 @@ import {
   mat, zeros, makeObject, fromRows,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_IDENT } from '../help/help-ident';
+import { HELP_IDENT } from '../help/toolbox-help';
 
 // ── Least-squares helpers ──────────────────────────────────────────────────────────────
 // Returns (A'A)^{-1} A'b via Gaussian elimination (small matrices only).

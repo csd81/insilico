@@ -7,7 +7,7 @@ import type { Builtin } from '../builtins';
 import { type Value, type Mat, mat, map, toMat as m, asScalar, asString, scalar, colVec, makeND, fromRows, matRows as rowsOf, MatError } from '../values';
 import type { ToolboxModule } from './types';
 import { WGS84_A, WGS84_F } from '../physconst';
-import { HELP_AEROSPACE } from '../help/help-aerospace';
+import { HELP_AEROSPACE } from '../help/toolbox-help';
 
 const ret = (v: Value | Value[]): Promise<Value[]> => Promise.resolve(Array.isArray(v) ? v : [v]);
 const D2R = Math.PI / 180;

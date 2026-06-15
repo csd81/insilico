@@ -8,7 +8,7 @@ import {
 } from '../values';
 import { erf, erfc, erfinv } from '../specfun';
 import type { ToolboxModule } from './types';
-import { HELP_COMM } from '../help/help-comm';
+import { HELP_COMM } from '../help/toolbox-help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 // special functions for the Q-function — erf/erfc/erfinv from the shared specfun module

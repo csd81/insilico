@@ -8,7 +8,7 @@ import {
 import { erf } from '../specfun';
 import type { Builtin } from '../builtins';
 import type { ToolboxModule } from './types';
-import { HELP_NNET } from '../help/help-nnet';
+import { HELP_NNET } from '../help/toolbox-help';
 
 // ── tiny matrix helpers (column-major [rows×cols]) ────────────────────────────────────
 type M2 = { rows: number; cols: number; d: Float64Array };

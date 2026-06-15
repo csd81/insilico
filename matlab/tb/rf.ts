@@ -32,7 +32,7 @@
 import type { Builtin } from '../builtins';
 import { type Value, type Mat, scalar, toMat as m, isMat } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_RF } from '../help/help-rf';
+import { HELP_RF } from '../help/toolbox-help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 

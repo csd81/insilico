@@ -1,7 +1,7 @@
 import type { Builtin } from '../builtins';
 import { type Value, type Mat, toArray, scalar, rowVec, colVec, toMat as m, isMat, asScalar, asString } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_AUDIO } from '../help/help-audio';
+import { HELP_AUDIO } from '../help/toolbox-help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 

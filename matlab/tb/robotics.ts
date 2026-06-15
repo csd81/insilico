@@ -6,7 +6,7 @@ import {
   mat, zeros, makeObject, fromRows, bool,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_ROBOTICS } from '../help/help-robotics';
+import { HELP_ROBOTICS } from '../help/toolbox-help';
 
 const TWO_PI = 2 * Math.PI;
 

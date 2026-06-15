@@ -22,7 +22,7 @@ import {
 } from '../values';
 import { erf } from '../specfun';
 import type { ToolboxModule } from './types';
-import { HELP_RISK } from '../help/help-risk';
+import { HELP_RISK } from '../help/toolbox-help';
 
 const ret = (...vs: Value[]): Promise<Value[]> => Promise.resolve(vs);
 

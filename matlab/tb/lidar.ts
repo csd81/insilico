@@ -7,7 +7,7 @@ import {
   MatError, mat, zeros, makeObject, str, bool, asString,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_LIDAR } from '../help/help-lidar';
+import { HELP_LIDAR } from '../help/toolbox-help';
 
 function isCharLike(v: Value): boolean {
   return (isMat(v) && !!(v as Mat).isChar) || (v as any).kind === 'str';

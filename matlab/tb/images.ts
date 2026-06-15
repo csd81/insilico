@@ -7,7 +7,7 @@ import {
   ndSize, makeND, mat, fromRows,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_IMAGES } from '../help/help-images';
+import { HELP_IMAGES } from '../help/toolbox-help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 const clamp01 = (x: number) => (x < 0 ? 0 : x > 1 ? 1 : x);

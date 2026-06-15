@@ -29,7 +29,7 @@
 import { type Value, type Mat, scalar, asScalar, asString, isObject, makeObject, str, toMat as m } from '../values';
 import { LIGHTSPEED } from '../physconst';
 import type { ToolboxModule } from './types';
-import { HELP_RADAR } from '../help/help-radar';
+import { HELP_RADAR } from '../help/toolbox-help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 

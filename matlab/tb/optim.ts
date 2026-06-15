@@ -6,7 +6,7 @@ import {
   mat, zeros, makeObject, fromRows, str, bool,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_OPTIM } from '../help/help-optim';
+import { HELP_OPTIM } from '../help/toolbox-help';
 
 // ── tiny linear algebra helpers ────────────────────────────────────────────────────────
 const dot = (a: number[], b: number[]) => a.reduce((s, v, i) => s + v * b[i], 0);

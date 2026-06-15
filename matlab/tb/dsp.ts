@@ -8,7 +8,7 @@ import {
   MatError, mat, zeros, makeObject, fromRows, str, bool,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_DSP } from '../help/help-dsp';
+import { HELP_DSP } from '../help/toolbox-help';
 
 // ── Complex arithmetic ─────────────────────────────────────────────────────────────────
 type C = [number, number];

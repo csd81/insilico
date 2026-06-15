@@ -7,7 +7,7 @@ import {
   str, toArray, asString, asScalar, toMat as m, MatError,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_CURVEFIT } from '../help/help-curvefit';
+import { HELP_CURVEFIT } from '../help/toolbox-help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 
