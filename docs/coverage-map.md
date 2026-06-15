@@ -146,12 +146,19 @@ Riccati/Lyapunov, responses — PID/LQG/frd/random-gen tail de-registered), `com
 telecom/RF tail de-registered). The peripheral tails are de-registered, source
 preserved. Registry total: 855→256 registered builtins.
 
-Note: registered ≠ validated. `pnpm oracle:audit` reports, per toolbox, registered
-vs oracle-referenced counts and the unvalidated tail (currently 55% of registered
-surface is oracle-referenced, up from 12% before curation). Kept-but-unreferenced
-functions are core-math candidates scheduled for validation; `symbolic` (the largest
-remaining tail) and the kept `control`/`comm`/`stats`/`signal` cores are the next
-validation targets.
+Note: registered ≠ validated. `pnpm oracle:audit` reports the **whole runtime
+registry** in two layers: the curated **toolboxes** (256 registered, ~55%
+oracle-referenced, up from 12% before curation) and the **base/core builtins**
+(~1318 registered, ~20% referenced). The toolbox ratio is the meaningful curation
+metric; the base/core ratio is a large *undercount* because the name scan only sees
+the headline function in each case, while base primitives (`size`/`zeros`/`colon`/
+indexing/`sum`/`sqrt`/…) run in nearly every case unnamed. Base/core is a triage
+target (validate / move out genuine breadth), not a quarantine target — core
+primitives can't be de-registered. Always read the audit output, not a raw
+`Object.keys(tb.builtins)` source count (that includes quarantined functions which
+error at runtime — the source-vs-registry gap). Kept-but-unreferenced toolbox
+functions are core-math candidates scheduled for validation; `symbolic` is the
+largest remaining toolbox tail.
 
 ### Validate existing (implemented + oracle-validated)
 All oracle-validated — no validation backlog remains:
