@@ -17,10 +17,15 @@
 //   pde         — [p,e,t]-mesh FEM area-integral assembly (assema; assemb declined — needs the
 //                 legacy text-expression boundary matrix)
 //   audio       — perceptual frequency-scale conversions (mel/bark/ERB: mel2hz/hz2mel/bark2hz/…)
+//   rf          — S↔Z network-parameter conversions (s2z/z2s)
+//   financial   — time-value-of-money (fvfix future value, effrr effective rate)
+//   mapping     — geodesy (great-circle distance, km↔rad)
+//   robotics    — Euler→homogeneous transform (eul2tform)
+//   images      — RGB↔NTSC (YIQ) colour-space conversion (rgb2ntsc/ntsc2rgb)
 //
-// NOT registered (source kept under matlab/tb/ but not exposed): antenna/rf, bioinfo,
-// financial/fininst, lidar/radar, textanalytics, vision, gads, ident, parallel, phased, risk,
-// robotics, images, mapping, nnet, rl. Within the registered toolboxes individual functions may
+// NOT registered (source kept under matlab/tb/ but not exposed): antenna, bioinfo, fininst,
+// lidar, radar, textanalytics, vision, gads, ident, parallel, phased, risk, nnet, rl, uav.
+// Within the registered toolboxes individual functions may
 // still be unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per toolbox.
 import type { Builtin } from '../builtins';
 import type { Value } from '../values';
@@ -47,6 +52,11 @@ import { AUDIO } from './audio';
 import { CURVEFIT } from './curvefit';
 import { FUZZY } from './fuzzy';
 import { Pde } from './pde';
+import { RF } from './rf';
+import { FINANCIAL } from './financial';
+import { MAPPING } from './mapping';
+import { ROBOTICS } from './robotics';
+import { IMAGES } from './images';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
@@ -61,6 +71,11 @@ export const TOOLBOXES: ToolboxModule[] = [
   FUZZY,       // restored — deterministic fuzzy membership functions (allow-list below)
   Pde,         // restored — linear-triangle FEM area-integral assembly assema (allow-list below)
   AUDIO,       // restored — deterministic perceptual frequency-scale conversions (allow-list below)
+  RF,          // restored — S-parameter ↔ Z-parameter network conversions (allow-list below)
+  FINANCIAL,   // restored — deterministic time-value-of-money (fvfix, effrr) (allow-list below)
+  MAPPING,     // restored — deterministic geodesy (great-circle distance, km↔rad) (allow-list below)
+  ROBOTICS,    // restored — Euler→homogeneous transform (eul2tform) (allow-list below)
+  IMAGES,      // restored — deterministic RGB↔NTSC colour-space conversion (allow-list below)
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -172,6 +187,13 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // a MATLAB expression evaluator the sandbox deliberately lacks — cannot be cleanly oracle-
   // validated. The PDEModel-object/mesh-generation/assempde/adaptmesh surface stays unregistered.
   pde: new Set(['assema']),
+  // Breadth restore: 1–2 deterministic, MATLAB-exact functions per math-adjacent toolbox so each
+  // exposes a validated core (the rest of every toolbox's surface stays unregistered).
+  rf: new Set(['s2z', 'z2s']),                  // S↔Z network-parameter conversions
+  financial: new Set(['fvfix', 'effrr']),        // future value of fixed payments; effective rate
+  mapping: new Set(['distance', 'km2rad']),      // great-circle distance; km→radians (deg2nm differs)
+  robotics: new Set(['eul2tform']),              // Euler angles → homogeneous transform
+  images: new Set(['rgb2ntsc', 'ntsc2rgb']),     // RGB↔NTSC (YIQ) colour-space matrix transform
 };
 
 /** Intentional-duplicate policy. A name implemented in BOTH base and a toolbox is a cross-layer

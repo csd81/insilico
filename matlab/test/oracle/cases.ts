@@ -506,6 +506,13 @@ export const CASES: OracleCase[] = [
   { name: 'nav-lla-ecef', src: 'e = lla2ecef([45 90 1000]); l = ecef2lla([4517590.879 0 4487348.409]); p0 = [37.5 -122.3 55]; rt = ecef2lla(lla2ecef(p0)); v = [e l norm(rt - p0)];', vars: ['v'], tol: 1e-2, domain: 'geometry', tags: ['lla2ecef', 'ecef2lla', 'wgs84', 'roundtrip-invariant'] },
   // Perceptual frequency-scale conversions (closed-form): mel/bark/ERB. Values + roundtrip invariants.
   { name: 'audio-freq-scales', src: 'v = [mel2hz(1000) hz2mel(1000) bark2hz(5) hz2bark(1000) erb2hz(5) hz2erb(1000) hz2mel(mel2hz(440)) hz2bark(bark2hz(8)) hz2erb(erb2hz(12))];', vars: ['v'], tol: 1e-5, domain: 'fourier', tags: ['mel2hz', 'hz2mel', 'bark2hz', 'hz2bark', 'erb2hz', 'hz2erb', 'perceptual-scale'] },
+  // Breadth restore: 1–2 deterministic functions per math-adjacent toolbox (values + roundtrip/
+  // orthonormality invariants).
+  { name: 'tb-rf-sparams', src: "S = [0.1 0.2; 0.2 0.1]; Z = s2z(S, 50); Sr = z2s(Z, 50); v = [real(Z(1,1)) real(Z(1,2)) norm(Sr(:) - S(:))];", vars: ['v'], tol: 1e-6, domain: 'complex-arithmetic', tags: ['s2z', 'z2s', 'network-parameters', 'roundtrip-invariant'] },
+  { name: 'tb-financial', src: 'v = [fvfix(0.05, 10, 100, 0) effrr(0.06, 12) nomrr(0.06, 12)];', vars: ['v'], tol: 1e-6, domain: 'numerical-methods', tags: ['fvfix', 'effrr', 'nomrr', 'time-value-of-money'] },
+  { name: 'tb-mapping', src: 'v = [distance(0, 0, 0, 90) distance(0, 0, 1, 0) km2rad(6371)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['distance', 'km2rad', 'great-circle', 'geodesy'] },
+  { name: 'tb-robotics', src: "T = eul2tform([0.1 0.2 0.3]); R = T(1:3, 1:3); v = [T(1,1) T(1,4) T(4,4) norm(R*R' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['eul2tform', 'homogeneous-transform', 'orthonormality-invariant'] },
+  { name: 'tb-images-color', src: 'n = rgb2ntsc([0.5 0.2 0.3]); rgb = ntsc2rgb(n); v = [n norm(rgb - [0.5 0.2 0.3])];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['rgb2ntsc', 'ntsc2rgb', 'colour-space', 'roundtrip-invariant'] },
   { name: 'aero-angle-dcm-quat', src: "q = angle2quat(0.1, 0.2, 0.3); D = angle2dcm(0.1, 0.2, 0.3); [a1, a2, a3] = dcm2angle(D); v = [q a1 a2 a3 norm(D*D' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['angle2quat', 'angle2dcm', 'dcm2angle', 'roundtrip', 'orthogonality-invariant'] },
   // Fuzzy membership functions (closed-form, deterministic): triangular/trapezoidal/Gaussian/
   // generalized-bell/sigmoidal evaluated on a shared universe. Restored + registered by allow-list.
