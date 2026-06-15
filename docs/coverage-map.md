@@ -97,8 +97,9 @@ ambitions. The computational contract is the target; runtime/IO breadth is not.
 None currently.
 
 The previous proposed gaps were rechecked against MATLAB R2026a and the sandbox
-registry. They were either already implemented, intentionally out of scope, or
-not MATLAB function names.
+registry. They were either already implemented, intentionally out of scope, not
+MATLAB function names, or real functions deliberately declined on parity grounds.
+This is the canonical list of declined/non-existent functions.
 
 - `khatriRao`: not a MATLAB R2026a function (`exist("khatriRao") == 0`). Do not
   implement as part of MATLAB-compatible coverage.
@@ -107,6 +108,10 @@ not MATLAB function names.
 - `wronskian`: not a MATLAB R2026a function (`exist("wronskian") == 0`; calling it
   errors). The engine's "undefined function" already matches MATLAB — do not
   implement it as MATLAB-compatible coverage.
+- `sobolset`: a **real** MATLAB function, but **deliberately declined** — matching
+  its Sobol points requires MATLAB's specific Joe–Kuo direction-number tables,
+  which is not a cheap/clean oracle-parity target. `haltonset`+`net` already give
+  deterministic quasi-Monte-Carlo coverage. A scope decision, not a TODO.
 
 Recently closed (multi-output forms now implemented + oracle-validated):
 `[p,S,mu] = polyfit` (centered/scaled), `[L,U,P,Q] = lu` (sparse, `P*A*Q = L*U`),
@@ -143,11 +148,8 @@ low-discrepancy points — base = first *d* primes, unscrambled; validated by po
 grid and QMC integral estimates). Robust regression: `robustfit` (IRLS, bisquare +
 huber), inline Theil–Sen median slope. Structured linear algebra: `toeplitz` solve
 (residual invariant), `levinson` (Yule–Walker, validated by the Toeplitz
-normal-equations residual).
-
-`sobolset` is **not** implemented: matching MATLAB's Sobol points requires its
-specific Joe–Kuo direction-number tables, which is not a cheap/clean parity target.
-Halton already provides the deterministic-QMC coverage.
+normal-equations residual). `sobolset` is deliberately **not** implemented — see
+the declined-functions list under **Required** above.
 
 ### Deferred (real, but only if course-driven)
 Large model-object families (`fitlm`/`fitglm`/`fitcsvm`/`fitctree`/`fitrgp`),
