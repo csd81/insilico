@@ -94,7 +94,7 @@ export const CASES: OracleCase[] = [
   { name: 'cal-subst-nested', src: 'syms x; v = double(int(cos(x)*exp(sin(x)), 0, pi/2));', vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
   { name: 'cal-cumtrapz', src: 'v = cumtrapz([1 2 3 4]);', vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['cumtrapz', 'cumulative-integral'] },
 
-  // ══════════ coding (11) ══════════
+  // ══════════ coding (13) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },
   { name: 'coding-hammgen', src: '[H, G, n, k] = hammgen(3); v = [n k size(H, 1)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['hamming-code', 'parity-check', 'error-correction'] },
   { name: 'coding-biterr', src: '[num, rate] = biterr([1 0 1 1], [1 1 1 0]); v = [num rate];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['bit-error-rate', 'biterr'] },
@@ -106,6 +106,8 @@ export const CASES: OracleCase[] = [
   { name: 'coding-convenc-trellis', src: 'tr = poly2trellis(3, [7 5]); y = convenc([1 0 1 1], tr); [ok, msg] = istrellis(tr); v = [y ok];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['convolutional-code', 'trellis', 'convenc', 'istrellis'] },
   { name: 'coding-cyclic-orthogonality', src: "[H, G] = cyclgen(7, [1 0 1 1]); v = sum(sum(mod(G*H', 2)));", vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['cyclic-code', 'parity-check', 'generator-matrix', 'orthogonality'] },
   { name: 'coding-gf-minimal-polynomial', src: "p = primpoly(4, 'min', 'nodisplay'); m = gfminpol([1 2], 4); v = [p; m(:, end)];", vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'primitive-polynomial', 'minimal-polynomial'] },
+  { name: 'coding-gf-arithmetic', src: 'v = [gfadd([1 0 1], [1 1 0], 2) gfmul([1 2 3], [2 3 4], 5) gfsub([3 1], [1 2], 5) gfdiv([4 2], [2 1], 5)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf-arithmetic', 'gfadd', 'gfmul', 'gfsub', 'gfdiv'] },
+  { name: 'coding-gfconv-rank', src: 'v = [gfconv([1 1 1], [1 1], 2) gfrank([1 0; 1 1; 0 1], 2)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gfconv', 'gfrank', 'polynomial-multiply'] },
 
   // ══════════ complex-arithmetic (14) ══════════
   { name: 'cplx-complex-mul', src: 'z = (1+2i) * (3-1i);', vars: ['z'], domain: 'complex-arithmetic' },
@@ -123,7 +125,7 @@ export const CASES: OracleCase[] = [
   { name: 'cplx-complex-sort', src: 'x = sort([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
   { name: 'cplx-complex-max-mag', src: 'x = max([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
 
-  // ══════════ control (22) ══════════
+  // ══════════ control (27) ══════════
   { name: 'ctrl-tf-dcgain', src: 'v = dcgain(tf(4, [1 3 2]));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['tf', 'dcgain'] },
   { name: 'ctrl-zpk-dcgain', src: 'v = dcgain(zpk([], [-1 -1], 3));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['zpk', 'dcgain'] },
   { name: 'ctrl-ss-dcgain', src: 'v = dcgain(ss([0 1; -1 -2], [0; 1], [1 0], 0));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['ss', 'state-space', 'dcgain'] },
@@ -146,6 +148,11 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-tfdata', src: "[num, den] = tfdata(tf([2 3 4], [1 2 1]), 'v'); v = [num den];", vars: ['v'], tol: 1e-9, domain: 'control', tags: ['tfdata', 'transfer-function', 'model-data'] },
   { name: 'ctrl-ssdata-markov', src: '[A, B, C, D] = ssdata(ss([0 1; -2 -3], [0; 1], [1 0], 0)); v = [C*B C*A*B C*A*A*B];', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['ssdata', 'state-space', 'markov-parameters-invariant'] },
   { name: 'ctrl-kalman-gain', src: "A = [0 1; -2 -3]; sys = ss(A, [0; 1], [1 0], 0); [kest, L, P] = kalman(sys, 1, 1); G = [0; 1]; r = norm(A*P + P*A' - P*[1 0]'*(1\\[1 0])*P + G*G'); v = [L; r];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['kalman', 'estimator-gain', 'riccati', 'residual-invariant'] },
+  { name: 'ctrl-dlqr', src: 'A = [1 0.1; 0 1]; B = [0; 0.1]; K = dlqr(A, B, eye(2), 1); v = sort(abs(eig(A - B*K)));', vars: ['v'], tol: 1e-5, domain: 'control', tags: ['dlqr', 'discrete-lqr', 'closed-loop-eigenvalues'] },
+  { name: 'ctrl-dlyap', src: "A = [0.5 0.1; 0 0.4]; X = dlyap(A, eye(2)); v = norm(A*X*A' - X + eye(2));", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['dlyap', 'discrete-lyapunov', 'residual-invariant'] },
+  { name: 'ctrl-tf2ss', src: '[A, B, C, D] = tf2ss([1 2], [1 3 2]); v = sort(eig(A));', vars: ['v'], tol: 1e-6, domain: 'control', tags: ['tf2ss', 'realization', 'pole-invariant'] },
+  { name: 'ctrl-minreal', src: "sys = minreal(tf([1 1], [1 3 2])); [n, d] = tfdata(sys, 'v'); v = sort(roots(d));", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['minreal', 'pole-zero-cancellation', 'minimal-realization'] },
+  { name: 'ctrl-gram', src: "sys = ss([-1 0; 0 -2], [1; 1], [1 1], 0); Wc = gram(sys, 'c'); A = [-1 0; 0 -2]; B = [1; 1]; v = norm(A*Wc + Wc*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['gram', 'controllability-gramian', 'lyapunov-residual'] },
 
   // ══════════ core-language (128) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },

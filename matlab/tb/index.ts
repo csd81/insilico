@@ -41,6 +41,27 @@ export const TOOLBOXES: ToolboxModule[] = [
 export const TOOLBOX_KEEP: Record<string, Set<string>> = {
   // dsp overlaps signal and is otherwise toolbox-object breadth; keep only the validated overlap.
   dsp: new Set(['resample']),
+  // comm: keep coding theory, GF(p) finite-field arithmetic, base conversions and error metrics;
+  // de-register the modulation/telecom/RF tail (psk/qam/dpsk/fm, qfunc/marcumq/fspl, interleavers).
+  comm: new Set([
+    'convenc', 'poly2trellis', 'istrellis', 'cyclgen', 'cyclpoly', 'gen2par', 'hammgen',
+    'primpoly', 'gfminpol', 'rsgenpolycoeffs', 'gftrunc', 'gfweight', 'gfdeconv',
+    'gfadd', 'gfsub', 'gfmul', 'gfdiv', 'gfconv', 'gfrank',
+    'de2bi', 'bi2de', 'oct2dec', 'oct2poly', 'bin2gray', 'gray2bin', 'vec2mat',
+    'biterr', 'symerr', 'finddelay',
+  ]),
+  // control: keep model objects/data/conversions, analysis, realizations, Riccati/Lyapunov,
+  // responses, controllability/observability and placement; de-register the peripheral tail
+  // (PID family, LQG/lqi/lqrd, random-model gen, frd/dss objects, gensig/filt/nichols/dsort).
+  control: new Set([
+    'tf', 'ss', 'zpk', 'tfdata', 'ssdata', 'zpkdata',
+    'tf2ss', 'ss2tf', 'tf2zp', 'zp2tf', 'ss2ss',
+    'pole', 'zero', 'damp', 'dcgain', 'order', 'isstable', 'isct', 'isdt',
+    'minreal', 'sminreal', 'canon', 'ctrbf', 'obsvf', 'ctrb', 'obsv', 'gram',
+    'care', 'dare', 'idare', 'lyap', 'dlyap', 'lyapchol', 'lqr', 'dlqr', 'lqe', 'kalman',
+    'acker', 'place', 'c2d',
+    'step', 'impulse', 'lsim', 'lsiminfo', 'bode', 'bodemag', 'margin', 'stepinfo', 'feedback',
+  ]),
   // signal: validated/core filter design + response + filtering, spectral estimation (validate-next),
   // common windows used by filters; the peripheral tail (pulse/radar generators, telecom helpers,
   // exotic windows, niche parametric/AR utilities) is de-registered.

@@ -13,6 +13,22 @@ import { HELP_COMM } from '../help/help-comm';
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 // special functions for the Q-function — erf/erfc/erfinv from the shared specfun module
 const SQRT2 = Math.sqrt(2);
+/** Non-negative remainder mod p. */
+const gfMod = (n: number, p: number): number => (((Math.round(n) % p) + p) % p);
+/** Modular inverse of y in GF(p) (p prime) via the extended Euclidean algorithm. */
+function gfModInv(y: number, p: number): number {
+  let [r0, r1, t0, t1] = [p, gfMod(y, p), 0, 1];
+  while (r1 !== 0) { const q = Math.floor(r0 / r1); [r0, r1] = [r1, r0 - q * r1]; [t0, t1] = [t1, t0 - q * t1]; }
+  return r0 === 1 ? gfMod(t0, p) : NaN;
+}
+/** Element-wise GF(p) op: 3rd arg is the prime field order (default 2); shorter operand 0-padded. */
+function gfElementwise(a: Value[], op: (x: number, y: number, p: number) => number): Promise<Value[]> {
+  const x = toArray(m(a[0])), y = toArray(m(a[1]));
+  const p = a.length >= 3 && isMat(a[2]) && (a[2] as Mat).data.length === 1 ? Math.round(asScalar(m(a[2]))) : 2;
+  const n = Math.max(x.length, y.length), o: number[] = [];
+  for (let i = 0; i < n; i++) o.push(op(x[i] || 0, y[i] || 0, p));
+  return ret(rowVec(o));
+}
 /** Rows of a matrix as number[][]. */
 function rows(M: Mat): number[][] { const o: number[][] = []; for (let r = 0; r < M.rows; r++) { const row: number[] = []; for (let c = 0; c < M.cols; c++) row.push(M.data[r + c * M.rows]); o.push(row); } return o; }
 const bitWidth = (v: number) => Math.max(1, Math.floor(Math.log2(Math.max(1, v))) + 1);
@@ -230,11 +246,11 @@ export const COMM: ToolboxModule = {
     },
     // fspl(R,lambda): free-space path loss in dB = 20*log10(max(4*pi*R/lambda, 1)).
     fspl: (a) => { const lam = asScalar(a[1]); return ret(map(m(a[0]), (r) => 20 * Math.log10(Math.max(4 * Math.PI * r / lam, 1)))); },
-    // ── GF(2) polynomial / matrix arithmetic (default field; no GF(2^m) arg) ──
-    gfadd: (a) => { const x = toArray(m(a[0])), y = toArray(m(a[1])), n = Math.max(x.length, y.length), o: number[] = []; for (let i = 0; i < n; i++) o.push(((x[i] || 0) ^ (y[i] || 0)) & 1); return ret(rowVec(o)); },
-    gfsub: (a) => { const x = toArray(m(a[0])), y = toArray(m(a[1])), n = Math.max(x.length, y.length), o: number[] = []; for (let i = 0; i < n; i++) o.push(((x[i] || 0) ^ (y[i] || 0)) & 1); return ret(rowVec(o)); },
-    gfmul: (a) => { const x = toArray(m(a[0])), y = toArray(m(a[1])); return ret(rowVec(x.map((v, i) => (v & 1) & (y[i] & 1)))); },
-    gfdiv: (a) => { const x = toArray(m(a[0])), y = toArray(m(a[1])); return ret(rowVec(x.map((v, i) => ((y[i] & 1) ? (v & 1) : NaN)))); },
+    // ── GF(p) element-wise arithmetic over a prime field (3rd arg = prime p, default 2) ──
+    gfadd: (a) => gfElementwise(a, (x, y, p) => gfMod(x + y, p)),
+    gfsub: (a) => gfElementwise(a, (x, y, p) => gfMod(x - y, p)),
+    gfmul: (a) => gfElementwise(a, (x, y, p) => gfMod(x * y, p)),
+    gfdiv: (a) => gfElementwise(a, (x, y, p) => (gfMod(y, p) === 0 ? NaN : gfMod(x * gfModInv(gfMod(y, p), p), p))),
     gfconv: (a) => { const x = toArray(m(a[0])), y = toArray(m(a[1])), o = new Array(x.length + y.length - 1).fill(0); for (let i = 0; i < x.length; i++) for (let j = 0; j < y.length; j++) o[i + j] ^= (x[i] & 1) & (y[j] & 1); return ret(rowVec(o)); },
     gfdeconv: (a, nargout) => { const { q, r } = gf2divmod(toArray(m(a[0])), toArray(m(a[1]))); return Promise.resolve([rowVec(q), rowVec(r)].slice(0, Math.max(1, nargout))); },
     gfrank: (a) => ret(scalar(gf2rank(m(a[0])))),

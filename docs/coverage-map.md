@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 850 tests green · 715 MATLAB oracle fixtures ·
-715/715 cases classified across 22 domains.
+**Status (as of this revision):** 857 tests green · 722 MATLAB oracle fixtures ·
+722/722 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -135,19 +135,23 @@ cases), curvefit (B-spline object subsystem — base `spline`/`polyfit`/`interp`
 the workflows). None were used by any oracle case. Calling them now returns
 "undefined function", matching MATLAB without those toolboxes.
 
-`signal`, `stats`, and `dsp` are additionally **curated per function** via the
-`TOOLBOX_KEEP` allow-list in `tb/index.ts`: `signal` 167→25 (filter design/response,
-filtering, spectral estimation, common windows), `stats` 181→64 (the 8 core
-distribution families + the validated inference suite + statistical-algebra core),
-`dsp` 24→1 (only the validated overlap `resample`). The peripheral tail (pulse/radar
-generators, telecom helpers, exotic windows, niche/multivariate distributions) is
-de-registered, source preserved. Registry total: 855→299 registered builtins.
+`signal`, `stats`, `dsp`, `control`, and `comm` are additionally **curated per
+function** via the `TOOLBOX_KEEP` allow-list in `tb/index.ts`: `signal` 167→25
+(filter design/response, filtering, spectral estimation, common windows), `stats`
+181→64 (the 8 core distribution families + the validated inference suite +
+statistical-algebra core), `dsp` 24→1 (only the validated overlap `resample`),
+`control` 74→49 (model objects/data/conversions, analysis, realizations,
+Riccati/Lyapunov, responses — PID/LQG/frd/random-gen tail de-registered), `comm`
+47→29 (coding theory + GF(p) finite-field arithmetic + conversions — modulation/
+telecom/RF tail de-registered). The peripheral tails are de-registered, source
+preserved. Registry total: 855→256 registered builtins.
 
 Note: registered ≠ validated. `pnpm oracle:audit` reports, per toolbox, registered
-vs oracle-referenced counts and the unvalidated tail (currently 43% of registered
-surface is oracle-referenced). Kept-but-unreferenced functions are core-math
-candidates scheduled for validation; the remaining tails (symbolic, control, comm)
-are the next curation/validation targets.
+vs oracle-referenced counts and the unvalidated tail (currently 55% of registered
+surface is oracle-referenced, up from 12% before curation). Kept-but-unreferenced
+functions are core-math candidates scheduled for validation; `symbolic` (the largest
+remaining tail) and the kept `control`/`comm`/`stats`/`signal` cores are the next
+validation targets.
 
 ### Validate existing (implemented + oracle-validated)
 All oracle-validated — no validation backlog remains:

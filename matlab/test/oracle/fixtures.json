@@ -890,6 +890,43 @@
       ]
     }
   },
+  "coding_gf_arithmetic": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        10
+      ],
+      "real": [
+        0,
+        1,
+        1,
+        2,
+        1,
+        2,
+        2,
+        4,
+        2,
+        2
+      ]
+    }
+  },
+  "coding_gfconv_rank": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        1,
+        2
+      ]
+    }
+  },
   "cplx_complex_mul": {
     "z": {
       "class": "double",
@@ -1315,6 +1352,62 @@
         0.003017365974029601,
         3.3909754521927156e-16
       ]
+    }
+  },
+  "ctrl_dlqr": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.9170415473517574,
+        0.9170415473517574
+      ]
+    }
+  },
+  "ctrl_dlyap": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.1102230246251565e-16
+    }
+  },
+  "ctrl_tf2ss": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -2,
+        -1
+      ]
+    }
+  },
+  "ctrl_minreal": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -2
+    }
+  },
+  "ctrl_gram": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.220446049250313e-16
     }
   },
   "lang_colon_range": {
