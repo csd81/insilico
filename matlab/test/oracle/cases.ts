@@ -284,7 +284,7 @@ export const CASES: OracleCase[] = [
   { name: 'dyn-newton-fixed-point', src: 'r = 3.5; x = 0.7; for k = 1:20, fx = r*x*(1-x) - x; fp = r*(1-2*x) - 1; x = x - fx/fp; end; v = x;', vars: ['v'], tol: 1e-7, domain: 'dynamical-systems', tags: ['newton', 'fixed-point', 'continuation'] },
   { name: 'dyn-stable-cycle-period4', src: 'r = 3.5; x = 0.5; for k = 1:1000, x = r*x*(1-x); end; c = zeros(4,1); for k = 1:4, x = r*x*(1-x); c(k) = x; end; v = sort(c);', vars: ['v'], tol: 1e-6, domain: 'dynamical-systems', tags: ['logistic-map', 'period-doubling', 'stable-cycle', 'bifurcation'] },
 
-  // ══════════ fourier (17) ══════════
+  // ══════════ fourier (20) ══════════
   { name: 'dsp-fft', src: 'Y = fft([1 2 3 4]);', vars: ['Y'], tol: 1e-9, domain: 'fourier', tags: ['fft'] },
   { name: 'dsp-conv', src: 'c = conv([1 2 1], [1 1]);', vars: ['c'], tol: 1e-9, domain: 'fourier', tags: ['convolution'] },
   { name: 'dsp-fft-ifft-roundtrip', src: 'x = [1 2 3 4]; y = real(ifft(fft(x)));', vars: ['y'], tol: 1e-9, domain: 'fourier', tags: ['fft', 'ifft', 'roundtrip'] },
@@ -302,6 +302,9 @@ export const CASES: OracleCase[] = [
   { name: 'sig-filtfilt', src: 'y = filtfilt([0.5 0.5], 1, [1 2 3 4 5]); v = y;', vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['filtfilt', 'zero-phase', 'filtering'] },
   { name: 'sig-fir1', src: 'v = fir1(6, 0.4);', vars: ['v'], tol: 1e-5, domain: 'fourier', tags: ['fir1', 'fir-filter', 'window-method', 'filter-design'] },
   { name: 'sig-resample', src: 'v = resample([1 2 3 4 5 6], 3, 2);', vars: ['v'], tol: 1e-4, domain: 'fourier', tags: ['resample', 'polyphase', 'rate-conversion'] },
+  { name: 'sig-windows', src: "v = [hamming(5)' hann(5)' kaiser(5, 3)' blackman(5)'];", vars: ['v'], tol: 1e-4, domain: 'fourier', tags: ['window', 'hamming', 'hann', 'kaiser', 'blackman'] },
+  { name: 'sig-periodogram', src: "x = [1 2 1 -1 -2 -1 1 2]; pxx = periodogram(x); v = pxx(1:3)';", vars: ['v'], tol: 1e-4, domain: 'fourier', tags: ['periodogram', 'psd', 'spectral-estimation'] },
+  { name: 'sig-czt', src: "v = abs(czt([1 2 3 4]))';", vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['czt', 'chirp-z-transform'] },
 
   // ══════════ geometry (9) ══════════
   { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'area'] },
@@ -667,7 +670,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment'] },
   { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fminimax', 'minimax'] },
 
-  // ══════════ statistics (44) ══════════
+  // ══════════ statistics (49) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -712,6 +715,11 @@ export const CASES: OracleCase[] = [
   { name: 'stat-glmfit-binomial', src: "X = [1 2 3 4 5 6]'; y = [0 1 0 1 1 1]'; v = glmfit(X, y, 'binomial');", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['glmfit', 'logistic-regression', 'irls'] },
   { name: 'stat-glmfit-normal', src: "v = glmfit([1 2 3 4 5]', [2.1 3.9 6.2 7.8 10.1]');", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['glmfit', 'identity-link', 'regression'] },
   { name: 'stat-ksdensity-bw', src: "[f, xi] = ksdensity([1 2 2 3 3 3 4], 2.5, 'Bandwidth', 0.5); v = f;", vars: ['v'], tol: 1e-5, domain: 'statistics', tags: ['ksdensity', 'kernel-density', 'fixed-bandwidth'] },
+  { name: 'stat-dist-pdf', src: 'v = [normpdf(0.5, 0, 1) tpdf(1, 5) chi2pdf(3, 2) fpdf(2, 3, 10) gampdf(2, 2, 1) poisspdf(2, 3) binopdf(3, 10, 0.5) betapdf(0.3, 2, 3)];', vars: ['v'], tol: 1e-5, domain: 'statistics', tags: ['distributions', 'pdf', 'normpdf', 'tpdf', 'chi2pdf', 'fpdf', 'gampdf'] },
+  { name: 'stat-dist-cdf-inv', src: 'v = [normcdf(1, 0, 1) norminv(0.975, 0, 1) chi2inv(0.95, 4) tinv(0.95, 10) finv(0.9, 3, 10) gamcdf(3, 2, 1) gaminv(0.5, 2, 1) poisscdf(3, 2) binocdf(3, 10, 0.5) betacdf(0.3, 2, 3) betainv(0.5, 2, 3)];', vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['distributions', 'cdf', 'inverse-cdf', 'norminv', 'chi2inv', 'tinv', 'finv'] },
+  { name: 'stat-dist-stat', src: '[mn, vn] = normstat(2, 3); [mp, vp] = poisstat(4); [mb, vb] = binostat(10, 0.5); [mg, vg] = gamstat(2, 3); v = [mn vn mp vp mb vb mg vg];', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['distributions', 'mean-variance', 'normstat', 'poisstat', 'binostat', 'gamstat'] },
+  { name: 'stat-dist-fit', src: 'v = [normfit([2 3 4 5 6]) poissfit([2 3 4 3 2 5]) binofit(7, 10)];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['distribution-fitting', 'normfit', 'poissfit', 'binofit', 'mle'] },
+  { name: 'stat-moment-range', src: 'v = [moment([1 2 3 4 5], 3) range([3 7 2 9 4])];', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['moment', 'central-moment', 'range'] },
 
   // ══════════ symbolic (50) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },

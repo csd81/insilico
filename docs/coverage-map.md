@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 842 tests green · 707 MATLAB oracle fixtures ·
-707/707 cases classified across 22 domains.
+**Status (as of this revision):** 850 tests green · 715 MATLAB oracle fixtures ·
+715/715 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -144,7 +144,7 @@ generators, telecom helpers, exotic windows, niche/multivariate distributions) i
 de-registered, source preserved. Registry total: 855→299 registered builtins.
 
 Note: registered ≠ validated. `pnpm oracle:audit` reports, per toolbox, registered
-vs oracle-referenced counts and the unvalidated tail (currently 34% of registered
+vs oracle-referenced counts and the unvalidated tail (currently 43% of registered
 surface is oracle-referenced). Kept-but-unreferenced functions are core-math
 candidates scheduled for validation; the remaining tails (symbolic, control, comm)
 are the next curation/validation targets.
