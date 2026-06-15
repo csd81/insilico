@@ -568,6 +568,12 @@ export const CASES: OracleCase[] = [
   // catastrophic cancellation of the two-M connection formula. Each validated across its regime axis.
   { name: 'val-fn-kummeru', src: 'v = [double(kummerU(0.5, 3, 2)) double(kummerU(1, 2, 1.5)) double(kummerU(0.5, 2.5, 1.5)) double(kummerU(2, 1.5, 0.8))];', vars: ['v'], tol: 1e-6, domain: 'calculus', fn: 'kummerU', aspect: ['integer-b', 'noninteger-b'], tags: ['kummerU', 'bugfix'] },
   { name: 'val-fn-whittakerw', src: 'v = [double(whittakerW(1, 1, 2)) double(whittakerW(0.5, 1.5, 2)) double(whittakerW(2, 0.5, 3)) double(whittakerW(-1, 2, 4))];', vars: ['v'], tol: 1e-6, domain: 'calculus', fn: 'whittakerW', aspect: ['positive-a', 'nonpositive-a'], tags: ['whittakerW', 'bugfix'] },
+  // Input-validation tests: each function must REJECT bad input (error in both MATLAB and the engine),
+  // not return a plausible-but-wrong result. (See the `error-input` aspect in oracle:functions.)
+  { name: 'err-hermiteform-noninteger', src: 'hermiteForm([1.5 2; 3 4]);', vars: [], expectError: true, domain: 'numerical-linear-algebra', fn: 'hermiteForm', tags: ['hermiteForm', 'error'] },
+  { name: 'err-minpoly-nonsquare', src: 'minpoly([1 2 3; 4 5 6]);', vars: [], expectError: true, domain: 'numerical-linear-algebra', fn: 'minpoly', tags: ['minpoly', 'error'] },
+  { name: 'err-kummeru-too-few-args', src: 'kummerU(1, 2);', vars: [], expectError: true, domain: 'calculus', fn: 'kummerU', tags: ['kummerU', 'error'] },
+  { name: 'err-whittakerw-too-few-args', src: 'whittakerW(1, 2);', vars: [], expectError: true, domain: 'calculus', fn: 'whittakerW', tags: ['whittakerW', 'error'] },
   // Fuzzy membership functions (closed-form, deterministic): triangular/trapezoidal/Gaussian/
   // generalized-bell/sigmoidal evaluated on a shared universe. Restored + registered by allow-list.
   { name: 'fuzzy-membership', src: "x = 0:0.5:4; v = [trimf(x,[1 2 3]) trapmf(x,[0.5 1.5 2.5 3.5]) gaussmf(x,[1 2]) gbellmf(x,[1.5 2 2]) sigmf(x,[3 2])];", vars: ['v'], tol: 1e-12, domain: 'numerical-methods', tags: ['trimf', 'trapmf', 'gaussmf', 'gbellmf', 'sigmf', 'fuzzy'] },

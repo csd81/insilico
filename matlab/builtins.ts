@@ -1310,6 +1310,7 @@ export const BUILTINS: Record<string, Builtin> = {
     // linearly dependent on {I, A, …, A^(k-1)} (Krylov / companion-of-the-minimal-polynomial): this
     // captures Jordan-block sizes exactly, unlike a product over distinct eigenvalues.
     const A = m(a[0]); const N = A.rows;
+    if (A.cols !== N) throw new MatError('minpoly: input matrix must be square.');
     if (N === 0) return ret(makeSym(1, 1, [sN(1)]));
     const NN = N * N; const Are = A.data, Aim = A.idata;
     const timesA = (pre: Float64Array, pim: Float64Array) => {

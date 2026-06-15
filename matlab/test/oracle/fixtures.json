@@ -14549,5 +14549,17 @@
         0.04599330245562935
       ]
     }
+  },
+  "err_hermiteform_noninteger": {
+    "error": "Unable to convert the matrix entries to integers or univariate polynomials."
+  },
+  "err_minpoly_nonsquare": {
+    "error": "Matrix must be square."
+  },
+  "err_kummeru_too_few_args": {
+    "error": "Not enough input arguments."
+  },
+  "err_whittakerw_too_few_args": {
+    "error": "Not enough input arguments."
   }
 }

@@ -15,8 +15,8 @@ pnpm oracle:functions  # per-function index: cases + aspects + full/partial/unte
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1157 tests green · 1011 MATLAB oracle fixtures ·
-1011/1011 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1161 tests green · 1015 MATLAB oracle fixtures ·
+1015/1015 oracle cases classified across 22 domains.
 
 ### Two-layer test model
 
@@ -30,6 +30,11 @@ Oracle cases are validated at two complementary granularities:
    (allowed if a deliberate extra-regime case, surfaced so accidental re-tests are visible).
 2. **Workflow cases** — cross-function integration (`workflow: [fns…]`), a separate confidence layer
    kept out of single-function ownership (e.g. a Markov steady-state solved via `eig` vs via `null`).
+3. **Error / input-validation tests** — an orthogonal dimension over *both* layers: an `expectError`
+   case (owned by a `fn`) proves the function *rejects* bad input rather than returning something
+   plausible-but-wrong, asserting it errors in **both** MATLAB and the engine. Every function should
+   have one; `pnpm oracle:functions` marks each `err✓/err✗` and lists the value-tested-but-no-error
+   backlog. This is goal #2 ("no silently-wrong functions") made measurable per function.
 
 Ownership is explicit (`fn` on a case) or inferred (`tags` ∩ registry); migrating a case to explicit
 `fn`/`aspect` moves it from the "unattributed" backlog into the precise per-function index.

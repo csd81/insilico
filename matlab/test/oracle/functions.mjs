@@ -43,8 +43,8 @@ for (const tb of TOOLBOXES) {
 for (const n of registered) if (!tbOf.has(n)) tbOf.set(n, 'base');
 
 // ── Invert cases into the per-function index ─────────────────────────────────
-const idx = new Map();                // fn -> { cases:Set, aspects:Set, wf:Set }
-const get = (fn) => idx.get(fn) ?? idx.set(fn, { cases: new Set(), aspects: new Set(), wf: new Set() }).get(fn);
+const idx = new Map();                // fn -> { cases:Set, aspects:Set, wf:Set, err:Set }
+const get = (fn) => idx.get(fn) ?? idx.set(fn, { cases: new Set(), aspects: new Set(), wf: new Set(), err: new Set() }).get(fn);
 const aspectCases = new Map();        // `${fn}::${aspect}` -> [caseName]
 const workflows = [];
 let unattributed = 0;
@@ -64,9 +64,12 @@ for (const c of CASES) {
   }
   const owners = c.fn ? [c.fn] : inferOwners(c);
   if (!owners.length) { unattributed++; continue; }
-  const aspects = inferAspects(c);
+  // An expectError case is an input-validation test (errors in BOTH MATLAB and the engine); it
+  // proves the function rejects bad input rather than being silently-wrong. Tracked per owner.
+  const aspects = c.expectError ? ['error-input'] : inferAspects(c);
   for (const fn of owners) {
     const e = get(fn); e.cases.add(c.name);
+    if (c.expectError) e.err.add(c.name);
     for (const a of aspects) {
       e.aspects.add(a);
       const k = `${fn}::${a}`; (aspectCases.get(k) ?? aspectCases.set(k, []).get(k)).push(c.name);
@@ -91,6 +94,7 @@ if (only) {
   if (!registered.has(only)) console.log('  (not in the effective registry)');
   console.log(`  cases (${e?.cases.size ?? 0}): ${e ? [...e.cases].join(', ') : '—'}`);
   console.log(`  aspects covered: ${e && e.aspects.size ? [...e.aspects].sort().join(', ') : '—'}`);
+  console.log(`  error/input test: ${e?.err.size ? [...e.err].join(', ') : '✗ none'}`);
   if (REQUIRED_ASPECTS[only]) console.log(`  required: ${REQUIRED_ASPECTS[only].join(', ')}`);
   if (st.missing.length) console.log(`  MISSING: ${st.missing.join(', ')}`);
   if (e?.wf.size) console.log(`  in workflows: ${[...e.wf].join(', ')}`);
@@ -106,20 +110,29 @@ for (const fn of all) {
   if (REQUIRED_ASPECTS[fn]) checklisted.push({ fn, ...st, e: idx.get(fn) });
   if (st.s === 'partial') partials.push({ fn, missing: st.missing });
 }
-const owned = all.filter((fn) => idx.get(fn)?.cases.size).length;
+const ownedFns = all.filter((fn) => idx.get(fn)?.cases.size);
+const owned = ownedFns.length;
+const errTested = ownedFns.filter((fn) => idx.get(fn).err.size).length;
 
 console.log(`Per-function oracle coverage  (registry: ${all.length} functions)`);
 console.log(`  owned by ≥1 case: ${owned}    untested: ${tally.untested}    (${(100 * owned / all.length).toFixed(1)}% have an owning case)`);
+console.log(`  error / input-validation tested: ${errTested} of ${owned} owned  (${(100 * errTested / owned).toFixed(1)}%)  — every function should reject bad input`);
 const clTally = checklisted.reduce((m, c) => ((m[c.s] = (m[c.s] ?? 0) + 1), m), {});
 console.log(`  checklisted: ${checklisted.length}  →  full ${clTally.full ?? 0} · partial ${clTally.partial ?? 0} · untested ${clTally.untested ?? 0}`);
 console.log(`  unattributed cases (no fn/function-tag): ${unattributed}\n`);
 
-// Checklisted functions: the curated full/partial board.
-console.log('Checklisted functions (canonical regime coverage):');
+// Checklisted functions: the curated full/partial board (incl. error-test marker).
+console.log('Checklisted functions (canonical regime coverage · err = has input-validation test):');
 for (const { fn, s, missing, e } of checklisted.sort((a, b) => a.s.localeCompare(b.s) || a.fn.localeCompare(b.fn))) {
   const mark = s === 'full' ? '✓ full    ' : s === 'untested' ? '· untested' : '✗ partial ';
-  console.log(`  ${mark} ${fn.padEnd(14)} cases:${String(e?.cases.size ?? 0).padStart(2)}  covered:[${[...(e?.aspects ?? [])].filter((a) => REQUIRED_ASPECTS[fn].includes(a)).join(',')}]${missing.length ? `  MISSING:[${missing.join(',')}]` : ''}`);
+  const err = e?.err.size ? 'err✓' : 'err✗';
+  console.log(`  ${mark} ${err} ${fn.padEnd(14)} cases:${String(e?.cases.size ?? 0).padStart(2)}  covered:[${[...(e?.aspects ?? [])].filter((a) => REQUIRED_ASPECTS[fn].includes(a)).join(',')}]${missing.length ? `  MISSING:[${missing.join(',')}]` : ''}`);
 }
+
+// Value-tested functions with NO input-validation test — the error-coverage backlog.
+const noErr = ownedFns.filter((fn) => !idx.get(fn).err.size);
+console.log(`\nValue-tested but missing an error/input test (${noErr.length}); first 24:`);
+console.log('  ' + noErr.slice(0, 24).join(', ') + (noErr.length > 24 ? ' …' : ''));
 
 // Untested registered surface, grouped by toolbox (the gap queue).
 const untestedBy = new Map();
