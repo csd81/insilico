@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 951 tests green · 816 MATLAB oracle fixtures ·
-816/816 cases classified across 22 domains.
+**Status (as of this revision):** 956 tests green · 821 MATLAB oracle fixtures ·
+821/821 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -225,17 +225,21 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   `legendreP`/`chebyshevT`/`chebyshevU`/`hermiteH`/`laguerreL`/`jacobiP`/`gegenbauerC`, and
   `hypergeom`/`heaviside`/`lambertw` (incl. the `-1` branch). All match MATLAB R2026a
   exactly; serialized via `double([...])`.
-- **Totals after Pass 2:** 951 tests / 816 fixtures; base/core `uncategorized` 579 → 474.
+- **Pass 2L — struct / cell semantics:** 5 cases over `cell2mat` (block assembly),
+  `mat2cell`/`num2cell` (splitting), `struct2cell`/`cell2struct` (round-trip),
+  `fieldnames`/`rmfield`/`isfield`/`orderfields`/`setfield`/`getfield`, `structfun`, and
+  struct arrays with comma-list expansion (`[sa.v]`) + nested structs + `cellfun`. All exact.
+- **Totals after Pass 2:** 956 tests / 821 fixtures; base/core `uncategorized` 579 → 462.
 
 **The high-risk numerical-linear-algebra sweep is done; the broader core-math/semantics
 triage is not.** The remaining `uncategorized` is *not* dismissed as breadth — most of it
 is core computational math or core MATLAB semantics, and it continues in **prioritized
-passes** (done: 2H geometry, 2I N-D/shape, 2J interpolation/spline, 2K special functions;
-next: 2L struct/cell semantics → 2M bit/integer operators → 2N optimization/solver variants
+passes** (done: 2H geometry, 2I N-D/shape, 2J interpolation/spline, 2K special functions,
+2L struct/cell; next: 2M bit/integer operators → 2N optimization/solver variants
 → 2O stats/data utilities). Genuinely lower-priority tails (display/format, UI-ish helpers,
 table/timetable breadth, VFS/file, compatibility aliases, path/host) stay deferred.
 
-### Remaining base/core backlog (~474 uncategorized)
+### Remaining base/core backlog (~462 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -264,7 +268,9 @@ shape, for demand-driven triage — not a TODO list:
 - **N-D / shape:** validated in Pass 2I (`shiftdim`/`ipermute`/`ndims`/`repelem`/
   `tensorprod`/`pagemrdivide`/`pagemldivide`/`pagelsqminnorm`); remainder is `repmat`
   edge cases and rarely-named reshapers.
-- **struct/cell utilities (~8):** `struct2cell`/`cell2struct`/`structfun`/`orderfields`/…
+- **struct/cell utilities:** core validated in Pass 2L (`cell2mat`/`mat2cell`/`num2cell`/
+  `struct2cell`/`cell2struct`/`fieldnames`/`rmfield`/`isfield`/`orderfields`/`setfield`/
+  `getfield`/`structfun`); remainder is display/`disp`-style and table-bridging helpers.
 - **containers (~5):** `containers.Map`/`dictionary`/`keys`/`values`/`entries`.
 - **graph algorithms, remaining (~29):** `shortestpathtree`/`allpaths`/`allcycles`/
   `bctree`/`biconncomp`/… (core graph already validated).

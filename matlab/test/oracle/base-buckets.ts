@@ -205,4 +205,7 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // ── Pass 2K: remaining special functions at deterministic points (all match MATLAB exactly). ──
   // (hypergeom is a Symbolic-toolbox builtin, validated by the case but not a base entry.)
   ...bulkD('needs-oracle', 'direct', 'calculus', 'expint sinint cosint fresnels fresnelc zeta dilog psi legendreP chebyshevT chebyshevU hermiteH laguerreL jacobiP gegenbauerC heaviside lambertw'),
+
+  // ── Pass 2L: struct / cell semantics (conversions, field ops, struct arrays, nesting). Exact. ──
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'cell2mat mat2cell num2cell struct2cell cell2struct fieldnames rmfield orderfields setfield getfield structfun isfield'),
 };

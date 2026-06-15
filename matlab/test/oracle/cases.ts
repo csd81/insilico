@@ -190,7 +190,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (140) ══════════
+  // ══════════ core-language (145) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -333,6 +333,14 @@ export const CASES: OracleCase[] = [
   { name: 'ndi-permute', src: 'A = reshape(1:24, 2, 3, 4); P = permute(A, [3 1 2]); Q = ipermute(P, [3 1 2]); v = [size(P) isequal(Q,A) P(2,1,1)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['permute', 'ipermute', 'nd-roundtrip'] },
   { name: 'ndi-repelem', src: 'a = repelem([1 2 3], 2); b = repelem([10 20], [1 3]); C = repelem([1 2; 3 4], 2, 3); v = [a b numel(C) C(3,4)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['repelem', 'per-element-counts', '2d'] },
   { name: 'ndi-ndims-squeeze', src: 'A = reshape(1:24, 2, 1, 3, 1, 4); B = squeeze(A); v = [ndims(A) size(A,5) ndims(B) size(B)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['ndims', 'squeeze', 'interior-singletons'] },
+  // ── Pass 2L: struct / cell semantics (cell2mat block assembly, mat2cell/num2cell splitting,
+  // struct2cell/cell2struct round-trip, fieldnames/rmfield/orderfields/setfield/getfield,
+  // structfun, struct arrays + comma-list expansion, nested structs, cellfun). All exact. ──
+  { name: 'sc-cell2mat-mat2cell', src: 'm = cell2mat({[1 2] 3; [4 5] 6}); C = mat2cell([1 2 3; 4 5 6], [1 1], [2 1]); v = [m(:).\x27 numel(C) C{1,1}(2) C{2,2}];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['cell2mat', 'mat2cell', 'block-assembly'] },
+  { name: 'sc-num2cell-struct2cell', src: 'Cn = num2cell([1 2; 3 4]); s.a = 1; s.b = 2; s.c = 3; Cs = struct2cell(s); v = [numel(Cn) Cn{2,1} Cn{1,2} numel(Cs) Cs{1} Cs{3}];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['num2cell', 'struct2cell'] },
+  { name: 'sc-cell2struct-rmfield', src: "C = {1; 2; 3}; st = cell2struct(C, {'a','b','c'}, 1); t = rmfield(st, 'b'); f = fieldnames(t); v = [st.a st.b st.c numel(f) isfield(t,'b') t.c];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['cell2struct', 'rmfield', 'fieldnames', 'isfield'] },
+  { name: 'sc-structfun-orderfields', src: "s.b = 2; s.a = 1; ord = orderfields(s); fo = fieldnames(ord); s2.a = 1; s2.b = 4; s2.c = 9; r = structfun(@sqrt, s2); s3 = setfield(s2, 'd', 5); v = [double(fo{1}=='a') double(fo{2}=='b') r.\x27 getfield(s3,'d')];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['orderfields', 'structfun', 'setfield', 'getfield'] },
+  { name: 'sc-structarray-nested', src: 'sa(1).v = 10; sa(2).v = 20; sa(3).v = 30; nn.inner.x = 5; nn.inner.y = 7; C = {[1 2], [3 4 5]}; r = cellfun(@numel, C); v = [numel(sa) [sa.v] nn.inner.x nn.inner.y r];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['struct-array', 'comma-list', 'nested-struct', 'cellfun'] },
 
   // ══════════ dynamical-systems (5) ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },
