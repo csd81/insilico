@@ -13,8 +13,8 @@ pnpm oracle:base-audit
 pnpm oracle:audit
 ```
 
-**Status (as of this revision):** 1042 tests green · 907 MATLAB oracle fixtures ·
-907/907 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1047 tests green · 912 MATLAB oracle fixtures ·
+912/912 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.
@@ -109,6 +109,7 @@ undefined in this MATLAB — now **unregistered** so the engine errors to match.
 | Integer programming workflows | ✓ | `intlinprog` knapsack, assignment, set cover style cases. |
 | Graph optimization | ✓ | `maxflow` plus min-cut invariant, `minspantree`, shortest paths. |
 | Global optimizers | n/a | RNG-driven solvers are not exact-oracle comparable. |
+| Conic (SOCP) | deferred | `coneprog`/`secondordercone` are registered but the cone constraint is **not enforced** (returns `‖x‖=1.14` for a `‖x‖≤1` SOCP vs MATLAB's `1`) — not validated until fixed. `fseminf` deferred (niche, hard to frame). |
 | Problem-based optimization objects | deferred | `optimvar`/`optimproblem` style APIs are model-object surface, not required for the computational subset. |
 
 ## Fourier, Signal, And DSP Math
@@ -170,7 +171,9 @@ where MATLAB treats it as element separation.
 | Vector calculus | ✓ | `gradient`, `curl`, `divergence`, vector-calculus identities by numeric substitution. |
 | Symbolic convenience | ✓ | `vpa`, `matlabFunction`, `partfrac`, `pade`, `poly2sym`, `str2sym`, `horner`, `rewrite`, `polynomialDegree`. |
 | Symbolic special functions | ✓ | `ellipticK`/`ellipticE`, `whittakerM`, `kummerU` at numeric points (`whittakerW` excluded — engine value ~0.1% off). |
+| Piecewise / poles / vpa bridge | ✓ | `piecewise` (branch eval), `polynomialReduce` (univariate), `poles` (sorted), `vpaintegral`/`vpasum` at finite bounds. |
 | Assumptions/display/introspection tail | ~ | Much of `assume*`, `symType`, `latex`, `pretty`, etc. is low-value for computational coverage. |
+| Symbolic-tail bugs (deferred) | ~ | `isAlways` mis-evaluates (`1>2`→true, `x+1==1+x`→false); `quorem`/`combine`/`isolate` error on symbolic input; `vpaintegral` with an infinite bound returns `Inf`. Validated only the correct subset. |
 | Serious CAS completeness | not targeted | Groebner bases, quantifier elimination, full assumption logic, and Risch-style integration are out of scope unless a course workflow demands a MATLAB-present subset. |
 
 See `docs/symbolic-boundary.md` for the precise supported symbolic subset.
