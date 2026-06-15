@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 1007 tests green · 872 MATLAB oracle fixtures ·
-872/872 cases classified across 22 domains.
+**Status (as of this revision):** 1014 tests green · 879 MATLAB oracle fixtures ·
+879/879 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -321,7 +321,7 @@ real MATLAB (with the analytic-solution error as a secondary sanity invariant).
   `spectrogram` ignored a scalar window-length argument (fell back to a too-short default window and
   errored). `meansq` declined — not a MATLAB R2026a function.
 
-### Remaining base/core backlog (~371 uncategorized)
+### Remaining base/core backlog (~369 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:

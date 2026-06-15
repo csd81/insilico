@@ -239,4 +239,8 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   ...bulkD('needs-oracle', 'direct', 'approximation', 'interp1q fnint fnbrk dsearchn'),
   ...bulkD('needs-oracle', 'direct', 'statistics', 'corr mode movmax movmin pdist2 histc histcounts2 rmse corrcov'),
   ...bulkD('needs-oracle', 'direct', 'core-language', 'uniquetol sub2ind ind2sub topkrows convn'),
+
+  // ── Deeper workflow batch (PDE/FEM, discrete optimization, ML math, coding, symbolic). New
+  // base functions named by these workflows. ──
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'sinh cosh'),
 };

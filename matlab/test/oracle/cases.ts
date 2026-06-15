@@ -429,7 +429,7 @@ export const CASES: OracleCase[] = [
   { name: 'xform-roundtrip', src: '[th, rh] = cart2pol(3, 4); [x, y] = pol2cart(th, rh); [az, el, r] = cart2sph(1, 2, 2); [X, Y, Z] = sph2cart(az, el, r); v = [th rh x y az el r X Y Z deg2rad(180) rad2deg(pi)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['cart2pol', 'pol2cart', 'cart2sph', 'sph2cart', 'deg2rad', 'rad2deg', 'roundtrip'] },
   { name: 'geo-remainder', src: 'v = [double(inpolygon(0.5, 0.5, [0 1 1 0], [0 0 1 1])) rectint([0 0 2 2], [1 1 2 2]) polyarea([0 1 1 0], [0 0 1 1])];', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['inpolygon', 'rectint', 'polyarea'] },
 
-  // ══════════ graph (15) ══════════
+  // ══════════ graph (16) ══════════
   { name: 'graph-laplacian', src: 'A = [0 1 0; 1 0 1; 0 1 0]; D = diag(sum(A, 2)); L = D - A; ev = sort(eig(L));', vars: ['ev'], tol: 1e-9, domain: 'graph', tags: ['spectral-graph', 'laplacian'] },
   { name: 'graph-distributed-consensus', src: 'A = [0 1 0 1; 1 0 1 0; 0 1 0 1; 1 0 1 0]; D = diag(sum(A, 2)); L = D - A; W = eye(4) - 0.2*L; x = [1; 2; 3; 4]; for k = 1:200, x = W*x; end', vars: ['x'], tol: 1e-6, domain: 'graph', tags: ['distributed-optimization', 'consensus', 'graph-laplacian'] },
   { name: 'graph-adjacency-powers', src: 'A = [0 1 1; 1 0 1; 1 1 0]; W = A^3;', vars: ['W'], tol: 1e-9, domain: 'graph', tags: ['adjacency', 'walk-counts'] },
@@ -449,6 +449,9 @@ export const CASES: OracleCase[] = [
   // + successors + transitive closure edge count; then cycle detection / subgraph / transreduction. ──
   { name: 'graph-structure', src: "G = graph([1 2 3], [2 3 4]); A = adjacency(G); b = bfsearch(G, 1)'; d = dfsearch(G, 1)'; D = digraph([1 1 2], [2 3 3]); T = transclosure(D); v = [full(A(1,2)) full(A(2,3)) b d successors(D,1)' numedges(T)];", vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['adjacency', 'bfsearch', 'dfsearch', 'successors', 'transclosure'] },
   { name: 'graph-more', src: 'G = digraph([1 2 3], [2 3 1]); v = [double(hascycles(G)) numel(cyclebasis(graph([1 2 3], [2 3 1]))) numnodes(subgraph(graph([1 2 3 4], [2 3 4 1]), [1 2 3])) numedges(transreduction(digraph([1 1 2], [2 3 3])))];', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['hascycles', 'cyclebasis', 'subgraph', 'transreduction'] },
+  // ── Max-flow / min-cut theorem: maxflow value equals the minimum cut capacity (min cut found
+  // independently by brute force over the 4 source/sink partitions of this small network). ──
+  { name: 'opt-maxflow', src: 's = [1 1 2 3]; t = [2 3 4 4]; w = [3 2 2 4]; mf = maxflow(digraph(s,t,w), 1, 4); best = Inf; for b = 0:3, S = 1; if bitand(b,1), S = [S 2]; end; if bitand(b,2), S = [S 3]; end; T = setdiff(1:4, S); cut = 0; for e = 1:4, if any(S==s(e)) && any(T==t(e)), cut = cut + w(e); end; end; best = min(best, cut); end; v = [mf mf==best];', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['maxflow', 'min-cut', 'max-flow-min-cut-theorem'] },
 
   // ══════════ linear-algebra (50) ══════════
   { name: 'la-vec-mag-2d', src: 'v = [2 2]; mag = sqrt(v(1)^2 + v(2)^2);', vars: ['mag'], tol: 1e-9, domain: 'linear-algebra' },
@@ -741,7 +744,7 @@ export const CASES: OracleCase[] = [
   { name: 'nm-gauss2pt', src: 'a = 0; b = 1; f = @(x) x.^3 + 1; x1 = -1/sqrt(3); x2 = 1/sqrt(3); m = (b-a)/2; c = (b+a)/2; I = m*(f(m*x1+c) + f(m*x2+c)); v = [I abs(I - 1.25)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['course-workflow', 'gauss-legendre', '2-point-quadrature'] },
   { name: 'nm-simpson', src: 'f = @(x) sin(x); a = 0; b = pi; n = 10; h = (b-a)/n; x = a:h:b; fx = f(x); I = h/3*(fx(1) + fx(end) + 4*sum(fx(2:2:end-1)) + 2*sum(fx(3:2:end-2))); v = [I abs(I - 2)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['course-workflow', 'composite-simpson', 'quadrature'] },
 
-  // ══════════ numerical-ode (33) ══════════
+  // ══════════ numerical-ode (34) ══════════
   { name: 'ode-heun', src: 'h = 0.1; y = 1; for k = 1:10, yp = y + h*y; y = y + h/2*(y + yp); end', vars: ['y'], tol: 1e-9, domain: 'numerical-ode', tags: ['improved-euler', 'heun'] },
   { name: 'ode-harmonic-rk4', src: 'h = 0.01; y = [1; 0]; A = [0 1; -1 0]; for k = 1:628, k1 = A*y; k2 = A*(y+h/2*k1); k3 = A*(y+h/2*k2); k4 = A*(y+h*k3); y = y + h/6*(k1+2*k2+2*k3+k4); end', vars: ['y'], tol: 1e-6, domain: 'numerical-ode', tags: ['rk4', 'harmonic-oscillator', 'system'] },
   { name: 'ode-ode45', src: '[t, y] = ode45(@(t, y) y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, domain: 'numerical-ode', tags: ['ode45'] },
@@ -782,8 +785,11 @@ export const CASES: OracleCase[] = [
   // per-step state differs by integrator): ode23tb (stiff TR-BDF2), bvp5c (BVP y''+y=0 → sin),
   // pdepe (1-D heat MOL vs analytic decay), dde23 (constant-delay y'=-y(t-1), exact y(2)=-1/2). ──
   { name: 'solver-variants', src: "f = @(t,y) -y; e = exp(-1); [~, y1] = ode23tb(f, [0 1], 1); sol = bvp5c(@(x,y)[y(2); -y(1)], @(ya,yb)[ya(1); yb(1)-1], bvpinit(linspace(0,pi/2,5), [0 1])); yp = deval(sol, pi/4); xx = linspace(0,1,11); tt = linspace(0,0.1,3); ps = pdepe(0, @(x,t,u,dudx)deal(1,dudx,0), @(x)sin(pi*x), @(xl,ul,xr,ur,t)deal(ul,0,ur,0), xx, tt); pu = ps(end,:); ds = dde23(@(t,y,Z)-Z, 1, 1, [0 2]); v = [double(abs(y1(end)-e)<1e-2) double(abs(yp(1)-sin(pi/4))<1e-3) double(max(abs(pu - exp(-pi^2*0.1)*sin(pi*xx)))<0.05) double(abs(deval(ds,2)+0.5)<1e-2)];", vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['ode23tb', 'bvp5c', 'pdepe', 'dde23', 'solver-invariant'] },
+  // ── Second-order BVP y''=y, y(0)=0, y(1)=1 → y=sinh(x)/sinh(1); bvp4c solution + derivative
+  // validated against the closed form. ──
+  { name: 'bvp-second-order', src: 'sol = bvp4c(@(x,y)[y(2); y(1)], @(ya,yb)[ya(1); yb(1)-1], bvpinit(linspace(0,1,5), [0 1])); yp = deval(sol, 0.5); v = double([abs(yp(1) - sinh(0.5)/sinh(1)) < 1e-4 abs(yp(2) - cosh(0.5)/sinh(1)) < 1e-4]);', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['bvp4c', 'boundary-value-problem', 'known-solution'] },
 
-  // ══════════ numerical-pde (39) ══════════
+  // ══════════ numerical-pde (42) ══════════
   { name: 'pde-poisson-1d', src: 'n = 5; h = 1/(n+1); A = 2*eye(n) - diag(ones(n-1,1),1) - diag(ones(n-1,1),-1); f = ones(n,1)*h^2; u = A\\f;', vars: ['u'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-difference', 'poisson', 'dirichlet'] },
   { name: 'pde-heat-1d-step', src: "u = [0 1 2 3 2 1 0]'; r = 0.4; n = numel(u); un = u; for i = 2:n-1, un(i) = u(i) + r*(u(i+1) - 2*u(i) + u(i-1)); end; un(1) = 0; un(end) = 0;", vars: ['un'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-difference', 'heat-equation', 'explicit'] },
   { name: 'pde-fem-1d-stiffness', src: 'n = 4; K = zeros(n+1); for e = 1:n, K(e,e) = K(e,e)+1; K(e,e+1) = K(e,e+1)-1; K(e+1,e) = K(e+1,e)-1; K(e+1,e+1) = K(e+1,e+1)+1; end', vars: ['K'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-element', 'stiffness-assembly'] },
@@ -827,8 +833,14 @@ export const CASES: OracleCase[] = [
   { name: 'nm-cn-heat', src: "nx = 11; dx = 0.1; x = (0:nx-1)'*dx; u = sin(pi*x); dt = 0.01; r = dt/dx^2; N = nx-2; I = eye(N); L = -2*eye(N) + diag(ones(N-1,1),1) + diag(ones(N-1,1),-1); Aa = I - r/2*L; Bb = I + r/2*L; for n = 1:10, u(2:nx-1) = Aa\\(Bb*u(2:nx-1)); end; ue = exp(-pi^2*dt*10)*sin(pi*x); v = [max(abs(u - ue)) u(6)];", vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['course-workflow', 'crank-nicolson', 'heat-1d'] },
   { name: 'nm-wave-1d', src: 'nx = 21; dx = 0.05; x = (0:nx-1)*dx; c = 1; dt = 0.025; r = (c*dt/dx)^2; u0 = sin(pi*x); uprev = u0; ucur = u0; ucur(2:nx-1) = u0(2:nx-1) + 0.5*r*(u0(3:nx) - 2*u0(2:nx-1) + u0(1:nx-2)); ucur(1) = 0; ucur(nx) = 0; for n = 1:20, unew = zeros(1,nx); unew(2:nx-1) = 2*ucur(2:nx-1) - uprev(2:nx-1) + r*(ucur(3:nx) - 2*ucur(2:nx-1) + ucur(1:nx-2)); uprev = ucur; ucur = unew; end; t = 21*dt; ue = cos(pi*c*t)*sin(pi*x); v = [max(abs(ucur - ue)) ucur(11)];', vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['course-workflow', 'wave-1d', 'leapfrog', 'explicit'] },
   { name: 'nm-wave-2d', src: 'n = 11; [X, Y] = meshgrid(linspace(0,1,n)); c = 1; dt = 0.05; h = 0.1; r = (c*dt/h)^2; u0 = sin(pi*X).*sin(pi*Y); ucur = u0; uprev = u0; for k = 1:10, unew = ucur; unew(2:end-1,2:end-1) = 2*ucur(2:end-1,2:end-1) - uprev(2:end-1,2:end-1) + r*(ucur(3:end,2:end-1) + ucur(1:end-2,2:end-1) + ucur(2:end-1,3:end) + ucur(2:end-1,1:end-2) - 4*ucur(2:end-1,2:end-1)); unew(1,:) = 0; unew(end,:) = 0; unew(:,1) = 0; unew(:,end) = 0; uprev = ucur; ucur = unew; end; v = [max(abs(ucur(:))) ucur(6,6)];', vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['course-workflow', 'wave-2d', 'meshgrid', 'explicit'] },
+  // ── Deeper PDE/FEM workflows. pdepe reaction-diffusion (validated vs analytic decay +
+  // positivity); upwind advection is TVD (total variation non-increasing); 1-D linear-element FEM
+  // Poisson (nodally exact for a quadratic solution → residual + nodal error ≈ 0). ──
+  { name: 'pde-reaction-diffusion', src: 'x = linspace(0,1,11); tt = linspace(0,0.05,3); sol = pdepe(0, @(xx,t,u,dudx) deal(1, dudx, -u), @(xx) sin(pi*xx), @(xl,ul,xr,ur,t) deal(ul, 0, ur, 0), x, tt); u = sol(end,:); ue = exp(-(pi^2+1)*0.05)*sin(pi*x); v = [double(max(abs(u - ue)) < 0.02) double(all(u >= -1e-9))];', vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['pdepe', 'reaction-diffusion', 'analytic-invariant', 'positivity'] },
+  { name: 'pde-advection-tvd', src: 'N = 50; dx = 1/N; x = (0:N-1)*dx; a = 1; dt = 0.5*dx; nu = a*dt/dx; u = exp(-50*(x-0.3).^2); TV0 = sum(abs(diff(u))); m0 = max(u); for n = 1:20, u = u - nu*(u - circshift(u,1)); end; v = double([sum(abs(diff(u))) <= TV0 + 1e-9 max(u) <= m0 + 1e-9]);', vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['advection', 'upwind', 'tvd', 'stability-invariant'] },
+  { name: 'fem-poisson-1d', src: 'n = 9; h = 1/(n+1); K = (2*eye(n) - diag(ones(n-1,1),1) - diag(ones(n-1,1),-1))/h; b = h*ones(n,1); u = K\\b; xi = (1:n)\x27*h; ue = xi.*(1 - xi)/2; v = [max(abs(u - ue)) norm(K*u - b)];', vars: ['v'], tol: 1e-6, domain: 'numerical-pde', tags: ['fem', 'poisson', 'stiffness-assembly', 'nodal-exactness'] },
 
-  // ══════════ optimization (33) ══════════
+  // ══════════ optimization (35) ══════════
   { name: 'opt-golden-section', src: 'f = @(x)(x-2).^2; a = 0; b = 5; g = (sqrt(5)-1)/2; c = b-g*(b-a); d = a+g*(b-a); for k = 1:60, if f(c) < f(d), b = d; else, a = c; end, c = b-g*(b-a); d = a+g*(b-a); end; xmin = (a+b)/2;', vars: ['xmin'], tol: 1e-6, domain: 'optimization', tags: ['line-search', 'golden-section'] },
   { name: 'opt-gradient-descent', src: 'Q = [3 0; 0 1]; x = [5; 5]; for k = 1:200, x = x - 0.1*(Q*x); end', vars: ['x'], tol: 1e-6, domain: 'optimization', tags: ['gradient-descent', 'quadratic'] },
   { name: 'opt-newton-min', src: 'x = 3; for k = 1:20, x = x - (2*(x-2))/2; end', vars: ['x'], tol: 1e-9, domain: 'optimization', tags: ['newton', 'minimization'] },
@@ -864,6 +876,10 @@ export const CASES: OracleCase[] = [
   { name: 'opt-lsqminnorm', src: "A = [1 1 1; 1 1 1]; b = [3; 3]; x = lsqminnorm(A, b); v = [norm(A*x - b) norm(x) x.\x27];", vars: ['v'], tol: 1e-5, domain: 'optimization', tags: ['lsqminnorm', 'min-norm', 'underdetermined'] },
   { name: 'opt-lsqlin-lsqnonlin', src: 'x1 = lsqlin([1 1; 1 -1], [2; 0], [], []); x2 = lsqnonlin(@(x) [x(1)-1; x(2)-2], [0 0]); v = [x1.\x27 x2];', vars: ['v'], tol: 1e-5, domain: 'optimization', tags: ['lsqlin', 'lsqnonlin', 'known-solution'] },
   { name: 'opt-curvefit', src: 'b = lsqcurvefit(@(b,xd) b(1)*xd + b(2), [0 0], [1; 2; 3], [3; 5; 7]); v = round(b);', vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['lsqcurvefit', 'exact-line-recovery'] },
+  // ── Discrete-optimization workflows via intlinprog (binary MILP), validated by optimal objective
+  // + feasibility invariants (assignment is a permutation; set cover covers the universe). ──
+  { name: 'opt-assignment', src: "C = [3 1 2; 2 3 1; 1 2 3]; f = C(:); Aeq = zeros(6,9); for r = 1:3, Aeq(r, (r-1)*3 + (1:3)) = 1; end; for c = 1:3, Aeq(3+c, c:3:9) = 1; end; beq = ones(6,1); x = intlinprog(f, 1:9, [], [], Aeq, beq, zeros(9,1), ones(9,1)); X = reshape(round(x), 3, 3); v = [round(f'*x) all(sum(X,1)==1) all(sum(X,2)'==1)];", vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['intlinprog', 'assignment-problem', 'binary-milp'] },
+  { name: 'opt-setcover', src: 'A = [1 0 0 1; 1 1 0 0; 0 1 0 1; 0 1 1 0; 0 0 1 1]; x = intlinprog(ones(4,1), 1:4, -A, -ones(5,1), [], [], zeros(4,1), ones(4,1)); xr = round(x); v = [sum(xr) all(A*xr >= 1)];', vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['intlinprog', 'set-cover', 'covering-milp'] },
 
   // ══════════ statistics (66) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
