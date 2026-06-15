@@ -5,10 +5,11 @@
 // Registration is limited to in-scope numerical/matrix-computation domains. Out-of-scope
 // domain toolboxes are NOT registered (source kept under matlab/tb/ but not exposed at
 // runtime): antenna/rf, audio, bioinfo, financial/fininst, lidar/radar,
-// textanalytics, vision (earlier); fixedpoint, fusion, fuzzy, gads, ident, parallel, phased,
+// textanalytics, vision (earlier); fixedpoint, fuzzy, gads, ident, parallel, phased,
 // risk, robotics;
-// (wavelet + aerospace + econ are now RESTORED + selectively registered via RESTORED_TOOLBOX_KEEP —
-// wavelet: DCT + DWT; aerospace: rotation/quaternion algebra; econ: time-series diagnostics);
+// (wavelet + aerospace + econ + fusion are now RESTORED + selectively registered via
+// RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion algebra;
+// econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection fusion);
 // images (image processing), mapping (geodesy), nav (navigation/coord frames), nnet
 // (deep-learning layers/training), rl (reinforcement learning), pde (PDE-Toolbox object/mesh
 // machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases),
@@ -34,6 +35,7 @@ import { SYMBOLIC } from './symbolic';
 import { WAVELET } from './wavelet';
 import { AEROSPACE } from './aerospace';
 import { ECON } from './econ';
+import { FUSION } from './fusion';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
@@ -41,6 +43,7 @@ export const TOOLBOXES: ToolboxModule[] = [
   WAVELET,     // restored — registered via RESTORED_TOOLBOX_KEEP (validated subset only)
   AEROSPACE,   // restored — only the deterministic rotation/quaternion math (allow-list below)
   ECON,        // restored — unit-root + deterministic time-series diagnostics (allow-list below)
+  FUSION,      // restored — optimal assignment + covariance-intersection fusion (allow-list below)
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -118,6 +121,9 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // econ: deterministic time-series diagnostics (sample ACF/PACF/XCF, ADF unit-root, Engle ARCH LM).
   // The product's model-object/estimation surface (arima/garch/egarch …) stays unregistered.
   econ: new Set(['autocorr', 'crosscorr', 'parcorr', 'adftest', 'archtest']),
+  // fusion: discrete-optimization assignment (Munkres/auction, optimal min-cost) + covariance-
+  // intersection track fusion. The Sensor-Fusion product's tracker/object surface stays unregistered.
+  fusion: new Set(['assignmunkres', 'assignauction', 'fusecovint']),
 };
 
 /** Intentional-duplicate policy. A name implemented in BOTH base and a toolbox is a cross-layer

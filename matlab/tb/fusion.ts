@@ -94,6 +94,47 @@ async function assignjv(args: Value[]): Promise<Value[]> {
   return assignmunkres(args);
 }
 
+// ── Covariance intersection (small dense N×N helpers) ───────────────────────────────────
+function detRC(A: number[][]): number {
+  const n = A.length, M = A.map((r) => r.slice()); let d = 1;
+  for (let c = 0; c < n; c++) {
+    let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r;
+    if (p !== c) { [M[c], M[p]] = [M[p], M[c]]; d = -d; }
+    const piv = M[c][c]; if (piv === 0) return 0; d *= piv;
+    for (let r = c + 1; r < n; r++) { const f = M[r][c] / piv; for (let k = c; k < n; k++) M[r][k] -= f * M[c][k]; }
+  }
+  return d;
+}
+function invRC(A: number[][]): number[][] {
+  const n = A.length, M = A.map((r, i) => [...r.slice(), ...Array.from({ length: n }, (_, j) => (i === j ? 1 : 0))]);
+  for (let c = 0; c < n; c++) {
+    let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M[r][c]) > Math.abs(M[p][c])) p = r;
+    [M[c], M[p]] = [M[p], M[c]];
+    const piv = M[c][c]; for (let k = 0; k < 2 * n; k++) M[c][k] /= piv;
+    for (let r = 0; r < n; r++) if (r !== c) { const f = M[r][c]; for (let k = 0; k < 2 * n; k++) M[r][k] -= f * M[c][k]; }
+  }
+  return M.map((r) => r.slice(n));
+}
+/** [fused,Pf] = fusecovint(states,covs): covariance-intersection fusion of M tracks. states is N×M
+ *  (columns = tracks), covs is N×N×M. MATLAB weights each track by 1/det(P_i) (normalized), then
+ *  Pf⁻¹ = Σ w_i P_i⁻¹ and fused = Pf · Σ w_i P_i⁻¹ x_i (verified exact against R2026a). */
+async function fusecovint(args: Value[]): Promise<Value[]> {
+  if (args.length < 2) throw new MatError('fusecovint: requires trackState and trackCov');
+  const S = m(args[0]), Cv = m(args[1]); const N = S.rows, M = S.cols;
+  const page = (k: number): number[][] => Array.from({ length: N }, (_, r) => Array.from({ length: N }, (_, c) => Cv.data[r + c * N + k * N * N]));
+  const xcol = (k: number): number[] => Array.from({ length: N }, (_, r) => S.data[r + k * N]);
+  const invdet = Array.from({ length: M }, (_, k) => 1 / detRC(page(k)));
+  const W = invdet.reduce((a, b) => a + b, 0);
+  const Pinv = Array.from({ length: N }, () => new Array<number>(N).fill(0)); const b = new Array<number>(N).fill(0);
+  for (let k = 0; k < M; k++) {
+    const w = invdet[k] / W, Pi = invRC(page(k)), x = xcol(k);
+    for (let i = 0; i < N; i++) { for (let j = 0; j < N; j++) Pinv[i][j] += w * Pi[i][j]; let s = 0; for (let j = 0; j < N; j++) s += Pi[i][j] * x[j]; b[i] += w * s; }
+  }
+  const Pf = invRC(Pinv);
+  const xf = Array.from({ length: N }, (_, i) => { let s = 0; for (let j = 0; j < N; j++) s += Pf[i][j] * b[j]; return s; });
+  return [colVec(xf), fromRows(Pf)];
+}
+
 // ── Allan variance ──────────────────────────────────────────────────────────────────────
 // Estimates frequency stability from a phase/frequency time series.
 async function allanvar(args: Value[]): Promise<Value[]> {
@@ -320,6 +361,7 @@ export const FUSION: ToolboxModule = {
     assignmunkres,
     assignauction,
     assignjv,
+    fusecovint,
     allanvar,
     constvel,
     constacc,
