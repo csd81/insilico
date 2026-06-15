@@ -4329,7 +4329,22 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   rmedge: async (a) => { const g = gArg(a[0]); const s = nodeIds(g, a[1]), t = nodeIds(g, a[2]); const drop = new Set(s.map((si, i) => `${Math.min(si, t[i])}_${Math.max(si, t[i])}`)); const edges = g.edges.filter((e) => !drop.has(`${Math.min(e.s, e.t)}_${Math.max(e.s, e.t)}`)); return ret(makeGraph(g.directed, g.n, edges, g.names)); },
   neighbors: async (a) => {
-    if (isGeom(a[0])) { const g = a[0]; const ti = Math.round(asScalar(a[1])) - 1; const T = g.conn ?? []; const k = T[0]?.length ?? 3; const shares = (x: number[], y: number[]) => x.filter((v) => y.includes(v)).length >= k - 1; const ns: number[] = []; T.forEach((t, j) => { if (j !== ti && shares(t, T[ti])) ns.push(j + 1); }); return ret(rowVec(ns)); }
+    if (isGeom(a[0])) {
+      const g = a[0]; const T = g.conn ?? []; const k = T[0]?.length ?? 3;
+      const shares = (x: number[], y: number[]) => x.filter((v) => y.includes(v)).length >= k - 1;
+      if (a.length < 2) {
+        // neighbors(DT): full [numSimplex × k] matrix, column j = simplex across the facet
+        // opposite vertex j; boundary facets have no neighbor → NaN (matching MATLAB).
+        const out = zeros(T.length, k); out.data.fill(NaN);
+        for (let i = 0; i < T.length; i++) for (let e = 0; e < k; e++) {
+          const facet = T[i].filter((_, idx) => idx !== e);
+          const nb = T.findIndex((t, j) => j !== i && facet.every((v) => t.includes(v)));
+          if (nb >= 0) out.data[i + e * T.length] = nb + 1;
+        }
+        return ret(out);
+      }
+      const ti = Math.round(asScalar(a[1])) - 1; const ns: number[] = []; T.forEach((t, j) => { if (j !== ti && shares(t, T[ti])) ns.push(j + 1); }); return ret(rowVec(ns));
+    }
     const g = gArg(a[0]); const i = nodeIds(g, a[1])[0]; const ns = [...new Set(adjList(g, 'out')[i].map((x) => x.to))].sort((x, y) => x - y); return ret(colVec(ns.map((x) => x + 1)));
   },
   successors: async (a) => { const g = gArg(a[0]); const i = nodeIds(g, a[1])[0]; const ns = [...new Set(adjList(g, 'out')[i].map((x) => x.to))].sort((x, y) => x - y); return ret(colVec(ns.map((x) => x + 1))); },

@@ -114,20 +114,9 @@ quadv reallog realpow realsqrt strvcat symmmd triplequad`;
 
 // defer: real MATLAB-ish but not current priority (table/timetable, categorical, datetime/duration,
 // graph-object mutation, triangulation/polyshape geometry ecosystem, timing).
-const DEFER = `NaT addboundary addcats addedge addnode addtodate addvars alphaShape alphaSpectrum
-alphaTriangulation array2table barycentricToCartesian boundaryFacets boundingbox cartesianToBarycentric
-categorical categories cell2table centroid circumcenter clock convexHull countcats cputime
-criticalAlpha date datenum datestr datetime datevec day days delaunayTriangulation digraph duration
-edgeAttachments edges entries eomday etime faceNormal featureEdges findgroups flipedge freeBoundary
-graph groupcounts groupsummary head holes hour hours inShape incenter innerjoin isInterior isbetween
-iscategorical iscategory isdatetime isduration isinterior isnat istable istabular istimetable join
-labeledge labelnode mergecats mergevars milliseconds minute minutes month movevars nearestNeighbor now
-nsidedpoly numEntries numRegions numboundaries numsides outerjoin overlaps perimeter pointLocation
-polybuffer polyshape regions removecats removevars renamecats renamevars reordercats reordernodes
-rmboundary rmedge rmholes rmnode rmslivers rotate rowfun second seconds sortboundaries sortregions
-struct2table subtract summary surfaceArea table table2array table2cell table2struct tail tic timeit
-timetable toc today translate triangulation varfun vertexAttachments vertexNormal voronoiDiagram
-weekday year years ymd`;
+const DEFER = `
+NaT addboundary addcats addedge addnode addtodate addvars alphaSpectrum alphaTriangulation array2table boundaryFacets boundingbox categorical categories cell2table centroid clock convexHull countcats cputime criticalAlpha date datenum datestr datetime datevec day days digraph duration edgeAttachments edges entries eomday etime faceNormal featureEdges findgroups flipedge graph groupcounts groupsummary head holes hour hours inShape innerjoin isInterior isbetween iscategorical iscategory isdatetime isduration isinterior isnat istable istabular istimetable join labeledge labelnode mergecats mergevars milliseconds minute minutes month movevars now nsidedpoly numEntries numRegions numboundaries numsides outerjoin overlaps perimeter polybuffer polyshape regions removecats removevars renamecats renamevars reordercats reordernodes rmboundary rmedge rmholes rmnode rmslivers rotate rowfun second seconds sortboundaries sortregions struct2table subtract summary surfaceArea table table2array table2cell table2struct tail tic timeit timetable toc today translate varfun vertexAttachments vertexNormal voronoiDiagram weekday year years ymd
+`;
 
 // out-of-scope-candidate: NOT removed — flagged for review. Non-MATLAB / pseudo-MATLAB / internal.
 const OUT_OF_SCOPE = `abort inline printf size_equal`;
@@ -194,4 +183,10 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // ── Pass 2G: integer types, casts, binary reinterpretation (MATLAB-specific semantics:
   // saturation, round-half-away, idivide modes, little-endian typecast). All match exactly. ──
   ...bulkD('needs-oracle', 'direct', 'core-language', 'int8 int16 int32 int64 uint8 uint16 uint32 uint64 single cast typecast swapbytes idivide intmin intmax flintmax isfloat isinteger isnumeric isa class strcmp'),
+
+  // ── Pass 2H: computational geometry / triangulation — core for FEM/PDE/meshing/scattered-data
+  // interpolation. Validated by ORDER-INDEPENDENT invariants (hull area/volume, simplex count,
+  // barycentric round-trip, nearest-neighbor identity, circumcenter equidistance, connectivity
+  // counts), never raw vertex/simplex ordering (engines may pick different diagonals). ──
+  ...bulkD('needs-oracle', 'invariant', 'geometry', 'delaunayTriangulation triangulation delaunayn pointLocation cartesianToBarycentric barycentricToCartesian nearestNeighbor circumcenter incenter freeBoundary edges neighbors alphaShape boundary'),
 };

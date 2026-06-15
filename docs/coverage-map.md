@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 929 tests green · 794 MATLAB oracle fixtures ·
-794/794 cases classified across 22 domains.
+**Status (as of this revision):** 935 tests green · 800 MATLAB oracle fixtures ·
+800/800 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -186,14 +186,29 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   explicit-`edges` form is locked); `reverse('hello')` returns a string vs MATLAB's
   char (value validated via `char()`); `qrupdate` requires full `qr` (MATLAB rejects
   economy); `legendreP` is Symbolic-only and absent in this MATLAB (not validated).
-- **Totals after Pass 2:** 929 tests / 794 fixtures; base/core `uncategorized` 579 → 504.
+- **Pass 2H — computational geometry / triangulation (core for FEM/PDE/meshing/
+  scattered-data interpolation, not breadth):** 6 invariant cases over `convhull`/
+  `convhulln`/`delaunay`/`delaunayn`/`delaunayTriangulation`/`triangulation`/
+  `pointLocation`/`cartesianToBarycentric`/`barycentricToCartesian`/`nearestNeighbor`/
+  `circumcenter`/`incenter`/`freeBoundary`/`edges`/`neighbors`/`voronoin`/`boundary`/
+  `alphaShape` — validated by **order-independent invariants** (hull area/volume, simplex
+  count, barycentric round-trip, nearest-neighbor identity, circumcenter equidistance,
+  connectivity counts), never raw vertex/simplex ordering (engines may pick different
+  square diagonals). Fixed 1 crash: `neighbors(DT)` (all-simplices form) threw on the
+  unguarded triangle index; now returns the full `[numSimplex × k]` neighbor matrix
+  (`NaN` for boundary facets, matching MATLAB). `vertexAttachments` intentionally
+  **not** locked — its per-vertex count is diagonal-dependent (non-robust). Surfaced a
+  parser divergence (documented, not yet fixed): inside `[]`, `vi (expr)` with a space
+  before `(` should be two elements (MATLAB whitespace rule) but the engine reads it as
+  indexing `vi(expr)`; cases use explicit commas/temps to avoid the ambiguity.
+- **Totals after Pass 2:** 935 tests / 800 fixtures; base/core `uncategorized` 579 → 500.
 
 **The sweep is marked complete.** The goal was never zero `uncategorized` — it was
 *no unvalidated high-risk computational core*. Further base/core validation is
 **demand-driven**: add cases when a course/example needs a specific function, not to
 chase the percentage.
 
-### Remaining base/core backlog (~504 uncategorized)
+### Remaining base/core backlog (~500 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -220,7 +235,9 @@ shape, for demand-driven triage — not a TODO list:
 - **containers (~5):** `containers.Map`/`dictionary`/`keys`/`values`/`entries`.
 - **graph algorithms, remaining (~29):** `shortestpathtree`/`allpaths`/`allcycles`/
   `bctree`/`biconncomp`/… (core graph already validated).
-- **sparse remainder (~6), geometry remainder (~6), coordinate transforms**
+- **sparse remainder (~6), geometry remainder (~2)** (`voronoi`/`inpolygon` plus the
+  polyshape/alphaShape object ecosystem, parked in `defer`; geometry math-core now
+  validated — Pass 2H), **coordinate transforms**
   (`cart2pol`/`pol2cart`/`sph2cart`/`deg2rad`/`rad2deg`), **test matrices**
   (`bucky`/`peaks`/`rosser`/`membrane`/`invhilb`/`wilkinson`), and misc utilities.
 
