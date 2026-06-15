@@ -32,6 +32,43 @@ export const TOOLBOXES: ToolboxModule[] = [
   COMM, CONTROL, CURVEFIT, DSP, OPTIM, Pde, SIGNAL, STATS, SYMBOLIC,
 ];
 
+/** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
+ *  registered (the rest of its source is kept but not exposed at runtime). This curates the
+ *  large signal/stats tails down to validated + core graduate functions, and reduces dsp to
+ *  its one oracle-validated overlap (`resample`). Toolboxes not listed register everything.
+ *  See `pnpm oracle:audit` for the per-toolbox registered/validated breakdown. */
+export const TOOLBOX_KEEP: Record<string, Set<string>> = {
+  // dsp overlaps signal and is otherwise toolbox-object breadth; keep only the validated overlap.
+  dsp: new Set(['resample']),
+  // signal: validated/core filter design + response + filtering, spectral estimation (validate-next),
+  // common windows used by filters; the peripheral tail (pulse/radar generators, telecom helpers,
+  // exotic windows, niche parametric/AR utilities) is de-registered.
+  signal: new Set([
+    'hilbert', 'findpeaks', 'butter', 'freqz', 'filtfilt', 'fir1',
+    'periodogram', 'pwelch', 'spectrogram', 'stft', 'czt', 'dct',
+    'hamming', 'hann', 'hanning', 'kaiser', 'blackman', 'bartlett', 'rectwin', 'triang', 'gausswin',
+    'dftmtx', 'interp', 'levinson', 'overshoot', 'square',
+  ]),
+  // stats: the 8 core distribution families (cdf/pdf/inv/fit/stat), the validated inference suite,
+  // and statistical-algebra core (pca/knnsearch/pdist/robustfit/glmfit/ksdensity/QMC). Peripheral
+  // distributions (extreme-value, noncentral, multivariate, copulas), nan*-helpers and niche
+  // modeling utilities are de-registered.
+  stats: new Set([
+    'normcdf', 'normpdf', 'norminv', 'normfit', 'normstat',
+    'tcdf', 'tpdf', 'tinv', 'tstat',
+    'chi2cdf', 'chi2pdf', 'chi2inv', 'chi2stat',
+    'fcdf', 'fpdf', 'finv', 'fstat',
+    'betacdf', 'betapdf', 'betainv', 'betafit', 'betastat',
+    'gamcdf', 'gampdf', 'gaminv', 'gamfit', 'gamstat',
+    'poisscdf', 'poisspdf', 'poissinv', 'poissfit', 'poisstat',
+    'binocdf', 'binopdf', 'binoinv', 'binofit', 'binostat',
+    'cdf', 'pdf', 'icdf', 'random', 'makedist', 'fitdist',
+    'ttest', 'ttest2', 'kstest', 'kstest2', 'vartest', 'chi2gof', 'anova1', 'ranksum', 'signrank',
+    'pca', 'knnsearch', 'pdist', 'squareform', 'robustfit', 'glmfit', 'ksdensity', 'kmeans',
+    'haltonset', 'net', 'moment', 'range',
+  ]),
+};
+
 export const TOOLBOX_BUILTINS: Record<string, Builtin> = {};
 export const TOOLBOX_CONSTANTS: Record<string, () => Value> = {};
 export const TOOLBOX_HELP: Record<string, HelpEntry | string> = {};
@@ -60,7 +97,9 @@ export const NAME_OWNERS = new Map<string, string[]>();
 
 for (const tb of TOOLBOXES) {
   TOOLBOX_BY_ID.set(tb.id, tb);
+  const keep = TOOLBOX_KEEP[tb.id];
   for (const [name, fn] of Object.entries(tb.builtins)) {
+    if (keep && !keep.has(name)) continue;   // curated allow-list: skip de-registered breadth
     const owners = NAME_OWNERS.get(name); if (owners) owners.push(tb.id); else NAME_OWNERS.set(name, [tb.id]);
     if (!(name in TOOLBOX_BUILTINS)) TOOLBOX_BUILTINS[name] = fn;
     if (!FUNC_TOOLBOX.has(name)) FUNC_TOOLBOX.set(name, tb);

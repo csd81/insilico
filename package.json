@@ -11,6 +11,7 @@
     "test": "tsc -p tsconfig.test.json && echo '{\"type\":\"commonjs\"}' > .test-dist/package.json && node --test '.test-dist/**/*.test.js'",
     "oracle:generate": "tsc -p tsconfig.test.json && node matlab/test/oracle/generate.mjs",
     "oracle:coverage": "tsc -p tsconfig.test.json && node matlab/test/oracle/coverage.mjs",
+    "oracle:audit": "tsc -p tsconfig.test.json && node matlab/test/oracle/registry-audit.mjs",
     "clean": "rm -rf .test-dist dist"
   },
   "dependencies": {

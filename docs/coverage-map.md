@@ -131,10 +131,21 @@ runtime) so the "oracle-checked toolbox" claim isn't overstated: images (image
 processing), mapping (geodesy), nav (navigation/coordinate frames), nnet
 (deep-learning layers/training), rl (reinforcement learning), econ (econometrics).
 None were used by any oracle case. Calling them now returns "undefined function",
-matching MATLAB without those toolboxes. Note: registered ≠ validated — within the
-9 toolboxes many functions are still unvalidated core-math candidates (oracle
-coverage is per case, above), and the large unvalidated tails in `signal`/`stats`
-are the next curation target.
+matching MATLAB without those toolboxes.
+
+`signal`, `stats`, and `dsp` are additionally **curated per function** via the
+`TOOLBOX_KEEP` allow-list in `tb/index.ts`: `signal` 167→25 (filter design/response,
+filtering, spectral estimation, common windows), `stats` 181→64 (the 8 core
+distribution families + the validated inference suite + statistical-algebra core),
+`dsp` 24→1 (only the validated overlap `resample`). The peripheral tail (pulse/radar
+generators, telecom helpers, exotic windows, niche/multivariate distributions) is
+de-registered, source preserved. Registry total: 855→346 registered builtins.
+
+Note: registered ≠ validated. `pnpm oracle:audit` reports, per toolbox, registered
+vs oracle-referenced counts and the unvalidated tail (currently 29% of registered
+surface is oracle-referenced). Kept-but-unreferenced functions are core-math
+candidates scheduled for validation; the remaining tails (symbolic, control, comm,
+pde, curvefit) are the next curation/validation targets.
 
 ### Validate existing (implemented + oracle-validated)
 All oracle-validated — no validation backlog remains:
