@@ -169,6 +169,6 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'pageinv pagemldivide pagepinv pageeig pagesvd'),
 
   // ── Pass 2B: sparse structure + reordering (orderings validated by permutation invariants). ──
-  ...bulkD('needs-oracle', 'direct', 'numerical-linear-algebra', 'spones spfun spalloc spconvert etree spaugment'),
+  ...bulkD('needs-oracle', 'direct', 'numerical-linear-algebra', 'spones spfun spalloc spconvert etree spaugment bandwidth'),
   ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'symrcm colamd amd dmperm'),
 };
