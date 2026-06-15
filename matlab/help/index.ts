@@ -4500,6 +4500,7 @@ export const HELP_FUZZY: Record<string, HelpEntry | string> = {
     smf: { summary: 'S-shaped membership function', syntax: ['y = smf(x,params)'], seealso: ['zmf', 'pimf', 'sigmf'] },
     pimf: { summary: 'Pi-shaped membership function', syntax: ['y = pimf(x,params)'], seealso: ['smf', 'zmf', 'trapmf'] },
     defuzz: { summary: 'Defuzzify membership function to scalar', syntax: ['out = defuzz(x,mf,type)'], seealso: ['trimf', 'gaussmf', 'evalfis'] },
+    evalmf: { summary: 'Evaluate a named membership function (legacy y = evalmf(x,params,type))', syntax: ["y = evalmf(x,params,type)"], seealso: ['trimf', 'gaussmf', 'sigmf'] },
   };
 
 // ─────────────────────────────────────────────────────────────────────────────

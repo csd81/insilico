@@ -228,10 +228,14 @@ Registered toolboxes are limited to in-scope numerical/matrix domains:
   versions — base still wins on the shared names, the B-form path is reached via `curvefit.*`; see
   `DUPLICATE_POLICY`). The fit/fittype/smooth and rest of the spline object subsystem stay
   unregistered. Validated by exact franke values + B-spline integral/symmetry invariants.
+- `fuzzy` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): the deterministic
+  closed-form membership functions only — `trimf`/`trapmf`/`gaussmf`/`gbellmf`/`sigmf`, discrete
+  `defuzz` (centroid/bisector/mom/som/lom), and the legacy named-MF evaluator `evalmf`. Exact
+  MATLAB parity; the FIS/ANFIS rule-base/inference object system stays unregistered.
 
 **Restored source pool (source-only, NOT registered).** The previously-deleted toolbox source
 files were brought back as a curated pool under `matlab/tb/` (antenna, audio,
-bioinfo, financial, fininst, fixedpoint, fusion, fuzzy, gads, ident, lidar, parallel, phased,
+bioinfo, financial, fininst, fixedpoint, gads, ident, lidar, parallel, phased,
 radar, rf, risk, robotics, textanalytics, uav, vision, wavelet; simulink skipped). A restored
 toolbox is exposed at runtime **only** via `RESTORED_TOOLBOX_KEEP`, and only after each function
 is probed against MATLAB R2026a and oracle/invariant-validated. Source presence is not a

@@ -74,6 +74,14 @@ export const FUZZY: ToolboxModule = {
     smf: (a) => { const [p, q] = toArray(m(a[1])); return ret(map(m(a[0]), (x) => smfScalar(x, p, q))); },
     pimf: (a) => { const [p, q, r, s] = toArray(m(a[1])); return ret(map(m(a[0]), (x) => smfScalar(x, p, q) * zmfScalar(x, r, s))); },
     defuzz: (a) => ret(scalar(defuzzScalar(toArray(m(a[0])), toArray(m(a[1])), asString(a[2]).toLowerCase()))),
+    // Legacy syntax y = evalmf(x, params, type): evaluate a named membership function by dispatching
+    // to the matching MF builtin. (MATLAB's newer evalmf(mf, x) takes an MF object; not in scope.)
+    evalmf: (a) => {
+      const type = asString(a[2]).toLowerCase();
+      const mf = (FUZZY.builtins as Record<string, (args: Value[]) => Promise<Value[]>>)[type];
+      if (!mf || type === 'evalmf' || type === 'defuzz') throw new MatError(`Unknown membership function type '${type}'.`, 'fuzzy:general:errEvalmf_BadType');
+      return mf([a[0], a[1]]);
+    },
   },
   help: HELP_FUZZY,
 };

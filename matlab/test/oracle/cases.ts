@@ -505,6 +505,12 @@ export const CASES: OracleCase[] = [
   // the roundtrip ecef2lla(lla2ecef(p))=p invariant ties it down to mm.
   { name: 'nav-lla-ecef', src: 'e = lla2ecef([45 90 1000]); l = ecef2lla([4517590.879 0 4487348.409]); p0 = [37.5 -122.3 55]; rt = ecef2lla(lla2ecef(p0)); v = [e l norm(rt - p0)];', vars: ['v'], tol: 1e-2, domain: 'geometry', tags: ['lla2ecef', 'ecef2lla', 'wgs84', 'roundtrip-invariant'] },
   { name: 'aero-angle-dcm-quat', src: "q = angle2quat(0.1, 0.2, 0.3); D = angle2dcm(0.1, 0.2, 0.3); [a1, a2, a3] = dcm2angle(D); v = [q a1 a2 a3 norm(D*D' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['angle2quat', 'angle2dcm', 'dcm2angle', 'roundtrip', 'orthogonality-invariant'] },
+  // Fuzzy membership functions (closed-form, deterministic): triangular/trapezoidal/Gaussian/
+  // generalized-bell/sigmoidal evaluated on a shared universe. Restored + registered by allow-list.
+  { name: 'fuzzy-membership', src: "x = 0:0.5:4; v = [trimf(x,[1 2 3]) trapmf(x,[0.5 1.5 2.5 3.5]) gaussmf(x,[1 2]) gbellmf(x,[1.5 2 2]) sigmf(x,[3 2])];", vars: ['v'], tol: 1e-12, domain: 'numerical-methods', tags: ['trimf', 'trapmf', 'gaussmf', 'gbellmf', 'sigmf', 'fuzzy'] },
+  // Discrete defuzzification of a sampled triangular MF (symmetric ⇒ centroid=bisector=mom=peak),
+  // plus evalmf's legacy named-MF dispatch reproducing the direct MF calls exactly (max|diff|=0).
+  { name: 'fuzzy-defuzz-evalmf', src: "xu = 0:0.1:10; mf = trimf(xu,[2 5 8]); g = [defuzz(xu,mf,'centroid') defuzz(xu,mf,'bisector') defuzz(xu,mf,'mom')]; x = 0:0.5:4; em = [evalmf(x,[1 2 3],'trimf') evalmf(x,[1 2],'gaussmf') evalmf(x,[3 2],'sigmf')]; dir = [trimf(x,[1 2 3]) gaussmf(x,[1 2]) sigmf(x,[3 2])]; v = [g max(abs(em(:) - dir(:)))];", vars: ['v'], tol: 1e-12, domain: 'numerical-methods', tags: ['defuzz', 'evalmf', 'centroid', 'fuzzy'] },
   // ── Demand-driven remainder: coordinate transforms (round-trip exactness + known values) and
   // assorted geometry utilities (point-in-polygon, rectangle intersection area, polygon area). ──
   { name: 'xform-roundtrip', src: '[th, rh] = cart2pol(3, 4); [x, y] = pol2cart(th, rh); [az, el, r] = cart2sph(1, 2, 2); [X, Y, Z] = sph2cart(az, el, r); v = [th rh x y az el r X Y Z deg2rad(180) rad2deg(pi)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['cart2pol', 'pol2cart', 'cart2sph', 'sph2cart', 'deg2rad', 'rad2deg', 'roundtrip'] },
