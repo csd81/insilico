@@ -262,6 +262,38 @@ const archtest: Builtin = (a, nargout) => {
   void nargout;
   return Promise.resolve([bool(stat > cv), scalar(pVal), scalar(stat), scalar(cv)]);
 };
+/** hpfilter(Y[,Smoothing=λ]): Hodrick-Prescott two-sided filter → [Trend,Cyclical].
+ *  Trend τ minimises Σ(y-τ)² + λ·Σ(Δ²τ)²; in matrix form τ = (I + λ·D2'·D2)⁻¹·y where
+ *  D2 is the (N-2)×N second-difference operator. Cyclical c = y - τ (exact decomposition).
+ *  Smoothing is name-value only in R2026a (default 1600); each column processed separately. */
+const hpfilter: Builtin = (a, nargout) => {
+  const Y = m(a[0]);
+  const sm = parseNamed(a, 'smoothing'); const lambda = sm ? asScalar(sm) : 1600;
+  if (!(lambda >= 0)) throw new MatError('hpfilter: Smoothing must be a nonnegative scalar');
+  // operate column-by-column; a row/col vector keeps its orientation
+  const isVec = Y.rows === 1 || Y.cols === 1;
+  const R = Y.rows, C = Y.cols;
+  const cols = isVec ? 1 : C;
+  const N = isVec ? R * C : R;
+  if (N < 3) throw new MatError('hpfilter: the time series must have at least 3 observations');
+  // A = I + λ·D2'·D2 (symmetric pentadiagonal, N×N); build once, reused per column.
+  const A = Array.from({ length: N }, (_, i) => Array.from({ length: N }, (_, j) => (i === j ? 1 : 0)));
+  for (let k = 0; k < N - 2; k++) { // row k of D2 has [1,-2,1] at columns k,k+1,k+2
+    const idx = [k, k + 1, k + 2]; const w = [1, -2, 1];
+    for (let p = 0; p < 3; p++) for (let q = 0; q < 3; q++) A[idx[p]][idx[q]] += lambda * w[p] * w[q];
+  }
+  const yarr = isVec ? toArray(Y) : null;
+  const colAt = (c: number): number[] => { const out: number[] = []; for (let r = 0; r < N; r++) out.push(yarr ? yarr[r] : Y.data[r + c * R]); return out; };
+  const Tdata = new Float64Array(N * cols), Cdata = new Float64Array(N * cols);
+  for (let c = 0; c < cols; c++) {
+    const yc = colAt(c); const tau = solveSym(A, yc).x;
+    for (let r = 0; r < N; r++) { Tdata[r + c * N] = tau[r]; Cdata[r + c * N] = yc[r] - tau[r]; }
+  }
+  let trend: Value, cyc: Value;
+  if (isVec) { const ta = Array.from(Tdata), ca = Array.from(Cdata); trend = R === 1 ? rowVec(ta) : colVec(ta); cyc = R === 1 ? rowVec(ca) : colVec(ca); }
+  else { trend = mat(N, cols, Tdata); cyc = mat(N, cols, Cdata); }
+  return Promise.resolve(nargout >= 2 ? [trend, cyc] : [trend]);
+};
 /** aicbic(logL,numParam[,numObs]): Akaike (and Bayesian) information criteria. */
 const aicbic: Builtin = (a, nargout) => { const L = asScalar(a[0]), k = asScalar(a[1]); const outs: Value[] = [scalar(-2 * L + 2 * k)]; if (nargout >= 2) { if (a.length < 3 || !isMat(a[2])) throw new MatError('aicbic: numObs is required to compute the Bayesian information criterion (BIC)'); outs.push(scalar(-2 * L + k * Math.log(asScalar(a[2])))); } return Promise.resolve(outs); };
 
@@ -269,7 +301,7 @@ export const ECON: ToolboxModule = {
   id: 'econ',
   name: 'Econometrics Toolbox',
   docBase: 'https://www.mathworks.com/help/econ/ref/',
-  builtins: { adftest, pptest, price2ret, ret2price, tick2ret, ret2tick, lagmatrix, aicbic, autocorr, crosscorr, parcorr, archtest },
+  builtins: { adftest, pptest, price2ret, ret2price, tick2ret, ret2tick, lagmatrix, aicbic, autocorr, crosscorr, parcorr, archtest, hpfilter },
   help: HELP_ECON,
 };
 // Augmented Dickey-Fuller critical-value tables, extracted verbatim from the

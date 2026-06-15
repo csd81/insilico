@@ -1169,6 +1169,7 @@ export const CASES: OracleCase[] = [
   { name: 'econ-crosscorr', src: "x = [2 1 3 2 4 3 5 4 6 5 7 6 8 7 9 8]; y = [4 7 2 8 5 3 9 6 4 7 8 2 5 9 3 6]; xc = crosscorr(x, y, 'NumLags', 3); v = xc(:)';", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['crosscorr', 'cross-correlation', 'time-series'] },
   { name: 'econ-adftest', src: 'y = [1 2 1 3 2 4 3 5 4 6 5 7 6 8 7 9]; [h, p] = adftest(y); v = [h p];', vars: ['v'], tol: 1e-5, domain: 'statistics', tags: ['adftest', 'unit-root', 'dickey-fuller'] },
   { name: 'econ-archtest', src: "res = [0.5 -0.3 0.8 -0.6 0.4 -0.2 0.7 -0.5 0.3 -0.1 0.6 -0.4 0.9 -0.7 0.2 -0.8]; [h, p, s, c] = archtest(res, 'Lags', 2); v = [h p s c];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['archtest', 'arch-lm', 'heteroscedasticity'] },
+  { name: 'econ-hpfilter', src: "y = [1 2 1 3 2 4 3 5 4 6 5 7]'; [T, C] = hpfilter(y); [T2, C2] = hpfilter(y, Smoothing=100); v = [T(:)' T2(:)' max(abs(T + C - y)) max(abs(T2 + C2 - y))];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['hpfilter', 'hodrick-prescott', 'trend-cycle', 'detrending'] },
 
   // ══════════ symbolic (67) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },

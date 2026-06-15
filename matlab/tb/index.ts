@@ -159,7 +159,7 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   aero: new Set(['angle2dcm', 'dcm2angle', 'angle2quat', 'quatmultiply', 'quatrotate', 'quatinv']),
   // econ: deterministic time-series diagnostics (sample ACF/PACF/XCF, ADF unit-root, Engle ARCH LM).
   // The product's model-object/estimation surface (arima/garch/egarch …) stays unregistered.
-  econ: new Set(['autocorr', 'crosscorr', 'parcorr', 'adftest', 'archtest', 'lagmatrix']),
+  econ: new Set(['autocorr', 'crosscorr', 'parcorr', 'adftest', 'archtest', 'lagmatrix', 'hpfilter']),
   // fusion: discrete-optimization assignment (Munkres/auction, optimal min-cost) + covariance-
   // intersection track fusion. The Sensor-Fusion product's tracker/object surface stays unregistered.
   fusion: new Set(['assignmunkres', 'assignauction', 'assignkbest', 'fusecovint']),
