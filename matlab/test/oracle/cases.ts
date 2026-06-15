@@ -1046,6 +1046,13 @@ export const CASES: OracleCase[] = [
   // ── Kernel density estimate at a point with an explicit bandwidth (default bandwidth differs by
   // rule-of-thumb, so it is pinned). Exact with the bandwidth fixed. ──
   { name: 'stats-ksdensity', src: "[fd, xi] = ksdensity([1 2 2 3 3 3 4], 2, 'Bandwidth', 0.5); v = [fd xi];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['ksdensity', 'kernel-density', 'fixed-bandwidth'] },
+  { name: 'stats-ecdf', src: "[f, x] = ecdf([1 2 2 3 4]); v = [f' x'];", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['ecdf', 'empirical-cdf'] },
+  { name: 'stats-dummyvar', src: "D = dummyvar([1 2 3 2 1]); v = [D(:)' size(D)];", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['dummyvar', 'indicator-matrix'] },
+  { name: 'stats-adtest', src: 'x = [0.2 0.5 0.1 0.9 0.4 0.6 0.3 0.7 0.8 0.15 0.55 0.45]; [h, p, ad, cv] = adtest(x); v = [h p ad cv];', vars: ['v'], tol: 1e-5, domain: 'statistics', tags: ['adtest', 'anderson-darling', 'normality'] },
+  { name: 'stats-canoncorr', src: 'X = [1 2; 3 4; 5 7; 2 1; 4 6; 6 5]; Y = [2 1; 4 3; 6 5; 1 2; 5 4; 3 6]; [A, B, r] = canoncorr(X, Y); v = r;', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['canoncorr', 'canonical-correlation', 'invariant'] },
+  // cholcov: validate the factorization invariant (T not unique) — full-rank PD and a rank-1 PSD
+  // matrix (where chol fails); v = [recon-err, rank] for each.
+  { name: 'stats-cholcov', src: "C = [4 2 1; 2 5 3; 1 3 6]; [T, n1] = cholcov(C); u = [1; 2; 3]; C2 = u*u'; [T2, n2] = cholcov(C2); v = [norm(T'*T - C, 'fro') size(T,1) n1 norm(T2'*T2 - C2, 'fro') size(T2,1) n2];", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['cholcov', 'psd-factor', 'rank-deficient', 'reconstruction-invariant'] },
 
   // ══════════ symbolic (67) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },

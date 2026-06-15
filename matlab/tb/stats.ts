@@ -733,6 +733,23 @@ function projPSD(M: number[][]): number[][] {
   for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { let s = 0; for (let k = 0; k < n; k++) if (d[k] > 0) s += V[i][k] * d[k] * V[j][k]; out[i][j] = s; }
   return out;
 }
+/** cholcov factor: T (rank×n) with T'*T = C for a symmetric positive-SEMIdefinite C (handles the
+ *  rank-deficient case chol can't). Via symmetric eig: keep eigenpairs with d>tol, T row k =
+ *  sqrt(d_k)·v_k'. `num` follows MATLAB — the count of NEGATIVE eigenvalues (0 ⇒ C is positive
+ *  semidefinite, T'*T=C); when num>0, C is indefinite and T is empty. */
+function cholcovT(Cin: number[][]): { T: number[][]; num: number } {
+  const n = Cin.length;
+  const C = Cin.map((r, i) => r.map((x, j) => (x + Cin[j][i]) / 2));   // symmetrize
+  const { d, V } = symEig(C);
+  const dmax = Math.max(0, ...d.map(Math.abs));
+  const tol = dmax > 0 ? 1e-10 * dmax * n : 0;
+  const neg = d.filter((x) => x < -tol).length;
+  if (neg > 0) return { T: [], num: neg };                            // indefinite ⇒ empty factor
+  const pos = d.map((x, k) => ({ x, k })).filter((o) => o.x > tol);
+  // T row k = sqrt(d_k)·v_k'  ⇒  (T'*T)[i][j] = Σ_k d_k V[i][k] V[j][k] = C; rank = pos.length
+  const T = pos.map(({ x, k }) => Array.from({ length: n }, (_, j) => Math.sqrt(x) * V[j][k]));
+  return { T, num: 0 };
+}
 /** Ansari-Bradley positional scores for a sorted vector z: min(i,N+1−i) averaged over ties. */
 function abScores(z: number[]): number[] {
   const N = z.length, raw = z.map((_, i) => Math.min(i + 1, N - i)), out = new Array<number>(N);
@@ -745,6 +762,15 @@ export const STATS: ToolboxModule = {
   name: 'Statistics and Machine Learning Toolbox',
   docBase: 'https://www.mathworks.com/help/stats/',
   builtins: {
+    /** T = cholcov(C) / [T,num] = cholcov(C) — factor T (num×n, T'*T = C) of a symmetric positive
+     *  semidefinite covariance; unlike chol it handles the rank-deficient case (num < n). */
+    cholcov: (a, nargout) => {
+      const C = matRows(m(a[0]));
+      const res = cholcovT(C);
+      if (res.num > 0 && nargout < 2) throw new MatError('cholcov: the covariance matrix must be positive semi-definite.');
+      const T = res.T.length ? fromRows(res.T) : zeros(0, C.length);
+      return nargout >= 2 ? Promise.resolve([T, scalar(res.num)]) : ret(T);
+    },
     tiedrank: (a, nargout) => Promise.resolve(tiedrankImpl(a, nargout)),
     partialcorr: (a) => ret(partialcorrImpl(a)),
     // ── pcacov(C): PCA on a covariance matrix → [coeff, latent, explained] ──

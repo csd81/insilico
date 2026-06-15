@@ -96,6 +96,7 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
     'ttest', 'ttest2', 'kstest', 'kstest2', 'vartest', 'chi2gof', 'anova1', 'ranksum', 'signrank',
     'pca', 'knnsearch', 'robustfit', 'glmfit', 'ksdensity', 'kmeans',   // pdist/squareform removed (identical to base)
     'haltonset', 'net', 'moment',   // range removed (identical to base)
+    'ecdf', 'dummyvar', 'canoncorr', 'adtest', 'cholcov',   // descriptive stats + PSD covariance factor
   ]),
 };
 
