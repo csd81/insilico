@@ -272,6 +272,12 @@ function ksOneSidedSF(n: number, d: number): number {
   for (let j = 0; j <= jmax; j++) { const t1 = (d + j / n), t2 = (1 - d - j / n); sum += Math.exp(logC(n, j) + (j - 1) * Math.log(t1) + (n - j) * Math.log(t2)); }
   return Math.min(1, Math.max(0, d * sum));
 }
+/** First d primes (Halton bases). */
+function firstPrimes(d: number): number[] {
+  const ps: number[] = []; let n = 2;
+  while (ps.length < d) { let prime = true; for (let k = 2; k * k <= n; k++) if (n % k === 0) { prime = false; break; } if (prime) ps.push(n); n++; }
+  return ps;
+}
 /** Build a 1×1 struct from [name, value] pairs (drops undefined entries). */
 function mkStruct(pairs: [string, Value | undefined][]): Value {
   const fields = new Map<string, Value[]>(); for (const [k, v] of pairs) if (v !== undefined) fields.set(k, [v]);
@@ -1852,6 +1858,23 @@ export const STATS: ToolboxModule = {
       const M = matRows(A); const out: number[] = [];
       for (let i = 0; i < M.length; i++) for (let j = i + 1; j < M.length; j++) out.push(M[i][j]);
       return ret(rowVec(out));
+    },
+    /** haltonset(d[,'Skip',s][,'Leap',l]) — deterministic Halton low-discrepancy point set
+     *  (base = the first d primes; unscrambled, matching MATLAB's default). */
+    haltonset: (a) => {
+      const d = Math.round(asScalar(m(a[0]))); let skip = 0, leap = 0;
+      for (let i = 1; i + 1 < a.length; i += 2) { const k = asString(a[i]).toLowerCase(); if (k === 'skip') skip = Math.round(asScalar(a[i + 1])); else if (k === 'leap') leap = Math.round(asScalar(a[i + 1])); }
+      return ret(makeObject('haltonset', new Map<string, Value>([['Type', str('halton')], ['Dimensions', scalar(d)], ['Skip', scalar(skip)], ['Leap', scalar(leap)]])));
+    },
+    /** net(p,n) — first n points (n×d) of a quasi-random point set p (Halton). */
+    net: (a) => {
+      if (!isObject(a[0])) throw new MatError('net: first argument must be a point set');
+      const o = a[0]; const d = asScalar(o.props.get('Dimensions') ?? scalar(1)); const skip = asScalar(o.props.get('Skip') ?? scalar(0)); const leap = asScalar(o.props.get('Leap') ?? scalar(0));
+      const n = Math.round(asScalar(m(a[1]))); const bases = firstPrimes(d);
+      const radinv = (base: number, idx: number): number => { let f = 1 / base, r = 0, k = idx; while (k > 0) { r += f * (k % base); k = Math.floor(k / base); f /= base; } return r; };
+      const out = zeros(n, d);
+      for (let i = 0; i < n; i++) { const idx = skip + i * (leap + 1); for (let j = 0; j < d; j++) out.data[i + j * n] = radinv(bases[j], idx); }
+      return ret(out);
     },
     /** [idx,d]=knnsearch(X,Y[,'K',k][,'Distance',metric][,'P',p]) — k nearest neighbours
      *  in X for each query row of Y (Euclidean by default; ties broken by lowest index). */

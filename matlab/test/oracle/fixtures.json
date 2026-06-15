@@ -5077,6 +5077,34 @@
       "real": 0
     }
   },
+  "nla_toeplitz_solve": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "nla_levinson_yule_walker": {
+    "rr": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    },
+    "e": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.75
+    }
+  },
   "nla_ilu": {
     "rr": {
       "class": "double",
@@ -7857,6 +7885,81 @@
         4,
         5
       ]
+    }
+  },
+  "stat_halton_net": {
+    "X": {
+      "class": "double",
+      "size": [
+        4,
+        2
+      ],
+      "real": [
+        0,
+        0.5,
+        0.25,
+        0.75,
+        0,
+        0.3333333333333333,
+        0.6666666666666666,
+        0.1111111111111111
+      ]
+    }
+  },
+  "stat_halton_integral_prod": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.24877111280569486
+    }
+  },
+  "stat_halton_integral_gauss": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.5583740698519881
+    }
+  },
+  "stat_robustfit_bisquare": {
+    "b": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -0.052414558698945554,
+        1.705615483123082
+      ]
+    }
+  },
+  "stat_robustfit_huber": {
+    "b": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -2.1999999999999975,
+        4.199999999999999
+      ]
+    }
+  },
+  "stat_theil_sen_slope": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2
     }
   },
   "stat_bootstrap_fixed": {

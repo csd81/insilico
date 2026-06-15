@@ -376,7 +376,7 @@ export const CASES: OracleCase[] = [
   { name: 'nt-primality', src: 'v = [isprime(97) isprime(100)];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['primality', 'isprime'] },
   { name: 'nt-integer-factorization', src: 'v = factor(360);', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['integer-factorization', 'factor'] },
 
-  // ══════════ numerical-linear-algebra (128) ══════════
+  // ══════════ numerical-linear-algebra (131) ══════════
   { name: 'nla-mldivide', src: 'A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; x = A\\b;', vars: ['x'], domain: 'numerical-linear-algebra' },
   { name: 'nla-det', src: 'd = det([1 2 3; 4 5 6; 7 8 10]);', vars: ['d'], domain: 'numerical-linear-algebra' },
   { name: 'nla-inv', src: 'B = inv([4 3; 6 3]);', vars: ['B'], domain: 'numerical-linear-algebra' },
@@ -428,6 +428,8 @@ export const CASES: OracleCase[] = [
   { name: 'nla-pcg', src: 'A = [4 1; 1 3]; b = [1; 2]; x = pcg(A, b, 1e-10, 50); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-7, domain: 'numerical-linear-algebra', tags: ['pcg', 'iterative-solver'] },
   { name: 'nla-cgs', src: 'A = [4 1; 1 3]; b = [1; 2]; x = cgs(A, b, 1e-10, 50); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-7, domain: 'numerical-linear-algebra', tags: ['cgs', 'iterative-solver'] },
   { name: 'nla-lu-permuted-sparse', src: "A = [2 1 1; 4 3 3; 8 7 9]; [L, U, P, Q] = lu(sparse(A)); rr = norm(full(P*A*Q - L*U), 'fro');", vars: ['rr'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['lu', 'sparse', 'permutation', 'reconstruction', 'multi-output'] },
+  { name: 'nla-toeplitz-solve', src: 'T = toeplitz([4 1 0 0]); b = [1; 2; 3; 4]; x = T\\b; rr = norm(T*x - b);', vars: ['rr'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['toeplitz', 'structured-matrix', 'residual'] },
+  { name: 'nla-levinson-yule-walker', src: 'r = [1 0.5 0.25]; [a, e] = levinson(r, 2); rr = norm(toeplitz(r)*a.\x27 - [e; 0; 0]);', vars: ['rr', 'e'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['levinson', 'yule-walker', 'toeplitz', 'invariant'] },
   { name: 'nla-ilu', src: 'A = sparse([4 1; 1 3]); [L, U] = ilu(A); rr = norm(full(L*U) - full(A));', vars: ['rr'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['ilu', 'preconditioner', 'reconstruction'] },
   { name: 'nla-ichol', src: 'A = sparse([4 1; 1 3]); L = ichol(A); rr = norm(full(L*L.\x27) - full(A));', vars: ['rr'], tol: 1e-7, domain: 'numerical-linear-algebra', tags: ['ichol', 'preconditioner', 'reconstruction'] },
   { name: 'nla-ldl', src: 'A = [4 1; 1 3]; [L, D] = ldl(A); rr = norm(L*D*L.\x27 - A);', vars: ['rr'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['ldl', 'factorization', 'reconstruction'] },
@@ -634,7 +636,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment'] },
   { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fminimax', 'minimax'] },
 
-  // ══════════ statistics (34) ══════════
+  // ══════════ statistics (40) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -662,6 +664,12 @@ export const CASES: OracleCase[] = [
   { name: 'stat-signrank', src: 'p = signrank([1 2 3 4 5], 2);', vars: ['p'], tol: 1e-4, domain: 'statistics', tags: ['signrank', 'wilcoxon-signed-rank', 'exact'] },
   { name: 'stat-ranksum', src: 'p = ranksum([1 2 3], [4 5 6]);', vars: ['p'], tol: 1e-4, domain: 'statistics', tags: ['ranksum', 'wilcoxon-rank-sum', 'mann-whitney'] },
   { name: 'stat-pdist-euclidean', src: 'd = pdist([0 0; 3 0; 0 4]);', vars: ['d'], tol: 1e-9, domain: 'statistics', tags: ['pdist', 'euclidean', 'pairwise-distance'] },
+  { name: 'stat-halton-net', src: 'ps = haltonset(2); X = net(ps, 4);', vars: ['X'], tol: 1e-9, domain: 'statistics', tags: ['haltonset', 'quasi-monte-carlo', 'low-discrepancy', 'deterministic'] },
+  { name: 'stat-halton-integral-prod', src: 'ps = haltonset(2); X = net(ps, 1024); v = mean(prod(X, 2));', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['haltonset', 'quasi-monte-carlo', 'quadrature'] },
+  { name: 'stat-halton-integral-gauss', src: 'ps = haltonset(2); X = net(ps, 2048); v = mean(exp(-sum(X.^2, 2)));', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['haltonset', 'quasi-monte-carlo', 'quadrature'] },
+  { name: 'stat-robustfit-bisquare', src: "b = robustfit([1 2 3 4]', [1 2 10 4]');", vars: ['b'], tol: 1e-4, domain: 'statistics', tags: ['robustfit', 'irls', 'bisquare', 'outlier-resistant'] },
+  { name: 'stat-robustfit-huber', src: "b = robustfit([1 2 3 4 5]', [2 4 6 30 10]', 'huber');", vars: ['b'], tol: 1e-4, domain: 'statistics', tags: ['robustfit', 'irls', 'huber', 'outlier-resistant'] },
+  { name: 'stat-theil-sen-slope', src: "x = [1 2 3 4 5]'; y = [2 4 6 30 10]'; n = numel(x); s = []; for i = 1:n, for j = i+1:n, s(end+1) = (y(j)-y(i))/(x(j)-x(i)); end; end; v = median(s);", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['theil-sen', 'median-slope', 'robust-regression'] },
   { name: 'stat-bootstrap-fixed', src: "x = [2 4 6 8 10]; idx = [1 2 2 3; 3 4 5 5; 1 1 5 5]'; v = mean(x(idx))';", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['bootstrap', 'resampling', 'deterministic-indices'] },
   { name: 'stat-movmean-movmedian', src: 'mm = movmean([1 2 3 4 5], 3); md = movmedian([1 5 2 8 3], 3);', vars: ['mm', 'md'], tol: 1e-9, domain: 'statistics', tags: ['movmean', 'movmedian', 'moving-window'] },
   { name: 'stat-cov-matrix', src: 'X = [1 2; 3 5; 4 6]; C = cov(X); v = C(1,2);', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['covariance', 'cov'] },

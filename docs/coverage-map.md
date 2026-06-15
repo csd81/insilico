@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 796 tests green · 661 MATLAB oracle fixtures ·
-661/661 cases classified across 22 domains.
+**Status (as of this revision):** 804 tests green · 669 MATLAB oracle fixtures ·
+669/669 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -138,7 +138,16 @@ Hypothesis tests: `ttest`/`ttest2`, `kstest` (one-sample, exact Marsaglia–Tsan
 best-effort), `anova1`, `signrank`, `ranksum`. Clustering / projection:
 `kmeans` (deterministic via `'Start'`), `pca` (validated on `latent`), `knnsearch`,
 `pdist`. `chi2gof`'s raw-data auto-binning is **not** locked (MATLAB's default
-binning is version-sensitive).
+binning is version-sensitive). Quasi-Monte-Carlo: `haltonset`+`net` (deterministic
+low-discrepancy points — base = first *d* primes, unscrambled; validated by point
+grid and QMC integral estimates). Robust regression: `robustfit` (IRLS, bisquare +
+huber), inline Theil–Sen median slope. Structured linear algebra: `toeplitz` solve
+(residual invariant), `levinson` (Yule–Walker, validated by the Toeplitz
+normal-equations residual).
+
+`sobolset` is **not** implemented: matching MATLAB's Sobol points requires its
+specific Joe–Kuo direction-number tables, which is not a cheap/clean parity target.
+Halton already provides the deterministic-QMC coverage.
 
 ### Deferred (real, but only if course-driven)
 Large model-object families (`fitlm`/`fitglm`/`fitcsvm`/`fitctree`/`fitrgp`),
