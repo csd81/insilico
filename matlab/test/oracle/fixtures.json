@@ -12096,6 +12096,34 @@
       ]
     }
   },
+  "sym_resultant_discriminant": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        -1
+      ]
+    }
+  },
+  "sym_vectorcalc": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
   "topo_betti_hollow_triangle": {
     "v": {
       "class": "double",

@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 1020 tests green · 885 MATLAB oracle fixtures ·
-885/885 cases classified across 22 domains.
+**Status (as of this revision):** 1022 tests green · 887 MATLAB oracle fixtures ·
+887/887 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -320,6 +320,21 @@ real MATLAB (with the analytic-solution error as a secondary sanity invariant).
   bugs:** `corr(x,y)` returned the full 2×2 correlation matrix instead of the scalar cross-correlation;
   `spectrogram` ignored a scalar window-length argument (fell back to a too-short default window and
   errored). `meansq` declined — not a MATLAB R2026a function.
+- **Batch 5 — depth workflows (15 cases):** graduate-assignment-level workflows that exercise the
+  *math*, validated by invariants. **Discrete optimization:** `intlinprog` assignment + set cover
+  (optimal objective + feasibility), max-flow/min-cut theorem (`maxflow` value vs an independent
+  brute-force min cut). **PDE/BVP/FEM:** `pdepe` reaction-diffusion (analytic decay + positivity),
+  `bvp4c` second-order BVP, upwind-advection TVD stability, 1-D linear-element FEM Poisson
+  (nodal exactness). **ML math:** PCA reconstruction (sign-invariant), RBF kernel ridge, k-means
+  fixed-start objective (label-invariant), k-NN. **Coding/info:** Hamming(7,4) syndrome decode +
+  recovery, BSC capacity + mutual information. **Symbolic:** resultant/discriminant elimination and
+  the vector-calculus identities `curl(grad)=0`/`div(curl)=0` (validated by `double(subs(...))` at a
+  point, since the engine's `simplify` doesn't reduce them to literal 0). Engine gaps documented and
+  worked around (no false validation): `maxflow` is single-output (residual-graph/cut-partition forms
+  not implemented), `curl`/`divergence`/`partfrac`/`ilaplace` are numeric-only (no symbolic form),
+  and `ismember(...,'rows')` is element-wise — the Hamming decode matches syndromes to parity-check
+  columns explicitly instead. `fitglm`/`syndtable`/`vitdec`/`huffmandict` absent (used `glmfit`;
+  Viterbi/Huffman workflows deferred).
 
 ### Remaining base/core backlog (~369 uncategorized)
 

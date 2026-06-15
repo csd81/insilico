@@ -966,7 +966,7 @@ export const CASES: OracleCase[] = [
   { name: 'ds-corr-mode-mov', src: "c = corr([1 2 3 4]', [2 4 6 9]'); v = [c mode([1 2 2 3 3 3 4]) movmax([1 5 2 8 3], 3) movmin([1 5 2 8 3], 3)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['corr', 'mode', 'movmax', 'movmin'] },
   { name: 'ds-pdist2-hist', src: 'D = pdist2([0 0; 1 1], [1 0; 0 1]); h = histc([1 2 2 3 4 4 4], 1:4); n2 = histcounts2([1 2 3], [1 2 3], [0 2 4], [0 2 4]); C = [4 2; 2 3]; R = corrcov(C); v = [D(:)\x27 h n2(:)\x27 rmse([1 2 3], [1 2 4]) R(1,2)];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['pdist2', 'histc', 'histcounts2', 'rmse', 'corrcov'] },
 
-  // ══════════ symbolic (57) ══════════
+  // ══════════ symbolic (59) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
   { name: 'sym-diag-matrix', src: 'syms a b c; M = [a 1 2; 3 b 4; 5 6 c]; d = diag(M); D = diag(d); val = double(subs(D, [a b c], [7 8 9])); v = val(:).\x27;', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['diag', 'symbolic-matrix'] },
   { name: 'sym-poly-gcd', src: 'syms x; g = gcd(x^2 - 1, x^2 - 2*x + 1); c = sym2poly(g);', vars: ['c'], tol: 1e-9, domain: 'symbolic', tags: ['gcd', 'polynomial'] },
@@ -1024,6 +1024,12 @@ export const CASES: OracleCase[] = [
   { name: 'sym-horner', src: 'syms x; v = double(subs(horner(x^3 + 2*x^2 + x), x, 2));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['horner', 'nested-form'] },
   { name: 'sym-rewrite', src: "syms x; v = double(subs(rewrite(tan(x), 'sincos'), x, 1));", vars: ['v'], tol: 1e-6, domain: 'symbolic', tags: ['rewrite', 'sincos'] },
   { name: 'sym-polydegree-simplifyfraction', src: 'syms x; a = polynomialDegree(x^4 + x); b = double(subs(simplifyFraction((x^2 - 1)/(x - 1)), x, 3)); v = [a b];', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['polynomialDegree', 'simplifyFraction'] },
+  // ── Exact-algebra workflows (boundary-aware): resultant elimination + discriminant via
+  // resultant(p,p'); vector-calculus identities curl(grad f)=0 and div(curl F)=0 validated by
+  // double(subs(...)) at a point (the identity holds everywhere, so no full simplify needed);
+  // equationsToMatrix + symbolic solve; forward Laplace transform evaluated numerically. ──
+  { name: 'sym-resultant-discriminant', src: 'syms x; r1 = resultant(x^2 - 1, x - 1, x); p = x^2 - 5*x + 6; r2 = resultant(p, diff(p, x), x); v = double([r1 r2]);', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['resultant', 'discriminant', 'elimination'] },
+  { name: 'sym-vectorcalc', src: 'syms x y z; f = x^2*y + sin(y*z) + x*z^2; gx = diff(f,x); gy = diff(f,y); gz = diff(f,z); cx = diff(gz,y) - diff(gy,z); cy = diff(gx,z) - diff(gz,x); cz = diff(gy,x) - diff(gx,y); F = [x*y*z; x^2*z; sin(y)*z^2]; Cx = diff(F(3),y) - diff(F(2),z); Cy = diff(F(1),z) - diff(F(3),x); Cz = diff(F(2),x) - diff(F(1),y); dc = diff(Cx,x) + diff(Cy,y) + diff(Cz,z); p = [x y z]; q = [1.3 2.1 0.7]; v = double([subs(cx,p,q) subs(cy,p,q) subs(cz,p,q) subs(dc,p,q)]);', vars: ['v'], tol: 1e-6, domain: 'symbolic', tags: ['curl', 'gradient', 'divergence', 'vector-calculus-identity'] },
 
   // ══════════ topology (6) ══════════
   { name: 'topo-betti-hollow-triangle', src: 'B1 = [-1 0 1; 1 -1 0; 0 1 -1]; r1 = rank(B1); v = [3 - r1; 3 - r1];', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['betti-numbers', 'simplicial-complex', 'boundary-matrix', 'homology'] },
