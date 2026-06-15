@@ -193,5 +193,5 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
 
   // ── Pass 2G: integer types, casts, binary reinterpretation (MATLAB-specific semantics:
   // saturation, round-half-away, idivide modes, little-endian typecast). All match exactly. ──
-  ...bulkD('needs-oracle', 'direct', 'core-language', 'int8 int16 int32 int64 uint8 uint16 uint32 uint64 single cast typecast swapbytes idivide intmin intmax flintmax isfloat isinteger isnumeric isa class'),
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'int8 int16 int32 int64 uint8 uint16 uint32 uint64 single cast typecast swapbytes idivide intmin intmax flintmax isfloat isinteger isnumeric isa class strcmp'),
 };
