@@ -1,5 +1,14 @@
 # Repository Guidelines
 
+## Project Goals
+
+A browser-only MATLAB-language interpreter that **mechanically proves** it correctly executes a graduate-level computational-mathematics subset — the parts MATLAB is good at *executing* — by validating against real MATLAB R2026a. It is **not** a MATLAB clone. The deliverable is the **trustworthiness of the "validated subset" claim**, not raw function count. Optimize for:
+
+1. **Correctness parity** — match MATLAB to tolerance, or by convention-independent invariants (residuals, reconstruction norms, constraint satisfaction, sorted spectra) when outputs are not unique.
+2. **No silently-wrong functions** — the engine is correct or it errors honestly; never plausible-but-wrong. Probe behavior before claiming a gap: most "missing" functions turn out already-implemented-but-unvalidated.
+3. **Honest scope** — decline what cannot be cleanly oracle-validated rather than ship an unverified approximation, and record every decline as deliberate in the `docs/coverage-map.md` backlog. Breadth is not the goal; a credible validated core is.
+4. **Coverage hygiene** — docs, counts, and scope stay in agreement. `docs/coverage-map.md` is the single source of truth for status and counts; do not duplicate counts elsewhere.
+
 ## Project Structure & Module Organization
 
 This repository is a standalone React/Vite MATLAB-like sandbox. UI code lives in `src/`: components in `src/components/`, hooks in `src/hooks/`, providers in `src/providers/`, and shared styling in `src/style.css`. The interpreter/runtime lives in `matlab/`, with parser, values, builtins, linear algebra, graphics, I/O, symbolic helpers, and curated toolbox modules under `matlab/tb/`. Tests live in `matlab/test/`; MATLAB oracle cases are in `matlab/test/oracle/`.

@@ -17,6 +17,29 @@ not a full MATLAB clone.
 > computational-mathematics subset across the declared domains — not all of
 > graduate mathematics, and not MATLAB parity.
 
+## Goals
+
+The aim is a browser-only MATLAB-language interpreter that **mechanically proves**
+it correctly executes a graduate-level computational-mathematics subset — the parts
+MATLAB is good at *executing* — by validating against real MATLAB. The deliverable
+is the **trustworthiness of that "validated subset" claim**, not raw function count.
+We optimize for:
+
+1. **Correctness parity** — match MATLAB to tolerance, or by convention-independent
+   invariants (residuals, reconstruction norms, constraint satisfaction, sorted
+   spectra) when outputs are not unique.
+2. **No silently-wrong functions** — the engine is correct or it errors honestly;
+   never plausible-but-wrong.
+3. **Honest scope** — decline what cannot be cleanly validated rather than ship an
+   unverified approximation, and document every decline as deliberate. A credible
+   validated core beats breadth.
+4. **Coverage hygiene** — docs, counts, and scope stay in agreement
+   (`docs/coverage-map.md` is the authoritative status + count source).
+
+**Non-goals (deliberately out of scope):** `classdef`/`arguments`/path model,
+host/network/binary I/O, exact RNG-stream parity, large model-object APIs,
+GUI/App Designer, and proof-based pure math.
+
 ## Architecture
 
 - `matlab/` — framework-free engine: `lexer` → `parser` → `interp`, `values`,
