@@ -65,6 +65,7 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
     'convenc', 'poly2trellis', 'istrellis', 'cyclgen', 'cyclpoly', 'gen2par', 'hammgen',
     'primpoly', 'gfminpol', 'rsgenpolycoeffs', 'gftrunc', 'gfweight', 'gfdeconv',
     'gfadd', 'gfsub', 'gfmul', 'gfdiv', 'gfconv', 'gfrank',
+    'gf', 'bchgenpoly', 'bchenc', 'bchdec', 'rsgenpoly',
     'de2bi', 'bi2de', 'oct2dec', 'oct2poly', 'vec2mat',
     'biterr', 'symerr', 'finddelay',
   ]),

@@ -141,7 +141,7 @@ export const CASES: OracleCase[] = [
   { name: 'special-elliptic-full', src: 'v = double([ellipticK(0.5) ellipticE(0.5)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['ellipticK', 'ellipticE', 'complete-elliptic-integral'] },
   { name: 'special-whittaker', src: 'v = double([whittakerM(1,1,1) kummerU(1,2,1)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['whittakerM', 'kummerU', 'confluent-hypergeometric'] },
 
-  // ══════════ coding (20) ══════════
+  // ══════════ coding (22) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },
   { name: 'coding-hammgen', src: '[H, G, n, k] = hammgen(3); v = [n k size(H, 1)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['hamming-code', 'parity-check', 'error-correction'] },
   { name: 'coding-biterr', src: '[num, rate] = biterr([1 0 1 1], [1 1 1 0]); v = [num rate];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['bit-error-rate', 'biterr'] },
@@ -165,6 +165,12 @@ export const CASES: OracleCase[] = [
   // BSC capacity 1−H(p) + mutual information from a joint distribution. ──
   { name: 'coding-hamming-decode', src: "[H, G, n, k] = hammgen(3); msg = [1 0 1 1]; c = mod(msg*G, 2); r = c; r(3) = 1 - r(3); s = mod(H*r', 2); epos = 0; for j = 1:n, if isequal(H(:,j), s), epos = j; break; end; end; corr = r; if epos > 0, corr(epos) = 1 - corr(epos); end; v = double([isequal(corr, c) all(mod(H*c', 2) == 0) epos]);", vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['hamming-code', 'syndrome-decoding', 'error-correction'] },
   { name: 'info-mutual-capacity', src: 'p = 0.1; Hb = @(q) -q.*log2(q) - (1-q).*log2(1-q); C = 1 - Hb(p); Pxy = [0.4 0.1; 0.1 0.4]; Px = sum(Pxy, 2); Py = sum(Pxy, 1); MI = 0; for i = 1:2, for j = 1:2, MI = MI + Pxy(i,j)*log2(Pxy(i,j)/(Px(i)*Py(j))); end; end; v = [C MI];', vars: ['v'], tol: 1e-6, domain: 'coding', tags: ['channel-capacity', 'bsc', 'mutual-information', 'entropy'] },
+  // ── BCH / Reed-Solomon coding theory (GF(2^m) finite-field arithmetic). bchgenpoly/rsgenpoly
+  // generator-polynomial coefficient vectors are locked exactly (extracted via double(...x) off the
+  // gf object). BCH encode/decode are validated by invariant: the decode(encode(msg))==msg round-trip
+  // AND correct recovery of a deliberate t-error pattern (here t=3 for the (15,5) code, cnumerr==3). ──
+  { name: 'coding-bch-rs-genpoly', src: 'g1 = double(bchgenpoly(15,5).x); g2 = double(bchgenpoly(15,7).x); rg = double(rsgenpoly(7,3).x); v = [g1 g2 rg];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['bch-code', 'reed-solomon', 'generator-polynomial', 'finite-field', 'bchgenpoly', 'rsgenpoly'] },
+  { name: 'coding-bch-encode-decode', src: 'n = 15; k = 5; msg = [1 0 1 1 0]; code = double(bchenc(gf(msg), n, k).x); rx = code; rx(2) = 1 - rx(2); rx(7) = 1 - rx(7); rx(13) = 1 - rx(13); [dec, ce] = bchdec(gf(rx), n, k); dmsg = double(dec.x); rt = double(bchdec(gf(code), n, k).x); v = [all(dmsg == msg) ce all(rt == msg)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['bch-code', 'bchenc', 'bchdec', 'error-correction', 'syndrome-decoding', 'finite-field'] },
 
   // ══════════ complex-arithmetic (15) ══════════
   { name: 'cplx-complex-mul', src: 'z = (1+2i) * (3-1i);', vars: ['z'], domain: 'complex-arithmetic' },

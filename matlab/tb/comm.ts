@@ -4,7 +4,7 @@
 // match without the toolbox. See plan §7.
 import type { Builtin } from '../builtins';
 import {
-  type Value, type Mat, type StructV, isMat, scalar, colVec, rowVec, zeros, toArray, asScalar, asString, toMat as m, map, mat,
+  type Value, type Mat, type StructV, type ClassV, isMat, isObject, makeObject, scalar, colVec, rowVec, zeros, toArray, asScalar, asString, toMat as m, map, mat,
 } from '../values';
 import { erf, erfc, erfinv } from '../specfun';
 import type { ToolboxModule } from './types';
@@ -156,6 +156,121 @@ function gfminpolRow(k: number, F: ReturnType<typeof gfField>, cosets: number[][
 function rowsToMat(R: number[][]): Mat { const r = R.length, c = R[0].length, d = new Float64Array(r * c); for (let i = 0; i < r; i++) for (let j = 0; j < c; j++) d[i + j * r] = R[i][j]; return mat(r, c, d); }
 /** deintrlv scatter: out[elements[i]] = data[i] (1-based elements). Works row-wise on column data. */
 function deintrlvRows(data: number[][], elements: number[]): number[][] { const out: number[][] = new Array(data.length); for (let i = 0; i < data.length; i++) out[elements[i] - 1] = data[i]; return out; }
+
+// ── BCH / Reed-Solomon coding theory (GF(2^m) finite-field arithmetic) ──
+/** A Galois-array wrapper: a `gf` object carrying its numeric data in both `x` and `data`
+ *  (so `obj.x` field access AND `double(obj)` both recover the underlying numbers). */
+function gfObject(M: Mat, mm: number): ClassV {
+  return makeObject('gf', new Map<string, Value>([['x', M], ['data', M], ['m', scalar(mm)]]));
+}
+/** Read a gf-wrapped value or a plain numeric Mat as a row of numbers. */
+function gfData(v: Value): number[] { return isObject(v) && v.className === 'gf' ? toArray(m(v.props.get('x')!)) : toArray(m(v)); }
+/** Read a gf-wrapped value or a plain numeric Mat as its Mat (preserving shape). */
+function gfMatOf(v: Value): Mat { return isObject(v) && v.className === 'gf' ? m(v.props.get('x')!) : m(v); }
+/** A GF(2^m) arithmetic context built on the exponential field table. */
+function gfArith(F: ReturnType<typeof gfField>) {
+  const q = F.q;
+  const mul = (x: number, y: number) => (x === 0 || y === 0 ? 0 : F.field[(F.expOf.get(x)! + F.expOf.get(y)!) % (q - 1)]);
+  const inv = (x: number) => F.field[(q - 1 - F.expOf.get(x)!) % (q - 1)];
+  const div = (x: number, y: number) => (x === 0 ? 0 : mul(x, inv(y)));
+  const alpha = (e: number) => F.field[((e % (q - 1)) + (q - 1)) % (q - 1)];   // alpha^e
+  return { mul, inv, div, alpha, q };
+}
+/** Build a GF(2^m) field table from an explicit primitive polynomial (decimal, bit m + bit 0 set). */
+function gfFieldFromPrim(mm: number, primInt: number): ReturnType<typeof gfField> {
+  const q = 1 << mm, reduceMask = 1 << mm, field: number[] = [];
+  let cur = 1;
+  for (let e = 0; e <= q - 2; e++) { field.push(cur); cur <<= 1; if (cur & reduceMask) cur ^= primInt; }
+  const expOf = new Map<number, number>(); for (let e = 0; e < q - 1; e++) expOf.set(field[e], e);
+  return { field, q, m: mm, expOf };
+}
+/** BCH generator polynomial g(x) = lcm of minimal polynomials of alpha^1..alpha^2t, over GF(2),
+ *  MSB-first (descending). Returns the coefficient row and the error-correction capability t. */
+function bchGenPoly(n: number, k: number): { g: number[]; t: number } {
+  const mm = Math.round(Math.log2(n + 1));
+  const F = gfField(mm), cosets = gfcosets2(mm);
+  // collect distinct minimal polynomials (one per cyclotomic coset touched by 1..n-k consecutive roots),
+  // growing t by one root pair at a time until deg g == n-k.
+  let g = [1];                                            // ascending coefficients during construction
+  const used = new Set<number>();
+  let t = 0;
+  const polyMulGF2 = (a: number[], b: number[]) => { const o = new Array(a.length + b.length - 1).fill(0); for (let i = 0; i < a.length; i++) for (let j = 0; j < b.length; j++) o[i + j] ^= (a[i] & b[j] & 1); return o; };
+  for (let i = 1; ; i++) {
+    const kk = i % (F.q - 1);
+    const conj = cosets.find((c) => c.includes(kk));
+    if (conj && !used.has(conj[0])) { used.add(conj[0]); const mp = gftruncArr(gfminpolRow(kk, F, cosets)); g = polyMulGF2(g, mp); }
+    if (i % 2 === 0) { if (g.length - 1 === n - k) { t = i / 2; break; } if (g.length - 1 > n - k) throw new Error(`bchgenpoly: no narrow-sense BCH code with n=${n}, k=${k}`); }
+    if (i > 2 * n) throw new Error(`bchgenpoly: no narrow-sense BCH code with n=${n}, k=${k}`);
+  }
+  return { g: gftruncArr(g).reverse(), t };               // MSB-first
+}
+/** GF(2) systematic BCH/cyclic encode of one k-bit message (MSB-first) with generator g (MSB-first):
+ *  code = [msg | parity], parity = (msg·x^(n-k)) mod g(x). */
+function gf2SysEncode(msg: number[], g: number[], n: number, k: number): number[] {
+  const nk = n - k;
+  // shifted message polynomial, MSB-first length n: msg occupies the top k coefficients
+  const r = new Array(n).fill(0); for (let i = 0; i < k; i++) r[i] = msg[i] & 1;
+  // polynomial long division MSB-first; only the top k positions can be leading terms
+  for (let i = 0; i < k; i++) if (r[i] & 1) for (let j = 0; j < g.length; j++) r[i + j] ^= g[j] & 1;
+  const parity = r.slice(k);                              // remaining nk coefficients
+  return [...msg.map((b) => b & 1), ...parity.slice(0, nk)];
+}
+/** Decode one received BCH word (length n, MSB-first) over GF(2^m): correct up to t errors via
+ *  syndrome + Berlekamp-Massey + Chien search. Returns {msg, nerr} (nerr=-1 if uncorrectable). */
+function bchDecodeWord(rx: number[], n: number, k: number, t: number): { msg: number[]; nerr: number } {
+  const mm = Math.round(Math.log2(n + 1));
+  const F = gfField(mm); const { mul, inv, alpha } = gfArith(F);
+  // received polynomial r(x), index 0 = x^0 (lowest). rx is MSB-first → reverse to ascending.
+  const r = rx.slice().reverse().map((b) => b & 1);
+  // syndromes S_i = r(alpha^i), i=1..2t
+  const S: number[] = []; let anyNonzero = false;
+  for (let i = 1; i <= 2 * t; i++) { let s = 0; for (let j = 0; j < n; j++) if (r[j]) s ^= alpha(i * j); S.push(s); if (s) anyNonzero = true; }
+  const codeToMsg = (cw: number[]) => cw.slice(0, k);    // systematic: top k MSB-first bits
+  if (!anyNonzero) return { msg: codeToMsg(rx), nerr: 0 };
+  // Berlekamp-Massey over GF(2^m)
+  let Lam = [1], B = [1], L = 0, mIdx = 1, b = 1;
+  for (let nn = 0; nn < 2 * t; nn++) {
+    let delta = S[nn]; for (let i = 1; i <= L; i++) delta ^= mul(Lam[i] || 0, S[nn - i]);
+    if (delta === 0) { mIdx++; }
+    else if (2 * L <= nn) {
+      const T = Lam.slice();
+      const coef = mul(delta, inv(b));
+      const shifted = new Array(mIdx).fill(0).concat(B);
+      const newLam = Lam.slice(); for (let i = 0; i < shifted.length; i++) newLam[i] = (newLam[i] || 0) ^ mul(coef, shifted[i]);
+      Lam = newLam; L = nn + 1 - L; B = T; b = delta; mIdx = 1;
+    } else {
+      const coef = mul(delta, inv(b));
+      const shifted = new Array(mIdx).fill(0).concat(B);
+      const newLam = Lam.slice(); for (let i = 0; i < shifted.length; i++) newLam[i] = (newLam[i] || 0) ^ mul(coef, shifted[i]);
+      Lam = newLam; mIdx++;
+    }
+  }
+  // degree of Lam = number of errors found
+  let deg = 0; for (let i = Lam.length - 1; i >= 0; i--) if (Lam[i]) { deg = i; break; }
+  if (deg > t) return { msg: codeToMsg(rx), nerr: -1 };
+  // Chien search: error positions are j where Lam(alpha^{-j}) = 0, j in 0..n-1
+  const errPos: number[] = [];
+  for (let j = 0; j < n; j++) { let v = 0; for (let i = 0; i < Lam.length; i++) if (Lam[i]) v ^= mul(Lam[i], alpha(-i * j)); if (v === 0) errPos.push(j); }
+  if (errPos.length !== deg) return { msg: codeToMsg(rx), nerr: -1 };
+  // flip bits (ascending index j → MSB-first index n-1-j)
+  const corr = rx.slice(); for (const j of errPos) corr[n - 1 - j] ^= 1;
+  // verify corrected word is a codeword (all syndromes zero)
+  const rc = corr.slice().reverse().map((bb) => bb & 1);
+  for (let i = 1; i <= 2 * t; i++) { let s = 0; for (let jj = 0; jj < n; jj++) if (rc[jj]) s ^= alpha(i * jj); if (s) return { msg: codeToMsg(rx), nerr: -1 }; }
+  return { msg: codeToMsg(corr), nerr: errPos.length };
+}
+/** Reed-Solomon generator g(x) = prod_{i=1}^{2t} (x - alpha^i) over GF(2^m), MSB-first decimals. */
+function rsGenPoly(n: number, k: number, primInt: number): number[] {
+  const mm = Math.round(Math.log2(n + 1));
+  const F = primInt ? gfFieldFromPrim(mm, primInt) : gfField(mm); const { mul, alpha } = gfArith(F);
+  let g = [1];                                            // ascending: g[i] = coeff of x^i
+  for (let i = 1; i <= n - k; i++) {
+    const ai = alpha(i), ng = new Array(g.length + 1).fill(0);
+    for (let j = 0; j < g.length; j++) { ng[j] ^= mul(g[j], ai); ng[j + 1] ^= g[j]; }   // multiply by (x - alpha^i); -a=a in char 2
+    g = ng;
+  }
+  return g.reverse();                                     // MSB-first
+}
 
 /** GF(2) polynomial remainder (ascending coefficient vectors). */
 function gf2rem(num: number[], den: number[]): number[] {
@@ -505,6 +620,50 @@ export const COMM: ToolboxModule = {
     },
     /** gftrunc(a) — remove highest-order zero coefficients of a GF(p) polynomial (ascending). */
     gftrunc: (a) => ret(rowVec(gftruncArr(toArray(m(a[0])).map((v) => Math.round(v))))),
+
+    // ── BCH / Reed-Solomon coding theory ──
+    /** gf(x[,m[,prim]]) — wrap numbers as a Galois array (carries data for double()/.x; GF(2^m)). */
+    gf: (a) => {
+      const M = m(a[0]); const mm = a.length >= 2 && isMat(a[1]) ? Math.round(asScalar(a[1])) : 1;
+      return ret(gfObject({ kind: 'num', rows: M.rows, cols: M.cols, data: Float64Array.from(M.data, (x) => Math.round(x)) } as Mat, mm));
+    },
+    /** [g,t] = bchgenpoly(n,k) — narrow-sense BCH generator polynomial over GF(2), gf row, MSB-first. */
+    bchgenpoly: (a, nargout) => {
+      const n = Math.round(asScalar(a[0])), k = Math.round(asScalar(a[1]));
+      const { g, t } = bchGenPoly(n, k);
+      const gobj = gfObject(rowVec(g), Math.round(Math.log2(n + 1)));
+      return nargout >= 2 ? Promise.resolve([gobj, scalar(t)]) : ret(gobj);
+    },
+    /** bchenc(msg,n,k) — systematic BCH encode. msg is a gf (or numeric) k-column message matrix. */
+    bchenc: (a) => {
+      const n = Math.round(asScalar(a[1])), k = Math.round(asScalar(a[2]));
+      const { g } = bchGenPoly(n, k);
+      const M = gfMatOf(a[0]); const R = M.rows === 1 ? [toArray(M)] : rows(M);
+      const out = R.map((row) => gf2SysEncode(row.map((b) => Math.round(b)), g, n, k));
+      const data = new Float64Array(out.length * n);
+      for (let i = 0; i < out.length; i++) for (let j = 0; j < n; j++) data[i + j * out.length] = out[i][j];
+      return ret(gfObject(mat(out.length, n, data), Math.round(Math.log2(n + 1))));
+    },
+    /** [decoded,cnumerr] = bchdec(code,n,k) — BCH decode, correcting up to t errors. */
+    bchdec: (a, nargout) => {
+      const n = Math.round(asScalar(a[1])), k = Math.round(asScalar(a[2]));
+      const { t } = bchGenPoly(n, k);
+      const M = gfMatOf(a[0]); const R = M.rows === 1 ? [toArray(M)] : rows(M);
+      const decoded: number[][] = [], nerrs: number[] = [];
+      for (const row of R) { const { msg, nerr } = bchDecodeWord(row.map((b) => Math.round(b)), n, k, t); decoded.push(msg); nerrs.push(nerr); }
+      const data = new Float64Array(decoded.length * k);
+      for (let i = 0; i < decoded.length; i++) for (let j = 0; j < k; j++) data[i + j * decoded.length] = decoded[i][j];
+      const dobj = gfObject(mat(decoded.length, k, data), Math.round(Math.log2(n + 1)));
+      return nargout >= 2 ? Promise.resolve([dobj, nerrs.length === 1 ? scalar(nerrs[0]) : colVec(nerrs)]) : ret(dobj);
+    },
+    /** rsgenpoly(n,k[,prim_poly]) — Reed-Solomon generator polynomial over GF(2^m), gf row, MSB-first. */
+    rsgenpoly: (a) => {
+      const n = Math.round(asScalar(a[0])), k = Math.round(asScalar(a[1]));
+      const mm = Math.round(Math.log2(n + 1));
+      const primInt = a.length >= 3 && isMat(a[2]) && (a[2] as Mat).data.length === 1 ? Math.round(asScalar(a[2])) : 0;
+      const g = rsGenPoly(n, k, primInt);
+      return ret(gfObject(rowVec(g), mm));
+    },
 
     // ── I/Q imbalance ──
     /** [ampDB,phaseDeg] = iqcoef2imbal(c) — imbalance a compensator coefficient corrects. */

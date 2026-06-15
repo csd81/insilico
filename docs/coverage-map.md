@@ -190,6 +190,7 @@ See `docs/symbolic-boundary.md` for the precise supported symbolic subset.
 | Information theory formulas | ✓ | Entropy, KL divergence, mutual information, BSC capacity. |
 | Finite-field arithmetic | ✓ | GF add/mul/sub/div, polynomial multiply/divide, primitive/minimal polynomials. |
 | Coding theory smoke | ✓ | Hamming, cyclic, convolutional coding, generator/parity checks, syndrome decode workflow. |
+| BCH / Reed-Solomon | ✓ | `bchgenpoly`/`rsgenpoly` generator polynomials (exact), BCH `bchenc`/`bchdec` systematic encode + Berlekamp-Massey/Chien t-error correction (round-trip + t-error invariant). `gf` is a numeric-carrier wrapper, not a full Galois-array class. |
 | Base conversions | ✓ | `bi2de`, `de2bi`, `oct2dec`, `oct2poly`, related helpers. |
 | Number theory basics | ✓ | `gcd`, `lcm`, `factor`, `isprime`, `primes`, `powermod`, CRT/extended-Euclid style workflows. |
 | Crypto-grade number theory | not targeted | Elliptic curves, serious factoring/primality, finite-field crypto systems are outside MATLAB's natural core. |
@@ -412,7 +413,8 @@ locked.)
 `hammgen`, `cyclgen`, `cyclpoly`, `poly2trellis`, `convenc`, `istrellis`,
 `biterr`, `symerr`, `finddelay`, `gfadd`, `gfsub`, `gfmul`, `gfdiv`,
 `gfconv`, `gfdeconv`, `gfminpol`, `gfrank`, `gftrunc`, `gfweight`,
-`gen2par`, `primpoly`, `rsgenpolycoeffs`, `bi2de`, `de2bi`, `oct2dec`,
+`gen2par`, `primpoly`, `rsgenpolycoeffs`, `bchgenpoly`, `bchenc`, `bchdec`,
+`rsgenpoly`, `gf`, `bi2de`, `de2bi`, `oct2dec`,
 `oct2poly`, `vec2mat`, `factor`, `factorial`, `gcd`, `lcm`, `isprime`,
 `primes`, `powermod`, `nchoosek`.
 
