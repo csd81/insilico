@@ -397,11 +397,19 @@ async function fmincon(args: Value[]): Promise<Value[]> {
   // Initialise within bounds
   x = x.map(clamp);
 
-  const mu = 10.0; // penalty parameter
+  let mu = 10.0; // penalty parameter (raised by the outer continuation loop until feasible)
   let f = await callFn(fn, x);
   let g = await fdGrad(fn, x, f);
 
   const MAXIT = 300;
+  // Worst constraint violation at xx (linear ineq/eq + nonlinear) — drives penalty continuation.
+  const maxViol = async (xx: number[]): Promise<number> => {
+    let vm = 0;
+    for (let ci = 0; ci < A_ub.length; ci++) vm = Math.max(vm, dot(A_ub[ci], xx) - b_ub[ci]);
+    for (let ci = 0; ci < A_eq.length; ci++) vm = Math.max(vm, Math.abs(dot(A_eq[ci], xx) - b_eq[ci]));
+    if (nonlcon) { const r = await callFnVec(nonlcon, xx); for (const c of r) vm = Math.max(vm, c); }
+    return vm;
+  };
   // Augmented-Lagrangian merit φ(x) = f + (μ/2)Σmax(0,g_ineq)² + μΣg_eq² + (μ/2)Σmax(0,c_nl)²
   // (its gradient is exactly the gAug assembled below), used for the Armijo line search.
   const meritOf = async (xx: number[], fval: number): Promise<number> => {
@@ -411,6 +419,9 @@ async function fmincon(args: Value[]): Promise<Value[]> {
     if (nonlcon) { const r = await callFnVec(nonlcon, xx); for (const c of r) { const v = Math.max(0, c); p += 0.5 * mu * v * v; } }
     return p;
   };
+  const FEAS = 1e-4;   // a point counts as feasible if its worst constraint violation is below this
+  let xBest = x.slice(), fBest = Infinity, violBest = Infinity, anyFeasible = false;
+  for (let outer = 0; outer < 8; outer++) {
   for (let it = 0; it < MAXIT; it++) {
     // Augmented gradient: add penalty terms for violated constraints
     const gAug = clone(g);
@@ -456,7 +467,20 @@ async function fmincon(args: Value[]): Promise<Value[]> {
     if (norm2(xNew.map((v, i) => v - x[i])) < 1e-10) break;
     x = xNew; f = fNew; g = gNew;
   }
-  return [rowVec(x), scalar(f), scalar(norm2(g) < 1e-5 ? 1 : 0)];
+  // Penalty continuation: keep the lowest-objective point that is feasible to within FEAS (or the
+  // least-infeasible point if none is yet feasible); raise μ until feasible. Restart from the best
+  // point if the inner solve diverges (guards minimax-style epigraph reformulations at high μ).
+  const viol = await maxViol(x);
+  if (Number.isFinite(f)) {
+    if (viol < FEAS) { if (!anyFeasible || f < fBest) { xBest = x.slice(); fBest = f; violBest = viol; anyFeasible = true; } }
+    else if (!anyFeasible && viol < violBest) { xBest = x.slice(); fBest = f; violBest = viol; }
+  }
+  if ((anyFeasible && mu > 1e5) || mu > 1e8) break;
+  mu *= 10;
+  if (!Number.isFinite(f) || norm2(x) > 1e8) { x = xBest.slice(); f = await callFn(fn, x); }
+  g = await fdGrad(fn, x, f);
+  }
+  return [rowVec(xBest), scalar(fBest), scalar(anyFeasible ? 1 : 0)];
 }
 
 // ── fsolve: Levenberg-Marquardt for F(x)=0 ────────────────────────────────────────────

@@ -13,8 +13,8 @@ pnpm oracle:base-audit
 pnpm oracle:audit
 ```
 
-**Status (as of this revision):** 1050 tests green · 915 MATLAB oracle fixtures ·
-915/915 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1052 tests green · 917 MATLAB oracle fixtures ·
+917/917 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.
@@ -97,7 +97,7 @@ undefined in this MATLAB — now **unregistered** so the engine errors to match.
 | BVP and DDE smoke | ✓ | `bvp4c`, `bvp5c`, `dde23`; option/evaluation helpers are partially covered. |
 | PDE finite differences | ✓ | Poisson, explicit/implicit heat, Crank-Nicolson, ADI heat, 1-D/2-D wave. |
 | `pdepe` workflows | ✓ | Known-solution / reaction-diffusion style cases. |
-| FEM-adjacent workflows | ~ | 1-D stiffness assembly and simple Poisson workflow covered; full FEM weak-form/mesh pipeline not targeted yet. |
+| FEM weak-form workflows | ✓ | 1-D stiffness assembly + 2-D triangular-mesh Poisson (assemble linear-element stiffness/load, apply Dirichlet BCs, solve), validated by center value + symmetric-PSD stiffness + zero residual. Adaptive meshing remains out of scope. |
 | Out of runtime scope | n/a | PDE Toolbox object/mesh app machinery is de-registered; numerical PDE scripts stay in scope. |
 
 ## Optimization And Discrete Algorithms
@@ -109,7 +109,7 @@ undefined in this MATLAB — now **unregistered** so the engine errors to match.
 | Integer programming workflows | ✓ | `intlinprog` knapsack, assignment, set cover style cases. |
 | Graph optimization | ✓ | `maxflow` plus min-cut invariant, `minspantree`, shortest paths. |
 | Global optimizers | n/a | RNG-driven solvers are not exact-oracle comparable. |
-| Conic (SOCP) | deferred | `coneprog`/`secondordercone` are registered but the cone constraint is **not enforced** (returns `‖x‖=1.14` for a `‖x‖≤1` SOCP vs MATLAB's `1`) — not validated until fixed. `fseminf` deferred (niche, hard to frame). |
+| Conic (SOCP) | ✓ | `coneprog`/`secondordercone` validated on a tiny SOCP by objective + cone-constraint satisfaction. Fixed: `fmincon` now uses penalty continuation (best-feasible tracking + divergence guard), so the cone constraint is enforced. `fseminf` deferred (niche). |
 | Problem-based optimization objects | deferred | `optimvar`/`optimproblem` style APIs are model-object surface, not required for the computational subset. |
 
 ## Fourier, Signal, And DSP Math

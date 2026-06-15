@@ -840,7 +840,7 @@ export const CASES: OracleCase[] = [
   // validated against the closed form. ──
   { name: 'bvp-second-order', src: 'sol = bvp4c(@(x,y)[y(2); y(1)], @(ya,yb)[ya(1); yb(1)-1], bvpinit(linspace(0,1,5), [0 1])); yp = deval(sol, 0.5); v = double([abs(yp(1) - sinh(0.5)/sinh(1)) < 1e-4 abs(yp(2) - cosh(0.5)/sinh(1)) < 1e-4]);', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['bvp4c', 'boundary-value-problem', 'known-solution'] },
 
-  // ══════════ numerical-pde (42) ══════════
+  // ══════════ numerical-pde (43) ══════════
   { name: 'pde-poisson-1d', src: 'n = 5; h = 1/(n+1); A = 2*eye(n) - diag(ones(n-1,1),1) - diag(ones(n-1,1),-1); f = ones(n,1)*h^2; u = A\\f;', vars: ['u'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-difference', 'poisson', 'dirichlet'] },
   { name: 'pde-heat-1d-step', src: "u = [0 1 2 3 2 1 0]'; r = 0.4; n = numel(u); un = u; for i = 2:n-1, un(i) = u(i) + r*(u(i+1) - 2*u(i) + u(i-1)); end; un(1) = 0; un(end) = 0;", vars: ['un'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-difference', 'heat-equation', 'explicit'] },
   { name: 'pde-fem-1d-stiffness', src: 'n = 4; K = zeros(n+1); for e = 1:n, K(e,e) = K(e,e)+1; K(e,e+1) = K(e,e+1)-1; K(e+1,e) = K(e+1,e)-1; K(e+1,e+1) = K(e+1,e+1)+1; end', vars: ['K'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-element', 'stiffness-assembly'] },
@@ -890,8 +890,12 @@ export const CASES: OracleCase[] = [
   { name: 'pde-reaction-diffusion', src: 'x = linspace(0,1,11); tt = linspace(0,0.05,3); sol = pdepe(0, @(xx,t,u,dudx) deal(1, dudx, -u), @(xx) sin(pi*xx), @(xl,ul,xr,ur,t) deal(ul, 0, ur, 0), x, tt); u = sol(end,:); ue = exp(-(pi^2+1)*0.05)*sin(pi*x); v = [double(max(abs(u - ue)) < 0.02) double(all(u >= -1e-9))];', vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['pdepe', 'reaction-diffusion', 'analytic-invariant', 'positivity'] },
   { name: 'pde-advection-tvd', src: 'N = 50; dx = 1/N; x = (0:N-1)*dx; a = 1; dt = 0.5*dx; nu = a*dt/dx; u = exp(-50*(x-0.3).^2); TV0 = sum(abs(diff(u))); m0 = max(u); for n = 1:20, u = u - nu*(u - circshift(u,1)); end; v = double([sum(abs(diff(u))) <= TV0 + 1e-9 max(u) <= m0 + 1e-9]);', vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['advection', 'upwind', 'tvd', 'stability-invariant'] },
   { name: 'fem-poisson-1d', src: 'n = 9; h = 1/(n+1); K = (2*eye(n) - diag(ones(n-1,1),1) - diag(ones(n-1,1),-1))/h; b = h*ones(n,1); u = K\\b; xi = (1:n)\x27*h; ue = xi.*(1 - xi)/2; v = [max(abs(u - ue)) norm(K*u - b)];', vars: ['v'], tol: 1e-6, domain: 'numerical-pde', tags: ['fem', 'poisson', 'stiffness-assembly', 'nodal-exactness'] },
+  // ── 2-D FEM weak-form Poisson (-Δu=1, u=0 on ∂Ω) on a structured triangular mesh: assemble the
+  // linear-element stiffness matrix + load, apply Dirichlet BCs, solve. Validated by the center
+  // value + symmetric-PSD stiffness + zero residual (full assemble→BC→solve pipeline). ──
+  { name: 'fem-poisson-2d', src: "n = 4; h = 1/n; np = n+1; nn = np*np; X = zeros(nn,1); Y = zeros(nn,1); for j = 1:np, for i = 1:np, k = (j-1)*np+i; X(k) = (i-1)*h; Y(k) = (j-1)*h; end; end; T = []; for j = 1:n, for i = 1:n, k = (j-1)*np+i; T = [T; k k+1 k+np; k+1 k+np+1 k+np]; end; end; K = zeros(nn,nn); b = zeros(nn,1); for e = 1:size(T,1), vv = T(e,:); xe = X(vv); ye = Y(vv); be = [ye(2)-ye(3); ye(3)-ye(1); ye(1)-ye(2)]; ce = [xe(3)-xe(2); xe(1)-xe(3); xe(2)-xe(1)]; A2 = (xe(2)-xe(1))*(ye(3)-ye(1)) - (xe(3)-xe(1))*(ye(2)-ye(1)); Ke = (be*be' + ce*ce')/(2*abs(A2)); for a = 1:3, for c = 1:3, K(vv(a),vv(c)) = K(vv(a),vv(c)) + Ke(a,c); end; end; b(vv) = b(vv) + abs(A2)/6; end; bnd = find(X==0 | X==1 | Y==0 | Y==1); int = setdiff((1:nn)', bnd); u = zeros(nn,1); u(int) = K(int,int)\\b(int); cn = find(abs(X-0.5)<1e-9 & abs(Y-0.5)<1e-9); v = [u(cn) double(norm(K(int,int)*u(int) - b(int)) < 1e-9) double(norm(K - K', 'fro') < 1e-9) numel(int)];", vars: ['v'], tol: 1e-6, domain: 'numerical-pde', tags: ['fem', 'weak-form', 'poisson-2d', 'triangular-mesh', 'stiffness-assembly'] },
 
-  // ══════════ optimization (35) ══════════
+  // ══════════ optimization (36) ══════════
   { name: 'opt-golden-section', src: 'f = @(x)(x-2).^2; a = 0; b = 5; g = (sqrt(5)-1)/2; c = b-g*(b-a); d = a+g*(b-a); for k = 1:60, if f(c) < f(d), b = d; else, a = c; end, c = b-g*(b-a); d = a+g*(b-a); end; xmin = (a+b)/2;', vars: ['xmin'], tol: 1e-6, domain: 'optimization', tags: ['line-search', 'golden-section'] },
   { name: 'opt-gradient-descent', src: 'Q = [3 0; 0 1]; x = [5; 5]; for k = 1:200, x = x - 0.1*(Q*x); end', vars: ['x'], tol: 1e-6, domain: 'optimization', tags: ['gradient-descent', 'quadratic'] },
   { name: 'opt-newton-min', src: 'x = 3; for k = 1:20, x = x - (2*(x-2))/2; end', vars: ['x'], tol: 1e-9, domain: 'optimization', tags: ['newton', 'minimization'] },
@@ -927,6 +931,10 @@ export const CASES: OracleCase[] = [
   { name: 'opt-lsqminnorm', src: "A = [1 1 1; 1 1 1]; b = [3; 3]; x = lsqminnorm(A, b); v = [norm(A*x - b) norm(x) x.\x27];", vars: ['v'], tol: 1e-5, domain: 'optimization', tags: ['lsqminnorm', 'min-norm', 'underdetermined'] },
   { name: 'opt-lsqlin-lsqnonlin', src: 'x1 = lsqlin([1 1; 1 -1], [2; 0], [], []); x2 = lsqnonlin(@(x) [x(1)-1; x(2)-2], [0 0]); v = [x1.\x27 x2];', vars: ['v'], tol: 1e-5, domain: 'optimization', tags: ['lsqlin', 'lsqnonlin', 'known-solution'] },
   { name: 'opt-curvefit', src: 'b = lsqcurvefit(@(b,xd) b(1)*xd + b(2), [0 0], [1; 2; 3], [3; 5; 7]); v = round(b);', vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['lsqcurvefit', 'exact-line-recovery'] },
+  // ── Second-order cone program: min x1+x2 s.t. ‖x‖≤1 → x=(−1/√2,−1/√2), objective −√2. Validated
+  // by objective + cone-constraint satisfaction. Fixed: fmincon now uses penalty continuation, so
+  // the cone constraint is enforced (previously ‖x‖ overshot to 1.14). ──
+  { name: 'opt-socp', src: 'f = [1; 1]; sc = secondordercone(eye(2), [0; 0], [0; 0], -1); [x, fv] = coneprog(f, sc); v = [fv double(norm(x) <= 1 + 1e-4) double(abs(fv + sqrt(2)) < 1e-3)];', vars: ['v'], tol: 1e-3, domain: 'optimization', tags: ['coneprog', 'secondordercone', 'socp', 'cone-constraint'] },
   // ── Discrete-optimization workflows via intlinprog (binary MILP), validated by optimal objective
   // + feasibility invariants (assignment is a permutation; set cover covers the universe). ──
   { name: 'opt-assignment', src: "C = [3 1 2; 2 3 1; 1 2 3]; f = C(:); Aeq = zeros(6,9); for r = 1:3, Aeq(r, (r-1)*3 + (1:3)) = 1; end; for c = 1:3, Aeq(3+c, c:3:9) = 1; end; beq = ones(6,1); x = intlinprog(f, 1:9, [], [], Aeq, beq, zeros(9,1), ones(9,1)); X = reshape(round(x), 3, 3); v = [round(f'*x) all(sum(X,1)==1) all(sum(X,2)'==1)];", vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['intlinprog', 'assignment-problem', 'binary-milp'] },
