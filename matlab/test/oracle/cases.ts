@@ -677,7 +677,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment'] },
   { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fminimax', 'minimax'] },
 
-  // ══════════ statistics (49) ══════════
+  // ══════════ statistics (55) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -727,6 +727,12 @@ export const CASES: OracleCase[] = [
   { name: 'stat-dist-stat', src: '[mn, vn] = normstat(2, 3); [mp, vp] = poisstat(4); [mb, vb] = binostat(10, 0.5); [mg, vg] = gamstat(2, 3); v = [mn vn mp vp mb vb mg vg];', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['distributions', 'mean-variance', 'normstat', 'poisstat', 'binostat', 'gamstat'] },
   { name: 'stat-dist-fit', src: 'v = [normfit([2 3 4 5 6]) poissfit([2 3 4 3 2 5]) binofit(7, 10)];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['distribution-fitting', 'normfit', 'poissfit', 'binofit', 'mle'] },
   { name: 'stat-moment-range', src: 'v = [moment([1 2 3 4 5], 3) range([3 7 2 9 4])];', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['moment', 'central-moment', 'range'] },
+  { name: 'stat-dist-stat2', src: '[mb, vb] = betastat(2, 3); [mf, vf] = fstat(3, 10); [mt, vt] = tstat(5); v = [mb vb mf vf mt vt];', vars: ['v'], tol: 1e-5, domain: 'statistics', tags: ['distributions', 'mean-variance', 'betastat', 'fstat', 'tstat'] },
+  { name: 'stat-dist-inv-discrete', src: 'v = [binoinv(0.5, 10, 0.5) poissinv(0.5, 4)];', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['distributions', 'inverse-cdf', 'binoinv', 'poissinv'] },
+  { name: 'stat-squareform', src: 'v = squareform([1 2 3]);', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['squareform', 'distance-matrix'] },
+  { name: 'stat-cdf-pdf-generic', src: "v = [cdf('Normal', 1, 0, 1) pdf('Poisson', 2, 3)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['cdf', 'pdf', 'generic-distribution-dispatch'] },
+  { name: 'stat-dist-fit2', src: 'v = [betafit([0.1 0.2 0.3 0.4 0.5 0.6]) gamfit([1 2 3 2 1 4])];', vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['distribution-fitting', 'betafit', 'gamfit', 'mle'] },
+  { name: 'stat-fitdist-makedist', src: "pd = makedist('Normal', 'mu', 2, 'sigma', 3); pd2 = fitdist([2 3 4 5]', 'Normal'); v = [pd.mu pd2.mu pd2.sigma];", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['makedist', 'fitdist', 'distribution-object'] },
 
   // ══════════ symbolic (50) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
