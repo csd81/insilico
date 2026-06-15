@@ -1,6 +1,6 @@
 // DSP System Toolbox — fills gaps not covered by the Signal Processing Toolbox:
 // firpm/remez (Parks-McClellan Remez exchange), firls (least-squares FIR),
-// sosfilt, tf2sos/sos2tf/zp2tf/tf2zp/zp2sos, grpdelay, impz/stepz,
+// sosfilt, tf2sos/sos2tf/zp2sos, grpdelay, impz/stepz,
 // bilinear (standalone), besself, decimate/interp/resample,
 // dsp.FIRFilter/BiquadFilter/FIRDecimator/FIRInterpolator/RMS/Mean/Variance System objects.
 import {
@@ -412,7 +412,7 @@ async function sosfilt(args: Value[]): Promise<Value[]> {
   return [colVec(Array.from(y))];
 }
 
-// ── tf2sos / sos2tf / zp2tf / tf2zp / zp2sos ──────────────────────────────────────────
+// ── tf2sos / sos2tf / zp2sos ──────────────────────────────────────────────────────────
 
 // Pair complex conjugate poles/zeros into second-order sections
 function pairRoots(roots: C[]): C[][] {
@@ -472,23 +472,9 @@ async function sos2tf(args: Value[]): Promise<Value[]> {
 // Read a (possibly complex) root vector as C[] pairs, preserving imaginary parts (idata).
 const mReim = (M: Mat): C[] => Array.from(M.data).map<C>((re, i) => [re, M.idata ? M.idata[i] : 0]);
 
-async function zp2tf(args: Value[]): Promise<Value[]> {
-  if (args.length < 3) throw new MatError('zp2tf: requires z, p, k');
-  const Zarr = mReim(m(args[0])), Parr = mReim(m(args[1]));   // preserve complex conjugate roots
-  const k = asScalar(m(args[2]));
-  const [b, a] = zpk2ba(Zarr, Parr, k);
-  return [rowVec(Array.from(b)), rowVec(Array.from(a))];
-}
-
-async function tf2zp(args: Value[]): Promise<Value[]> {
-  if (args.length < 2) throw new MatError('tf2zp: requires b and a');
-  const b = toArray(m(args[0])), a = toArray(m(args[1]));
-  const Z = polyRoots(b), P = polyRoots(a);
-  const k = b[0] / a[0];
-  // preserve complex zeros/poles: attach idata when any imaginary part is non-negligible
-  const cv = (R: C[]): Value => { const re = R.map((c) => c[0]), im = R.map((c) => c[1]); const v = colVec(re); if (im.some((x) => Math.abs(x) > 1e-9)) v.idata = Float64Array.from(im); return v; };
-  return [cv(Z), cv(P), scalar(k)];
-}
+// zp2tf/tf2zp removed: in MATLAB these are single shared controllib functions (toolbox/shared/
+// controllib/general), exposed here via control.ts. The DSP copies were dead source — dsp's
+// allow-list is {resample}, so they were never registered, and nothing internal referenced them.
 
 async function zp2sos_fn(args: Value[]): Promise<Value[]> {
   if (args.length < 3) throw new MatError('zp2sos: requires z, p, k');
@@ -1075,103 +1061,6 @@ async function firpmord(args: Value[]): Promise<Value[]> {
   return [scalar(nOrder), rowVec(fo), rowVec(ao), rowVec(w)];
 }
 
-async function chebwin(args: Value[]): Promise<Value[]> {
-  if (args.length < 1) throw new MatError('chebwin: requires n');
-  const n = Math.round(asScalar(m(args[0])));
-  const rs = args.length > 1 ? asScalar(m(args[1])) : 100;
-  if (n === 1) return [colVec([1])];
-  // Dolph-Chebyshev window via inverse-DFT of the Chebyshev frequency response.
-  // Chebyshev polynomial of order m, T_m(x), valid for all real x.
-  const cheb = (m: number, x: number): number => {
-    if (Math.abs(x) <= 1) return Math.cos(m * Math.acos(x));
-    if (x > 1) return Math.cosh(m * Math.acosh(x));
-    return (m % 2 === 0 ? 1 : -1) * Math.cosh(m * Math.acosh(-x));
-  };
-  const order = n - 1;
-  const r = 10 ** (rs / 20);          // ripple ratio
-  const beta = Math.cosh(Math.acosh(r) / order);
-  const even = n % 2 === 0;
-  // Frequency-domain samples W[k] = T_order(beta*cos(pi*k/n)); for even n apply a
-  // half-sample phase shift exp(j*pi*k/n). Window = fftshift(real(ifft(W))).
-  const Wre = new Float64Array(n), Wim = new Float64Array(n);
-  for (let k = 0; k < n; k++) {
-    const Wk = cheb(order, beta * Math.cos(Math.PI * k / n));
-    if (even) { const ph = Math.PI * k / n; Wre[k] = Wk * Math.cos(ph); Wim[k] = Wk * Math.sin(ph); }
-    else { Wre[k] = Wk; Wim[k] = 0; }
-  }
-  // ifft (real part) then fftshift
-  const raw = new Float64Array(n);
-  for (let i = 0; i < n; i++) {
-    let s = 0;
-    for (let k = 0; k < n; k++) {
-      const ang = 2 * Math.PI * k * i / n;
-      s += Wre[k] * Math.cos(ang) - Wim[k] * Math.sin(ang);
-    }
-    raw[i] = s / n;
-  }
-  const w = new Float64Array(n);
-  for (let i = 0; i < n; i++) w[i] = raw[(i + Math.ceil(n / 2)) % n];
-  const wmax = Math.max(...w);
-  for (let i = 0; i < n; i++) w[i] /= wmax;
-  return [colVec(Array.from(w))];
-}
-
-async function taylorwin(args: Value[]): Promise<Value[]> {
-  if (args.length < 1) throw new MatError('taylorwin: requires n');
-  const n = Math.round(asScalar(m(args[0])));
-  const nbar = args.length > 1 ? Math.round(asScalar(m(args[1]))) : 4;
-  const sll = args.length > 2 ? asScalar(m(args[2])) : -30;
-  // MATLAB taylorwin convention (no [0,1] normalization).
-  // A = acosh(10^(-sll/20))/pi  (sll is a negative dB value)
-  const A = Math.acosh(10 ** (-sll / 20)) / Math.PI;
-  const sigma2 = (nbar * nbar) / (A * A + (nbar - 0.5) ** 2);
-  // Coefficients Fm for m = 1..nbar-1
-  const Fm = new Float64Array(nbar); // index m
-  for (let mm = 1; mm <= nbar - 1; mm++) {
-    let num = 1, den = 1;
-    for (let i = 1; i <= nbar - 1; i++) {
-      num *= (1 - (mm * mm) / (sigma2 * (A * A + (i - 0.5) ** 2)));
-      if (i !== mm) den *= (1 - (mm * mm) / (i * i));
-    }
-    Fm[mm] = ((mm % 2 === 0 ? -1 : 1) * num) / (2 * den);
-  }
-  const w = new Float64Array(n);
-  for (let i = 0; i < n; i++) {
-    let s = 0;
-    const xi = (i - (n - 1) / 2) / n;
-    for (let mm = 1; mm <= nbar - 1; mm++) s += Fm[mm] * Math.cos(2 * Math.PI * mm * xi);
-    w[i] = 1 + 2 * s;
-  }
-  return [colVec(Array.from(w))];
-}
-
-async function tukeywin(args: Value[]): Promise<Value[]> {
-  if (args.length < 1) throw new MatError('tukeywin: requires n');
-  const n = Math.round(asScalar(m(args[0])));
-  const r = args.length > 1 ? asScalar(m(args[1])) : 0.5;
-  const w = new Float64Array(n);
-  if (n === 1) { w[0] = 1; return [colVec([1])]; }
-  if (r <= 0) { w.fill(1); return [colVec(Array.from(w))]; }
-  const rc = Math.min(r, 1);
-  const per = rc / 2;
-  for (let i = 0; i < n; i++) {
-    const x = i / (n - 1); // 0..1
-    if (x < per) w[i] = 0.5 * (1 + Math.cos(Math.PI * (x / per - 1)));
-    else if (x <= 1 - per) w[i] = 1;
-    else w[i] = 0.5 * (1 + Math.cos(Math.PI * (x / per - 2 / rc + 1)));
-  }
-  return [colVec(Array.from(w))];
-}
-
-async function gausswin(args: Value[]): Promise<Value[]> {
-  if (args.length < 1) throw new MatError('gausswin: requires n');
-  const n = Math.round(asScalar(m(args[0])));
-  const alpha = args.length > 1 ? asScalar(m(args[1])) : 2.5;
-  const L = n - 1;
-  const w = Float64Array.from({length:n}, (_,i) => Math.exp(-0.5*(alpha*(2*i-L)/L)**2));
-  return [rowVec(Array.from(w))];
-}
-
 export const DSP: ToolboxModule = {
   id: 'dsp',
   name: 'DSP System Toolbox',
@@ -1194,18 +1083,11 @@ export const DSP: ToolboxModule = {
     sosfilt,
     tf2sos,
     sos2tf,
-    zp2tf,
-    tf2zp,
     zp2sos: zp2sos_fn,
     // Multirate
     decimate: decimate_fn,
     // QUARANTINED: interp — needs MATLAB's polyphase least-squares filter design (too large to port to 1e-4)
     resample: resample_fn,
-    // Windows (additional, not in signal.ts)
-    chebwin,
-    taylorwin,
-    tukeywin,
-    gausswin,
     // System object step/release
     step: dspStep,
     release: dspRelease,
