@@ -297,7 +297,7 @@ export const CASES: OracleCase[] = [
   { name: 'dyn-newton-fixed-point', src: 'r = 3.5; x = 0.7; for k = 1:20, fx = r*x*(1-x) - x; fp = r*(1-2*x) - 1; x = x - fx/fp; end; v = x;', vars: ['v'], tol: 1e-7, domain: 'dynamical-systems', tags: ['newton', 'fixed-point', 'continuation'] },
   { name: 'dyn-stable-cycle-period4', src: 'r = 3.5; x = 0.5; for k = 1:1000, x = r*x*(1-x); end; c = zeros(4,1); for k = 1:4, x = r*x*(1-x); c(k) = x; end; v = sort(c);', vars: ['v'], tol: 1e-6, domain: 'dynamical-systems', tags: ['logistic-map', 'period-doubling', 'stable-cycle', 'bifurcation'] },
 
-  // ══════════ fourier (20) ══════════
+  // ══════════ fourier (24) ══════════
   { name: 'dsp-fft', src: 'Y = fft([1 2 3 4]);', vars: ['Y'], tol: 1e-9, domain: 'fourier', tags: ['fft'] },
   { name: 'dsp-conv', src: 'c = conv([1 2 1], [1 1]);', vars: ['c'], tol: 1e-9, domain: 'fourier', tags: ['convolution'] },
   { name: 'dsp-fft-ifft-roundtrip', src: 'x = [1 2 3 4]; y = real(ifft(fft(x)));', vars: ['y'], tol: 1e-9, domain: 'fourier', tags: ['fft', 'ifft', 'roundtrip'] },
@@ -318,6 +318,10 @@ export const CASES: OracleCase[] = [
   { name: 'sig-windows', src: "v = [hamming(5)' hann(5)' kaiser(5, 3)' blackman(5)'];", vars: ['v'], tol: 1e-4, domain: 'fourier', tags: ['window', 'hamming', 'hann', 'kaiser', 'blackman'] },
   { name: 'sig-periodogram', src: "x = [1 2 1 -1 -2 -1 1 2]; pxx = periodogram(x); v = pxx(1:3)';", vars: ['v'], tol: 1e-4, domain: 'fourier', tags: ['periodogram', 'psd', 'spectral-estimation'] },
   { name: 'sig-czt', src: "v = abs(czt([1 2 3 4]))';", vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['czt', 'chirp-z-transform'] },
+  { name: 'sig-windows2', src: "v = [bartlett(5)' gausswin(5)' hanning(5)' rectwin(5)' triang(5)'];", vars: ['v'], tol: 1e-4, domain: 'fourier', tags: ['window', 'bartlett', 'gausswin', 'hanning', 'rectwin', 'triang'] },
+  { name: 'sig-interp', src: 'y = interp(1:10, 2); v = [numel(y) y(3) y(5)];', vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['interp', 'upsampling', 'interpolation'] },
+  { name: 'sig-overshoot', src: 'v = overshoot([0 0 1 1.4 1.2 1.1 1 1]);', vars: ['v'], tol: 1e-3, domain: 'fourier', tags: ['overshoot', 'bilevel-waveform-metric'] },
+  { name: 'sig-square', src: 'v = square(2*pi*(0:7)/8);', vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['square', 'square-wave'] },
 
   // ══════════ geometry (9) ══════════
   { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'area'] },
