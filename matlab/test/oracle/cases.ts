@@ -195,7 +195,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (149) ══════════
+  // ══════════ core-language (150) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -355,6 +355,9 @@ export const CASES: OracleCase[] = [
   { name: 'bit-typed-width', src: "a = bitand(uint8(200),uint8(15)); b = bitshift(uint8(200),2); c = bitshift(uint8(1),10); d = bitor(int16(256),int16(1)); v = [double(a) isa(a,'uint8') double(b) double(c) double(d) isa(d,'int16')];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['bitshift', 'integer-width', 'class-preservation', 'wrap'] },
   { name: 'bit-cmp-set-get', src: "e = bitcmp(uint8(5)); g = bitget(uint8(13),1:8); s = bitset(uint8(8),1); v = double([e isa(e,'uint8') g s]);", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['bitcmp', 'bitget', 'bitset', 'typed-integer'] },
   { name: 'bit-flip-u16', src: 'p = uint16(43981); bits = bitget(p,16:-1:1); val = uint16(0); for k = 1:16, val = bitset(val,17-k,bits(k)); end; v = double([bits(1:4) val==p]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['bitget', 'bitset', 'roundtrip', 'uint16'] },
+  // ── Course-workflow integration case: LSB steganography — embed a secret byte's bits into the
+  // low bit of a uint8 cover vector and extract it, exercising the typed bit ops end-to-end. ──
+  { name: 'ala-steganography', src: 'cover = uint8([100 150 200 50 75 125 175 225]); secret = uint8(181); bits = bitget(secret, 8:-1:1); stego = cover; for k = 1:8, stego(k) = bitset(cover(k), 1, bits(k)); end; ex = uint8(0); for k = 1:8, ex = bitset(ex, 9-k, bitget(stego(k), 1)); end; v = double([ex==secret max(abs(double(stego) - double(cover)))<=1 ex]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['course-workflow', 'steganography', 'lsb', 'bitset', 'bitget'] },
 
   // ══════════ dynamical-systems (5) ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },
@@ -430,7 +433,7 @@ export const CASES: OracleCase[] = [
   // non-unique): shortestpathtree edge count, allpaths enumeration, allcycles enumeration. ──
   { name: 'graph-paths-cycles', src: 'G = graph([1 2 3], [2 3 4]); tr = shortestpathtree(G, 1); D = digraph([1 1 2], [2 3 3]); P = allpaths(D, 1, 3); C = allcycles(digraph([1 2 3], [2 3 1])); v = [numedges(tr) numel(P) numel(C)];', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['shortestpathtree', 'allpaths', 'allcycles', 'enumeration-count'] },
 
-  // ══════════ linear-algebra (42) ══════════
+  // ══════════ linear-algebra (50) ══════════
   { name: 'la-vec-mag-2d', src: 'v = [2 2]; mag = sqrt(v(1)^2 + v(2)^2);', vars: ['mag'], tol: 1e-9, domain: 'linear-algebra' },
   { name: 'la-vec-mag-3d', src: 'v = [4 5 5]; mag = sqrt(v(1)^2 + v(2)^2 + v(3)^2);', vars: ['mag'], tol: 1e-9, domain: 'linear-algebra' },
   { name: 'la-atand-neg', src: 't = atand(-3/2);', vars: ['t'], tol: 1e-9, domain: 'linear-algebra' },
@@ -473,6 +476,17 @@ export const CASES: OracleCase[] = [
   { name: 'la-mat-normal', src: "A = [1 2; -2 1]; v = norm(A*A' - A'*A);", vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['normal-matrix'] },
   { name: 'la-mat-rotation', src: "th = 0.5; R = [cos(th) -sin(th); sin(th) cos(th)]; v = [norm(R'*R - eye(2)) det(R)];", vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['rotation-matrix', 'special-orthogonal'] },
   { name: 'la-mat-gram-psd', src: "A = [1 2; 3 4]; G = A'*A; v = double(all(eig(G) >= -1e-9));", vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['gram-matrix', 'positive-semidefinite'] },
+  // ── Course-workflow integration cases (student-facing linear-algebra scripts). Original minimal
+  // workflows (NOT copied from any course repo); locked against MATLAB, with reconstruction/
+  // equilibrium residuals as invariants where outputs (eigvecs, null space) are non-unique. ──
+  { name: 'mla-matrix-operations', src: "A = [2 1; 1 3]; B = [1 0; 2 1]; C = A*B; d = det(A); tr = trace(A); r = rank(A); Ai = inv(A); v = [C(:)' d tr r reshape(A*Ai, 1, 4)];", vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'matrix-operations', 'det', 'trace', 'inv'] },
+  { name: 'mla-eigenanalysis', src: "A = [4 1; 1 4]; [V, D] = eig(A); recon = norm(A*V - V*D); diagn = norm(V*D/V - A); ev = sort(diag(D))'; v = [ev recon diagn];", vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'eigenanalysis', 'diagonalization', 'reconstruction-invariant'] },
+  { name: 'mla-eigen-power', src: 'A = [2 0; 0 5]; x = [1; 1]; for k = 1:50, x = A*x; x = x/norm(x); end; lam = x.\x27*A*x; v = [lam abs(x(1)) abs(x(2))];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'power-iteration', 'dominant-eigenvalue'] },
+  { name: 'ala-balancing-chemical', src: "E = [1 0 -1 0; 4 0 0 -2; 0 2 -2 -1]; ns = null(E, 'r'); coef = ns/ns(1); v = [round(coef') norm(E*ns)];", vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'null-space', 'stoichiometry', 'integer-solution'] },
+  { name: 'ala-markov-steady', src: "P = [0.7 0.2; 0.3 0.8]; [V, D] = eig(P); [~, idx] = min(abs(diag(D) - 1)); p = V(:, idx); p = p/sum(p); v = [p' norm(P*p - p) sum(p)];", vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'markov-chain', 'steady-state', 'stationary-distribution'] },
+  { name: 'ala-static-forces', src: 'th1 = pi/6; th2 = pi/3; W = 100; A = [-cos(th1) cos(th2); sin(th1) sin(th2)]; b = [0; W]; T = A\\b; v = [T.\x27 norm(A*T - b)];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'static-equilibrium', 'linear-system'] },
+  { name: 'vec-basics', src: 'u = [3 4 0]; mag = norm(u); uhat = u/mag; ang = atan2(u(2), u(1)); v = [mag uhat ang norm(uhat)];', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['course-workflow', 'vector-magnitude', 'unit-vector', 'orientation'] },
+  { name: 'vec-arithmetic', src: 'a = [1 2 3]; b = [4 5 6]; c = [7 8 10]; dp = dot(a, b); cr = cross(a, b); proj = dot(a, b)/dot(b, b)*b; ang = acos(dot(a, b)/(norm(a)*norm(b))); trip = dot(a, cross(b, c)); v = [dp cr proj ang trip];', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['course-workflow', 'dot', 'cross', 'projection', 'triple-product'] },
 
   // ══════════ machine-learning (10) ══════════
   { name: 'ml-kmeans-lloyd', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; C = [1 1; 5 7]; for it = 1:10, d1 = sum((X - C(1,:)).^2, 2); d2 = sum((X - C(2,:)).^2, 2); a = d2 < d1; C(1,:) = mean(X(~a,:)); C(2,:) = mean(X(a,:)); end; v = sort(C(:,1));", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['k-means', 'lloyd', 'clustering', 'fixed-init'] },
@@ -503,7 +517,7 @@ export const CASES: OracleCase[] = [
   { name: 'nt-chinese-remainder', src: 'n = [3 5 7]; a = [2 3 2]; N = prod(n); x = 0; for k = 1:numel(n), Nk = N/n(k); t = 0; nt = 1; rr = n(k); nr = mod(Nk, n(k)); while nr ~= 0, q = floor(rr/nr); tmp = t - q*nt; t = nt; nt = tmp; tmp = rr - q*nr; rr = nr; nr = tmp; end; inv = mod(t, n(k)); x = x + a(k)*Nk*inv; end; v = mod(x, N);', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['chinese-remainder-theorem', 'modular-arithmetic'] },
   { name: 'nt-carmichael-fermat-witness', src: 'v = [powermod(2, 10, 341) powermod(2, 340, 341) isprime(341)];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['carmichael', 'fermat-test', 'powermod', 'composite'] },
 
-  // ══════════ numerical-linear-algebra (163) ══════════
+  // ══════════ numerical-linear-algebra (164) ══════════
   { name: 'nla-mldivide', src: 'A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; x = A\\b;', vars: ['x'], domain: 'numerical-linear-algebra' },
   { name: 'nla-det', src: 'd = det([1 2 3; 4 5 6; 7 8 10]);', vars: ['d'], domain: 'numerical-linear-algebra' },
   { name: 'nla-inv', src: 'B = inv([4 3; 6 3]);', vars: ['B'], domain: 'numerical-linear-algebra' },
@@ -671,6 +685,9 @@ export const CASES: OracleCase[] = [
   // ── Demand-driven sparse remainder: structural rank + fill-reducing orderings. The orderings
   // (colperm/symamd) are non-unique permutations — locked by permutation length, sprank is unique. ──
   { name: 'sparse-remainder', src: 'v = [sprank(sparse([1 0 1; 0 1 0; 0 0 1])) numel(colperm(sparse(magic(4)))) numel(symamd(sparse(magic(4) + eye(4))))];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['sprank', 'colperm', 'symamd', 'structural-rank', 'ordering'] },
+  // ── Course-workflow integration case: Gaussian elimination with back-substitution (original
+  // hand-rolled, NOT copied), cross-checked against MATLAB's `\` by residual + solution-difference. ──
+  { name: 'mla-linear-systems', src: "A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; n = 3; M = [A b]; for k = 1:n-1, for i = k+1:n, f = M(i,k)/M(k,k); M(i,:) = M(i,:) - f*M(k,:); end; end; x = zeros(n,1); for i = n:-1:1, x(i) = (M(i,end) - M(i,1:n)*x)/M(i,i); end; xref = A\\b; v = [x' norm(x - xref) norm(A*x - b)];", vars: ['v'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['course-workflow', 'gaussian-elimination', 'back-substitution'] },
 
   // ══════════ numerical-methods (30) ══════════
   { name: 'num-newton-sqrt2', src: 'x = 1; for k = 1:20, x = x - (x^2 - 2)/(2*x); end', vars: ['x'], domain: 'numerical-methods' },

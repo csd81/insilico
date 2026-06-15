@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 988 tests green · 853 MATLAB oracle fixtures ·
-853/853 cases classified across 22 domains.
+**Status (as of this revision):** 998 tests green · 863 MATLAB oracle fixtures ·
+863/863 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -299,6 +299,16 @@ real MATLAB (with the analytic-solution error as a secondary sanity invariant).
   `shortestpathtree`/`allpaths`/`allcycles` (by count, since path/cycle order is non-unique);
   sparse `sprank`/`colperm`/`symamd` (orderings locked by permutation length, `sprank` exact);
   and geometry `inpolygon`/`rectint`/`polyarea`.
+- **Batch 3 — student-facing linear-algebra workflows (10 cases):** full course scripts modeled
+  on the MathWorks teaching repos (original implementations, *not* copied). Matrix Methods:
+  matrix-operations (`det`/`trace`/`rank`/`inv`), Gaussian elimination + back-substitution
+  (cross-checked against `\`), eigen-diagonalization (reconstruction invariant), power iteration
+  (dominant eigenvalue). Applied Linear Algebra: chemical-equation balancing (integer `null`-space
+  stoichiometry), Markov steady-state (stationary distribution via the λ=1 eigenvector), static
+  equilibrium (force-balance linear solve), LSB steganography (typed bit embed/extract round-trip).
+  Vector Arithmetic: magnitude/unit/orientation and dot/cross/projection/triple-product. No new
+  functions and no bugs — all reuse already-validated builtins; locked against MATLAB with
+  reconstruction/equilibrium residuals as invariants where eigenvectors / null spaces are non-unique.
 
 ### Remaining base/core backlog (~410 uncategorized)
 
