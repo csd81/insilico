@@ -11,10 +11,14 @@
 // registered via RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion
 // algebra; econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection
 // fusion; nav: WGS84 geodetic↔ECEF transforms; fixedpoint: CORDIC sqrt/rotate/QR);
+// (wavelet + aerospace + econ + fusion are now RESTORED + selectively registered via
+// RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion algebra;
+// econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection fusion;
+// nav: WGS84 geodetic↔ECEF transforms; curvefit: Franke test surface + single-B-spline ppform +
+// spmak B-form constructor + B-form-aware fnval/fnder/fnint);
 // images (image processing), mapping (geodesy), nnet
 // (deep-learning layers/training), rl (reinforcement learning), pde (PDE-Toolbox object/mesh
-// machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases),
-// curvefit (B-spline object subsystem — base spline/polyfit/interp cover the workflows). None
+// machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases). None
 // of these were used by any oracle case. Within the registered toolboxes individual functions
 // may still be unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per
 // toolbox.
@@ -39,6 +43,7 @@ import { ECON } from './econ';
 import { FUSION } from './fusion';
 import { NAV } from './nav';
 import { FIXEDPOINT } from './fixedpoint';
+import { CURVEFIT } from './curvefit';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
@@ -49,6 +54,7 @@ export const TOOLBOXES: ToolboxModule[] = [
   FUSION,      // restored — optimal assignment + covariance-intersection fusion (allow-list below)
   NAV,         // restored — WGS84 geodetic↔ECEF coordinate transforms (allow-list below)
   FIXEDPOINT,  // restored — only the CORDIC elementary-function math (allow-list below)
+  CURVEFIT,    // restored — Franke surface + single-B-spline ppform + spmak/B-form fnval/fnder/fnint
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -140,6 +146,11 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // precision emulation matching MATLAB to ~1e-8; the fi/numerictype/quantizer object surface
   // stays unregistered.
   fixedpoint: new Set(['cordicsqrt', 'cordicrotate', 'cordicqr']),
+  // curvefit: Franke's 2-D test surface, the lone B-spline B_{1,k} in ppform (bspline), the B-form
+  // constructor (spmak), and B-form-aware fnval/fnder/fnint (extend base's pp-only versions to the
+  // 'B-' form; base still wins on the shared names — see DUPLICATE_POLICY). The fit/fittype/smooth
+  // surface and the rest of the spline object subsystem (spapi/csaps/aptknt/…) stay unregistered.
+  curvefit: new Set(['franke', 'bspline', 'spmak', 'fnval', 'fnder', 'fnint']),
 };
 
 /** Intentional-duplicate policy. A name implemented in BOTH base and a toolbox is a cross-layer
@@ -161,6 +172,15 @@ export const DUPLICATE_POLICY: Record<string, DuplicatePolicy> = {
   //     polymorphic over numeric/symbolic args. The symbolic impl already has a numeric fast-path,
   //     so the redundant base copy was deleted; symbolic.hypergeom is the single owner.
   // This table (and `pnpm registry:audit`) stays in place to catch any NEW duplicate that creeps in.
+  //
+  // curvefit fnval/fnder/fnint: base owns the pp-form versions (used by the oracle cases); the
+  // curvefit copies additionally handle the B-form struct produced by spmak (form 'B-'), which the
+  // base versions reject. Base wins on the bare name (so pp-form callers are unchanged); the B-form
+  // behavior is reachable via the qualified `curvefit.fnval(...)` call. On pp-form input the two
+  // agree exactly, so this is a strict superset, not a contradiction.
+  fnval: { defaultOwner: 'base', sameBehavior: false, differs: 'curvefit.fnval also evaluates spmak B-form (form "B-"); base handles pp-form only. Identical on pp-form.' },
+  fnder: { defaultOwner: 'base', sameBehavior: false, differs: 'curvefit.fnder also differentiates the B-form; base handles pp-form only. Identical on pp-form.' },
+  fnint: { defaultOwner: 'base', sameBehavior: false, differs: 'curvefit.fnint also integrates the B-form; base handles pp-form only. Identical on pp-form.' },
 };
 
 export const TOOLBOX_BUILTINS: Record<string, Builtin> = {};

@@ -62,6 +62,17 @@ function bsplineDeriv(t: number[], a: number[], k: number): { t: number[]; a: nu
   for (let j = 0; j < n - 1; j++) { const den = t[j + k] - t[j + 1]; ap[j] = den > 0 ? (k - 1) * (a[j + 1] - a[j]) / den : 0; }
   return { t: t.slice(1, t.length - 1), a: ap, k: k - 1 };
 }
+/** Derivative B-form on a FIXED knot set: d/dx Σ a_j B_{j,k} = Σ a'_j B_{j,k−1}, where the
+ *  order-(k−1) basis has one MORE function than the order-k basis. Coefficients are extended
+ *  with implicit zeros at both ends, so a single B-spline keeps its (now spread) support — unlike
+ *  bsplineDeriv (which assumes a complete spline and trims knots). a indexes B_{0,k}..B_{n−1,k}. */
+function bformDerivFixed(t: number[], a: number[], k: number): number[] {
+  const nLow = t.length - (k - 1);                 // # of order-(k−1) B-splines
+  const ap = new Array<number>(nLow).fill(0);
+  const ext = (j: number) => (j >= 0 && j < a.length ? a[j] : 0);   // implicit zeros outside support
+  for (let j = 0; j < nLow; j++) { const den = t[j + k - 1] - t[j]; ap[j] = den > 0 ? (k - 1) * (ext(j) - ext(j - 1)) / den : 0; }
+  return ap;
+}
 /** Evaluate a univariate B-form spline at x (Σ a_j B_{j,k}(x)). */
 function spvalAt(t: number[], a: number[], k: number, x: number): number {
   const B = bsplineValues(t, k, x); let s = 0; for (let j = 0; j < a.length; j++) s += a[j] * B[j]; return s;
@@ -272,6 +283,33 @@ const SPLINE_BUILTINS: Record<string, Builtin> = {
 
   /** pp=sp2pp(sp) — convert a B-form spline to pp-form (then base fnval/fnder/fnint apply). */
   sp2pp: async (a) => { const { t, a: co, k } = readBform(a[0]); return ret(sp2ppStruct(t, co, k)); },
+
+  /** pp=bspline(t) — the single B-spline B_{1,k} with knot sequence t (order k=numel(t)−1),
+   *  returned in pp-form over the FULL knot span [t(1),t(end)]. (MATLAB's bspline also plots;
+   *  the sandbox returns only the ppform, matching `pp = bspline(t)`.) Unlike sp2pp's
+   *  basic-interval convention, the lone B-spline's support is the whole knot sequence, so the
+   *  Taylor coefficients are sampled on every distinct-knot subinterval. */
+  bspline: async (a) => {
+    const t = toArray(m(a[0]));
+    const k = t.length - 1;                                          // order = numel(t) − 1, n = 1
+    if (k < 1) throw new MatError(`bspline: knot sequence needs at least two knots (got ${t.length})`);
+    const { xi } = distinctSorted(t);
+    const L = xi.length - 1; const coefs = zeros(L, k);             // L×k, MATLAB power order (high→low)
+    // Precompute the derivative B-forms on the fixed knot set t: deriv[p] holds the coefficients
+    // of the p-th derivative in the order-(k−p) B-spline basis (deriv[0] = [1], the B-spline itself).
+    const deriv: number[][] = [[1]]; let dk = k;
+    for (let p = 1; p < k; p++) { deriv.push(bformDerivFixed(t, deriv[p - 1], dk)); dk -= 1; }
+    for (let i = 0; i < L; i++) {
+      const xL = xi[i];                                            // left break of the subinterval
+      let fac = 1;
+      for (let p = 0; p < k; p++) {                                // p-th derivative → power-p coefficient
+        const val = spvalAt(t, deriv[p], k - p, xL);
+        coefs.data[i + (k - 1 - p) * L] = val / fac;               // column (k-1-p) holds power p
+        fac *= (p + 1);
+      }
+    }
+    return ret(makePP(xi, coefs));
+  },
 
   /** t=augknt(knots,k[,mults]) — knot sequence with end knots of multiplicity k. */
   augknt: async (a, nargout) => {

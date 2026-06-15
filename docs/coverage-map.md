@@ -16,6 +16,8 @@ pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 
 **Status (as of this revision):** 1066 tests green · 949 MATLAB oracle fixtures ·
 949/949 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1094 tests green · 948 MATLAB oracle fixtures ·
+948/948 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.
@@ -215,6 +217,12 @@ Registered toolboxes are limited to in-scope numerical/matrix domains:
   CORDIC Givens rotations). Software double-precision emulation, validated by invariant (sqrt vs
   `sqrt`, rotate vs `x·exp(iθ)`, QR by `Q*R≈A` + `Q'Q≈I`). The fi/numerictype/quantizer object
   surface stays unregistered.
+- `curvefit` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): Franke's 2-D test
+  surface (`franke`), the lone B-spline `B_{1,k}` in ppform (`bspline`), the B-form constructor
+  (`spmak`), and B-form-aware `fnval`/`fnder`/`fnint` (a strict superset of the base pp-only
+  versions — base still wins on the shared names, the B-form path is reached via `curvefit.*`; see
+  `DUPLICATE_POLICY`). The fit/fittype/smooth and rest of the spline object subsystem stay
+  unregistered. Validated by exact franke values + B-spline integral/symmetry invariants.
 
 **Restored source pool (source-only, NOT registered).** The previously-deleted toolbox source
 files were brought back as a curated pool under `matlab/tb/` (antenna, audio,
@@ -226,7 +234,7 @@ correctness promise — registration is. Help files follow registration (not wir
 until a function is registered).
 
 Out-of-scope domain toolboxes are de-registered but source is retained under
-`matlab/tb/`: images, mapping, nav, nnet, rl, econ, pde, curvefit, plus the restored pool above.
+`matlab/tb/`: images, mapping, nnet, rl, pde, plus the restored pool above.
 Calling an unregistered function returns "undefined function", matching MATLAB without the
 corresponding toolbox.
 

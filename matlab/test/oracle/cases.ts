@@ -67,6 +67,14 @@ export const CASES: OracleCase[] = [
   // ── Demand-driven remainder interpolation helpers: quick linear interp, pp integral/break info,
   // nearest-neighbour search. ──
   { name: 'interp-helpers', src: "a = interp1q([1;2;3], [1;4;9], 2.5); pp = csapi([1 2 3 4], [1 4 9 16]); q = fnint(pp); ii = fnval(q,3) - fnval(q,1); ord = fnbrk(pp, 'order'); ds = dsearchn([0 0; 1 0; 0 1; 1 1], [0.6 0.4]); v = [a ii ord ds];", vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['interp1q', 'fnint', 'fnbrk', 'dsearchn'] },
+  // ── Curve Fitting Toolbox: Franke's 2-D test surface — four reference points (peaks/corners). ──
+  { name: 'approx-franke', src: 'v = [franke(0.5, 0.5) franke(0.2, 0.7) franke(0, 0) franke(1, 1)];', vars: ['v'], tol: 1e-12, domain: 'approximation', tags: ['franke', 'test-surface', 'curvefit'] },
+  // ── Single B-spline B_{1,k} as a ppform (bspline), then fnval/fnder/fnint on it. Cubic B-spline
+  // over knots 0..4: symmetric values, and the spline integrates to (t_end-t_0)/k = 1 (exact). ──
+  { name: 'approx-bspline-ppform', src: 'pp = bspline([0 1 2 3 4]); d = fnder(pp); ig = fnint(pp); v = [pp.order pp.pieces fnval(pp, [0.5 1.5 2.5 3.5]) fnval(d, 1.5) fnval(ig, 4) - fnval(ig, 0)];', vars: ['v'], tol: 1e-12, domain: 'approximation', tags: ['bspline', 'fnval', 'fnder', 'fnint', 'curvefit'] },
+  // ── spmak B-form constructor: order = numel(knots) - numel(coefs), number = numel(coefs);
+  // struct fields are convention-stable and locked directly. ──
+  { name: 'approx-spmak-bform', src: 'spb = spmak([0 0 0 0 1 2 3 3 3 3], [1 2 0 -1 1 3]); v = [spb.order spb.number numel(spb.knots) sum(spb.coefs)];', vars: ['v'], tol: 1e-12, domain: 'approximation', tags: ['spmak', 'b-form', 'curvefit'] },
   // ── Polynomial helpers: characteristic polynomial from roots, polynomial division, minimal poly. ──
   { name: 'poly-helpers', src: '[q, r] = deconv([1 0 0 1], [1 1]); v = [poly([1 2]) q r];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['poly', 'deconv', 'polynomial-division'] },
   // ── Spline minimum (fnmin, exact) + pde-solution evaluation (pdeval), the latter validated by an
