@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 946 tests green · 811 MATLAB oracle fixtures ·
-811/811 cases classified across 22 domains.
+**Status (as of this revision):** 951 tests green · 816 MATLAB oracle fixtures ·
+816/816 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -185,7 +185,8 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   `histcounts` auto-binning uses a different edge rule than MATLAB (only the
   explicit-`edges` form is locked); `reverse('hello')` returns a string vs MATLAB's
   char (value validated via `char()`); `qrupdate` requires full `qr` (MATLAB rejects
-  economy); `legendreP` is Symbolic-only and absent in this MATLAB (not validated).
+  economy). (Correction: `legendreP` was earlier noted as absent — it is in fact present
+  in this MATLAB and is now oracle-validated in Pass 2K via `double(legendreP(n,x))`.)
 - **Pass 2H — computational geometry / triangulation (core for FEM/PDE/meshing/
   scattered-data interpolation, not breadth):** 6 invariant cases over `convhull`/
   `convhulln`/`delaunay`/`delaunayn`/`delaunayTriangulation`/`triangulation`/
@@ -218,18 +219,23 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   the linear method (the 2-D `'spline'` method inherits the same not-a-knot divergence).
   Documented, not a silent bug. `griddatan` declined here — errored in MATLAB R2026a for
   the probed inputs while the engine was more permissive (not a clean oracle target).
-- **Totals after Pass 2:** 946 tests / 811 fixtures; base/core `uncategorized` 579 → 490.
+- **Pass 2K — remaining special functions:** 5 cases at deterministic scalar/vector points
+  (no branch-cut torture) over `expint`/`sinint`/`cosint`/`fresnels`/`fresnelc`, `zeta`/
+  `dilog`/`psi` (incl. polygamma `psi(n,x)`), the orthogonal-polynomial families
+  `legendreP`/`chebyshevT`/`chebyshevU`/`hermiteH`/`laguerreL`/`jacobiP`/`gegenbauerC`, and
+  `hypergeom`/`heaviside`/`lambertw` (incl. the `-1` branch). All match MATLAB R2026a
+  exactly; serialized via `double([...])`.
+- **Totals after Pass 2:** 951 tests / 816 fixtures; base/core `uncategorized` 579 → 474.
 
 **The high-risk numerical-linear-algebra sweep is done; the broader core-math/semantics
 triage is not.** The remaining `uncategorized` is *not* dismissed as breadth — most of it
 is core computational math or core MATLAB semantics, and it continues in **prioritized
-passes** (done: 2H geometry, 2I N-D/shape, 2J interpolation/spline; next: 2K remaining
-special functions → 2L struct/cell semantics → 2M bit/integer operators → 2N optimization/
-solver variants → 2O stats/data utilities). Genuinely lower-priority tails (display/format,
-UI-ish helpers, table/timetable breadth, VFS/file, compatibility aliases, path/host) stay
-deferred.
+passes** (done: 2H geometry, 2I N-D/shape, 2J interpolation/spline, 2K special functions;
+next: 2L struct/cell semantics → 2M bit/integer operators → 2N optimization/solver variants
+→ 2O stats/data utilities). Genuinely lower-priority tails (display/format, UI-ish helpers,
+table/timetable breadth, VFS/file, compatibility aliases, path/host) stay deferred.
 
-### Remaining base/core backlog (~490 uncategorized)
+### Remaining base/core backlog (~474 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -237,9 +243,11 @@ shape, for demand-driven triage — not a TODO list:
 - **strings / text + numeric-string conversions (~67):** `str*`, `regexp*`,
   `pad`/`erase`/`extract`/`insert`/`replace`/`split`/`join`, `dec2*`/`hex2*`/`num2*`.
 - **type predicates (~44):** `is*` (`isscalar`/`iscolumn`/`ishermitian`/`issorted`/…).
-- **special functions, remaining (~58):** bessel/`ellip*` variants, `jacobi*`/
-  `chebyshev*`/`hermite*`/`laguerre*`/`gegenbauer*`, `hypergeom`, `zeta`/`hurwitzZeta`/
-  `polylog`/`dilog`, `heaviside`/`dirac`, `lambertw`, `fresnel*`/`sinint`/`cosint`/`expint`.
+- **special functions, remaining (~40):** Pass 2K validated the orthogonal-polynomial
+  families (`legendreP`/`chebyshevT`/`chebyshevU`/`hermiteH`/`laguerreL`/`jacobiP`/
+  `gegenbauerC`), `hypergeom`, `zeta`/`dilog`/`psi`, `heaviside`/`lambertw`, and
+  `fresnels`/`fresnelc`/`sinint`/`cosint`/`expint`. Remainder: bessel/`ellip*` variants
+  not in Pass 2E, `hurwitzZeta`/`polylog`, and `dirac` (distributional — needs care).
 - **elementary math, operators, bit ops:** `cosh`/`sinh`/`tanh`/`sec`/`csc`/`cot`
   families, `plus`/`minus`/`times`/`mtimes`/`mrdivide`/`power`, `bitand`/`bitor`/
   `bitxor`/`bitshift`/`bitget`/`bitset`.

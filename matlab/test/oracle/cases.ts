@@ -61,7 +61,7 @@ export const CASES: OracleCase[] = [
   { name: 'interp-gridded-scattered', src: "F = griddedInterpolant([1 2 3 4], [1 4 9 16], 'spline'); G = scatteredInterpolant([0;1;0;1;0.5], [0;0;1;1;0.5], [0;1;1;2;1]); v = [F(2.5) G(0.5,0.5) G(0.25,0.25)];", vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['griddedInterpolant', 'scatteredInterpolant', 'interpolant-objects'] },
   { name: 'interp-2d-3d', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X.^2 + Y; a = interp2(X, Y, Z, 1.5, 2.5); b = interp2(X, Y, Z, 2.5, 1.5); [X3, Y3, Z3] = meshgrid(1:2, 1:2, 1:2); V = X3 + 2*Y3 + 3*Z3; c = interp3(X3, Y3, Z3, V, 1.5, 1.5, 1.5); v = [a b c];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['interp2', 'interp3', 'gridded-nd'] },
 
-  // ══════════ calculus (47) ══════════
+  // ══════════ calculus (52) ══════════
   { name: 'cal-limit-oneside-right', src: "syms x; v = sign(double(limit(1/x, x, 0, 'right')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-oneside-left', src: "syms x; v = sign(double(limit(1/x, x, 0, 'left')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-removable-oneside', src: "syms x; v = double(limit((x^2-1)/(x-1), x, 1, 'left'));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
@@ -109,6 +109,14 @@ export const CASES: OracleCase[] = [
   { name: 'cal-elliptic', src: '[K, E] = ellipke(0.5); [sn, cn, dn] = ellipj(0.7, 0.5); v = [K E sn cn dn];', vars: ['v'], tol: 1e-7, domain: 'calculus', tags: ['special-functions', 'ellipke', 'ellipj', 'elliptic', 'multi-output'] },
   { name: 'cal-airy-psi', src: 'v = [airy(0.5) psi(3.5)];', vars: ['v'], tol: 1e-7, domain: 'calculus', tags: ['special-functions', 'airy', 'psi', 'digamma'] },
   { name: 'cal-legendre', src: 'P = legendre(3, 0.25); v = P(:).\x27;', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['special-functions', 'legendre', 'associated-legendre'] },
+  // ── Pass 2K: remaining special functions at deterministic scalar/vector points (no branch-cut
+  // torture). All match MATLAB R2026a exactly. legendreP IS present here (the Pass 2E note that
+  // called it absent was wrong — it works via double(legendreP(n,x))). ──
+  { name: 'spec-expint-si-ci', src: 'v = double([expint(1) sinint(1) cosint(1) fresnels(1) fresnelc(1)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['expint', 'sinint', 'cosint', 'fresnel'] },
+  { name: 'spec-zeta-dilog-psi', src: 'v = double([zeta(2) dilog(2) psi(1) psi(2,1) psi(0.5)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['zeta', 'dilog', 'psi', 'polygamma'] },
+  { name: 'spec-legendre-cheb', src: 'v = double([legendreP(3,0.5) chebyshevT(4,0.3) chebyshevU(3,0.3)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['legendreP', 'chebyshevT', 'chebyshevU', 'orthogonal-polynomials'] },
+  { name: 'spec-orthopoly', src: 'v = double([hermiteH(3,0.5) laguerreL(3,0.5) jacobiP(2,1,1,0.3) gegenbauerC(3,2,0.3)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['hermiteH', 'laguerreL', 'jacobiP', 'gegenbauerC'] },
+  { name: 'spec-hypergeom-heaviside-lambertw', src: 'v = double([hypergeom([1 2],3,0.5) heaviside(-1) heaviside(0) heaviside(2) lambertw(1) lambertw(-1,-exp(-1))]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['hypergeom', 'heaviside', 'lambertw', 'branch'] },
 
   // ══════════ coding (18) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },

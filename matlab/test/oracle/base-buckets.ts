@@ -201,4 +201,8 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // values; interpolant objects (griddedInterpolant/scatteredInterpolant) + interp2/interp3.
   // spline 3-point not-a-knot and 2-D 'spline' diverge in representation (values agree) — documented. ──
   ...bulkD('needs-oracle', 'direct', 'approximation', 'spline pchip mkpp unmkpp ppval griddedInterpolant scatteredInterpolant interp2 interp3'),
+
+  // ── Pass 2K: remaining special functions at deterministic points (all match MATLAB exactly). ──
+  // (hypergeom is a Symbolic-toolbox builtin, validated by the case but not a base entry.)
+  ...bulkD('needs-oracle', 'direct', 'calculus', 'expint sinint cosint fresnels fresnelc zeta dilog psi legendreP chebyshevT chebyshevU hermiteH laguerreL jacobiP gegenbauerC heaviside lambertw'),
 };
