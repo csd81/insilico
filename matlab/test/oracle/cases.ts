@@ -657,7 +657,7 @@ export const CASES: OracleCase[] = [
   { name: 'nla-tensorprod', src: "A = reshape(1:24, 2, 3, 4); B = reshape(1:12, 4, 3); C = tensorprod(A, B, 3, 1); D = tensorprod([1 2; 3 4], [5 6; 7 8]); s = tensorprod([1 2 3], [4 5 6], 'all'); v = [size(C) C(2,3,2) size(D) D(2,1,2,2) s];", vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['tensorprod', 'nd-shape', 'contraction', 'outer-product'] },
   { name: 'nla-pagesolve', src: 'A = cat(3, [2 1; 0 3], [1 0; 2 2]); B = cat(3, [4 5; 6 7], [1 1; 0 2]); X = pagemrdivide(B, A); R1 = max(abs(reshape(pagemtimes(X,A) - B, [], 1))); Y = pagemldivide(A, B); R2 = max(abs(reshape(pagemtimes(A,Y) - B, [], 1))); Ap = cat(3, [1 0; 0 1; 1 1], [2 0; 0 2; 1 0]); Bp = cat(3, [1; 2; 3], [1; 0; 1]); Z = pagelsqminnorm(Ap, Bp); v = [R1 R2 size(Z,1) size(Z,3)];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['pagemrdivide', 'pagemldivide', 'pagelsqminnorm', 'residual-invariant'] },
 
-  // ══════════ numerical-methods (28) ══════════
+  // ══════════ numerical-methods (30) ══════════
   { name: 'num-newton-sqrt2', src: 'x = 1; for k = 1:20, x = x - (x^2 - 2)/(2*x); end', vars: ['x'], domain: 'numerical-methods' },
   { name: 'num-trapz', src: 'x = linspace(0,1,1001); y = x.^2; I = trapz(x, y);', vars: ['I'], domain: 'numerical-methods' },
   { name: 'num-lu-solve', src: 'A = [4 3; 6 3]; b = [10; 12]; [L,U,P] = lu(A); y = L\\(P*b); x = U\\y;', vars: ['x'], domain: 'numerical-methods' },
@@ -686,8 +686,13 @@ export const CASES: OracleCase[] = [
   { name: 'num-integral2', src: 'v = integral2(@(x,y) x.*y, 0, 1, 0, 2);', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['integral2', 'cubature'] },
   { name: 'num-gradient-2d', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X.^2 + Y.^2; [FX, FY] = gradient(Z); v = [FX(2,2) FY(2,2)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['gradient', 'finite-difference'] },
   { name: 'num-del2', src: '[X, Y] = meshgrid(1:4, 1:4); Z = X.^2 - Y.^2; L = del2(Z); v = L(2,2);', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['del2', 'discrete-laplacian'] },
+  // ── Course-workflow integration cases (quadrature). Original minimal implementations of standard
+  // textbook methods (NOT copied from any course repo); validate the engine running the full script
+  // end-to-end against MATLAB, with the analytic error as a secondary sanity invariant. ──
+  { name: 'nm-gauss2pt', src: 'a = 0; b = 1; f = @(x) x.^3 + 1; x1 = -1/sqrt(3); x2 = 1/sqrt(3); m = (b-a)/2; c = (b+a)/2; I = m*(f(m*x1+c) + f(m*x2+c)); v = [I abs(I - 1.25)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['course-workflow', 'gauss-legendre', '2-point-quadrature'] },
+  { name: 'nm-simpson', src: 'f = @(x) sin(x); a = 0; b = pi; n = 10; h = (b-a)/n; x = a:h:b; fx = f(x); I = h/3*(fx(1) + fx(end) + 4*sum(fx(2:2:end-1)) + 2*sum(fx(3:2:end-2))); v = [I abs(I - 2)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['course-workflow', 'composite-simpson', 'quadrature'] },
 
-  // ══════════ numerical-ode (29) ══════════
+  // ══════════ numerical-ode (32) ══════════
   { name: 'ode-heun', src: 'h = 0.1; y = 1; for k = 1:10, yp = y + h*y; y = y + h/2*(y + yp); end', vars: ['y'], tol: 1e-9, domain: 'numerical-ode', tags: ['improved-euler', 'heun'] },
   { name: 'ode-harmonic-rk4', src: 'h = 0.01; y = [1; 0]; A = [0 1; -1 0]; for k = 1:628, k1 = A*y; k2 = A*(y+h/2*k1); k3 = A*(y+h/2*k2); k4 = A*(y+h*k3); y = y + h/6*(k1+2*k2+2*k3+k4); end', vars: ['y'], tol: 1e-6, domain: 'numerical-ode', tags: ['rk4', 'harmonic-oscillator', 'system'] },
   { name: 'ode-ode45', src: '[t, y] = ode45(@(t, y) y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, domain: 'numerical-ode', tags: ['ode45'] },
@@ -719,8 +724,13 @@ export const CASES: OracleCase[] = [
   // ── Pass 2N: ODE solver variants. y'=-y on [0,1] → e^-1; each variant integrates to its order
   // (validated by an accuracy bar both engines clear, not by step-by-step state which differs). ──
   { name: 'opt-ode-variants', src: 'f = @(t,y) -y; e = exp(-1); [~, y1] = ode23s(f, [0 1], 1); [~, y2] = ode23t(f, [0 1], 1); [~, y3] = ode78(f, [0 1], 1); [~, y4] = ode89(f, [0 1], 1); v = double([abs(y1(end)-e)<1e-2 abs(y2(end)-e)<1e-2 abs(y3(end)-e)<1e-3 abs(y4(end)-e)<1e-3]);', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['ode23s', 'ode23t', 'ode78', 'ode89', 'accuracy-invariant'] },
+  // ── Course-workflow integration cases (hand-rolled time-stepping). Original minimal Euler/RK4
+  // implementations (NOT copied from any course repo); the full loop runs identically to MATLAB. ──
+  { name: 'nm-euler-ode', src: 'f = @(t,y) -2*y; h = 0.01; t = 0; y = 1; for k = 1:100, y = y + h*f(t,y); t = t + h; end; v = [y abs(y - exp(-2))];', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['course-workflow', 'forward-euler', 'time-stepping'] },
+  { name: 'nm-euler-system', src: 'h = 0.001; X = [1; 0]; A = [0 1; -1 0]; for k = 1:1000, X = X + h*(A*X); end; v = [X.\x27 X.\x27*X];', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['course-workflow', 'euler-system', 'harmonic-oscillator'] },
+  { name: 'nm-rk4', src: 'f = @(t,y) y; h = 0.1; t = 0; y = 1; for k = 1:10, k1 = f(t,y); k2 = f(t+h/2, y+h/2*k1); k3 = f(t+h/2, y+h/2*k2); k4 = f(t+h, y+h*k3); y = y + h/6*(k1 + 2*k2 + 2*k3 + k4); t = t + h; end; v = [y abs(y - exp(1))];', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['course-workflow', 'runge-kutta-4', 'time-stepping'] },
 
-  // ══════════ numerical-pde (34) ══════════
+  // ══════════ numerical-pde (39) ══════════
   { name: 'pde-poisson-1d', src: 'n = 5; h = 1/(n+1); A = 2*eye(n) - diag(ones(n-1,1),1) - diag(ones(n-1,1),-1); f = ones(n,1)*h^2; u = A\\f;', vars: ['u'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-difference', 'poisson', 'dirichlet'] },
   { name: 'pde-heat-1d-step', src: "u = [0 1 2 3 2 1 0]'; r = 0.4; n = numel(u); un = u; for i = 2:n-1, un(i) = u(i) + r*(u(i+1) - 2*u(i) + u(i-1)); end; un(1) = 0; un(end) = 0;", vars: ['un'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-difference', 'heat-equation', 'explicit'] },
   { name: 'pde-fem-1d-stiffness', src: 'n = 4; K = zeros(n+1); for e = 1:n, K(e,e) = K(e,e)+1; K(e,e+1) = K(e,e+1)-1; K(e+1,e) = K(e+1,e)-1; K(e+1,e+1) = K(e+1,e+1)+1; end', vars: ['K'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-element', 'stiffness-assembly'] },
@@ -755,6 +765,15 @@ export const CASES: OracleCase[] = [
   { name: 'pde-maccormack', src: "N = 50; dx = 1/N; x = (0:N-1)'*dx; c = 1; dt = 0.5*dx; nu = c*dt/dx; u = exp(-100*(x-0.3).^2); for n = 1:round(0.5/dt), us = u - nu*(circshift(u,-1) - u); u = 0.5*(u + us - nu*(us - circshift(us,1))); end; mass = sum(u)*dx; peak = max(u);", vars: ['mass', 'peak'], tol: 1e-6, domain: 'numerical-pde', tags: ['advection', 'maccormack', 'predictor-corrector', 'second-order'] },
   { name: 'pde-method-of-lines', src: "n = 9; h = 1/(n+1); A = (diag(ones(n-1,1),1) - 2*eye(n) + diag(ones(n-1,1),-1))/h^2; u = sin(pi*(1:n)'*h); dt = 0.0005; for k = 1:200, k1 = A*u; k2 = A*(u+dt/2*k1); k3 = A*(u+dt/2*k2); k4 = A*(u+dt*k3); u = u + dt/6*(k1+2*k2+2*k3+k4); end; v = max(u);", vars: ['v'], tol: 1e-7, domain: 'numerical-pde', tags: ['method-of-lines', 'semi-discretization', 'rk4'] },
   { name: 'pde-adi-heat-2d', src: "n = 5; h = 1/(n+1); dt = 0.01; r = dt/(2*h^2); e = ones(n,1); T = full(spdiags([e -2*e e], -1:1, n, n)); I = eye(n); u = ones(n,n); for st = 1:10, us = (I - r*T)\\(u + r*(u*T)); u = (us + r*(T*us))/(I - r*T); end; v = u(3,3);", vars: ['v'], tol: 1e-6, domain: 'numerical-pde', tags: ['adi', 'peaceman-rachford', 'operator-splitting', 'heat-2d'] },
+  // ── Course-workflow integration cases (finite-difference PDE solvers). Original minimal explicit/
+  // implicit/Crank–Nicolson heat + 1-D/2-D wave solvers (NOT copied from any course repo); each full
+  // script — tridiagonal solves, boundary conditions, time loop — runs identically to MATLAB, with
+  // the analytic-solution error as a secondary sanity invariant. ──
+  { name: 'nm-explicit-heat', src: 'nx = 11; dx = 0.1; x = (0:nx-1)*dx; u = sin(pi*x); dt = 0.004; r = dt/dx^2; for n = 1:10, un = u; for i = 2:nx-1, u(i) = un(i) + r*(un(i+1) - 2*un(i) + un(i-1)); end; u(1) = 0; u(nx) = 0; end; ue = exp(-pi^2*dt*10)*sin(pi*x); v = [max(abs(u - ue)) u(6)];', vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['course-workflow', 'explicit-ftcs', 'heat-1d'] },
+  { name: 'nm-implicit-heat', src: "nx = 11; dx = 0.1; x = (0:nx-1)'*dx; u = sin(pi*x); dt = 0.01; r = dt/dx^2; N = nx-2; A = (1+2*r)*eye(N) - r*diag(ones(N-1,1),1) - r*diag(ones(N-1,1),-1); for n = 1:10, u(2:nx-1) = A\\u(2:nx-1); end; ue = exp(-pi^2*dt*10)*sin(pi*x); v = [max(abs(u - ue)) u(6)];", vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['course-workflow', 'backward-euler', 'tridiagonal-solve', 'heat-1d'] },
+  { name: 'nm-cn-heat', src: "nx = 11; dx = 0.1; x = (0:nx-1)'*dx; u = sin(pi*x); dt = 0.01; r = dt/dx^2; N = nx-2; I = eye(N); L = -2*eye(N) + diag(ones(N-1,1),1) + diag(ones(N-1,1),-1); Aa = I - r/2*L; Bb = I + r/2*L; for n = 1:10, u(2:nx-1) = Aa\\(Bb*u(2:nx-1)); end; ue = exp(-pi^2*dt*10)*sin(pi*x); v = [max(abs(u - ue)) u(6)];", vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['course-workflow', 'crank-nicolson', 'heat-1d'] },
+  { name: 'nm-wave-1d', src: 'nx = 21; dx = 0.05; x = (0:nx-1)*dx; c = 1; dt = 0.025; r = (c*dt/dx)^2; u0 = sin(pi*x); uprev = u0; ucur = u0; ucur(2:nx-1) = u0(2:nx-1) + 0.5*r*(u0(3:nx) - 2*u0(2:nx-1) + u0(1:nx-2)); ucur(1) = 0; ucur(nx) = 0; for n = 1:20, unew = zeros(1,nx); unew(2:nx-1) = 2*ucur(2:nx-1) - uprev(2:nx-1) + r*(ucur(3:nx) - 2*ucur(2:nx-1) + ucur(1:nx-2)); uprev = ucur; ucur = unew; end; t = 21*dt; ue = cos(pi*c*t)*sin(pi*x); v = [max(abs(ucur - ue)) ucur(11)];', vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['course-workflow', 'wave-1d', 'leapfrog', 'explicit'] },
+  { name: 'nm-wave-2d', src: 'n = 11; [X, Y] = meshgrid(linspace(0,1,n)); c = 1; dt = 0.05; h = 0.1; r = (c*dt/h)^2; u0 = sin(pi*X).*sin(pi*Y); ucur = u0; uprev = u0; for k = 1:10, unew = ucur; unew(2:end-1,2:end-1) = 2*ucur(2:end-1,2:end-1) - uprev(2:end-1,2:end-1) + r*(ucur(3:end,2:end-1) + ucur(1:end-2,2:end-1) + ucur(2:end-1,3:end) + ucur(2:end-1,1:end-2) - 4*ucur(2:end-1,2:end-1)); unew(1,:) = 0; unew(end,:) = 0; unew(:,1) = 0; unew(:,end) = 0; uprev = ucur; ucur = unew; end; v = [max(abs(ucur(:))) ucur(6,6)];', vars: ['v'], tol: 1e-9, domain: 'numerical-pde', tags: ['course-workflow', 'wave-2d', 'meshgrid', 'explicit'] },
 
   // ══════════ optimization (33) ══════════
   { name: 'opt-golden-section', src: 'f = @(x)(x-2).^2; a = 0; b = 5; g = (sqrt(5)-1)/2; c = b-g*(b-a); d = a+g*(b-a); for k = 1:60, if f(c) < f(d), b = d; else, a = c; end, c = b-g*(b-a); d = a+g*(b-a); end; xmin = (a+b)/2;', vars: ['xmin'], tol: 1e-6, domain: 'optimization', tags: ['line-search', 'golden-section'] },

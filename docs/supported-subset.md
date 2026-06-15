@@ -7,7 +7,7 @@ intentionally out of scope. It is a contract, not a bug list — items under
 "Intentionally unsupported" are deliberate scope decisions, not defects.
 
 Behavior is mechanically verified against **real MATLAB** via the oracle suite
-(`matlab/test/oracle/`, 836 committed fixtures) plus TS-only tests — 971 total,
+(`matlab/test/oracle/`, 846 committed fixtures) plus TS-only tests — 981 total,
 all green. See `pnpm test`. The systematic base/core triage campaign (Pass 2A–2O) is
 complete; further validation is **example/course-driven**. How cases are chosen (oracle
 vs invariant vs TS-only, and when to decline) is documented in
@@ -81,7 +81,11 @@ vs invariant vs TS-only, and when to decline) is documented in
 - Linear systems: Gaussian elimination (`\`), LU solve, Cholesky solve
 - Interpolation: Newton divided-difference, linear (`interp1`), `pchip`, `spline`
 - Quadrature: trapezoid, Simpson, 2-point Gauss, polynomial (`polyint`)
-- ODE integration: explicit Euler, classical RK4
+- ODE integration: explicit Euler (scalar + first-order systems), classical RK4
+- PDE finite differences: explicit FTCS heat, backward-Euler / Crank–Nicolson heat
+  (tridiagonal solves), 1-D and 2-D wave equation (leapfrog) — full time-stepping
+  scripts validated end-to-end against MATLAB, with the analytic solution as a
+  secondary error invariant
 
 ---
 

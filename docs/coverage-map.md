@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 971 tests green · 836 MATLAB oracle fixtures ·
-836/836 cases classified across 22 domains.
+**Status (as of this revision):** 981 tests green · 846 MATLAB oracle fixtures ·
+846/846 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -276,6 +276,21 @@ base/core validation is now **demand-driven** (add a case when an example needs 
 function). The remaining ~434 is genuinely lower-priority tail — display/format, UI-ish
 helpers, table/timetable breadth, VFS/file, compatibility aliases, path/host — that the MATLAB
 oracle either has no opinion on or that isn't computational-math core.
+
+### Example-driven validation — course workflows
+
+With the function-level triage swept, new cases come from **complete course scripts**, which
+are stronger integration tests: they exercise the interpreter executing real numerical-methods
+code (time-stepping loops, in-place updates, boundary conditions, tridiagonal solves) rather
+than isolated builtins. These are **original minimal implementations** of standard textbook
+methods — *not* copied from any course repository — and each full script is locked against
+real MATLAB (with the analytic-solution error as a secondary sanity invariant).
+
+- **Batch 1 — numerical methods / PDE (10 cases):** 2-point Gauss–Legendre and composite
+  Simpson quadrature; forward Euler (scalar + first-order system) and classical RK4 time
+  integration; explicit FTCS, backward-Euler, and Crank–Nicolson heat (with tridiagonal
+  solves); and 1-D + 2-D wave equation (leapfrog). All run identically to MATLAB to 8 sig
+  figs. Tagged `course-workflow` in `cases.ts`.
 
 ### Remaining base/core backlog (~434 uncategorized)
 
