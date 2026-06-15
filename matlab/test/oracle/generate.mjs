@@ -1,11 +1,16 @@
 /**
  * Oracle fixture generator (LOCAL ONLY — requires a `matlab` binary on PATH).
  *
- *   pnpm oracle:generate
+ *   pnpm oracle:generate                 # FULL: every case → rewrite fixtures.json (ground truth)
+ *   pnpm oracle:generate -- --new        # INCREMENTAL: only cases missing from fixtures.json
+ *   pnpm oracle:generate -- gap- econ-   # INCREMENTAL: only cases whose name matches a pattern
  *
- * Runs every case in matlab/test/oracle/cases.ts through ONE real-MATLAB process
- * and writes ground-truth values to fixtures.json (committed). The normal test
- * suite compares the TS interpreter against that JSON — no MATLAB at test time.
+ * Full mode runs every case through ONE real-MATLAB process and writes ground-truth values to
+ * fixtures.json (committed); the test suite then compares the TS interpreter against that JSON with
+ * no MATLAB at test time. Incremental mode runs MATLAB on only the selected cases and MERGES them
+ * into the existing fixtures.json (every other fixture is preserved verbatim) — fast for iterative
+ * batch work and keeps the diff strictly additive. Run a full regen before relying on the committed
+ * ground truth (it is the canonical, reproducible-from-scratch artifact).
  *
  * Requires `tsc -p tsconfig.test.json` to have run first (imports compiled cases).
  */
@@ -25,6 +30,21 @@ const { CASES } = await import(pathToFileURL(compiled).href).catch(() => {
   process.exit(1);
 });
 
+// ── Select cases: full (default) or incremental (--new / name patterns) ──────
+const dest = join(here, 'fixtures.json');
+const argv = process.argv.slice(2);
+const onlyNew = argv.includes('--new');
+const patterns = argv.filter((a) => !a.startsWith('--'));
+const incremental = onlyNew || patterns.length > 0;
+// matlab.lang.makeValidName turns each case name into its fixtures.json key (non-[A-Za-z0-9_] → _).
+const keyOf = (name) => name.replace(/[^A-Za-z0-9_]/g, '_');
+let existing = {};
+if (incremental) { try { existing = JSON.parse(readFileSync(dest, 'utf8')); } catch { existing = {}; } }
+let selected = CASES;
+if (patterns.length) selected = selected.filter((c) => patterns.some((p) => c.name.includes(p)));
+if (onlyNew) selected = selected.filter((c) => !(keyOf(c.name) in existing));
+if (selected.length === 0) { console.log('No cases selected; nothing to regenerate.'); process.exit(0); }
+
 // ── Build a single .m driver (function file: everything is scoped) ───────────
 const tmp = mkdtempSync(join(tmpdir(), 'oracle-'));
 const outPath = join(tmp, 'fixtures.json');
@@ -32,7 +52,7 @@ const mPath = join(tmp, 'oracle_run.m');
 
 // MATLAB cell array literal of {name, src, {vars...}} rows.
 const esc = (s) => s.replace(/'/g, "''");
-const rows = CASES.map((c) =>
+const rows = selected.map((c) =>
   `  '${esc(c.name)}', '${esc(c.src)}', {${c.vars.map((v) => `'${esc(v)}'`).join(', ')}}`,
 ).join(';\n');
 
@@ -77,10 +97,14 @@ end
 `;
 
 writeFileSync(mPath, m);
-console.log(`Running ${CASES.length} cases through MATLAB…`);
+console.log(`Running ${selected.length}${incremental ? ` of ${CASES.length}` : ''} cases through MATLAB…`);
 execFileSync('matlab', ['-batch', `run('${mPath.replace(/\\/g, '/')}')`], { stdio: 'inherit' });
 
-const fixtures = JSON.parse(readFileSync(outPath, 'utf8'));
-const dest = join(here, 'fixtures.json');
+const produced = JSON.parse(readFileSync(outPath, 'utf8'));
+// Incremental: merge into existing (updates matched keys in place, appends new ones — additive diff).
+// Full: the produced set IS the whole fixtures file.
+const fixtures = incremental ? { ...existing, ...produced } : produced;
 writeFileSync(dest, JSON.stringify(fixtures, null, 2) + '\n');
-console.log(`Wrote ${Object.keys(fixtures).length} fixtures → ${dest}`);
+console.log(incremental
+  ? `Merged ${Object.keys(produced).length} fixture(s) into ${Object.keys(fixtures).length} total → ${dest}`
+  : `Wrote ${Object.keys(fixtures).length} fixtures → ${dest}`);
