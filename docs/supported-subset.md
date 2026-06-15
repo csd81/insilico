@@ -57,6 +57,7 @@ vs invariant vs TS-only, and when to decline) is documented in
 
 **Cells & structs**
 - Construction, indexing, static field access (`s.f`), nested assignment (`S.a.b=1`)
+- **Dynamic field access** `s.(name)` — read and write, incl. loop-built names and nested `s.(f).x`
 - Struct arrays (`S(2).x=5`) with auto-filled empty fields; field extraction `[S.field]`; `fieldnames`
 
 **Strings**
