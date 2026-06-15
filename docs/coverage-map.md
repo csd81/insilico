@@ -203,9 +203,14 @@ Registered toolboxes are limited to in-scope numerical/matrix domains:
 - `wavelet` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): orthonormal
   DCT-II + Haar/Daubechies DWT (`dct`/`idct`/`dwt`/`idwt`/`wavedec`/`waverec`/`haart`/`ihaart`),
   validated by exact values + perfect-reconstruction invariants.
+- `aerospace` (id `aero`) — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`):
+  deterministic rotation/quaternion algebra only — `angle2dcm`/`dcm2angle` (ZYX direction-cosine
+  matrices) and scalar-first `[w x y z]` quaternions `angle2quat`/`quatmultiply`/`quatrotate`/
+  `quatinv` (Hamilton product). Exact MATLAB parity; the model/environment/UI surface stays
+  unregistered.
 
 **Restored source pool (source-only, NOT registered).** The previously-deleted toolbox source
-files were brought back as a curated pool under `matlab/tb/` (aerospace, antenna, audio,
+files were brought back as a curated pool under `matlab/tb/` (antenna, audio,
 bioinfo, financial, fininst, fixedpoint, fusion, fuzzy, gads, ident, lidar, parallel, phased,
 radar, rf, risk, robotics, textanalytics, uav, vision, wavelet; simulink skipped). A restored
 toolbox is exposed at runtime **only** via `RESTORED_TOOLBOX_KEEP`, and only after each function

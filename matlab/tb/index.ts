@@ -4,10 +4,11 @@
 //
 // Registration is limited to in-scope numerical/matrix-computation domains. Out-of-scope
 // domain toolboxes are NOT registered (source kept under matlab/tb/ but not exposed at
-// runtime): aerospace, antenna/rf, audio, bioinfo, financial/fininst, lidar/radar,
+// runtime): antenna/rf, audio, bioinfo, financial/fininst, lidar/radar,
 // textanalytics, vision (earlier); fixedpoint, fusion, fuzzy, gads, ident, parallel, phased,
 // risk, robotics; and — de-registered as low-value breadth — econ (econometrics),
-// (wavelet is now RESTORED + selectively registered via RESTORED_TOOLBOX_KEEP — DCT + DWT);
+// (wavelet + aerospace are now RESTORED + selectively registered via RESTORED_TOOLBOX_KEEP —
+// wavelet: DCT + DWT; aerospace: rotation/quaternion algebra only);
 // images (image processing), mapping (geodesy), nav (navigation/coord frames), nnet
 // (deep-learning layers/training), rl (reinforcement learning), pde (PDE-Toolbox object/mesh
 // machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases),
@@ -31,11 +32,13 @@ import { STATS } from './stats';
 import { SYMBOLIC } from './symbolic';
 // Restored toolboxes (source brought back, registered selectively + validated). See RESTORED_TOOLBOX_KEEP.
 import { WAVELET } from './wavelet';
+import { AEROSPACE } from './aerospace';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
   COMM, CONTROL, DSP, OPTIM, SIGNAL, STATS, SYMBOLIC,
-  WAVELET,   // restored — registered via RESTORED_TOOLBOX_KEEP (validated subset only)
+  WAVELET,     // restored — registered via RESTORED_TOOLBOX_KEEP (validated subset only)
+  AEROSPACE,   // restored — only the deterministic rotation/quaternion math (allow-list below)
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -105,6 +108,10 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // wavelet: orthonormal DCT-II (matches MATLAB) + Haar/Daubechies DWT (orthonormal → perfect
   // reconstruction), single/multi-level. Validated by exact values + reconstruction invariants.
   wavelet: new Set(['dct', 'idct', 'dwt', 'idwt', 'wavedec', 'waverec', 'haart', 'ihaart']),
+  // aerospace (id 'aero'): only the deterministic rotation/quaternion algebra — direction-cosine
+  // matrices and scalar-first quaternions (Hamilton product, rotation, inverse). Pure math, exact
+  // MATLAB parity; the toolbox's model/environment/UI surface stays unregistered.
+  aero: new Set(['angle2dcm', 'dcm2angle', 'angle2quat', 'quatmultiply', 'quatrotate', 'quatinv']),
 };
 
 /** Intentional-duplicate policy. A name implemented in BOTH base and a toolbox is a cross-layer
