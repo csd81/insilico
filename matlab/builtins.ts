@@ -7937,6 +7937,12 @@ function matRank(rows: number[][]): number {
  *  A tiny deterministic joggle breaks exact cocircular/cospherical degeneracies (cf. Qhull 'QJ'). */
 function delaunaynd(P: number[][]): number[][] {
   const d = P[0].length;
+  // Exactly d+1 points form a single simplex (if non-degenerate). The lift-and-hull
+  // method can't build a hull from d+1 lifted points, so handle this minimal case directly.
+  if (P.length === d + 1) {
+    const rows = P.slice(1).map((p) => p.map((x, j) => x - P[0][j]));
+    return Math.abs(detRows(rows)) > 1e-12 ? [Array.from({ length: d + 1 }, (_, i) => i)] : [];
+  }
   // The pure-JS incremental hull is O(points × facets); above this size it would
   // effectively hang (MATLAB uses Qhull). Bail gracefully on very large 3-D+ sets.
   if (P.length > 600 && d >= 3) return [];

@@ -1,453 +1,382 @@
 # Coverage Map
 
-The declared scope and the oracle-verified status of each area. The target is
-**MATLAB-executable undergraduate and graduate *applied/computational* mathematics**
-— not proof-based pure math (see "Out of scope" below). Coverage is measured by
-tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
+This document records the declared scope and oracle-verified coverage of the
+MATLAB-like sandbox. The target is **MATLAB-executable undergraduate and graduate
+applied/computational mathematics**, not MATLAB parity and not proof-based pure
+math.
+
+Coverage is measured by tagged oracle cases in `matlab/test/oracle/cases.ts`.
 
 ```bash
 pnpm oracle:coverage
+pnpm oracle:base-audit
+pnpm oracle:audit
 ```
 
-**Status (as of this revision):** 1022 tests green · 887 MATLAB oracle fixtures ·
-887/887 cases classified across 22 domains.
+**Status (as of this revision):** 1033 tests green · 898 MATLAB oracle fixtures ·
+898/898 oracle cases classified across 22 domains.
 
-`✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
+`✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
+`n/a` = deliberately not oracle-comparable.
 
-## Tier 1 — Core undergraduate
+## Validation Contract
 
-| Area | Status |
+The project validates a **declared computational subset**. New runtime behavior
+should be added only when it is:
+
+- validated against real MATLAB,
+- needed by a course/example workflow, or
+- clearly math-adjacent and scheduled for validation.
+
+Non-unique outputs are checked by invariants rather than raw equality. Examples:
+eigenspace reconstruction, SVD/QR sign conventions, sparse ordering
+permutations, graph path length, `linprog` objective/constraints, and `residue`
+reconstruction.
+
+The runtime is intentionally not a full MATLAB clone. Explicit non-goals include
+`classdef`, `arguments`, full path semantics, host/network/binary I/O, exact RNG
+stream parity, GUI/App Designer, and proof-based pure math.
+
+## Core Language And Array Semantics
+
+| Area | Status | Notes |
+|---|---:|---|
+| Matrix construction, indexing, colon, `end`, deletion, growth | ✓ | Includes column-major linear indexing and growth from `[]`. |
+| Broadcasting / implicit expansion | ✓ | Scalar, row/column, comparison, zero-size edge cases. |
+| Empty matrix algebra | ✓ | `sum`/`prod`/`max` with dimension arguments and shape preservation. |
+| N-D shape semantics | ✓ | `permute`/`ipermute`, `shiftdim`, `squeeze`, `ndims`, `repelem`, `tensorprod`. |
+| Struct and cell semantics | ✓ | Struct arrays, comma-list extraction, nested structs, `cell2mat`/`mat2cell`/field helpers. |
+| Integer and bit semantics | ✓ | Saturating casts, `typecast`, `swapbytes`, `idivide`, typed bit ops. |
+| Strings/text basics | ~ | Common `str*`, `contains`, split/trim/replace covered; broader text tail is demand-driven. |
+| Type and matrix predicates | ✓ | `isscalar`/`isvector`/`isrow`/`iscolumn`/`ismatrix`/`islogical`/`isfinite`/`isreal` and `issymmetric`/`ishermitian`/`isdiag`/`istriu`/`istril`/`isbanded`/`issparse`; plus set/sort helpers `issorted`/`issortedrows`/`ismembertol`/`allunique`/`numunique`. |
+| Named operator functions | ✓ | `plus`/`minus`/`times`/`mtimes`/`uplus`/`uminus`/`rdivide`/`ldivide`/`mpower` called directly. |
+| Graphics, VFS, display, validators, RNG plumbing | n/a | TS-only or browser-runtime behavior; MATLAB oracle is the wrong validator. |
+
+Known fixed bugs from this category: `tensorprod` N-D result shape, typed bit-op
+width/class preservation, `pagenorm(A,'fro')` char-argument parsing, `corr(x,y)`
+scalar cross-correlation, and `spectrogram` scalar window length.
+
+Declined as not-in-MATLAB-R2026a (`exist == 0`): `isposdef`, `sumsq`, `iscomplex`,
+`meansq`. `bin2gray`/`gray2bin` were registered in the `comm` allow-list but are
+undefined in this MATLAB — now **unregistered** so the engine errors to match.
+
+## Numerical Linear Algebra
+
+| Area | Status | Notes |
+|---|---:|---|
+| Dense linear systems and decompositions | ✓ | `\`, `inv`, `det`, `rank`, `null`, `orth`, `rref`, `eig`, `svd`, `qr`, `lu`, `chol`. |
+| Advanced decompositions | ✓ | `schur`, `hess`, `polyeig`, `qz`, `ordqz`, `ordschur`, `cdf2rdf`, `rsf2csf`. |
+| Matrix functions | ✓ | `expm`, `sqrtm`, `logm`, matrix powers. |
+| Sparse basics and structure | ✓ | `sparse`, `full`, `spdiags`, `speye`, `spalloc`, `spconvert`, `spfun`, `spones`. |
+| Sparse orderings | ✓ | `symrcm`, `colamd`, `amd`, `dmperm`, `etree`, `symamd`, `colperm`, validated by invariants. |
+| Iterative and preconditioned solvers | ✓ | `pcg`, `gmres`, `minres`, `bicg`, `bicgstab`, `cgs`, `lsqr`, `ilu`, `ichol`. |
+| Pagewise N-D linear algebra | ✓ | `pagemtimes`, `pageinv`, `pagemldivide`, `pagepinv`, `pageeig`, `pagesvd`, etc. |
+| Structured LA | ✓ | `toeplitz`, `levinson`, `hankel`, `compan`, `vander`, `hilb`, `pascal`, `wilkinson`. |
+| Partial gaps | ~ | `gsvd` is validated for the one-output generalized singular values form; 5-output CS form is deferred. |
+
+## Approximation, Interpolation, And Numerical Methods
+
+| Area | Status | Notes |
+|---|---:|---|
+| Polynomial workflows | ✓ | `polyfit`, centered/scaled `[p,S,mu]`, `polyval`, `roots`, `polyint`, `polyder`, `polyvalm`. |
+| 1-D and N-D interpolation | ✓ | `interp1`, `interp2`, `interp3`, `interpn`, `pchip`, `makima`, `spline`. |
+| Piecewise-polynomial helpers | ✓ | `mkpp`, `unmkpp`, `ppval`, `csape`, `csapi`, `fnval`, `fnder`, `fnint`, `fnbrk`. |
+| Scattered/grid interpolation objects | ✓ | `griddedInterpolant`, `scatteredInterpolant`, `griddata`, `dsearchn`. |
+| Quadrature and course methods | ✓ | Trapezoid, Simpson, Gauss, `integral`, `integral2`, textbook Euler/RK4 workflows. |
+| Known divergence | ~ | 3-point not-a-knot spline representation differs, but evaluated values match. |
+| Declined | n/a | `griddatan` is not a clean oracle target for the probed inputs. |
+
+## ODE, DAE, PDE, And FEM-Adjacent Workflows
+
+| Area | Status | Notes |
+|---|---:|---|
+| Explicit ODE basics | ✓ | Euler, Heun, RK4, systems, `ode45`, `ode23`, `ode113`. |
+| Stiff and implicit ODE/DAE | ✓ | `ode15s`, `ode15i`, `decic`, `ode23s`, `ode23t`, `ode23tb`, `deval`. |
+| Higher-order ODE variants | ✓ | `ode78`, `ode89`, validated by accuracy invariants. |
+| BVP and DDE smoke | ✓ | `bvp4c`, `bvp5c`, `dde23`; option/evaluation helpers are partially covered. |
+| PDE finite differences | ✓ | Poisson, explicit/implicit heat, Crank-Nicolson, ADI heat, 1-D/2-D wave. |
+| `pdepe` workflows | ✓ | Known-solution / reaction-diffusion style cases. |
+| FEM-adjacent workflows | ~ | 1-D stiffness assembly and simple Poisson workflow covered; full FEM weak-form/mesh pipeline not targeted yet. |
+| Out of runtime scope | n/a | PDE Toolbox object/mesh app machinery is de-registered; numerical PDE scripts stay in scope. |
+
+## Optimization And Discrete Algorithms
+
+| Area | Status | Notes |
+|---|---:|---|
+| Smooth unconstrained / nonlinear solve | ✓ | `fminbnd`, `fminsearch`, `fminunc`, `fsolve`. |
+| Constrained / least-squares | ✓ | `linprog`, `quadprog`, `lsqlin`, `lsqnonlin`, `lsqcurvefit`, `lsqnonneg`, `lsqminnorm`. |
+| Integer programming workflows | ✓ | `intlinprog` knapsack, assignment, set cover style cases. |
+| Graph optimization | ✓ | `maxflow` plus min-cut invariant, `minspantree`, shortest paths. |
+| Global optimizers | n/a | RNG-driven solvers are not exact-oracle comparable. |
+| Problem-based optimization objects | deferred | `optimvar`/`optimproblem` style APIs are model-object surface, not required for the computational subset. |
+
+## Fourier, Signal, And DSP Math
+
+| Area | Status | Notes |
+|---|---:|---|
+| FFT family | ✓ | `fft`, `ifft`, `fft2`, `ifft2`, `fftn`, `ifftn`, shifts, roundtrip invariants. |
+| Convolution/correlation | ✓ | `conv`, `conv2`, `convn`, `xcorr`, `xcov`. |
+| Filter design/response | ✓ | `butter`, `fir1`, `freqz`, `filtfilt`, `filter`, `resample`. |
+| Spectral estimation | ✓ | `pwelch`, `spectrogram`, `stft` validated with explicit parameters / invariants. |
+| Signal features | ✓ | `hilbert`, `findpeaks`, windows, square waves, overshoot. |
+| Remaining tail | ✓ | `nufft` (magnitude), `xcov`, `filter2` validated; `nufftn` and display/plot-oriented signal helpers remain demand-driven. |
+
+Known fixed bug: `spectrogram` ignored scalar window-length input.
+
+## Statistics, Probability, And ML Math
+
+| Area | Status | Notes |
+|---|---:|---|
+| Descriptive statistics | ✓ | `mean`, `median`, `var`, `std`, `cov`, `corrcoef`, `corr`, `mode`, percentiles, `zscore`. |
+| Distributions | ✓ | Core `*pdf`/`*cdf`/`icdf`, distribution objects, fitted distribution smoke. |
+| Hypothesis tests | ✓ | `ttest`, `ttest2`, `kstest`, `kstest2`, `vartest`, `chi2gof`, `anova1`, `signrank`, `ranksum`. |
+| Robust / smoothing / missing-data | ✓ | `robustfit`, Theil-Sen workflow, `smoothdata`, `fillmissing`, `rmmissing`, `standardizeMissing`. |
+| ML math smoke | ✓ | PCA/SVD, k-means with deterministic start, `knnsearch`, kernel ridge workflow, k-NN workflow. |
+| QMC / deterministic resampling | ✓ | `haltonset`+`net`, van der Corput, fixed-index bootstrap. |
+| RNG-output workflows | n/a | Exact MATLAB stream parity is not a target. Validate stochastic methods by invariants only. |
+| Large model objects | deferred | `fitlm`/`fitglm`/`fitcsvm`/`fitctree`/`fitrgp` are course-driven only. |
+
+Known fixed bug: `corr(x,y)` returned a 2x2 matrix instead of scalar
+cross-correlation.
+
+## Graph, Geometry, Topology, And Mesh Math
+
+| Area | Status | Notes |
+|---|---:|---|
+| Graph basics | ✓ | `graph`, `digraph`, `shortestpath`, `distances`, `conncomp`, `toposort`, degree/centrality. |
+| Graph algorithms | ✓ | `maxflow`, `minspantree`, `matchpairs`, `allpaths`, `allcycles`, traversals, cycle basis, `isdag`, `findnode`, `isisomorphic`. |
+| Computational geometry | ✓ | `convhull`, `convhulln`, `delaunay`, `delaunayn`, `voronoin`, `polyarea`, `inpolygon`, `volume`/`area` (alphaShape), coordinate transforms. |
+| Triangulation objects | ✓ | `delaunayTriangulation`, `triangulation`, barycentric conversions, nearest/circumcenter/incenter/free boundary. |
+| Topology smoke | ✓ | Betti numbers via boundary-matrix rank, Euler characteristic, filtration connected components. |
+| Deeper topology | not targeted | Persistent homology libraries, simplicial-complex APIs, and proof-level topology are out of scope. |
+| Mesh generation quality | ~ | Geometry primitives are covered; adaptive/high-quality mesh generation is not a declared target. |
+
+Known fixed bugs: `neighbors(DT)` crashed for all-simplices form; `delaunayn`
+returned no simplex for exactly d+1 points, collapsing 3-D `alphaShape` volume to 0.
+Known parser quirk: whitespace before `(` inside `[]` can be parsed as indexing
+where MATLAB treats it as element separation.
+
+## Symbolic / CAS Boundary
+
+| Area | Status | Notes |
+|---|---:|---|
+| Core calculus | ✓ | `diff`, `int`, `limit`, `subs`, `double(subs(...))`. |
+| Symbolic linear algebra | ✓ | Symbolic matrices, `det`, `inv`, `\`, `eig`, `rank`, `charpoly`. |
+| Polynomial algebra | ✓ | `factor`, `expand`, `collect`, `coeffs`, `numden`, `resultant`, discriminant workflow, `gcd`. |
+| Transforms and ODE smoke | ✓ | `laplace`, `ilaplace`, `fourier`, `ztrans`, `dsolve`, `vpasolve`. |
+| Vector calculus | ✓ | `gradient`, `curl`, `divergence`, vector-calculus identities by numeric substitution. |
+| Symbolic convenience | ✓ | `vpa`, `matlabFunction`, `partfrac`, `poly2sym`, `str2sym`, `horner`, `rewrite`, `polynomialDegree`. |
+| Assumptions/display/introspection tail | ~ | Much of `assume*`, `symType`, `latex`, `pretty`, etc. is low-value for computational coverage. |
+| Serious CAS completeness | not targeted | Groebner bases, quantifier elimination, full assumption logic, and Risch-style integration are out of scope unless a course workflow demands a MATLAB-present subset. |
+
+See `docs/symbolic-boundary.md` for the precise supported symbolic subset.
+
+## Coding, Information Theory, And Number Theory
+
+| Area | Status | Notes |
+|---|---:|---|
+| Information theory formulas | ✓ | Entropy, KL divergence, mutual information, BSC capacity. |
+| Finite-field arithmetic | ✓ | GF add/mul/sub/div, polynomial multiply/divide, primitive/minimal polynomials. |
+| Coding theory smoke | ✓ | Hamming, cyclic, convolutional coding, generator/parity checks, syndrome decode workflow. |
+| Base conversions | ✓ | `bi2de`, `de2bi`, `oct2dec`, `oct2poly`, related helpers. |
+| Number theory basics | ✓ | `gcd`, `lcm`, `factor`, `isprime`, `primes`, `powermod`, CRT/extended-Euclid style workflows. |
+| Crypto-grade number theory | not targeted | Elliptic curves, serious factoring/primality, finite-field crypto systems are outside MATLAB's natural core. |
+| Coding tail | ✓ | Resolved: `bin2gray`/`gray2bin` are undefined in MATLAB R2026a, so they were **unregistered** from the `comm` allow-list (the engine now errors to match). |
+
+## Registered Runtime Surface
+
+Registered toolboxes are limited to in-scope numerical/matrix domains:
+
+- `comm`
+- `control`
+- `dsp`
+- `optim`
+- `signal`
+- `stats`
+- `symbolic`
+
+Out-of-scope domain toolboxes are de-registered but source is retained under
+`matlab/tb/`: images, mapping, nav, nnet, rl, econ, pde, curvefit, plus previously
+quarantined domain breadth. Calling those functions now returns "undefined
+function", matching MATLAB without the corresponding toolbox.
+
+Toolboxes are curated by allow-list. Run `pnpm oracle:audit` for the current
+registered/referenced breakdown. Registered does **not** mean every function is
+validated; coverage is per oracle case.
+
+Base/core builtins are judged by `pnpm oracle:base-audit`, not by raw reference
+percentage. Many core primitives are exercised indirectly and rarely appear as
+named tokens.
+
+## Remaining Backlog By Category
+
+This is a demand-driven triage pool, not a promise to implement all MATLAB
+breadth.
+
+| Category | Status / Decision |
 |---|---|
-| Matrix arithmetic, indexing, broadcasting | ✓ |
-| Sparse basics | ✓ |
-| Linear systems (`\`, `inv`, `det`, `rank`, `null`, `rref`) | ✓ |
-| Eigenvalues, SVD, QR, Cholesky | ✓ |
-| Polynomial fit / eval (`polyfit`, `polyval`, `roots`, `polyint`) | ✓ |
-| Numerical integration (trapezoid, Simpson, Gauss) | ✓ |
-| Interpolation (Newton, linear, pchip, spline) | ✓ |
-| ODE basics (Euler, RK4) | ✓ |
-| Probability / statistics basics (`mean`, `var`, `std`, `corrcoef`, `cov`) | ✓ |
-| Least squares / projection | ✓ |
-| Vector geometry (dot, cross, norm, angles) | ✓ |
-| Fourier / signals (`fft`, `conv`) | ✓ |
+| Core predicates | High ROI: `isscalar`, `isvector`, `isrow`, `iscolumn`, `ismatrix`, `isfinite`, `isreal`, `iscomplex`, `issparse`. |
+| Matrix predicates | High ROI: `issymmetric`, `ishermitian`, `isdiag`, `istriu`, `istril`, `isbanded`, `isposdef`. |
+| Named operator forms | Bucket as indirect or add compact direct cases: `plus`, `minus`, `times`, `mtimes`, `rdivide`, `ldivide`, `power`, `mpower`, transpose forms. |
+| Norm / reduction helpers | Validate when needed: `vecnorm`, `normest`, `sumsq`, `meansq`, `mink`, `maxk`. |
+| Remaining string/text helpers | Lower priority unless course examples require them. |
+| Symbolic display/introspection | Mostly unregister/defer candidates unless needed: `pretty`, `latex`, `sympref`, `argnames`, `children`, `assumptions`, `symType`, etc. |
+| Plot-only helpers | Prefer numeric APIs; plot-object helpers like `bodemag` are low priority. |
+| RNG functions | Invariant/smoke only; exact oracle parity is not valid. |
+| Table/timetable/categorical/datetime | Deferred unless course-driven. |
+| Large model-object APIs | Deferred unless course-driven. |
 
-## Tier 2 / 3 — Advanced undergraduate & graduate applied
+## Function Inventory By Domain
 
-| Area | Status |
-|---|---|
-| Conditioning & stability (Hilbert, `cond`) | ✓ |
-| Stress / adversarial (ill-conditioned `\`, rank-deficient, defective eigenvalues) | ✓ |
-| Adversarial robustness (Wilkinson, IEEE NaN/Inf, cancellation, Runge) | ✓ |
-| Orthogonalization (QR orthonormality, Gram–Schmidt) | ✓ |
-| Iterative solvers (Jacobi, Gauss–Seidel) | ✓ |
-| Krylov methods (Conjugate Gradient) | ✓ |
-| Nonlinear systems (Newton + Jacobian) | ✓ |
-| Regularization / inverse problems (ridge / Tikhonov) | ✓ |
-| Matrix functions (`expm`, `A^n`) | ✓ |
-| Spectral graph theory (Laplacian, Fiedler value) | ✓ |
-| Markov chains / steady state | ✓ |
-| Low-rank / SVD subspaces (`svds`, truncated-SVD / Eckart–Young) | ✓ |
-| Optimization (golden-section, GD, Newton min; `fminbnd`/`fminsearch`/`fsolve`/`quadprog`/`lsqlin`) | ✓ |
-| Nonlinear systems (Newton + Jacobian) | ✓ |
-| Numerical ODEs (Euler, Heun, RK4, systems; `ode45` adaptive) | ✓ |
-| PDE finite-difference (Poisson 1-D, heat 1-D) | ✓ |
-| Graph algorithms (`shortestpath`, `conncomp`, `distances`, `toposort`) | ✓ |
-| Finite-element toy assembly (1-D stiffness) | ✓ |
-| Dynamical systems (fixed-point, logistic map, stability) | ✓ |
-| Spectral methods / Fourier (`fft`/`ifft`, convolution, freq detect) | ✓ |
-| Graph computation (adjacency powers, Laplacian, PageRank) | ✓ |
-| Approximation (Lagrange, Chebyshev nodes) | ✓ |
-| Advanced decompositions (`schur`, `hess`, `polyeig`) | ✓ |
-| Matrix functions (`sqrtm`, `logm`, `expm`) | ✓ |
-| Krylov solvers (`gmres`, `minres`, `bicg`) | ✓ |
-| Distribution functions (`normpdf/cdf`, `binopdf`, `poisspdf`, `icdf`) | ✓ |
-| Preconditioned Krylov (`pcg`+`ichol`, `gmres`+`ilu`) | ✓ |
-| Stiff ODE / stability regions (`ode15s`, A-stability functions, stability regions) | ✓ |
-| Crank–Nicolson / implicit PDE (CN, backward-Euler, ADI heat) | ✓ |
-| Monte Carlo (RNG — not deterministically oracle-checkable) | n/a |
+This appendix is intentionally compact. It lists the main MATLAB/runtime
+functions represented by oracle cases or documented invariant workflows; it is
+not a raw registry dump.
 
-## Tier 4 — Symbolic / CAS smoke
+### Core Language / Array Semantics
 
-| Area | Status |
-|---|---|
-| Symbolic diff / int / subs | ✓ (TS-only via `double(subs(...))`) |
-| Taylor series, transforms | ~ |
-| Small algebraic system solve | ~ |
+`zeros`, `ones`, `eye`, `diag`, `cat`, `reshape`, `repmat`, `size`, `numel`,
+`length`, `ndims`, `squeeze`, `permute`, `ipermute`, `shiftdim`, `repelem`,
+`tensorprod`, `sum`, `prod`, `min`, `max`, `cumsum`, `cumprod`, `cummax`,
+`cummin`, `find`, `sort`, `sortrows`, `unique`, `uniquetol`, `intersect`,
+`setdiff`, `setxor`, `ismember`, `sub2ind`, `ind2sub`, `accumarray`,
+`arrayfun`, `cellfun`, `cell2mat`, `mat2cell`, `num2cell`, `struct2cell`,
+`cell2struct`, `fieldnames`, `rmfield`, `orderfields`, `setfield`, `getfield`,
+`structfun`, `isfield`, `int8`, `int16`, `int32`, `int64`, `uint8`, `uint16`,
+`uint32`, `uint64`, `single`, `double`, `cast`, `typecast`, `swapbytes`,
+`idivide`, `intmin`, `intmax`, `flintmax`, `bitand`, `bitor`, `bitxor`,
+`bitshift`, `bitget`, `bitset`, `bitcmp`, `sprintf`, `num2str`, `strcat`,
+`strrep`, `strsplit`, `strtrim`, `contains`, `regexprep`, `upper`, `lower`,
+`reverse`.
 
-## Out of scope (wrong abstraction for a MATLAB sandbox)
+### Numerical Linear Algebra
 
-Proof-based pure mathematics is **not** "run a script, compare output" and is a
-non-target: abstract algebra, topology, measure theory, functional analysis as
-theorem-proving, category theory, logic/model theory, algebraic geometry beyond
-symbolic polynomial examples. These need theorem statements and proof checking,
-not numeric/CAS execution parity.
+`mldivide`, `inv`, `det`, `rank`, `null`, `orth`, `rref`, `cond`, `condest`,
+`norm`, `pinv`, `trace`, `eig`, `eigs`, `svd`, `svds`, `qr`, `lu`, `chol`,
+`ldl`, `schur`, `hess`, `qz`, `ordqz`, `ordschur`, `cdf2rdf`, `rsf2csf`,
+`gsvd`, `polyeig`, `expm`, `sqrtm`, `logm`, `sylvester`, `balance`, `sparse`,
+`full`, `speye`, `spdiags`, `nnz`, `nonzeros`, `spalloc`, `spconvert`,
+`spfun`, `spones`, `spaugment`, `bandwidth`, `symrcm`, `colamd`, `amd`,
+`dmperm`, `etree`, `symamd`, `colperm`, `sprank`, `pcg`, `gmres`, `minres`,
+`bicg`, `bicgstab`, `cgs`, `lsqr`, `ilu`, `ichol`, `pagemtimes`, `pageinv`,
+`pagemldivide`, `pagemrdivide`, `pagepinv`, `pageeig`, `pagesvd`, `pagenorm`,
+`pagelsqminnorm`, `pagetranspose`, `pagectranspose`, `toeplitz`, `levinson`,
+`hankel`, `compan`, `vander`, `hilb`, `pascal`, `wilkinson`, `hadamard`,
+`gallery`, `qrupdate`, `qrinsert`, `qrdelete`, `cholupdate`.
 
-The qualifier is *as theorem-proving*. The **computational** face of these fields
-is in scope and is covered: e.g. the `topology` domain computes homology
-numerically (Betti numbers via boundary-matrix rank, connected components across a
-filtration) — that is "run a script, compare output," not proving homeomorphisms.
-Likewise `number-theory` and `coding` cover algorithmic/finite-field computation,
-not abstract-algebra theorem-proving.
+### Approximation / Interpolation / Numerical Methods
 
-**Scope statement:** *100% coverage of declared graduate computational-math
-workflows — not 100% of all graduate mathematics.*
+`polyfit`, `polyval`, `roots`, `polyint`, `polyder`, `residue`, `polyvalm`,
+`interp1`, `interp1q`, `interp2`, `interp3`, `interpn`, `interpft`, `griddata`,
+`griddedInterpolant`, `scatteredInterpolant`, `dsearchn`, `spline`, `pchip`,
+`makima`, `mkpp`, `unmkpp`, `ppval`, `csape`, `csapi`, `fnval`, `fnder`,
+`fnint`, `fnbrk`, `integral`, `integral2`, `trapz`, `cumtrapz`, `gradient`,
+`del2`, `deconv`.
 
----
+### ODE / DAE / PDE
 
-## Backlog status
+`ode45`, `ode23`, `ode113`, `ode15s`, `ode15i`, `ode23s`, `ode23t`,
+`ode23tb`, `ode78`, `ode89`, `odeset`, `deval`, `decic`, `bvp4c`, `bvp5c`,
+`bvpinit`, `dde23`, `pdepe`. Course/workflow cases also cover explicit Euler,
+Heun, RK4, finite-difference Poisson, heat, Crank-Nicolson, ADI heat, wave
+equations, upwind advection, and simple FEM stiffness assembly.
 
-The backlog is bucketed so it does not accidentally reintroduce MATLAB-clone
-ambitions. The computational contract is the target; runtime/IO breadth is not.
+### Optimization / Discrete Algorithms
 
-### Required
+`fminbnd`, `fminsearch`, `fminunc`, `fmincon`, `fsolve`, `linprog`,
+`quadprog`, `intlinprog`, `lsqlin`, `lsqnonlin`, `lsqcurvefit`, `lsqnonneg`,
+`lsqminnorm`, `fminimax`, `fgoalattain`, `ga`. Validated workflows include
+knapsack, assignment, set cover, least-squares residual checks, and
+max-flow/min-cut invariants.
 
-None currently.
+### Fourier / Signal / DSP
 
-The previous proposed gaps were rechecked against MATLAB R2026a and the sandbox
-registry. They were either already implemented, intentionally out of scope, not
-MATLAB function names, or real functions deliberately declined on parity grounds.
-This is the canonical list of declined/non-existent functions.
+`fft`, `ifft`, `fft2`, `ifft2`, `fftn`, `ifftn`, `fftshift`, `ifftshift`,
+`conv`, `conv2`, `convn`, `filter`, `filter2`, `xcorr`, `xcov`, `czt`,
+`hilbert`, `findpeaks`, `periodogram`, `pwelch`, `spectrogram`, `stft`,
+`butter`, `fir1`, `freqz`, `filtfilt`, `resample`, `hamming`, `hann`,
+`hanning`, `kaiser`, `blackman`, `bartlett`, `triang`, `gausswin`, `rectwin`,
+`square`, `overshoot`.
 
-- `khatriRao`: not a MATLAB R2026a function (`exist("khatriRao") == 0`). Do not
-  implement as part of MATLAB-compatible coverage.
-- `gammapdf`: incorrect name. MATLAB uses `gampdf`, which is already implemented
-  and oracle-validated.
-- `wronskian`: not a MATLAB R2026a function (`exist("wronskian") == 0`; calling it
-  errors). The engine's "undefined function" already matches MATLAB — do not
-  implement it as MATLAB-compatible coverage.
-- `sobolset`: a **real** MATLAB function, but **deliberately declined** — matching
-  its Sobol points requires MATLAB's specific Joe–Kuo direction-number tables,
-  which is not a cheap/clean oracle-parity target. `haltonset`+`net` already give
-  deterministic quasi-Monte-Carlo coverage. A scope decision, not a TODO.
+### Statistics / Probability / ML Math
 
-Recently closed (multi-output forms now implemented + oracle-validated):
-`[p,S,mu] = polyfit` (centered/scaled), `[L,U,P,Q] = lu` (sparse, `P*A*Q = L*U`),
-`diag` of a symbolic matrix (extract + construct), symbolic polynomial `gcd`.
+`mean`, `median`, `var`, `std`, `cov`, `corrcoef`, `corr`, `corrcov`, `mode`,
+`moment`, `range`, `iqr`, `mad`, `geomean`, `harmmean`, `prctile`, `quantile`,
+`zscore`, `rms`, `rmse`, `normalize`, `rescale`, `detrend`, `smoothdata`,
+`fillmissing`, `rmmissing`, `standardizeMissing`, `anynan`, `histcounts`,
+`histcounts2`, `histc`, `discretize`, `squareform`, `pdist`, `pdist2`,
+`ksdensity`, `ttest`, `ttest2`, `kstest`, `kstest2`, `vartest`, `chi2gof`,
+`anova1`, `signrank`, `ranksum`, `robustfit`, `glmfit`, `pca`, `kmeans`,
+`knnsearch`, `haltonset`, `net`, `makedist`, `fitdist`, `pdf`, `cdf`, `icdf`,
+`normpdf`, `normcdf`, `norminv`, `normfit`, `betapdf`, `betacdf`, `betainv`,
+`betafit`, `binopdf`, `binocdf`, `binoinv`, `poisspdf`, `poisscdf`,
+`poissinv`, `gampdf`, `gamcdf`, `gaminv`, `gamfit`, `chi2pdf`, `chi2cdf`,
+`chi2inv`, `tpdf`, `tcdf`, `tinv`, `fpdf`, `fcdf`, `finv`.
 
-**Registered toolboxes (7):** comm, control, dsp, optim, signal, stats, symbolic —
-the in-scope numerical/matrix domains. Out-of-scope / low-value domain toolboxes are
-**de-registered** (source kept under `matlab/tb/`, not exposed at runtime) so the
-"oracle-checked toolbox" claim isn't overstated: images (image processing), mapping
-(geodesy), nav (navigation/coordinate frames), nnet (deep-learning layers/training),
-rl (reinforcement learning), econ (econometrics), pde (PDE-Toolbox object/mesh
-machinery — PDEs are covered by the `numerical-pde` domain's inline finite-difference
-cases), curvefit (B-spline object subsystem — base `spline`/`polyfit`/`interp` cover
-the workflows). None were used by any oracle case. Calling them now returns
-"undefined function", matching MATLAB without those toolboxes.
+### Graph / Geometry / Topology
 
-`signal`, `stats`, `dsp`, `control`, and `comm` are additionally **curated per
-function** via the `TOOLBOX_KEEP` allow-list in `tb/index.ts`: `signal` 167→25
-(filter design/response, filtering, spectral estimation, common windows), `stats`
-181→64 (the 8 core distribution families + the validated inference suite +
-statistical-algebra core), `dsp` 24→1 (only the validated overlap `resample`),
-`control` 74→49 (model objects/data/conversions, analysis, realizations,
-Riccati/Lyapunov, responses — PID/LQG/frd/random-gen tail de-registered), `comm`
-47→29 (coding theory + GF(p) finite-field arithmetic + conversions — modulation/
-telecom/RF tail de-registered). The peripheral tails are de-registered, source
-preserved. Registry total: 855→256 registered builtins.
+`graph`, `digraph`, `adjacency`, `degree`, `distances`, `shortestpath`,
+`shortestpathtree`, `conncomp`, `centrality`, `maxflow`, `minspantree`,
+`toposort`, `allpaths`, `allcycles`, `bfsearch`, `dfsearch`, `successors`,
+`transclosure`, `transreduction`, `hascycles`, `cyclebasis`, `subgraph`,
+`matchpairs`, `numedges`, `numnodes`, `convhull`, `convhulln`, `delaunay`,
+`delaunayn`, `delaunayTriangulation`, `triangulation`, `pointLocation`,
+`cartesianToBarycentric`, `barycentricToCartesian`, `nearestNeighbor`,
+`circumcenter`, `incenter`, `freeBoundary`, `edges`, `neighbors`, `boundary`,
+`alphaShape`, `voronoin`, `inpolygon`, `rectint`, `polyarea`, `cart2pol`,
+`pol2cart`, `cart2sph`, `sph2cart`, `deg2rad`, `rad2deg`.
 
-Note: registered ≠ validated. `pnpm oracle:audit` reports the **whole runtime
-registry** in two layers: the curated **toolboxes** (256 registered, ~55%
-oracle-referenced, up from 12% before curation) and the **base/core builtins**
-(~1318 registered, ~20% referenced). The toolbox ratio is the meaningful curation
-metric; the base/core ratio is a large *undercount* because the name scan only sees
-the headline function in each case, while base primitives (`size`/`zeros`/`colon`/
-indexing/`sum`/`sqrt`/…) run in nearly every case unnamed. Base/core is a triage
-target (validate / move out genuine breadth), not a quarantine target — core
-primitives can't be de-registered. **`pnpm oracle:base-audit`** buckets base/core by
-risk + contract relevance using explicit metadata in `base-buckets.ts` (contract-core
-/ needs-oracle / ts-only-ok / defer / out-of-scope / alias-helper / uncategorized) —
-judge base/core by those buckets, not the raw %. The 124 contract-core builtins are
-all categorized and covered (123 direct + `mldivide` indirect via `\`); the
-`uncategorized` bucket is the triage backlog. Always read the audit output, not a raw
-`Object.keys(tb.builtins)` source count (that includes quarantined functions which
-error at runtime — the source-vs-registry gap). Kept-but-unreferenced toolbox
-functions are core-math candidates scheduled for validation; `symbolic` is the
-largest remaining toolbox tail.
+### Symbolic / CAS
 
-### Base/core triage campaign — Pass 2A–2O (complete)
+`sym`, `syms`, `subs`, `double`, `diff`, `int`, `limit`, `solve`, `vpasolve`,
+`dsolve`, `simplify`, `expand`, `collect`, `factor`, `coeffs`, `numden`,
+`gcd`, `resultant`, `jacobian`, `hessian`, `gradient`, `curl`, `divergence`,
+`laplace`, `ilaplace`, `fourier`, `ztrans`, `taylor`, `vpa`,
+`matlabFunction`, `partfrac`, `poly2sym`, `str2sym`, `sym2poly`, `horner`,
+`rewrite`, `polynomialDegree`, `simplifyFraction`, `equationsToMatrix`,
+`finverse`, `charpoly`, `det`, `inv`, `eig`, `rank`.
 
-Pass 2 swept the **bug-prone math-core** of base/core — functions with non-unique
-outputs, N-D shape semantics, or MATLAB-specific conventions — validating by
-invariants where factor/sign/order is non-unique. **~75 high-risk functions
-validated** across: pagewise N-D linear algebra (`pagemtimes`/`pageinv`/`pageeig`/
-`pagesvd`/…), sparse structure + reordering (`symrcm`/`colamd`/`amd`/`dmperm`/`etree`/
-`sp*`), N-D FFT (`fftn`/`ifftn`/`ifft2`), dense decompositions (`gsvd`/`qz`/`ordqz`/
-`ordschur`/`cdf2rdf`/`rsf2csf`/`qr{update,insert,delete}`), special functions
-(`bessel*`/`erf*`/`gamma*`/`ellip*`/`legendre`/`airy`/`psi`), moving-window/cumulative
-reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
-(`int*`/`uint*`/`cast`/`typecast`/`swapbytes`/`idivide` saturation/rounding/endianness).
+### Special Functions
 
-- **1 real crash fixed:** `pagenorm(A,'fro')` parsed the `'fro'` char arg as a numeric
-  `p` and threw. Now handles the norm-type string.
-- **Documented divergences (not silent bugs):** `gsvd` is the 1-output generalized
-  singular values only (the 5-output CS-decomposition form is a deferred gap);
-  `histcounts` auto-binning uses a different edge rule than MATLAB (only the
-  explicit-`edges` form is locked); `reverse('hello')` returns a string vs MATLAB's
-  char (value validated via `char()`); `qrupdate` requires full `qr` (MATLAB rejects
-  economy). (Correction: `legendreP` was earlier noted as absent — it is in fact present
-  in this MATLAB and is now oracle-validated in Pass 2K via `double(legendreP(n,x))`.)
-- **Pass 2H — computational geometry / triangulation (core for FEM/PDE/meshing/
-  scattered-data interpolation, not breadth):** 6 invariant cases over `convhull`/
-  `convhulln`/`delaunay`/`delaunayn`/`delaunayTriangulation`/`triangulation`/
-  `pointLocation`/`cartesianToBarycentric`/`barycentricToCartesian`/`nearestNeighbor`/
-  `circumcenter`/`incenter`/`freeBoundary`/`edges`/`neighbors`/`voronoin`/`boundary`/
-  `alphaShape` — validated by **order-independent invariants** (hull area/volume, simplex
-  count, barycentric round-trip, nearest-neighbor identity, circumcenter equidistance,
-  connectivity counts), never raw vertex/simplex ordering (engines may pick different
-  square diagonals). Fixed 1 crash: `neighbors(DT)` (all-simplices form) threw on the
-  unguarded triangle index; now returns the full `[numSimplex × k]` neighbor matrix
-  (`NaN` for boundary facets, matching MATLAB). `vertexAttachments` intentionally
-  **not** locked — its per-vertex count is diagonal-dependent (non-robust). Surfaced a
-  parser divergence (documented, not yet fixed): inside `[]`, `vi (expr)` with a space
-  before `(` should be two elements (MATLAB whitespace rule) but the engine reads it as
-  indexing `vi(expr)`; cases use explicit commas/temps to avoid the ambiguity.
-- **Pass 2I — N-D / shape semantics:** 6 cases over `shiftdim` (leading-singleton trim +
-  negative shift), `permute`/`ipermute` round-trip, `repelem` (scalar/per-element/2-D),
-  `ndims`/`squeeze` (interior singletons), `tensorprod`, and the pagewise solvers
-  `pagemrdivide`/`pagemldivide`/`pagelsqminnorm` (residual invariants). **Fixed a silent
-  shape bug:** `tensorprod` flattened its result to 2-D (`[6 3]`, `[4 4]`) instead of the
-  N-D `[restA…, restB…]` / `[size(A), size(B)]` MATLAB produces (`[2 3 3]`, `[2 2 2 2]`) —
-  the contracted data was column-major-correct, only the final shape was wrong.
-- **Pass 2J — interpolation / spline internals:** 5 cases over `spline`/`pchip`/`ppval`,
-  `mkpp`/`unmkpp` round-trip, `griddedInterpolant`/`scatteredInterpolant`, and
-  `interp2`/`interp3`. The piecewise-polynomial **structure** (pieces/order/breaks) is
-  locked only for ≥4-point splines; the **3-point not-a-knot collapse** diverges in
-  representation (MATLAB returns 1 piece order 3 / breaks `[1 3]`; the engine keeps 2
-  cubic pieces / breaks `[1 2 3]`) while the interpolated **values agree** — so spline/
-  pchip are otherwise validated by `ppval` values, and `interp2`/`interp3` are locked on
-  the linear method (the 2-D `'spline'` method inherits the same not-a-knot divergence).
-  Documented, not a silent bug. `griddatan` declined here — errored in MATLAB R2026a for
-  the probed inputs while the engine was more permissive (not a clean oracle target).
-- **Pass 2K — remaining special functions:** 5 cases at deterministic scalar/vector points
-  (no branch-cut torture) over `expint`/`sinint`/`cosint`/`fresnels`/`fresnelc`, `zeta`/
-  `dilog`/`psi` (incl. polygamma `psi(n,x)`), the orthogonal-polynomial families
-  `legendreP`/`chebyshevT`/`chebyshevU`/`hermiteH`/`laguerreL`/`jacobiP`/`gegenbauerC`, and
-  `hypergeom`/`heaviside`/`lambertw` (incl. the `-1` branch). All match MATLAB R2026a
-  exactly; serialized via `double([...])`.
-- **Pass 2L — struct / cell semantics:** 5 cases over `cell2mat` (block assembly),
-  `mat2cell`/`num2cell` (splitting), `struct2cell`/`cell2struct` (round-trip),
-  `fieldnames`/`rmfield`/`isfield`/`orderfields`/`setfield`/`getfield`, `structfun`, and
-  struct arrays with comma-list expansion (`[sa.v]`) + nested structs + `cellfun`. All exact.
-- **Pass 2M — bit / integer operators:** 4 cases over `bitand`/`bitor`/`bitxor`/`bitshift`/
-  `bitget`/`bitset`/`bitcmp` in the double domain and with typed integers. **Fixed a silent
-  bug:** the bit ops ignored the operand's integer class — no width truncation and the result
-  came back `double`. They now preserve the integer class and **wrap** the result to the type
-  width (MATLAB drops bits past the boundary, not saturate): `bitshift(uint8(200),2)=32`,
-  `bitshift(uint8(1),10)=0`, `bitand(uint8,…)` stays `uint8`. Two MATLAB edges noted and
-  side-stepped (not silent bugs): `bitset(uint8,9)` (bit position past the type width) errors
-  in MATLAB; and concatenating mixed integer classes in one array casts/saturates to the first
-  class — cases `double()`-wrap each term to test the bit-op result, not concat semantics.
-- **Pass 2N — optimization / solver variants:** 5 cases. Least-squares variants `lsqnonneg`/
-  `lsqminnorm`/`lsqlin`/`lsqnonlin`/`lsqcurvefit` validated by unique-solution + KKT/residual
-  invariants (nonnegativity, min-norm, zero residual, exact-line recovery); ODE solver variants
-  `ode23s`/`ode23t`/`ode78`/`ode89` on `y'=-y` validated by an accuracy bar both engines clear
-  (step-by-step state differs by integrator). RNG-based global optimizers (`particleswarm`/
-  `simulannealbnd`/`ga`) left out — not deterministically oracle-checkable.
-- **Pass 2O — deterministic stats / data utilities:** 6 cases over `prctile`/`quantile`/`iqr`
-  (percentile-interpolation conventions), `mad`/`geomean`/`harmmean`, `zscore`/`rms`,
-  `normalize`/`rescale`, `detrend`/`smoothdata`, and missing-data handling `rmmissing`/
-  `fillmissing`/`standardizeMissing`/`anynan`. All match MATLAB R2026a exactly. `trimmean`
-  declined — not implemented (`exist == 0` in the engine).
-- **Totals after Pass 2:** 971 tests / 836 fixtures; base/core `uncategorized` 579 → 434.
+`besselj`, `bessely`, `besseli`, `besselk`, `besselh`, `airy`, `erf`, `erfc`,
+`erfinv`, `erfcinv`, `erfcx`, `erfi`, `dawson`, `gamma`, `gammaln`,
+`gammainc`, `gammaincinv`, `beta`, `betaln`, `betainc`, `betaincinv`,
+`ellipke`, `ellipj`, `expint`, `sinint`, `cosint`, `fresnels`, `fresnelc`,
+`zeta`, `hurwitzZeta`, `polylog`, `dilog`, `psi`, `legendre`, `legendreP`,
+`chebyshevT`, `chebyshevU`, `hermiteH`, `laguerreL`, `jacobiP`,
+`gegenbauerC`, `hypergeom`, `heaviside`, `dirac`, `lambertw`, `wrightOmega`,
+`ei`, `logint`, `sinhint`, `coshint`.
 
-**Campaign rollup (Pass 2A–2O).** The systematic sweep found and fixed **4 real bugs** — all
-silently-wrong or crashing, the highest-value class because they were plausible-but-wrong
-rather than honest errors:
-1. `pagenorm(A,'fro')` — char norm-type arg parsed as a numeric `p`, threw (2A).
-2. `tensorprod` — N-D result flattened to 2-D (`[6 3]` instead of `[2 3 3]`); data was
-   column-major-correct, only the shape was wrong (2I).
-3. bit ops (`bitand`/`bitor`/`bitxor`/`bitshift`/`bitget`/`bitset`) — ignored the operand's
-   integer class: no width truncation, returned `double` (2M).
-4. `neighbors(DT)` (all-simplices form) — crashed on the unguarded triangle index (2H).
+### Coding / Information Theory / Number Theory
 
-And **documented (not papered-over) divergences**, each side-stepped with a robust invariant
-or a deliberate decline: `gsvd` 1-output only; `spline` 3-point not-a-knot representation
-(values agree); `histcounts` auto-binning; mixed-integer concatenation cast/saturation;
-the `[]`-whitespace parser quirk; RNG global optimizers / RNG-stream parity; and the declines
-`griddatan`, `trimmean`, `sobolset`, `khatriRao`, `wronskian`, `gammapdf`.
+`hammgen`, `cyclgen`, `cyclpoly`, `poly2trellis`, `convenc`, `istrellis`,
+`biterr`, `symerr`, `finddelay`, `gfadd`, `gfsub`, `gfmul`, `gfdiv`,
+`gfconv`, `gfdeconv`, `gfminpol`, `gfrank`, `gftrunc`, `gfweight`,
+`gen2par`, `primpoly`, `rsgenpolycoeffs`, `bi2de`, `de2bi`, `oct2dec`,
+`oct2poly`, `vec2mat`, `factor`, `factorial`, `gcd`, `lcm`, `isprime`,
+`primes`, `powermod`, `nchoosek`.
 
-**The high-risk numerical-linear-algebra sweep is done, and the prioritized core-math/
-semantics triage (2H–2O) is now complete.** The remaining `uncategorized` was *never*
-dismissed as breadth — the computationally-core passes are done: **2H** geometry/triangulation,
-**2I** N-D/shape, **2J** interpolation/spline, **2K** special functions, **2L** struct/cell,
-**2M** bit/integer, **2N** optimization/solver variants, **2O** stats/data utilities. Further
-base/core validation is now **demand-driven** (add a case when an example needs a specific
-function). The remaining ~434 is genuinely lower-priority tail — display/format, UI-ish
-helpers, table/timetable breadth, VFS/file, compatibility aliases, path/host — that the MATLAB
-oracle either has no opinion on or that isn't computational-math core.
+## Declined Or Non-Targets
 
-### Example-driven validation — course workflows
+- `khatriRao`: not a MATLAB R2026a function in the available install; do not add
+  as MATLAB-compatible surface.
+- `gammapdf`: wrong name; MATLAB uses `gampdf`, already validated.
+- `wronskian`: not present in the available MATLAB install; undefined-function
+  behavior is correct.
+- `sobolset`: real MATLAB function, deliberately declined because parity requires
+  MATLAB's specific Joe-Kuo direction-number tables.
+- `griddatan`, `trimmean`, `meansq`: declined for the probed/current environment
+  rather than shipping questionable parity.
+- Exact random-output parity: not a valid oracle target.
 
-With the function-level triage swept, new cases come from **complete course scripts**, which
-are stronger integration tests: they exercise the interpreter executing real numerical-methods
-code (time-stepping loops, in-place updates, boundary conditions, tridiagonal solves) rather
-than isolated builtins. These are **original minimal implementations** of standard textbook
-methods — *not* copied from any course repository — and each full script is locked against
-real MATLAB (with the analytic-solution error as a secondary sanity invariant).
+## Out Of Scope
 
-- **Batch 1 — numerical methods / PDE (10 cases):** 2-point Gauss–Legendre and composite
-  Simpson quadrature; forward Euler (scalar + first-order system) and classical RK4 time
-  integration; explicit FTCS, backward-Euler, and Crank–Nicolson heat (with tridiagonal
-  solves); and 1-D + 2-D wave equation (leapfrog). All run identically to MATLAB to 8 sig
-  figs. Tagged `course-workflow` in `cases.ts`.
-- **Batch 2 — remaining-function sweep (7 cases):** the explicitly-requested tail, all present
-  and matching MATLAB. Coordinate transforms `cart2pol`/`pol2cart`/`cart2sph`/`sph2cart`/
-  `deg2rad`/`rad2deg` (round-trip + known values); remaining special functions `hurwitzZeta`/
-  `polylog`/`dirac`; solver variants `ode23tb`/`bvp5c`/`pdepe`/`dde23` (accuracy / known-solution
-  invariants); spline helpers `csape`/`csapi`/`fnval`/`fnder`; graph algorithms
-  `shortestpathtree`/`allpaths`/`allcycles` (by count, since path/cycle order is non-unique);
-  sparse `sprank`/`colperm`/`symamd` (orderings locked by permutation length, `sprank` exact);
-  and geometry `inpolygon`/`rectint`/`polyarea`.
-- **Batch 3 — student-facing linear-algebra workflows (10 cases):** full course scripts modeled
-  on the MathWorks teaching repos (original implementations, *not* copied). Matrix Methods:
-  matrix-operations (`det`/`trace`/`rank`/`inv`), Gaussian elimination + back-substitution
-  (cross-checked against `\`), eigen-diagonalization (reconstruction invariant), power iteration
-  (dominant eigenvalue). Applied Linear Algebra: chemical-equation balancing (integer `null`-space
-  stoichiometry), Markov steady-state (stationary distribution via the λ=1 eigenvector), static
-  equilibrium (force-balance linear solve), LSB steganography (typed bit embed/extract round-trip).
-  Vector Arithmetic: magnitude/unit/orientation and dot/cross/projection/triple-product. No new
-  functions and no bugs — all reuse already-validated builtins; locked against MATLAB with
-  reconstruction/equilibrium residuals as invariants where eigenvectors / null spaces are non-unique.
-- **Batch 4 — fresh-audit remainder sweep (9 cases):** the prioritized high-value tail from a
-  registry re-audit. Spectral estimation `pwelch`/`spectrogram`/`stft` (peak-frequency + output-
-  dimension invariants — the signal toolbox is now 25/25 referenced); special functions `besselh`/
-  `erfcx`/`erfi`/`dawson`/`gammaincinv`/`betaincinv`/`wrightOmega`/`ei`/`logint`/`sinhint`/`coshint`;
-  graph structure/traversal `adjacency`/`bfsearch`/`dfsearch`/`successors`/`transclosure`/`hascycles`/
-  `cyclebasis`/`subgraph`/`transreduction`; interpolation helpers `interp1q`/`fnint`/`fnbrk`/
-  `dsearchn`; stats utilities `corr`/`mode`/`movmax`/`movmin`/`pdist2`/`histc`/`histcounts2`/`rmse`/
-  `corrcov`; shape utilities `uniquetol`/`sub2ind`/`ind2sub`/`topkrows`/`convn`. **Fixed 2 silent
-  bugs:** `corr(x,y)` returned the full 2×2 correlation matrix instead of the scalar cross-correlation;
-  `spectrogram` ignored a scalar window-length argument (fell back to a too-short default window and
-  errored). `meansq` declined — not a MATLAB R2026a function.
-- **Batch 5 — depth workflows (15 cases):** graduate-assignment-level workflows that exercise the
-  *math*, validated by invariants. **Discrete optimization:** `intlinprog` assignment + set cover
-  (optimal objective + feasibility), max-flow/min-cut theorem (`maxflow` value vs an independent
-  brute-force min cut). **PDE/BVP/FEM:** `pdepe` reaction-diffusion (analytic decay + positivity),
-  `bvp4c` second-order BVP, upwind-advection TVD stability, 1-D linear-element FEM Poisson
-  (nodal exactness). **ML math:** PCA reconstruction (sign-invariant), RBF kernel ridge, k-means
-  fixed-start objective (label-invariant), k-NN. **Coding/info:** Hamming(7,4) syndrome decode +
-  recovery, BSC capacity + mutual information. **Symbolic:** resultant/discriminant elimination and
-  the vector-calculus identities `curl(grad)=0`/`div(curl)=0` (validated by `double(subs(...))` at a
-  point, since the engine's `simplify` doesn't reduce them to literal 0). Engine gaps documented and
-  worked around (no false validation): `maxflow` is single-output (residual-graph/cut-partition forms
-  not implemented), `curl`/`divergence`/`partfrac`/`ilaplace` are numeric-only (no symbolic form),
-  and `ismember(...,'rows')` is element-wise — the Hamming decode matches syndromes to parity-check
-  columns explicitly instead. `fitglm`/`syndtable`/`vitdec`/`huffmandict` absent (used `glmfit`;
-  Viterbi/Huffman workflows deferred).
+Proof-based pure mathematics is not "run a script, compare output." Theorem
+proving, formal verification, SMT/SAT solvers, full abstract algebra systems,
+category theory, and proof-level topology are outside this project.
 
-### Remaining base/core backlog (~369 uncategorized)
+The computational face of those areas can still be in scope when it is executable
+and MATLAB-like: finite-field arithmetic, numerical homology smoke, graph
+algorithms, symbolic polynomial examples, and deterministic optimization
+workflows.
 
-All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
-shape, for demand-driven triage — not a TODO list:
-
-- **strings / text + numeric-string conversions (~67):** `str*`, `regexp*`,
-  `pad`/`erase`/`extract`/`insert`/`replace`/`split`/`join`, `dec2*`/`hex2*`/`num2*`.
-- **type predicates (~44):** `is*` (`isscalar`/`iscolumn`/`ishermitian`/`issorted`/…).
-- **special functions, remaining (~40):** Pass 2K validated the orthogonal-polynomial
-  families (`legendreP`/`chebyshevT`/`chebyshevU`/`hermiteH`/`laguerreL`/`jacobiP`/
-  `gegenbauerC`), `hypergeom`, `zeta`/`dilog`/`psi`, `heaviside`/`lambertw`, and
-  `fresnels`/`fresnelc`/`sinint`/`cosint`/`expint`; the example-driven sweeps added
-  `hurwitzZeta`/`polylog`/`dirac`, `besselh`/`erfcx`/`erfi`/`dawson`, and the inverse-incomplete +
-  exponential-integral family `gammaincinv`/`betaincinv`/`wrightOmega`/`ei`/`logint`/`sinhint`/
-  `coshint`. Remainder: `ellip*` variants not in Pass 2E and `whittakerM/W`/`kummerU`.
-- **elementary math, operators:** `cosh`/`sinh`/`tanh`/`sec`/`csc`/`cot` families,
-  `plus`/`minus`/`times`/`mtimes`/`mrdivide`/`power` (operator-named forms, exercised via
-  the operators but rarely named). Bit ops (`bitand`/`bitor`/`bitxor`/`bitshift`/`bitget`/
-  `bitset`/`bitcmp`) validated in Pass 2M.
-- **solver variants:** Pass 2N validated `ode23s`/`ode23t`/`ode78`/`ode89` and the
-  least-squares family `lsqnonneg`/`lsqminnorm`/`lsqlin`/`lsqnonlin`/`lsqcurvefit`; the
-  example-driven sweep added `ode23tb`/`bvp5c`/`pdepe`/`dde23` (accuracy / known-solution
-  invariants). Remainder: `pdeval`/`bvp4c` higher-output forms and the RNG-based global
-  optimizers `particleswarm`/`patternsearch`/`simulannealbnd` (not deterministic).
-- **interpolation / spline:** core validated in Pass 2J (`spline`/`pchip`/`ppval`/`mkpp`/
-  `unmkpp`/`griddedInterpolant`/`scatteredInterpolant`/`interp2`/`interp3`); the example-driven
-  sweeps added the pp-function helpers `csape`/`csapi`/`fnval`/`fnder`/`fnint`/`fnbrk`, plus
-  `interp1q` and `dsearchn`. Remainder is the rest of the `fn*` family and `tsearchn` (`griddatan`
-  declined — errors in MATLAB for the probed inputs).
-- **stats / data utilities:** validated in Pass 2O (`prctile`/`quantile`/`iqr`/`mad`/`geomean`/
-  `harmmean`/`zscore`/`rms`/`normalize`/`rescale`/`detrend`/`smoothdata` + missing-data
-  `rmmissing`/`fillmissing`/`standardizeMissing`/`anynan`); the fresh-audit sweep added `corr`
-  (scalar form fixed), `mode`/`movmax`/`movmin`/`pdist2`/`histc`/`histcounts2`/`rmse`/`corrcov`.
-  Remainder is table/timetable-bound grouping/summary helpers (`groupsummary`/`grpstats`/…);
-  `trimmean`/`meansq` declined (not MATLAB R2026a functions).
-- **N-D / shape:** validated in Pass 2I (`shiftdim`/`ipermute`/`ndims`/`repelem`/
-  `tensorprod`/`pagemrdivide`/`pagemldivide`/`pagelsqminnorm`); remainder is `repmat`
-  edge cases and rarely-named reshapers.
-- **struct/cell utilities:** core validated in Pass 2L (`cell2mat`/`mat2cell`/`num2cell`/
-  `struct2cell`/`cell2struct`/`fieldnames`/`rmfield`/`isfield`/`orderfields`/`setfield`/
-  `getfield`/`structfun`); remainder is display/`disp`-style and table-bridging helpers.
-- **containers (~5):** `containers.Map`/`dictionary`/`keys`/`values`/`entries`.
-- **graph algorithms, remaining (~16):** the example-driven sweeps added `shortestpathtree`/
-  `allpaths`/`allcycles`, then `adjacency`/`bfsearch`/`dfsearch`/`successors`/`transclosure`/
-  `hascycles`/`cyclebasis`/`subgraph`/`transreduction`; remainder is `bctree`/`biconncomp`/
-  `incidence`/`predecessors`/… (core graph already validated).
-- **sparse remainder, geometry remainder:** the example-driven sweep added `sprank`/`colperm`/
-  `symamd` (sparse) and `inpolygon`/`rectint`/`polyarea` + coordinate transforms `cart2pol`/
-  `pol2cart`/`cart2sph`/`sph2cart`/`deg2rad`/`rad2deg` (geometry). Remainder is the polyshape/
-  alphaShape object ecosystem (parked in `defer`), **test matrices**
-  (`bucky`/`peaks`/`rosser`/`membrane`/`invhilb`/`wilkinson`), and misc utilities.
-
-Already parked (not in the ~504): `datetime`/`duration`, `table`/`timetable`,
-`categorical`, the geometry-OBJECT and graph-OBJECT-mutation ecosystems → `defer`
-(132); graphics/FigureSpec, VFS/file, display, RNG, validators → `ts-only-ok` (331).
-
-### Validate existing (implemented + oracle-validated)
-All oracle-validated — no validation backlog remains:
-- **Decompositions / matrix functions:** `eig`/`svd`/`qr`/`lu`/`chol`,
-  `schur`/`hess`/`polyeig`, `expm`/`sqrtm`/`logm`, `pinv`/`rank`/`null`/`orth`/`rref`/`cond`
-- **Iterative / sparse solvers:** `gmres`/`minres`/`bicg`/`bicgstab`/`lsqr`, `eigs`/`svds`
-  — validated by residual norm + convergence flag on sparse/ill-conditioned systems
-  (incl. `ilu`/`ichol`-preconditioned and a preconditioned-vs-unpreconditioned
-  invariant). The Krylov backend solves directly, so iteration counts and exact
-  `relres` are **not** oracle-locked (only the result: solution residual + `flag==0`).
-- **ODE / DAE:** `ode45`/`ode23`/`ode113`/`ode15s`/`deval`; implicit DAE workflow
-  `ode15i` (residual form `F(t,y,y')=0`, index-1 algebraic constraint) + `decic`
-  (consistent initial conditions)
-- **Optimization:** `fminbnd`/`fminsearch`/`fsolve`/`quadprog`/`lsqlin`/`linprog`
-- **Approximation:** `interp2`/`interpn`/`ppval`/`makima`/`polyvalm`/`residue`
-- **Fourier / signal:** `fft2`/`fftshift`/`hilbert`/`findpeaks`; filter design +
-  response `butter`/`fir1`/`freqz`/`filtfilt`/`resample`
-- **Control:** `tf`/`ss`/`zpk`, `step`/`impulse`/`lsim`/`margin`/`bode`, `lqr`,
-  `care`/`dare`, `ctrb`/`obsv`, `acker`/`place` (placed-pole invariant), `lqe` and
-  `kalman` (estimator gain + Riccati residual; `kalman` maps the noise inputs through
-  `G*Q*G'`), `c2d` (ZOH, pole-mapping invariant), `stepinfo` (grid-approximate),
-  `tfdata`/`ssdata` (Markov-parameter invariant).
-- **Graph:** `shortestpath`/`conncomp`/`distances`/`toposort`/`centrality`/`maxflow`/`minspantree`
-- **Statistics:** distribution `*pdf`/`*cdf`/`icdf`, `var`/`std`/`corrcoef`/`cov`
-- **Symbolic CAS:** `jacobian`/`hessian`/`taylor`/`laplace`/`dsolve`/`vpasolve`
-
-Functions with non-unique outputs are validated by invariants rather than raw
-value equality (e.g. `linprog` objective value, `residue` sorted poles, `eig`
-reconstruction residual, `svd`/`qr` sign conventions, graph path length).
-
-### Inferential statistics / unsupervised ML (implemented + oracle-validated)
-Hypothesis tests: `ttest`/`ttest2`, `kstest` (one-sample, exact Marsaglia–Tsang–Wang
-+ Birnbaum–Tingey one-sided), `kstest2`, `vartest`, `chi2gof` (controlled
-`Ctrs`/`Edges`+`Frequency`+`Expected`+`NParams` form; auto-binning default is
-best-effort), `anova1`, `signrank`, `ranksum`. Clustering / projection:
-`kmeans` (deterministic via `'Start'`), `pca` (validated on `latent`), `knnsearch`,
-`pdist`. `chi2gof`'s raw-data auto-binning is **not** locked (MATLAB's default
-binning is version-sensitive). Quasi-Monte-Carlo: `haltonset`+`net` (deterministic
-low-discrepancy points — base = first *d* primes, unscrambled; validated by point
-grid and QMC integral estimates). Robust regression: `robustfit` (IRLS, bisquare +
-huber), inline Theil–Sen median slope. Structured linear algebra: `toeplitz` solve
-(residual invariant), `levinson` (Yule–Walker, validated by the Toeplitz
-normal-equations residual). `sobolset` is deliberately **not** implemented — see
-the declined-functions list under **Required** above.
-
-### Deferred (real, but only if course-driven)
-Large model-object families (`fitlm`/`fitglm`/`fitcsvm`/`fitctree`/`fitrgp`),
-full table/timetable ecosystem (`retime`/`synchronize`/`stack`/`unstack`),
-`anova2`/`kruskalwallis`/`multcompare`.
-
-### Out of scope (clone ambitions — explicitly not requirements)
-- Language runtime: `classdef`, `arguments`, real `global`/`persistent`,
-  `evalin`/`assignin`, path model (`addpath`/`rmpath`/`path`/`genpath`).
-- I/O needing host APIs: `webread`/`webwrite`, `imread`/`imwrite`,
-  `audioread`/`audiowrite`, `matfile`, `savefig`/`openfig`, `xmlread`.
-- RNG output parity: `mvnrnd`/`bootstrp`/`datasample` and any exact
-  random-output oracle comparison (`rng`-fixing won't reproduce MATLAB's stream).
-- Proof-based pure mathematics (see above).
-
-**Claim:** *validated graduate computational subset* — not MATLAB parity.
+**Claim:** validated graduate computational subset, not MATLAB parity.

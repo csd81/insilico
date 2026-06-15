@@ -243,4 +243,17 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // ── Deeper workflow batch (PDE/FEM, discrete optimization, ML math, coding, symbolic). New
   // base functions named by these workflows. ──
   ...bulkD('needs-oracle', 'direct', 'core-language', 'sinh cosh'),
+
+  // ── Predicate/helper validation sweep. Type/shape + matrix predicates, norm/selection helpers,
+  // set/sort helpers, polynomial helpers, named operator forms, data diagnostics. Fixed delaunayn
+  // (no simplex for exactly d+1 points → 3-D alphaShape volume collapsed to 0). Declines documented
+  // in coverage-map: isposdef/sumsq/iscomplex (not MATLAB), bin2gray/gray2bin (undefined in R2026a,
+  // unregistered), coneprog SOCP (deferred — hard to formulate cleanly). ──
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'isscalar isvector isrow iscolumn ismatrix islogical isfinite isreal issorted issortedrows ismembertol allunique numunique plus minus times mtimes uplus uminus rdivide ldivide mpower'),
+  ...bulkD('needs-oracle', 'direct', 'linear-algebra', 'issymmetric ishermitian isdiag istriu istril isbanded issparse vecnorm normest mink maxk tril triu'),
+  ...bulkD('needs-oracle', 'direct', 'approximation', 'poly deconv'),
+  ...bulkD('needs-oracle', 'direct', 'fourier', 'nufft filter2 xcov'),
+  ...bulkD('needs-oracle', 'direct', 'graph', 'isdag findnode isisomorphic'),
+  ...bulkD('needs-oracle', 'direct', 'geometry', 'volume area'),
+  ...bulkD('needs-oracle', 'direct', 'statistics', 'isoutlier islocalmax islocalmin lscov'),
 };

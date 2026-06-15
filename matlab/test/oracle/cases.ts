@@ -22,7 +22,7 @@ export interface OracleCase {
 
 export const CASES: OracleCase[] = [
 
-  // ══════════ approximation (34) ══════════
+  // ══════════ approximation (35) ══════════
   { name: 'approx-polyfit-line', src: 'x = [0 1 2 3 4]; y = 2*x + 1; p = polyfit(x, y, 1);', vars: ['p'], domain: 'approximation' },
   { name: 'approx-polyfit-centered', src: 'x = [0 1 2 3 4]; y = [1 3 7 13 21]; [p, S, mu] = polyfit(x, y, 2); df = S.df; nr = S.normr;', vars: ['p', 'mu', 'df', 'nr'], tol: 1e-6, domain: 'approximation', tags: ['polyfit', 'centered-scaled', 'multi-output'] },
   { name: 'approx-polyval', src: 'v = polyval([1 -3 2], 5);', vars: ['v'], domain: 'approximation' },
@@ -66,6 +66,8 @@ export const CASES: OracleCase[] = [
   // ── Demand-driven remainder interpolation helpers: quick linear interp, pp integral/break info,
   // nearest-neighbour search. ──
   { name: 'interp-helpers', src: "a = interp1q([1;2;3], [1;4;9], 2.5); pp = csapi([1 2 3 4], [1 4 9 16]); q = fnint(pp); ii = fnval(q,3) - fnval(q,1); ord = fnbrk(pp, 'order'); ds = dsearchn([0 0; 1 0; 0 1; 1 1], [0.6 0.4]); v = [a ii ord ds];", vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['interp1q', 'fnint', 'fnbrk', 'dsearchn'] },
+  // ── Polynomial helpers: characteristic polynomial from roots, polynomial division, minimal poly. ──
+  { name: 'poly-helpers', src: '[q, r] = deconv([1 0 0 1], [1 1]); v = [poly([1 2]) q r];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['poly', 'deconv', 'polynomial-division'] },
 
   // ══════════ calculus (55) ══════════
   { name: 'cal-limit-oneside-right', src: "syms x; v = sign(double(limit(1/x, x, 0, 'right')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
@@ -207,7 +209,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (151) ══════════
+  // ══════════ core-language (154) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -373,6 +375,11 @@ export const CASES: OracleCase[] = [
   // ── Demand-driven remainder shape/array utilities: tolerance-dedupe, linear↔subscript index
   // conversion, top-k rows, N-D convolution. ──
   { name: 'shape-utils', src: 'u = uniquetol([1 1.0001 2], 0.01); si = sub2ind([3 3], 2, 3); [r, cc] = ind2sub([3 3], 8); tk = topkrows([3 1; 1 2; 2 5], 2); cv = convn([1 2 3], [1 1]); v = [u si r cc tk(:)\x27 cv];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['uniquetol', 'sub2ind', 'ind2sub', 'topkrows', 'convn'] },
+  // ── Type/shape predicates, set/sort helpers, and named operator functions (the operator-named
+  // forms are exercised everywhere but rarely called directly). All exact. ──
+  { name: 'pred-shape', src: 'v = double([isscalar(5) isvector([1 2]) isrow([1 2]) iscolumn([1;2]) ismatrix([1 2;3 4]) islogical(true) isfinite(1) isfinite(Inf) isreal(1) isreal(1+2i)]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['isscalar', 'isvector', 'isrow', 'iscolumn', 'ismatrix', 'islogical', 'isfinite', 'isreal'] },
+  { name: 'set-sort', src: 'v = double([issorted([1 2 3]) issorted([3 2 1]) issortedrows([1 2;3 4]) ismembertol(1.0001,[1 2],0.01) allunique([1 2 3]) allunique([1 1 2]) numunique([1 1 2 3 3])]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['issorted', 'issortedrows', 'ismembertol', 'allunique', 'numunique'] },
+  { name: 'named-ops', src: 'v = [plus(2,3) minus(5,2) times(2,3) mtimes(2,3) uplus(4) uminus(4) rdivide(6,2) ldivide(2,6) mpower(2,3)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['plus', 'minus', 'times', 'mtimes', 'uplus', 'uminus', 'rdivide', 'ldivide', 'mpower'] },
 
   // ══════════ dynamical-systems (5) ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },
@@ -381,7 +388,7 @@ export const CASES: OracleCase[] = [
   { name: 'dyn-newton-fixed-point', src: 'r = 3.5; x = 0.7; for k = 1:20, fx = r*x*(1-x) - x; fp = r*(1-2*x) - 1; x = x - fx/fp; end; v = x;', vars: ['v'], tol: 1e-7, domain: 'dynamical-systems', tags: ['newton', 'fixed-point', 'continuation'] },
   { name: 'dyn-stable-cycle-period4', src: 'r = 3.5; x = 0.5; for k = 1:1000, x = r*x*(1-x); end; c = zeros(4,1); for k = 1:4, x = r*x*(1-x); c(k) = x; end; v = sort(c);', vars: ['v'], tol: 1e-6, domain: 'dynamical-systems', tags: ['logistic-map', 'period-doubling', 'stable-cycle', 'bifurcation'] },
 
-  // ══════════ fourier (28) ══════════
+  // ══════════ fourier (29) ══════════
   { name: 'dsp-fft', src: 'Y = fft([1 2 3 4]);', vars: ['Y'], tol: 1e-9, domain: 'fourier', tags: ['fft'] },
   { name: 'dsp-conv', src: 'c = conv([1 2 1], [1 1]);', vars: ['c'], tol: 1e-9, domain: 'fourier', tags: ['convolution'] },
   { name: 'dsp-fft-ifft-roundtrip', src: 'x = [1 2 3 4]; y = real(ifft(fft(x)));', vars: ['y'], tol: 1e-9, domain: 'fourier', tags: ['fft', 'ifft', 'roundtrip'] },
@@ -412,8 +419,11 @@ export const CASES: OracleCase[] = [
   // ── Spectral estimation (signal toolbox), validated by invariant — peak frequency + output
   // dimensions, not raw spectra. Fixed: spectrogram ignored a scalar window-length argument. ──
   { name: 'sig-spectral', src: "x = cos(2*pi*0.1*(0:127)); [pxx, w] = pwelch(x); [~, i] = max(pxx); [S, F] = spectrogram(x, 64, 32, 64, 2*pi); P = abs(S); [~, bn] = max(P(:,1)); st = stft(x, 'Window', hann(64), 'OverlapLength', 32, 'FFTLength', 64); v = [double(abs(w(i)/pi - 0.2) < 0.05) size(S) double(abs(F(bn)/pi - 0.2) < 0.05) size(st)];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['pwelch', 'spectrogram', 'stft', 'peak-frequency-invariant'] },
+  // ── Signal/Fourier tail: non-uniform FFT magnitude, cross-covariance, 2-D filtering. nufft
+  // returns a column for a row input here (orientation divergence) — flattened with (:)'. ──
+  { name: 'sig-tail', src: "X = nufft([1 2 3 4], 0:3); cc = xcov([1 2 3], [1 2 3]); F = filter2([1 1; 1 1], [1 2; 3 4]); v = [round(abs(X(:)))' cc(:)' F(:)'];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['nufft', 'xcov', 'filter2'] },
 
-  // ══════════ geometry (17) ══════════
+  // ══════════ geometry (18) ══════════
   { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'area'] },
   { name: 'geom-convhull-perimeter', src: 'x = [0 1 1 0]; y = [0 0 1 1]; k = convhull(x, y); per = sum(sqrt(diff(x(k)).^2 + diff(y(k)).^2));', vars: ['per'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'perimeter'] },
   { name: 'geom-convhulln-volume-3d', src: 'P = [0 0 0;1 0 0;0 1 0;0 0 1;1 1 1;1 1 0;1 0 1;0 1 1]; [k, vol] = convhulln(P); v = vol;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'volume', 'convhulln'] },
@@ -433,8 +443,11 @@ export const CASES: OracleCase[] = [
   // assorted geometry utilities (point-in-polygon, rectangle intersection area, polygon area). ──
   { name: 'xform-roundtrip', src: '[th, rh] = cart2pol(3, 4); [x, y] = pol2cart(th, rh); [az, el, r] = cart2sph(1, 2, 2); [X, Y, Z] = sph2cart(az, el, r); v = [th rh x y az el r X Y Z deg2rad(180) rad2deg(pi)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['cart2pol', 'pol2cart', 'cart2sph', 'sph2cart', 'deg2rad', 'rad2deg', 'roundtrip'] },
   { name: 'geo-remainder', src: 'v = [double(inpolygon(0.5, 0.5, [0 1 1 0], [0 0 1 1])) rectint([0 0 2 2], [1 1 2 2]) polyarea([0 1 1 0], [0 0 1 1])];', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['inpolygon', 'rectint', 'polyarea'] },
+  // ── alphaShape measures: 3-D tetrahedron volume + 2-D triangle area. Fixed: the underlying
+  // delaunayn returned no simplex for exactly d+1 points, collapsing 3-D volume to 0. ──
+  { name: 'geo-volume', src: 'shp = alphaShape([0 0 0; 1 0 0; 0 1 0; 0 0 1], Inf); v = [volume(shp) area(alphaShape([0 0; 1 0; 0 1], Inf))];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['volume', 'area', 'alphaShape', 'simplex-measure'] },
 
-  // ══════════ graph (16) ══════════
+  // ══════════ graph (17) ══════════
   { name: 'graph-laplacian', src: 'A = [0 1 0; 1 0 1; 0 1 0]; D = diag(sum(A, 2)); L = D - A; ev = sort(eig(L));', vars: ['ev'], tol: 1e-9, domain: 'graph', tags: ['spectral-graph', 'laplacian'] },
   { name: 'graph-distributed-consensus', src: 'A = [0 1 0 1; 1 0 1 0; 0 1 0 1; 1 0 1 0]; D = diag(sum(A, 2)); L = D - A; W = eye(4) - 0.2*L; x = [1; 2; 3; 4]; for k = 1:200, x = W*x; end', vars: ['x'], tol: 1e-6, domain: 'graph', tags: ['distributed-optimization', 'consensus', 'graph-laplacian'] },
   { name: 'graph-adjacency-powers', src: 'A = [0 1 1; 1 0 1; 1 1 0]; W = A^3;', vars: ['W'], tol: 1e-9, domain: 'graph', tags: ['adjacency', 'walk-counts'] },
@@ -457,8 +470,11 @@ export const CASES: OracleCase[] = [
   // ── Max-flow / min-cut theorem: maxflow value equals the minimum cut capacity (min cut found
   // independently by brute force over the 4 source/sink partitions of this small network). ──
   { name: 'opt-maxflow', src: 's = [1 1 2 3]; t = [2 3 4 4]; w = [3 2 2 4]; mf = maxflow(digraph(s,t,w), 1, 4); best = Inf; for b = 0:3, S = 1; if bitand(b,1), S = [S 2]; end; if bitand(b,2), S = [S 3]; end; T = setdiff(1:4, S); cut = 0; for e = 1:4, if any(S==s(e)) && any(T==t(e)), cut = cut + w(e); end; end; best = min(best, cut); end; v = [mf mf==best];', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['maxflow', 'min-cut', 'max-flow-min-cut-theorem'] },
+  // ── Graph/mesh structure predicates: DAG test, node lookup by name, graph isomorphism
+  // (positive: relabeled path; negative: path vs triangle). ──
+  { name: 'geo-mesh', src: "v = double([isdag(digraph([1 2],[2 3])) isdag(digraph([1 2 3],[2 3 1])) findnode(graph({'a','b'},{'b','a'}),'b') isisomorphic(graph([1 2],[2 3]),graph([3 2],[2 1])) isisomorphic(graph([1 2],[2 3]),graph([1 2 3],[2 3 1]))]);", vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['isdag', 'findnode', 'isisomorphic', 'graph-structure'] },
 
-  // ══════════ linear-algebra (50) ══════════
+  // ══════════ linear-algebra (52) ══════════
   { name: 'la-vec-mag-2d', src: 'v = [2 2]; mag = sqrt(v(1)^2 + v(2)^2);', vars: ['mag'], tol: 1e-9, domain: 'linear-algebra' },
   { name: 'la-vec-mag-3d', src: 'v = [4 5 5]; mag = sqrt(v(1)^2 + v(2)^2 + v(3)^2);', vars: ['mag'], tol: 1e-9, domain: 'linear-algebra' },
   { name: 'la-atand-neg', src: 't = atand(-3/2);', vars: ['t'], tol: 1e-9, domain: 'linear-algebra' },
@@ -512,6 +528,9 @@ export const CASES: OracleCase[] = [
   { name: 'ala-static-forces', src: 'th1 = pi/6; th2 = pi/3; W = 100; A = [-cos(th1) cos(th2); sin(th1) sin(th2)]; b = [0; W]; T = A\\b; v = [T.\x27 norm(A*T - b)];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'static-equilibrium', 'linear-system'] },
   { name: 'vec-basics', src: 'u = [3 4 0]; mag = norm(u); uhat = u/mag; ang = atan2(u(2), u(1)); v = [mag uhat ang norm(uhat)];', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['course-workflow', 'vector-magnitude', 'unit-vector', 'orientation'] },
   { name: 'vec-arithmetic', src: 'a = [1 2 3]; b = [4 5 6]; c = [7 8 10]; dp = dot(a, b); cr = cross(a, b); proj = dot(a, b)/dot(b, b)*b; ang = acos(dot(a, b)/(norm(a)*norm(b))); trip = dot(a, cross(b, c)); v = [dp cr proj ang trip];', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['course-workflow', 'dot', 'cross', 'projection', 'triple-product'] },
+  // ── Matrix predicates and norm/selection helpers. All exact. ──
+  { name: 'pred-matrix', src: 'A = [2 1; 1 2]; v = double([issymmetric(A) ishermitian(A) isdiag(eye(2)) istriu(triu(magic(3))) istril(tril(magic(3))) isbanded(eye(3),0,0) issparse(speye(2)) issymmetric([1 2;3 4])]);', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['issymmetric', 'ishermitian', 'isdiag', 'istriu', 'istril', 'isbanded', 'issparse'] },
+  { name: 'num-helpers', src: 'v = [vecnorm([3 4;6 8]) round(normest([3 0;0 4])) mink([5 2 8 1],2) maxk([5 2 8 1],2)];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['vecnorm', 'normest', 'mink', 'maxk'] },
 
   // ══════════ machine-learning (14) ══════════
   { name: 'ml-kmeans-lloyd', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; C = [1 1; 5 7]; for it = 1:10, d1 = sum((X - C(1,:)).^2, 2); d2 = sum((X - C(2,:)).^2, 2); a = d2 < d1; C(1,:) = mean(X(~a,:)); C(2,:) = mean(X(a,:)); end; v = sort(C(:,1));", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['k-means', 'lloyd', 'clustering', 'fixed-init'] },
@@ -893,7 +912,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-assignment', src: "C = [3 1 2; 2 3 1; 1 2 3]; f = C(:); Aeq = zeros(6,9); for r = 1:3, Aeq(r, (r-1)*3 + (1:3)) = 1; end; for c = 1:3, Aeq(3+c, c:3:9) = 1; end; beq = ones(6,1); x = intlinprog(f, 1:9, [], [], Aeq, beq, zeros(9,1), ones(9,1)); X = reshape(round(x), 3, 3); v = [round(f'*x) all(sum(X,1)==1) all(sum(X,2)'==1)];", vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['intlinprog', 'assignment-problem', 'binary-milp'] },
   { name: 'opt-setcover', src: 'A = [1 0 0 1; 1 1 0 0; 0 1 0 1; 0 1 1 0; 0 0 1 1]; x = intlinprog(ones(4,1), 1:4, -A, -ones(5,1), [], [], zeros(4,1), ones(4,1)); xr = round(x); v = [sum(xr) all(A*xr >= 1)];', vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['intlinprog', 'set-cover', 'covering-milp'] },
 
-  // ══════════ statistics (66) ══════════
+  // ══════════ statistics (68) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -965,6 +984,10 @@ export const CASES: OracleCase[] = [
   // rmse/corrcov. (meansq declined — not a MATLAB R2026a function.) ──
   { name: 'ds-corr-mode-mov', src: "c = corr([1 2 3 4]', [2 4 6 9]'); v = [c mode([1 2 2 3 3 3 4]) movmax([1 5 2 8 3], 3) movmin([1 5 2 8 3], 3)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['corr', 'mode', 'movmax', 'movmin'] },
   { name: 'ds-pdist2-hist', src: 'D = pdist2([0 0; 1 1], [1 0; 0 1]); h = histc([1 2 2 3 4 4 4], 1:4); n2 = histcounts2([1 2 3], [1 2 3], [0 2 4], [0 2 4]); C = [4 2; 2 3]; R = corrcov(C); v = [D(:)\x27 h n2(:)\x27 rmse([1 2 3], [1 2 4]) R(1,2)];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['pdist2', 'histc', 'histcounts2', 'rmse', 'corrcov'] },
+  // ── Data diagnostics: outlier + local-extrema detection (with a plateau), and weighted/ordinary
+  // least squares (lscov) validated by residual. ──
+  { name: 'stats-diag', src: 'v = double([isoutlier([1 2 3 100 4 5]) islocalmax([1 3 2 5 4]) islocalmin([5 3 4 1 2])]);', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['isoutlier', 'islocalmax', 'islocalmin'] },
+  { name: 'stats-lscov', src: 'x = lscov([1 1; 1 2; 1 3], [2; 4; 6]); v = [x\x27 norm([1 1; 1 2; 1 3]*x - [2; 4; 6])];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['lscov', 'least-squares', 'residual'] },
 
   // ══════════ symbolic (59) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
