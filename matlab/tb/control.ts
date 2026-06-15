@@ -1298,7 +1298,12 @@ export const CONTROL: ToolboxModule = {
     kalman: (a, n) => {
       const s = toSS(a[0]); const A = s.A, C = s.C, nx = A.length, nu = s.B[0]?.length ?? 0, ny = C.length;
       const Qn = matRows(m(a[1])), Rn = matRows(m(a[2])); const Ri = matInv(Rn);
-      const P = care(matT(A), matT(C), Qn, Ri); const L = smul(smul(P, matT(C)), Ri);
+      // SYS = ss(A,[B G],C,[D H]): the last size(Q) inputs are process noise, so the
+      // noise-input matrix G is those columns of B. The estimator Riccati uses the
+      // state-space process-noise covariance G*Q*G' (n×n), not the raw Q (nw×nw).
+      const nw = Qn.length; const G = s.B.map((row) => row.slice(Math.max(0, nu - nw)));
+      const Qbar = smul(smul(G, Qn), matT(G));
+      const P = care(matT(A), matT(C), Qbar, Ri); const L = smul(smul(P, matT(C)), Ri);
       const Ae = matSub(A, smul(L, C)); const Be = A.map((_, i) => [...s.B[i], ...L[i]]);
       const Ce = [...C.map((r) => r.slice()), ...eye(nx)];
       const De = [...s.D.map((r, i) => [...r, ...new Array(ny).fill(0)]), ...Array.from({ length: nx }, () => new Array(nu + ny).fill(0))];

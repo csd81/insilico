@@ -123,7 +123,7 @@ export const CASES: OracleCase[] = [
   { name: 'cplx-complex-sort', src: 'x = sort([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
   { name: 'cplx-complex-max-mag', src: 'x = max([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
 
-  // ══════════ control (21) ══════════
+  // ══════════ control (22) ══════════
   { name: 'ctrl-tf-dcgain', src: 'v = dcgain(tf(4, [1 3 2]));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['tf', 'dcgain'] },
   { name: 'ctrl-zpk-dcgain', src: 'v = dcgain(zpk([], [-1 -1], 3));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['zpk', 'dcgain'] },
   { name: 'ctrl-ss-dcgain', src: 'v = dcgain(ss([0 1; -1 -2], [0; 1], [1 0], 0));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['ss', 'state-space', 'dcgain'] },
@@ -145,6 +145,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-stepinfo', src: 'si = stepinfo(tf(1, [1 0.5 1])); v = [si.Overshoot si.Peak];', vars: ['v'], tol: 0.3, domain: 'control', tags: ['stepinfo', 'step-response', 'overshoot', 'grid-approximate'] },
   { name: 'ctrl-tfdata', src: "[num, den] = tfdata(tf([2 3 4], [1 2 1]), 'v'); v = [num den];", vars: ['v'], tol: 1e-9, domain: 'control', tags: ['tfdata', 'transfer-function', 'model-data'] },
   { name: 'ctrl-ssdata-markov', src: '[A, B, C, D] = ssdata(ss([0 1; -2 -3], [0; 1], [1 0], 0)); v = [C*B C*A*B C*A*A*B];', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['ssdata', 'state-space', 'markov-parameters-invariant'] },
+  { name: 'ctrl-kalman-gain', src: "A = [0 1; -2 -3]; sys = ss(A, [0; 1], [1 0], 0); [kest, L, P] = kalman(sys, 1, 1); G = [0; 1]; r = norm(A*P + P*A' - P*[1 0]'*(1\\[1 0])*P + G*G'); v = [L; r];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['kalman', 'estimator-gain', 'riccati', 'residual-invariant'] },
 
   // ══════════ core-language (128) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },

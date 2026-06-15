@@ -7,7 +7,7 @@ intentionally out of scope. It is a contract, not a bug list — items under
 "Intentionally unsupported" are deliberate scope decisions, not defects.
 
 Behavior is mechanically verified against **real MATLAB** via the oracle suite
-(`matlab/test/oracle/`, 706 committed fixtures) plus TS-only tests — 841 total,
+(`matlab/test/oracle/`, 707 committed fixtures) plus TS-only tests — 842 total,
 all green. See `pnpm test`.
 
 ---
