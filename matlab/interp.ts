@@ -868,11 +868,15 @@ export class Interpreter implements Env {
     const scope = new Scope();
     scope.nargin = args.length;
     scope.nargout = nargout;
-    for (let i = 0; i < def.params.length; i++) {
+    // varargin (a trailing parameter) collects the surplus actual arguments into a cell array.
+    const hasVarargin = def.params.length > 0 && def.params[def.params.length - 1] === 'varargin';
+    const nFixed = hasVarargin ? def.params.length - 1 : def.params.length;
+    for (let i = 0; i < nFixed; i++) {
       if (def.params[i] === '~') continue;
       // Pass-by-value: clone so a function that does `v(i)=…` can't mutate the caller's array.
       if (i < args.length) scope.vars.set(def.params[i], cloneForSave(args[i]));
     }
+    if (hasVarargin) { const extra = args.slice(nFixed).map(cloneForSave); scope.vars.set('varargin', makeCell(1, extra.length, extra)); }
     scope.vars.set('nargin', scalar(args.length));
     scope.vars.set('nargout', scalar(nargout));
     const prevFuncScope = this.funcScope;
@@ -882,6 +886,8 @@ export class Interpreter implements Env {
     finally { this.funcScope = prevFuncScope; }
     const results: Value[] = [];
     for (const o of def.outputs) {
+      // varargout (a trailing output) expands its cell contents into the returned outputs.
+      if (o === 'varargout') { const vo = scope.vars.get('varargout'); if (vo && isCell(vo)) results.push(...vo.items); break; }
       if (o === '~') { results.push(scalar(0)); continue; }
       if (scope.vars.has(o)) results.push(scope.vars.get(o)!);
       else break;

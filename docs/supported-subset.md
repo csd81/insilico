@@ -7,7 +7,7 @@ intentionally out of scope. It is a contract, not a bug list — items under
 "Intentionally unsupported" are deliberate scope decisions, not defects.
 
 Behavior is mechanically verified against **real MATLAB** via the oracle suite
-(`matlab/test/oracle/`, 917 committed fixtures) plus TS-only tests — 1052 total,
+(`matlab/test/oracle/`, 917 committed fixtures) plus TS-only tests — 1057 total,
 all green. See `pnpm test`. The systematic base/core triage campaign (Pass 2A–2O) is
 complete; further validation is **example/course-driven**. How cases are chosen (oracle
 vs invariant vs TS-only, and when to decline) is documented in
@@ -46,7 +46,7 @@ vs invariant vs TS-only, and when to decline) is documented in
 
 **Functions**
 - Function files, multiple outputs `[a,b]=f(...)`, ignored outputs `[~,b]=f(...)`
-- `nargin`/`nargout`
+- `nargin`/`nargout`; **`varargin`** (collects surplus args into a cell) and **`varargout`** (expands a cell into outputs), incl. `varargin{:}` pass-through
 - Anonymous functions with **snapshot** closures (capture-by-value at definition)
 - Function handles, `feval`, `arrayfun`, `cellfun`
 - Comma-separated-list expansion: `foo(C{:})`, `[a,b]=deal(...)`
@@ -113,7 +113,6 @@ course enough to justify the maintenance cost. Out of scope by design:
 - **`classdef`** and OOP authoring — `properties`, `methods`, `events`,
   user-defined inheritance. (The internal `ClassV` exists only to back
   toolbox-style objects like `tf`/`ss`; it is not a user-facing class system.)
-- **`varargin` / `varargout`** — variadic argument packing.
 - **`persistent`** variables.
 - **`arguments`** validation blocks.
 - **Nested functions** and shared-scope (live) closures — anonymous snapshot

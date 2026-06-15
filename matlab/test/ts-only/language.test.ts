@@ -161,6 +161,36 @@ describe('functions', () => {
     assert.equal(num(r.get('y')), 2);
   });
 
+  // varargin/varargout — verified against MATLAB R2026a (the oracle generator can't eval
+  // function definitions, so these are TS-only with MATLAB-confirmed expected values).
+  it('varargin collects surplus args into a cell', async () => {
+    const r = await run('s = mysum(1, 2, 3, 4, 5);\nfunction s = mysum(varargin)\ns = 0;\nfor i = 1:numel(varargin), s = s + varargin{i}; end\nend');
+    assert.equal(num(r.get('s')), 15);   // MATLAB: 15
+  });
+
+  it('varargin after fixed params; empty when no surplus', async () => {
+    const r = await run('a = f(10, 2, 3, 4);\nb = f(10);\nfunction r = f(x, varargin)\nr = x + numel(varargin);\nend');
+    assert.equal(num(r.get('a')), 13);   // 10 + 3
+    assert.equal(num(r.get('b')), 10);   // 10 + 0
+  });
+
+  it('varargout expands a cell into multiple outputs', async () => {
+    const r = await run('[a, b, c] = g(3);\nfunction varargout = g(n)\nfor i = 1:n, varargout{i} = i*10; end\nend');
+    assert.equal(num(r.get('a')), 10);
+    assert.equal(num(r.get('b')), 20);
+    assert.equal(num(r.get('c')), 30);
+  });
+
+  it('fixed output then varargout', async () => {
+    const r = await run('[x, y, z] = h();\nfunction [x, varargout] = h()\nx = 1; varargout{1} = 2; varargout{2} = 3;\nend');
+    assert.deepEqual([num(r.get('x')), num(r.get('y')), num(r.get('z'))], [1, 2, 3]);
+  });
+
+  it('varargin{:} comma-list pass-through to another function', async () => {
+    const r = await run('r = outer(1, 2, 3);\nfunction r = outer(varargin)\nr = inner(varargin{:});\nend\nfunction s = inner(a, b, c)\ns = a*100 + b*10 + c;\nend');
+    assert.equal(num(r.get('r')), 123);
+  });
+
   it('anonymous closure captures variable', async () => {
     const r = await run('a = 10; f = @(x) x + a; a = 999; y = f(5);');
     assert.equal(num(r.get('y')), 15);   // captures a=10 at definition

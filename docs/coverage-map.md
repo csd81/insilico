@@ -13,7 +13,7 @@ pnpm oracle:base-audit
 pnpm oracle:audit
 ```
 
-**Status (as of this revision):** 1052 tests green · 917 MATLAB oracle fixtures ·
+**Status (as of this revision):** 1057 tests green · 917 MATLAB oracle fixtures ·
 917/917 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·

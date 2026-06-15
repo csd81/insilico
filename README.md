@@ -9,7 +9,7 @@ not a full MATLAB clone.
 
 ## Status
 
-- **1052 tests green** · **917 MATLAB oracle fixtures** · 917/917 cases classified
+- **1057 tests green** · **917 MATLAB oracle fixtures** · 917/917 cases classified
 - 917 oracle cases across **22 domains**
 - Behavior is mechanically verified against **real MATLAB** (see Testing)
 
