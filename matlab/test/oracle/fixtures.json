@@ -6206,6 +6206,125 @@
       ]
     }
   },
+  "nla_spones_spfun": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        18
+      ],
+      "real": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        4,
+        0,
+        3,
+        0,
+        2,
+        0,
+        0
+      ]
+    }
+  },
+  "nla_spalloc_spconvert": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        8
+      ],
+      "real": [
+        2,
+        5,
+        7,
+        3,
+        3,
+        3,
+        7,
+        2
+      ]
+    }
+  },
+  "nla_symrcm": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        1
+      ]
+    }
+  },
+  "nla_colamd_amd": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  },
+  "nla_dmperm": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        1
+      ]
+    }
+  },
+  "nla_etree": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        2,
+        3,
+        0
+      ]
+    }
+  },
+  "nla_spaugment": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        5,
+        5,
+        6,
+        0,
+        0
+      ]
+    }
+  },
   "nla_illcond_sparse_solve": {
     "r": {
       "class": "double",
