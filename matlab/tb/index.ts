@@ -9,8 +9,9 @@
 // risk, robotics;
 // (wavelet + aerospace + econ + fusion are now RESTORED + selectively registered via
 // RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion algebra;
-// econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection fusion);
-// images (image processing), mapping (geodesy), nav (navigation/coord frames), nnet
+// econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection fusion;
+// nav: WGS84 geodetic↔ECEF transforms);
+// images (image processing), mapping (geodesy), nnet
 // (deep-learning layers/training), rl (reinforcement learning), pde (PDE-Toolbox object/mesh
 // machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases),
 // curvefit (B-spline object subsystem — base spline/polyfit/interp cover the workflows). None
@@ -36,6 +37,7 @@ import { WAVELET } from './wavelet';
 import { AEROSPACE } from './aerospace';
 import { ECON } from './econ';
 import { FUSION } from './fusion';
+import { NAV } from './nav';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
@@ -44,6 +46,7 @@ export const TOOLBOXES: ToolboxModule[] = [
   AEROSPACE,   // restored — only the deterministic rotation/quaternion math (allow-list below)
   ECON,        // restored — unit-root + deterministic time-series diagnostics (allow-list below)
   FUSION,      // restored — optimal assignment + covariance-intersection fusion (allow-list below)
+  NAV,         // restored — WGS84 geodetic↔ECEF coordinate transforms (allow-list below)
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -124,6 +127,9 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // fusion: discrete-optimization assignment (Munkres/auction, optimal min-cost) + covariance-
   // intersection track fusion. The Sensor-Fusion product's tracker/object surface stays unregistered.
   fusion: new Set(['assignmunkres', 'assignauction', 'fusecovint']),
+  // nav: deterministic WGS84 geodetic ↔ ECEF transforms. (lookangles deferred — its satPos
+  // convention couldn't be pinned cleanly against MATLAB; lla2ned/lla2enu pending verification.)
+  nav: new Set(['lla2ecef', 'ecef2lla']),
 };
 
 /** Intentional-duplicate policy. A name implemented in BOTH base and a toolbox is a cross-layer

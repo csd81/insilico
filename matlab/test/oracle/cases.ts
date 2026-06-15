@@ -468,6 +468,9 @@ export const CASES: OracleCase[] = [
   // Aerospace rotation/quaternion algebra (scalar-first [w x y z] quaternions, Hamilton product;
   // angle sequences default to ZYX). Restored + registered by allow-list; pure deterministic math.
   { name: 'aero-quat-algebra', src: 'q1 = [1 2 3 4]; q2 = [5 6 7 8]; qm = quatmultiply(q1, q2); qi = quatinv(q1); qr = quatrotate([0.5 0.5 0.5 0.5], [1 2 3]); v = [qm qi qr];', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['quaternion', 'quatmultiply', 'quatinv', 'quatrotate', 'hamilton-product'] },
+  // WGS84 geodetic [lat lon alt] ↔ ECEF [x y z]. ECEF in metres (≈4.5e6), so tol is absolute-loose;
+  // the roundtrip ecef2lla(lla2ecef(p))=p invariant ties it down to mm.
+  { name: 'nav-lla-ecef', src: 'e = lla2ecef([45 90 1000]); l = ecef2lla([4517590.879 0 4487348.409]); p0 = [37.5 -122.3 55]; rt = ecef2lla(lla2ecef(p0)); v = [e l norm(rt - p0)];', vars: ['v'], tol: 1e-2, domain: 'geometry', tags: ['lla2ecef', 'ecef2lla', 'wgs84', 'roundtrip-invariant'] },
   { name: 'aero-angle-dcm-quat', src: "q = angle2quat(0.1, 0.2, 0.3); D = angle2dcm(0.1, 0.2, 0.3); [a1, a2, a3] = dcm2angle(D); v = [q a1 a2 a3 norm(D*D' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['angle2quat', 'angle2dcm', 'dcm2angle', 'roundtrip', 'orthogonality-invariant'] },
   // ── Demand-driven remainder: coordinate transforms (round-trip exactness + known values) and
   // assorted geometry utilities (point-in-polygon, rectangle intersection area, polygon area). ──
