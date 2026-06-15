@@ -130,7 +130,7 @@ export const CASES: OracleCase[] = [
   { name: 'spec-bessel-erf', src: 'v = double([real(besselh(0,1,1)) imag(besselh(0,1,1)) erfcx(1) erfi(1) dawson(1)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['besselh', 'erfcx', 'erfi', 'dawson'] },
   { name: 'spec-inverse', src: 'v = double([gammaincinv(0.5,2) betaincinv(0.5,2,3) wrightOmega(1) ei(1) logint(2) sinhint(1) coshint(1)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['gammaincinv', 'betaincinv', 'wrightOmega', 'ei', 'logint', 'sinhint', 'coshint'] },
 
-  // ══════════ coding (18) ══════════
+  // ══════════ coding (20) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },
   { name: 'coding-hammgen', src: '[H, G, n, k] = hammgen(3); v = [n k size(H, 1)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['hamming-code', 'parity-check', 'error-correction'] },
   { name: 'coding-biterr', src: '[num, rate] = biterr([1 0 1 1], [1 1 1 0]); v = [num rate];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['bit-error-rate', 'biterr'] },
@@ -149,6 +149,11 @@ export const CASES: OracleCase[] = [
   { name: 'coding-gen2par-weight', src: 'G = [1 0 0 1 1; 0 1 0 1 0; 0 0 1 0 1]; H = gen2par(G); v = [H(:).\x27 gfweight(G)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['gen2par', 'gfweight', 'parity-check', 'minimum-distance'] },
   { name: 'coding-utils', src: 'v = [gftrunc([1 2 3 0 0]) symerr([1 2 3 4], [1 0 3 4]) finddelay([0 0 1 2 3], [1 2 3 0 0])];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['gftrunc', 'symerr', 'finddelay'] },
   { name: 'coding-vec2mat', src: 'v = vec2mat([1 2 3 4 5 6], 3);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['vec2mat', 'reshape'] },
+  // ── Coding / information theory workflows. Hamming(7,4): encode → flip one bit → syndrome-decode
+  // (locate the error by matching the syndrome to a parity-check column) → recover the codeword.
+  // BSC capacity 1−H(p) + mutual information from a joint distribution. ──
+  { name: 'coding-hamming-decode', src: "[H, G, n, k] = hammgen(3); msg = [1 0 1 1]; c = mod(msg*G, 2); r = c; r(3) = 1 - r(3); s = mod(H*r', 2); epos = 0; for j = 1:n, if isequal(H(:,j), s), epos = j; break; end; end; corr = r; if epos > 0, corr(epos) = 1 - corr(epos); end; v = double([isequal(corr, c) all(mod(H*c', 2) == 0) epos]);", vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['hamming-code', 'syndrome-decoding', 'error-correction'] },
+  { name: 'info-mutual-capacity', src: 'p = 0.1; Hb = @(q) -q.*log2(q) - (1-q).*log2(1-q); C = 1 - Hb(p); Pxy = [0.4 0.1; 0.1 0.4]; Px = sum(Pxy, 2); Py = sum(Pxy, 1); MI = 0; for i = 1:2, for j = 1:2, MI = MI + Pxy(i,j)*log2(Pxy(i,j)/(Px(i)*Py(j))); end; end; v = [C MI];', vars: ['v'], tol: 1e-6, domain: 'coding', tags: ['channel-capacity', 'bsc', 'mutual-information', 'entropy'] },
 
   // ══════════ complex-arithmetic (15) ══════════
   { name: 'cplx-complex-mul', src: 'z = (1+2i) * (3-1i);', vars: ['z'], domain: 'complex-arithmetic' },
@@ -508,7 +513,7 @@ export const CASES: OracleCase[] = [
   { name: 'vec-basics', src: 'u = [3 4 0]; mag = norm(u); uhat = u/mag; ang = atan2(u(2), u(1)); v = [mag uhat ang norm(uhat)];', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['course-workflow', 'vector-magnitude', 'unit-vector', 'orientation'] },
   { name: 'vec-arithmetic', src: 'a = [1 2 3]; b = [4 5 6]; c = [7 8 10]; dp = dot(a, b); cr = cross(a, b); proj = dot(a, b)/dot(b, b)*b; ang = acos(dot(a, b)/(norm(a)*norm(b))); trip = dot(a, cross(b, c)); v = [dp cr proj ang trip];', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['course-workflow', 'dot', 'cross', 'projection', 'triple-product'] },
 
-  // ══════════ machine-learning (10) ══════════
+  // ══════════ machine-learning (14) ══════════
   { name: 'ml-kmeans-lloyd', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; C = [1 1; 5 7]; for it = 1:10, d1 = sum((X - C(1,:)).^2, 2); d2 = sum((X - C(2,:)).^2, 2); a = d2 < d1; C(1,:) = mean(X(~a,:)); C(2,:) = mean(X(a,:)); end; v = sort(C(:,1));", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['k-means', 'lloyd', 'clustering', 'fixed-init'] },
   { name: 'ml-kmeans-builtin', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; [idx, C, sumd] = kmeans(X, 2, 'Start', [1 1; 5 7]); v = [sort(C(:,1)).' sum(sumd)];", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['kmeans', 'clustering', 'deterministic-start'] },
   { name: 'ml-knnsearch', src: "[idx, d] = knnsearch([0 0; 1 1; 2 2; 3 3], [0.9 0.9], 'K', 2);", vars: ['idx', 'd'], tol: 1e-6, domain: 'machine-learning', tags: ['knnsearch', 'nearest-neighbor', 'euclidean'] },
@@ -519,6 +524,13 @@ export const CASES: OracleCase[] = [
   { name: 'ml-softmax-regression-gradient', src: 'X = [1 0; 1 1; 1 2]; W = [0.2 -0.1; -0.3 0.4]; T = [1 0; 0 1; 1 0]; Z = X*W; Z = Z - max(Z, [], 2); P = exp(Z)./sum(exp(Z), 2); loss = -sum(sum(T.*log(P)))/size(X, 1); G = X\'*(P - T)/size(X, 1); v = [loss; G(:)];', vars: ['v'], tol: 1e-9, domain: 'machine-learning', tags: ['softmax-regression', 'cross-entropy', 'gradient'] },
   { name: 'ml-gaussian-process-posterior', src: "x = [0; 1; 2]; y = [0; 1; 0]; xs = 1.5; ell = 1; sig2 = 0.01; K = exp(-((x - x').^2)/(2*ell^2)) + sig2*eye(3); ks = exp(-((x - xs).^2)/(2*ell^2)); mu = ks'*(K\\y); kss = 1 + sig2; varp = kss - ks'*(K\\ks); v = [mu; varp];", vars: ['v'], tol: 1e-9, domain: 'machine-learning', tags: ['gaussian-process', 'rbf-kernel', 'posterior'] },
   { name: 'ml-svm-dual-margin', src: "K = [1 -1; -1 1]; y = [1; -1]; H = (y*y').*K; Aeq = y'; beq = 0; f = -ones(2,1); a = quadprog(H, f, [], [], Aeq, beq, zeros(2,1), []); margin = 1/sqrt(a'*(H*a)); v = [a; margin];", vars: ['v'], tol: 1e-5, domain: 'machine-learning', tags: ['svm', 'dual', 'quadratic-programming', 'margin'] },
+  // ── ML-math workflows (model objects deferred; the math is validated). PCA reconstruction error
+  // (sign-invariant), RBF kernel ridge prediction, k-means with fixed start (sorted centroids +
+  // total within-cluster sum, label-invariant), k-NN classification. ──
+  { name: 'ml-pca-reconstruction', src: "X = [2 1; 1 2; 3 3; 4 5; 5 4]; mu = mean(X); [co, sc, lat] = pca(X); Xr = sc(:,1)*co(:,1)' + mu; v = [norm(X - Xr) sum(lat) min(lat)];", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['pca', 'reconstruction-error', 'variance', 'rank-1-invariant'] },
+  { name: 'ml-kernel-ridge-predict', src: "Xtr = [0;1;2;3]; ytr = [0;1;4;9]; lam = 0.1; g = 0.5; K = exp(-g*(Xtr - Xtr').^2); al = (K + lam*eye(4))\\ytr; xt = [0.5;1.5;2.5]; Kt = exp(-g*(xt - Xtr').^2); pred = Kt*al; v = pred';", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['kernel-ridge', 'rbf-kernel', 'regularized-regression'] },
+  { name: 'ml-kmeans-objective', src: "X = [1 1; 1.5 2; 1.3 1.5; 5 7; 5.5 7.5; 4.8 6.5]; [idx, C, sumd] = kmeans(X, 2, 'Start', [1 1; 5 7]); Cs = sortrows(C); v = [sum(sumd) Cs(:)'];", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['kmeans', 'within-cluster-sum', 'fixed-start', 'label-invariant'] },
+  { name: 'ml-knn', src: 'idx = knnsearch([0 0; 1 1; 2 2; 3 3], [0.4 0.4; 2.6 2.6; 1.1 1.1]); v = idx\x27;', vars: ['v'], tol: 1e-9, domain: 'machine-learning', tags: ['knnsearch', 'nearest-neighbor', 'classification'] },
 
   // ══════════ nonlinear-systems (5) ══════════
   { name: 'nls-newton-system', src: 'F = @(x) [x(1)^2 + x(2)^2 - 1; x(1) - x(2)]; J = @(x) [2*x(1) 2*x(2); 1 -1]; x = [1; 1]; for k = 1:10, x = x - J(x)\\F(x); end', vars: ['x'], tol: 1e-9, domain: 'nonlinear-systems', tags: ['newton', 'jacobian'] },
