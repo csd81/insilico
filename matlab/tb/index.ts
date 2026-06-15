@@ -2,41 +2,25 @@
 // tables plus a name→toolbox map. Merged into the global BUILTINS in builtins.ts AFTER which
 // the base entries are spread, so base MATLAB always wins on a name collision (see plan §3).
 //
-// Registration is limited to in-scope numerical/matrix-computation domains. Out-of-scope
-// domain toolboxes are NOT registered (source kept under matlab/tb/ but not exposed at
-// runtime): antenna/rf, audio, bioinfo, financial/fininst, lidar/radar,
-// textanalytics, vision (earlier); fuzzy, gads, ident, parallel, phased,
-// risk, robotics;
-// (wavelet + aerospace + econ + fusion + nav + fixedpoint are now RESTORED + selectively
-// registered via RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion
-// algebra; econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection
-// fusion; nav: WGS84 geodetic↔ECEF transforms; fixedpoint: CORDIC sqrt/rotate/QR);
-// (wavelet + aerospace + econ + fusion are now RESTORED + selectively registered via
-// RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion algebra;
-// econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection fusion;
-// nav: WGS84 geodetic↔ECEF transforms; curvefit: Franke test surface + single-B-spline ppform +
-// spmak B-form constructor + B-form-aware fnval/fnder/fnint);
-// textanalytics, vision (earlier); fixedpoint, gads, ident, parallel, phased,
-// risk, robotics;
-// (wavelet + aerospace + econ + fusion + nav + fuzzy are now RESTORED + selectively registered via
-// RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion algebra;
-// econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection fusion;
-// nav: WGS84 geodetic↔ECEF transforms; fuzzy: deterministic membership functions);
-// images (image processing), mapping (geodesy), nnet
-// (deep-learning layers/training), rl (reinforcement learning), pde (PDE-Toolbox object/mesh
-// machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases). None
-// (wavelet + aerospace + econ + fusion + nav + pde are now RESTORED + selectively registered via
-// RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion algebra;
-// econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection fusion;
-// nav: WGS84 geodetic↔ECEF transforms; pde: linear-triangle FEM area-integral assembly assema);
-// images (image processing), mapping (geodesy), nnet
-// (deep-learning layers/training), rl (reinforcement learning); pde's [p,e,t]-mesh FEM
-// area-integral assembly (assema) is now registered, but the PDEModel object/mesh-generation/
-// boundary surface (incl. assemb — needs the legacy text-expression boundary matrix) stays
-// unregistered; curvefit (B-spline object subsystem — base spline/polyfit/interp cover it). None
-// of these were used by any oracle case. Within the registered toolboxes individual functions
-// may still be unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per
-// toolbox.
+// Registration is limited to in-scope numerical/matrix-computation domains.
+//
+// RESTORED + selectively registered via RESTORED_TOOLBOX_KEEP (each an oracle/invariant-validated
+// allow-list, the rest of the toolbox source stays unexposed):
+//   wavelet     — DCT-II + Haar/Daubechies DWT + wfilters/centfrq (cwt declined)
+//   aerospace   — rotation/quaternion algebra (angle2dcm/dcm2angle/angle2quat/quat*)
+//   econ        — time-series diagnostics (autocorr/crosscorr/parcorr/adftest/archtest)
+//   fusion      — optimal assignment (munkres/auction) + covariance-intersection (fusecovint)
+//   nav         — WGS84 geodetic↔ECEF transforms (lla2ecef/ecef2lla)
+//   fixedpoint  — CORDIC sqrt/rotate/QR (no fi object surface)
+//   curvefit    — Franke surface + single-B-spline ppform (bspline/spmak + B-form fnval/fnder/fnint)
+//   fuzzy       — deterministic membership functions (trimf/trapmf/gaussmf/gbellmf/sigmf/defuzz/evalmf)
+//   pde         — [p,e,t]-mesh FEM area-integral assembly (assema; assemb declined — needs the
+//                 legacy text-expression boundary matrix)
+//
+// NOT registered (source kept under matlab/tb/ but not exposed): antenna/rf, audio, bioinfo,
+// financial/fininst, lidar/radar, textanalytics, vision, gads, ident, parallel, phased, risk,
+// robotics, images, mapping, nnet, rl. Within the registered toolboxes individual functions may
+// still be unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per toolbox.
 import type { Builtin } from '../builtins';
 import type { Value } from '../values';
 import type { HelpEntry } from '../help';
