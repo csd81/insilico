@@ -22,8 +22,9 @@ export interface OracleCase {
 
 export const CASES: OracleCase[] = [
 
-  // ══════════ approximation (26) ══════════
+  // ══════════ approximation (27) ══════════
   { name: 'approx-polyfit-line', src: 'x = [0 1 2 3 4]; y = 2*x + 1; p = polyfit(x, y, 1);', vars: ['p'], domain: 'approximation' },
+  { name: 'approx-polyfit-centered', src: 'x = [0 1 2 3 4]; y = [1 3 7 13 21]; [p, S, mu] = polyfit(x, y, 2); df = S.df; nr = S.normr;', vars: ['p', 'mu', 'df', 'nr'], tol: 1e-6, domain: 'approximation', tags: ['polyfit', 'centered-scaled', 'multi-output'] },
   { name: 'approx-polyval', src: 'v = polyval([1 -3 2], 5);', vars: ['v'], domain: 'approximation' },
   { name: 'approx-roots', src: 'r = sort(roots([1 -3 2]));', vars: ['r'], domain: 'approximation' },
   { name: 'approx-gauss2pt-quadrature', src: 'f = @(x) x.^3 + 2*x.^2 + 1; nodes = [-1/sqrt(3), 1/sqrt(3)]; I = f(nodes(1)) + f(nodes(2));', vars: ['I'], tol: 1e-9, domain: 'approximation' },
@@ -423,6 +424,7 @@ export const CASES: OracleCase[] = [
   { name: 'nla-bicgstab', src: 'A = [4 1; 1 3]; b = [1; 2]; x = bicgstab(A, b); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['bicgstab', 'iterative-solver'] },
   { name: 'nla-pcg', src: 'A = [4 1; 1 3]; b = [1; 2]; x = pcg(A, b, 1e-10, 50); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-7, domain: 'numerical-linear-algebra', tags: ['pcg', 'iterative-solver'] },
   { name: 'nla-cgs', src: 'A = [4 1; 1 3]; b = [1; 2]; x = cgs(A, b, 1e-10, 50); rr = norm(A*x - b);', vars: ['rr'], tol: 1e-7, domain: 'numerical-linear-algebra', tags: ['cgs', 'iterative-solver'] },
+  { name: 'nla-lu-permuted-sparse', src: "A = [2 1 1; 4 3 3; 8 7 9]; [L, U, P, Q] = lu(sparse(A)); rr = norm(full(P*A*Q - L*U), 'fro');", vars: ['rr'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['lu', 'sparse', 'permutation', 'reconstruction', 'multi-output'] },
   { name: 'nla-ilu', src: 'A = sparse([4 1; 1 3]); [L, U] = ilu(A); rr = norm(full(L*U) - full(A));', vars: ['rr'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['ilu', 'preconditioner', 'reconstruction'] },
   { name: 'nla-ichol', src: 'A = sparse([4 1; 1 3]); L = ichol(A); rr = norm(full(L*L.\x27) - full(A));', vars: ['rr'], tol: 1e-7, domain: 'numerical-linear-algebra', tags: ['ichol', 'preconditioner', 'reconstruction'] },
   { name: 'nla-ldl', src: 'A = [4 1; 1 3]; [L, D] = ldl(A); rr = norm(L*D*L.\x27 - A);', vars: ['rr'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['ldl', 'factorization', 'reconstruction'] },
@@ -652,8 +654,10 @@ export const CASES: OracleCase[] = [
   { name: 'stat-mat-hat-matrix', src: "X = [1 1; 1 2; 1 3]; H = X/(X'*X)*X'; v = norm(H*H - H);", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['hat-matrix', 'projection', 'regression'] },
   { name: 'stat-mat-centering', src: 'n = 4; C = eye(n) - ones(n)/n; v = norm(C*ones(n,1));', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['centering-matrix'] },
 
-  // ══════════ symbolic (48) ══════════
+  // ══════════ symbolic (50) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
+  { name: 'sym-diag-matrix', src: 'syms a b c; M = [a 1 2; 3 b 4; 5 6 c]; d = diag(M); D = diag(d); val = double(subs(D, [a b c], [7 8 9])); v = val(:).\x27;', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['diag', 'symbolic-matrix'] },
+  { name: 'sym-poly-gcd', src: 'syms x; g = gcd(x^2 - 1, x^2 - 2*x + 1); c = sym2poly(g);', vars: ['c'], tol: 1e-9, domain: 'symbolic', tags: ['gcd', 'polynomial'] },
   { name: 'sym-hessian', src: 'syms x y; H = hessian(x^2*y, [x y]); v = double(subs(H, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['hessian'] },
   { name: 'sym-taylor', src: "syms x; T = taylor(exp(x), x, 'Order', 4); c = double(subs(T, x, 1));", vars: ['c'], tol: 1e-9, domain: 'symbolic', tags: ['taylor'] },
   { name: 'sym-laplace', src: 'syms t s; L = laplace(exp(-2*t)); v = double(subs(L, s, 3));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['laplace'] },

@@ -34,7 +34,7 @@ import { dispValue, sprintf, symTexLines, setFormatMode, fmtTemporal, HELP_OPEN,
 import { parseCsv, csvToTable, csvToMatrix, matrixToCsv, xlsxToCsv, parseMat, type Csv } from './io';
 import type { Graphics } from './graphics';
 import {
-  polyCoeffs, numDen, symDet, symInv, symCharpolyCoeffs, symCharpolyExpr, symEig, symArg, symToExpr, symVarsOf,
+  polyCoeffs, polyGcdSym, numDen, symDet, symInv, symCharpolyCoeffs, symCharpolyExpr, symEig, symArg, symToExpr, symVarsOf,
   transformVars, symNames, integrate, limitAt, solveExpr, expandExpr,
   laplaceExpr, ztransExpr, ilaplaceExpr, iztransExpr, fourierExpr, ifourierExpr,
   simplifyAssume,
@@ -745,6 +745,12 @@ export const BUILTINS: Record<string, Builtin> = {
   anynan: async (a) => ret(bool(toArray(m(a[0])).some(Number.isNaN))),
   // number theory
   gcd: async (a, n) => {
+    if (isSym(a[0]) || isSym(a[1])) {
+      // Symbolic polynomial GCD (monic), in the common variable of the two polys.
+      const e1 = symArg(a[0]).exprs[0], e2 = symArg(a[1]).exprs[0];
+      const v = symVarsOf(a[0] as Sym).concat(isSym(a[1]) ? symVarsOf(a[1]) : [])[0] ?? 'x';
+      return ret(makeSym(1, 1, [polyGcdSym(e1, e2, v)]));
+    }
     const A = m(a[0]), B = m(a[1]);
     if (n >= 2) { const G = elementwise(A, B, (x, y) => extgcd(x, y)[0]); const U = elementwise(A, B, (x, y) => extgcd(x, y)[1]); const V = elementwise(A, B, (x, y) => extgcd(x, y)[2]); return [A.itype ? applyClass(G, A.itype) : G, U, V]; }
     const G = elementwise(A, B, gcd2); return ret(A.itype ? applyClass(G, A.itype) : G);
@@ -929,9 +935,18 @@ export const BUILTINS: Record<string, Builtin> = {
     for (let k = 0; k < X.data.length; k++) { let sr = 0, si = 0; for (let j = 0; j < pr.length; j++) { [sr, si] = cmul(sr, si, xr[k], xi[k]); sr += pr[j]; si += pi[j]; } Rr[k] = sr; Ri[k] = si; }
     return ret(finishComplex(X.rows, X.cols, Rr, Ri));
   },
-  polyfit: async (a) => {
+  polyfit: async (a, nargout) => {
     const X = m(a[0]), Y = m(a[1]); const deg = Math.round(asScalar(a[2])); const M = X.data.length;
-    const cplx = isComplex(X) || isComplex(Y); const xr = X.data, xi = X.idata ?? new Float64Array(M);
+    const cplx = isComplex(X) || isComplex(Y);
+    // 3-output form centers and scales x: xs = (x-mu(1))/mu(2), mu = [mean(x); std(x)].
+    let xr = X.data; let mu1 = 0, mu2 = 1;
+    if (nargout >= 3 && !cplx) {
+      mu1 = X.data.reduce((s, v) => s + v, 0) / (M || 1);
+      const v2 = X.data.reduce((s, v) => s + (v - mu1) * (v - mu1), 0) / Math.max(1, M - 1);
+      mu2 = Math.sqrt(v2) || 1;
+      xr = Float64Array.from(X.data, (v) => (v - mu1) / mu2);
+    }
+    const xi = X.idata ?? new Float64Array(M);
     const A = zeros(M, deg + 1); if (cplx) A.idata = new Float64Array(M * (deg + 1));
     for (let i = 0; i < M; i++) { // Vandermonde row: x[i]^(deg-j); build powers via complex multiply
       const pr: number[] = [], pim: number[] = []; let ar = 1, ai = 0;
@@ -939,7 +954,20 @@ export const BUILTINS: Record<string, Builtin> = {
       for (let j = 0; j <= deg; j++) { const k = deg - j; A.data[i + j * M] = pr[k]; if (cplx) A.idata![i + j * M] = pim[k]; }
     }
     const yv = cplx ? finishComplex(M, 1, Float64Array.from(Y.data), Float64Array.from(Y.idata ?? new Float64Array(M))) : colVec(toArray(Y));
-    return ret(transpose(mldivide(A, yv)));
+    const pcol = mldivide(A, yv); const p = transpose(pcol);
+    if (nargout <= 1) return ret(p);
+    // S struct (used by polyval for error estimates): R from economy QR of the
+    // Vandermonde, df = residual degrees of freedom, normr = norm of residuals.
+    const { R } = qrDecomp(A);
+    const Rn = zeros(deg + 1, deg + 1); // economy R: leading (deg+1) rows
+    for (let c = 0; c < deg + 1; c++) for (let r = 0; r < deg + 1; r++) Rn.data[r + c * (deg + 1)] = R.data[r + c * R.rows];
+    const resid = toArray(matmul(A, pcol)).map((v, i) => toArray(yv)[i] - v);
+    const normr = Math.hypot(...resid);
+    const S: StructV = { kind: 'struct', rows: 1, cols: 1, fields: new Map<string, Value[]>([
+      ['R', [Rn]], ['df', [scalar(Math.max(0, M - (deg + 1)))]], ['normr', [scalar(normr)]],
+    ]) };
+    if (nargout === 2) return [p, S];
+    return [p, S, colVec([mu1, mu2])];
   },
   conv: async (a) => {
     const U = m(a[0]); const u = toArray(U), v = toArray(m(a[1]));
@@ -1359,6 +1387,18 @@ export const BUILTINS: Record<string, Builtin> = {
     return ret(x);
   },
   diag: async (a) => {
+    if (isSym(a[0])) {
+      const S = a[0] as Sym; const k = a.length >= 2 ? Math.round(asScalar(a[1])) : 0;
+      if (S.rows === 1 || S.cols === 1) {
+        // symbolic vector → square matrix with the entries on the k-th diagonal
+        const n = S.exprs.length; const N = n + Math.abs(k); const out: SymExpr[] = new Array(N * N).fill(sN(0));
+        for (let i = 0; i < n; i++) { const r = k >= 0 ? i : i - k; const c = k >= 0 ? i + k : i; out[r + c * N] = S.exprs[i]; }
+        return ret(makeSym(N, N, out));
+      }
+      const vals: SymExpr[] = []; // matrix → extract the k-th diagonal as a column
+      for (let i = 0; ; i++) { const r = k >= 0 ? i : i - k; const c = k >= 0 ? i + k : i; if (r >= S.rows || c >= S.cols) break; vals.push(S.exprs[r + c * S.rows]); }
+      return ret(makeSym(vals.length, 1, vals));
+    }
     const A = m(a[0]); const k = a.length >= 2 ? Math.round(asScalar(a[1])) : 0;
     if (k === 0) return ret(diag(A));
     const cplx = isComplex(A);
@@ -1523,6 +1563,12 @@ export const BUILTINS: Record<string, Builtin> = {
     const A = m(a[0]);
     const wantVector = a.slice(1).some((x) => (isStr(x) || (isMat(x) && (x as Mat).isChar)) && asString(x).toLowerCase() === 'vector');
     const { L, U, P, piv, packed } = luGeneral(A);
+    if (n >= 4) {
+      // [L,U,P,Q] with P*A*Q = L*U. Row pivoting only (Q = I); no fill-reducing
+      // column permutation, so L/U may be denser than UMFPACK's but the
+      // factorization identity holds exactly. (4-output form of sparse lu.)
+      return [L, U, P, eye(A.cols)];
+    }
     if (n >= 3) return wantVector ? [L, U, rowVec(piv.map((i) => i + 1))] : [L, U, P];
     if (n === 2) {
       // [L,U] with A = L*U: un-permute L's rows (psychologically-lower L), complex-safe.

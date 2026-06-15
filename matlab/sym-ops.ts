@@ -110,6 +110,20 @@ function polyDivHi(N: number[], D: number[]): { q: number[]; r: number[] } {
   while (rem.length && Math.abs(rem[0]) < 1e-12) rem.shift();
   return { q: q.length ? q : [0], r: rem.length ? rem : [0] };
 }
+/** Polynomial GCD of two univariate symbolic polynomials in `v` (Euclidean algorithm),
+ *  returned monic (leading coefficient 1) to match MATLAB's `gcd(sym,sym)`. */
+export function polyGcdSym(e1: SymExpr, e2: SymExpr, v: string): SymExpr {
+  const trim = (c: number[]) => { while (c.length > 1 && Math.abs(c[0]) < 1e-10) c.shift(); return c; };
+  const isZero = (c: number[]) => c.length === 1 && Math.abs(c[0]) < 1e-10;
+  let a = trim(polyCoeffs(e1, v).slice().reverse());   // high→low
+  let b = trim(polyCoeffs(e2, v).slice().reverse());
+  if (isZero(a) && isZero(b)) return sN(0);
+  while (!isZero(b)) { const { r } = polyDivHi(a, b); a = b; b = trim(r); }
+  const lead = a[0]; const monic = a.map((c) => round0(c / lead)); const deg = monic.length - 1;
+  let acc: SymExpr = sN(0);
+  for (let k = 0; k < monic.length; k++) if (Math.abs(monic[k]) > 1e-12) acc = sAdd(acc, sMul(sN(monic[k]), sPow(sV(v), sN(deg - k))));
+  return simplifyExpr(acc);
+}
 /** Partial-fraction decomposition of a rational expression in `v` (numeric coeffs only). */
 export function partfracExpr(e: SymExpr, v: string): SymExpr {
   const s = simplifyExpr(e);

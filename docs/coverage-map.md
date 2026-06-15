@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 776 tests green · 641 MATLAB oracle fixtures ·
-641/641 cases classified across 22 domains.
+**Status (as of this revision):** 780 tests green · 645 MATLAB oracle fixtures ·
+645/645 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -46,7 +46,7 @@ pnpm oracle:coverage
 | Matrix functions (`expm`, `A^n`) | ✓ |
 | Spectral graph theory (Laplacian, Fiedler value) | ✓ |
 | Markov chains / steady state | ✓ |
-| Low-rank / SVD subspaces | ~ |
+| Low-rank / SVD subspaces (`svds`, truncated-SVD / Eckart–Young) | ✓ |
 | Optimization (golden-section, GD, Newton min; `fminbnd`/`fminsearch`/`fsolve`/`quadprog`/`lsqlin`) | ✓ |
 | Nonlinear systems (Newton + Jacobian) | ✓ |
 | Numerical ODEs (Euler, Heun, RK4, systems; `ode45` adaptive) | ✓ |
@@ -61,9 +61,9 @@ pnpm oracle:coverage
 | Matrix functions (`sqrtm`, `logm`, `expm`) | ✓ |
 | Krylov solvers (`gmres`, `minres`, `bicg`) | ✓ |
 | Distribution functions (`normpdf/cdf`, `binopdf`, `poisspdf`, `icdf`) | ✓ |
-| Preconditioned Krylov | ~ |
-| Stiff ODE / stability regions | |
-| Crank–Nicolson / implicit PDE | |
+| Preconditioned Krylov (`pcg`+`ichol`, `gmres`+`ilu`) | ✓ |
+| Stiff ODE / stability regions (`ode15s`, A-stability functions, stability regions) | ✓ |
+| Crank–Nicolson / implicit PDE (CN, backward-Euler, ADI heat) | ✓ |
 | Monte Carlo (RNG — not deterministically oracle-checkable) | n/a |
 
 ## Tier 4 — Symbolic / CAS smoke
@@ -104,6 +104,13 @@ not MATLAB function names.
   implement as part of MATLAB-compatible coverage.
 - `gammapdf`: incorrect name. MATLAB uses `gampdf`, which is already implemented
   and oracle-validated.
+- `wronskian`: not a MATLAB R2026a function (`exist("wronskian") == 0`; calling it
+  errors). The engine's "undefined function" already matches MATLAB — do not
+  implement it as MATLAB-compatible coverage.
+
+Recently closed (multi-output forms now implemented + oracle-validated):
+`[p,S,mu] = polyfit` (centered/scaled), `[L,U,P,Q] = lu` (sparse, `P*A*Q = L*U`),
+`diag` of a symbolic matrix (extract + construct), symbolic polynomial `gcd`.
 
 ### Validate existing (implemented + oracle-validated)
 All oracle-validated — no validation backlog remains:
