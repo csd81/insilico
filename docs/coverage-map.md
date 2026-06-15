@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 793 tests green · 658 MATLAB oracle fixtures ·
-658/658 cases classified across 22 domains.
+**Status (as of this revision):** 796 tests green · 661 MATLAB oracle fixtures ·
+661/661 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -117,7 +117,9 @@ All oracle-validated — no validation backlog remains:
 - **Decompositions / matrix functions:** `eig`/`svd`/`qr`/`lu`/`chol`,
   `schur`/`hess`/`polyeig`, `expm`/`sqrtm`/`logm`, `pinv`/`rank`/`null`/`orth`/`rref`/`cond`
 - **Iterative / sparse solvers:** `gmres`/`minres`/`bicg`/`bicgstab`/`lsqr`, `eigs`/`svds`
-- **ODE:** `ode45`/`ode23`/`ode113`/`ode15s`/`deval`
+- **ODE / DAE:** `ode45`/`ode23`/`ode113`/`ode15s`/`deval`; implicit DAE workflow
+  `ode15i` (residual form `F(t,y,y')=0`, index-1 algebraic constraint) + `decic`
+  (consistent initial conditions)
 - **Optimization:** `fminbnd`/`fminsearch`/`fsolve`/`quadprog`/`lsqlin`/`linprog`
 - **Approximation:** `interp2`/`interpn`/`ppval`/`makima`/`polyvalm`/`residue`
 - **Fourier / signal:** `fft2`/`fftshift`/`hilbert`/`findpeaks`

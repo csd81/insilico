@@ -6566,6 +6566,41 @@
       ]
     }
   },
+  "ode_ode15i_implicit": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.36770951893978915
+    }
+  },
+  "ode_ode15i_dae_constraint": {
+    "c": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": -2.1338486533295509e-13
+    }
+  },
+  "ode_decic_consistent": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        0,
+        1,
+        1,
+        0
+      ]
+    }
+  },
   "ode_shooting_bvp": {
     "v": {
       "class": "double",
