@@ -189,5 +189,5 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // NOTE: histcounts is validated with EXPLICIT edges only — its auto-bin-edge 'nice number'
   // rule diverges from MATLAB (counts can match but edges differ); auto-binning is not locked. ──
   ...bulkD('needs-oracle', 'direct', 'statistics', 'movsum movprod movstd movvar movmad'),
-  ...bulkD('needs-oracle', 'direct', 'core-language', 'cummax cummin'),
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'cummax cummin reverse'),
 };

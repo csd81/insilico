@@ -172,7 +172,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (129) ══════════
+  // ══════════ core-language (130) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -244,6 +244,7 @@ export const CASES: OracleCase[] = [
   { name: 'lang-histcounts', src: 'nc = histcounts([1 2 2 3 3 3], 1:4);', vars: ['nc'], domain: 'core-language' },
   { name: 'lang-cumprod', src: 'c = cumprod([1 2 3 4]);', vars: ['c'], domain: 'core-language' },
   { name: 'lang-cummax-cummin', src: "A = [3 1; 1 4; 2 2]; B1 = cummax(A, 1); B2 = cummax(A, 2); v = [cummax([3 1 4 1 5]) cummin([3 1 4 1 5]) cummax([3 1 4 1 5], 'reverse') B1(:).' B2(:).'];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['cummax', 'cummin', 'cumulative', 'dim', 'reverse'] },
+  { name: 'lang-reverse', src: "v = char(reverse('hello'));", vars: ['v'], domain: 'core-language', tags: ['reverse', 'string'] },
   { name: 'lang-accumarray', src: 'v = accumarray([1; 2; 1; 3], [10; 20; 30; 40]);', vars: ['v'], domain: 'core-language' },
   { name: 'lang-repmat-tile', src: 'A = repmat([1 2], 2, 3);', vars: ['A'], domain: 'core-language' },
   { name: 'lang-circshift', src: 'v = circshift([1 2 3 4 5], 2);', vars: ['v'], domain: 'core-language' },
