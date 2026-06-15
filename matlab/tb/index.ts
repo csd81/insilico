@@ -58,7 +58,7 @@ export const TOOLBOXES: ToolboxModule[] = [
  *  See `pnpm oracle:audit` for the per-toolbox registered/validated breakdown. */
 export const TOOLBOX_KEEP: Record<string, Set<string>> = {
   // dsp overlaps signal and is otherwise toolbox-object breadth; keep only the validated overlap.
-  dsp: new Set(['resample']),
+  dsp: new Set(['resample', 'besself']),
   // comm: keep coding theory, GF(p) finite-field arithmetic, base conversions and error metrics;
   // de-register the modulation/telecom/RF tail (psk/qam/dpsk/fm, qfunc/marcumq/fspl, interleavers).
   comm: new Set([
@@ -88,6 +88,7 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
     'periodogram', 'pwelch', 'spectrogram', 'stft', 'czt', 'dct',
     'kaiser', 'rectwin', 'triang', 'gausswin',   // hamming/hann/hanning/blackman/bartlett removed (base is MATLAB-correct)
     'dftmtx', 'interp', 'levinson', 'overshoot', 'square',
+    'cconv', 'besselap',   // circular convolution; Bessel analog LP prototype [z,p,k]
   ]),
   // stats: the 8 core distribution families (cdf/pdf/inv/fit/stat), the validated inference suite,
   // and statistical-algebra core (pca/knnsearch/pdist/robustfit/glmfit/ksdensity/QMC). Peripheral

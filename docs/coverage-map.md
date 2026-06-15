@@ -430,6 +430,14 @@ locked.)
   MATLAB's specific Joe-Kuo direction-number tables.
 - `griddatan`, `trimmean`, `meansq`: declined for the probed/current environment
   rather than shipping questionable parity.
+- `bandpass` (filter-a-signal): declined. MATLAB's `bandpass(x, …)` designs a
+  minimum-order Kaiser-window FIR via an internal `designFilter` whose steepness
+  **adapts to the signal length** (it warns and relaxes specs for short signals),
+  then applies `filtfilt`. That adaptive design path is not present in source and
+  not cleanly oracle-reproducible, so the output is signal-length-dependent and
+  would be plausible-but-wrong. The companion analog/IIR pieces are validated:
+  `besself` (Bessel `[b,a]`), `besselap` (Bessel `[z,p,k]` prototype), `butter`,
+  `freqz`, and `filtfilt` are registered and oracle-checked.
 - Exact random-output parity: not a valid oracle target.
 
 ## Out Of Scope
