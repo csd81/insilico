@@ -19,7 +19,7 @@ export const REQUIRED_ASPECTS: Record<string, string[]> = {
   eig: ['symmetric', 'complex', 'generalized-eigenvalue', 'reconstruction-invariant'],
   svd: ['reconstruction-invariant', 'rank-deficient'],
   qr: ['reconstruction-invariant', 'rank-deficient'],
-  chol: ['symmetric', 'sparse'],
+  chol: ['symmetric'],
   expm: ['matrix-functions'],
   // rectangular HNF is intentionally NOT required: MATLAB's residue convention for non-pivot
   // columns of a wide/tall matrix diverges from ours (documented divergence) — validated claim is

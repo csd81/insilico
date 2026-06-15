@@ -14561,5 +14561,33 @@
   },
   "err_whittakerw_too_few_args": {
     "error": "Not enough input arguments."
+  },
+  "nla_eig_complex": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        -1,
+        1
+      ]
+    }
+  },
+  "err_eig_nonsquare": {
+    "error": "Input matrix must be square."
+  },
+  "err_svd_nd": {
+    "error": "Input must be 2-dimensional. Use PAGESVD to compute the SVD of each page of an N-D array."
+  },
+  "err_qr_nd": {
+    "error": "Input array must be 2-dimensional."
+  },
+  "err_chol_not_pd": {
+    "error": "Matrix must be positive definite."
+  },
+  "err_expm_nonsquare": {
+    "error": "Input must be square."
   }
 }

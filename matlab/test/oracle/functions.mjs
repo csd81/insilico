@@ -78,10 +78,14 @@ for (const c of CASES) {
 }
 
 // ── Grade each registered function ───────────────────────────────────────────
+// Every checklisted function implicitly also requires 'error-input' (reject bad input) — error
+// coverage is a per-FUNCTION contract, not an optional per-case extra. So a function is 'full'
+// only when it covers all its declared regimes AND has an input-validation test.
+const requiredFor = (fn) => (REQUIRED_ASPECTS[fn] ? [...REQUIRED_ASPECTS[fn], 'error-input'] : null);
 const status = (fn) => {
   const e = idx.get(fn);
-  if (!e || e.cases.size === 0) return { s: 'untested', missing: REQUIRED_ASPECTS[fn] ?? [] };
-  const req = REQUIRED_ASPECTS[fn];
+  const req = requiredFor(fn);
+  if (!e || e.cases.size === 0) return { s: 'untested', missing: req ?? [] };
   if (!req) return { s: 'tested', missing: [] };
   const missing = req.filter((a) => !e.aspects.has(a));
   return { s: missing.length ? 'partial' : 'full', missing };
@@ -126,7 +130,7 @@ console.log('Checklisted functions (canonical regime coverage · err = has input
 for (const { fn, s, missing, e } of checklisted.sort((a, b) => a.s.localeCompare(b.s) || a.fn.localeCompare(b.fn))) {
   const mark = s === 'full' ? '✓ full    ' : s === 'untested' ? '· untested' : '✗ partial ';
   const err = e?.err.size ? 'err✓' : 'err✗';
-  console.log(`  ${mark} ${err} ${fn.padEnd(14)} cases:${String(e?.cases.size ?? 0).padStart(2)}  covered:[${[...(e?.aspects ?? [])].filter((a) => REQUIRED_ASPECTS[fn].includes(a)).join(',')}]${missing.length ? `  MISSING:[${missing.join(',')}]` : ''}`);
+  console.log(`  ${mark} ${err} ${fn.padEnd(14)} cases:${String(e?.cases.size ?? 0).padStart(2)}  covered:[${[...(e?.aspects ?? [])].filter((a) => requiredFor(fn).includes(a)).join(',')}]${missing.length ? `  MISSING:[${missing.join(',')}]` : ''}`);
 }
 
 // Value-tested functions with NO input-validation test — the error-coverage backlog.

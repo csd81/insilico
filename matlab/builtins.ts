@@ -1581,6 +1581,7 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   qr: async (a, n) => {
     const A = m(a[0]);
+    if (A.nd && A.nd.length > 2) throw new MatError('qr: input array must be 2-dimensional.');
     let econ = false, vector = false;
     for (const v of a.slice(1)) {
       if (isStr(v) || (isMat(v) && (v as Mat).isChar)) {
@@ -1637,6 +1638,7 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   svd: async (a, n) => {
     const A = m(a[0]);
+    if (A.nd && A.nd.length > 2) throw new MatError('svd: input must be 2-dimensional. Use pagesvd for N-D arrays.');
     // singular-VALUES path: one-sided Jacobi (svdCplx) resolves tiny σ accurately; the AtA-based
     // svdReal loses ~half the digits (e.g. svd(magic(4)) smallest σ → 1.97e-7 instead of ~0).
     if (n < 3) { const { s } = svdCplx(A); return [colVec(s)]; }
@@ -1675,6 +1677,8 @@ export const BUILTINS: Record<string, Builtin> = {
   eig: async (a, n) => {
     if (isSym(a[0])) { const ev = symEig(a[0] as Sym); return ret(makeSym(ev.length, 1, ev)); }
     let A = m(a[0]);
+    if (A.nd && A.nd.length > 2) throw new MatError('eig: input must be 2-dimensional.');
+    if (A.rows !== A.cols) throw new MatError('Input matrix must be square.');
     // Option strings: 'vector'/'matrix' shape D; 'balance'/'nobalance'/'chol'/'qz' are accepted
     // algorithm hints (the single dense path here serves all of them).
     const flags = a.slice(1).filter((x) => isStr(x) || (isMat(x) && (x as Mat).isChar)).map((x) => asString(x).toLowerCase());
