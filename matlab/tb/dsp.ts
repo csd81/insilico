@@ -868,7 +868,7 @@ function upfirdn(x: number[], h: number[], p: number, q: number): number[] {
 //   trimmed by the filter group delay floor(((L-1)/2)/q).
 async function resample_fn(args: Value[]): Promise<Value[]> {
   if (args.length < 3) throw new MatError('resample: requires x, p, q');
-  const x = toArray(m(args[0]));
+  const X0 = m(args[0]); const x = toArray(X0); const isRow = X0.rows === 1; // preserve input orientation
   let p = Math.round(asScalar(m(args[1])));
   let q = Math.round(asScalar(m(args[2])));
   // reduce by gcd as MATLAB does
@@ -886,7 +886,7 @@ async function resample_fn(args: Value[]): Promise<Value[]> {
   const Ly = Math.ceil((x.length * p) / q);
   const out = y.slice(nz, nz + Ly);
   while (out.length < Ly) out.push(0);
-  return [colVec(out)];
+  return [isRow ? rowVec(out) : colVec(out)];
 }
 
 // ── DSP System objects ─────────────────────────────────────────────────────────────────

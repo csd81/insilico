@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 825 tests green · 690 MATLAB oracle fixtures ·
-690/690 cases classified across 22 domains.
+**Status (as of this revision):** 841 tests green · 706 MATLAB oracle fixtures ·
+706/706 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -138,7 +138,14 @@ All oracle-validated — no validation backlog remains:
   (consistent initial conditions)
 - **Optimization:** `fminbnd`/`fminsearch`/`fsolve`/`quadprog`/`lsqlin`/`linprog`
 - **Approximation:** `interp2`/`interpn`/`ppval`/`makima`/`polyvalm`/`residue`
-- **Fourier / signal:** `fft2`/`fftshift`/`hilbert`/`findpeaks`
+- **Fourier / signal:** `fft2`/`fftshift`/`hilbert`/`findpeaks`; filter design +
+  response `butter`/`fir1`/`freqz`/`filtfilt`/`resample`
+- **Control:** `tf`/`ss`/`zpk`, `step`/`impulse`/`lsim`/`margin`/`bode`, `lqr`,
+  `care`/`dare`, `ctrb`/`obsv`, `acker`/`place` (placed-pole invariant), `lqe`
+  (Kalman gain via Riccati residual), `c2d` (ZOH, pole-mapping invariant),
+  `stepinfo` (grid-approximate), `tfdata`/`ssdata` (Markov-parameter invariant).
+  Note: `kalman(sys,Q,R)` currently errors on the noise-input convention — use
+  `lqe` for the estimator gain; fixing `kalman`'s input partition is a deferred TODO.
 - **Graph:** `shortestpath`/`conncomp`/`distances`/`toposort`/`centrality`/`maxflow`/`minspantree`
 - **Statistics:** distribution `*pdf`/`*cdf`/`icdf`, `var`/`std`/`corrcoef`/`cov`
 - **Symbolic CAS:** `jacobian`/`hessian`/`taylor`/`laplace`/`dsolve`/`vpasolve`

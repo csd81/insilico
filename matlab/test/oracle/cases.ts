@@ -123,7 +123,7 @@ export const CASES: OracleCase[] = [
   { name: 'cplx-complex-sort', src: 'x = sort([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
   { name: 'cplx-complex-max-mag', src: 'x = max([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
 
-  // ══════════ control (14) ══════════
+  // ══════════ control (21) ══════════
   { name: 'ctrl-tf-dcgain', src: 'v = dcgain(tf(4, [1 3 2]));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['tf', 'dcgain'] },
   { name: 'ctrl-zpk-dcgain', src: 'v = dcgain(zpk([], [-1 -1], 3));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['zpk', 'dcgain'] },
   { name: 'ctrl-ss-dcgain', src: 'v = dcgain(ss([0 1; -1 -2], [0; 1], [1 0], 0));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['ss', 'state-space', 'dcgain'] },
@@ -138,6 +138,13 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-controllability-observability', src: 'A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; v = [rank(ctrb(A, B)) rank(obsv(A, C))];', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['controllability', 'observability', 'state-space'] },
   { name: 'ctrl-care-residual', src: "A = [0 1; -2 -3]; B = [0; 1]; Q = eye(2); R = 1; [X, L, G] = care(A, B, Q, R); r = norm(A'*X + X*A - X*B*(R\\B')*X + Q); v = [r; G(:)];", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['care', 'riccati', 'residual-invariant', 'lqr'] },
   { name: 'ctrl-dare-residual', src: "A = [1 1; 0 1]; B = [0; 1]; Q = eye(2); R = 1; [X, L, G] = dare(A, B, Q, R); r = norm(X - (A'*X*A - A'*X*B*((R + B'*X*B)\\(B'*X*A)) + Q)); v = [r; G(:)];", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['dare', 'riccati', 'residual-invariant', 'dlqr'] },
+  { name: 'ctrl-acker-poles', src: 'A = [0 1; -2 -3]; B = [0; 1]; K = acker(A, B, [-1 -2]); v = sort(eig(A - B*K));', vars: ['v'], tol: 1e-6, domain: 'control', tags: ['acker', 'pole-placement', 'placed-poles-invariant'] },
+  { name: 'ctrl-place-poles', src: 'A = [0 1; -2 -3]; B = [0; 1]; K = place(A, B, [-1 -2]); v = sort(eig(A - B*K));', vars: ['v'], tol: 1e-6, domain: 'control', tags: ['place', 'pole-placement', 'placed-poles-invariant'] },
+  { name: 'ctrl-lqe-riccati', src: "A = [0 1; -2 -3]; C = [1 0]; [L, P] = lqe(A, eye(2), C, eye(2), 1); v = norm(A*P + P*A' - P*C'*(1\\C)*P + eye(2));", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lqe', 'kalman-gain', 'riccati', 'residual-invariant'] },
+  { name: 'ctrl-c2d-poles', src: 'A = [0 1; -2 -3]; sysd = c2d(ss(A, [0; 1], [1 0], 0), 0.1); [Ad, Bd] = ssdata(sysd); v = sort(eig(Ad));', vars: ['v'], tol: 1e-6, domain: 'control', tags: ['c2d', 'discretization', 'zoh', 'pole-mapping-invariant'] },
+  { name: 'ctrl-stepinfo', src: 'si = stepinfo(tf(1, [1 0.5 1])); v = [si.Overshoot si.Peak];', vars: ['v'], tol: 0.3, domain: 'control', tags: ['stepinfo', 'step-response', 'overshoot', 'grid-approximate'] },
+  { name: 'ctrl-tfdata', src: "[num, den] = tfdata(tf([2 3 4], [1 2 1]), 'v'); v = [num den];", vars: ['v'], tol: 1e-9, domain: 'control', tags: ['tfdata', 'transfer-function', 'model-data'] },
+  { name: 'ctrl-ssdata-markov', src: '[A, B, C, D] = ssdata(ss([0 1; -2 -3], [0; 1], [1 0], 0)); v = [C*B C*A*B C*A*A*B];', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['ssdata', 'state-space', 'markov-parameters-invariant'] },
 
   // ══════════ core-language (128) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
@@ -276,7 +283,7 @@ export const CASES: OracleCase[] = [
   { name: 'dyn-newton-fixed-point', src: 'r = 3.5; x = 0.7; for k = 1:20, fx = r*x*(1-x) - x; fp = r*(1-2*x) - 1; x = x - fx/fp; end; v = x;', vars: ['v'], tol: 1e-7, domain: 'dynamical-systems', tags: ['newton', 'fixed-point', 'continuation'] },
   { name: 'dyn-stable-cycle-period4', src: 'r = 3.5; x = 0.5; for k = 1:1000, x = r*x*(1-x); end; c = zeros(4,1); for k = 1:4, x = r*x*(1-x); c(k) = x; end; v = sort(c);', vars: ['v'], tol: 1e-6, domain: 'dynamical-systems', tags: ['logistic-map', 'period-doubling', 'stable-cycle', 'bifurcation'] },
 
-  // ══════════ fourier (12) ══════════
+  // ══════════ fourier (17) ══════════
   { name: 'dsp-fft', src: 'Y = fft([1 2 3 4]);', vars: ['Y'], tol: 1e-9, domain: 'fourier', tags: ['fft'] },
   { name: 'dsp-conv', src: 'c = conv([1 2 1], [1 1]);', vars: ['c'], tol: 1e-9, domain: 'fourier', tags: ['convolution'] },
   { name: 'dsp-fft-ifft-roundtrip', src: 'x = [1 2 3 4]; y = real(ifft(fft(x)));', vars: ['y'], tol: 1e-9, domain: 'fourier', tags: ['fft', 'ifft', 'roundtrip'] },
@@ -289,6 +296,11 @@ export const CASES: OracleCase[] = [
   { name: 'dsp-sig-xcorr', src: 'v = xcorr([1 2 3]);', vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['xcorr', 'cross-correlation'] },
   { name: 'dsp-conv2-valid', src: "A = [1 2 3; 4 5 6; 7 8 9]; K = [1 1; 1 1]; C = conv2(A, K, 'valid'); v = C(1,1);", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['conv2', '2d-convolution'] },
   { name: 'dsp-interpft', src: 'y = [0 1 0 -1]; yq = interpft(y, 8); v = yq(2);', vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['interpft', 'spectral-interpolation'] },
+  { name: 'sig-butter', src: '[b, a] = butter(4, 0.3); v = [b a];', vars: ['v'], tol: 1e-5, domain: 'fourier', tags: ['butter', 'iir-filter', 'butterworth', 'filter-design'] },
+  { name: 'sig-freqz', src: '[h, w] = freqz([0.2 0.2], [1 -0.5], 4); v = abs(h).\x27;', vars: ['v'], tol: 1e-4, domain: 'fourier', tags: ['freqz', 'frequency-response', 'magnitude'] },
+  { name: 'sig-filtfilt', src: 'y = filtfilt([0.5 0.5], 1, [1 2 3 4 5]); v = y;', vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['filtfilt', 'zero-phase', 'filtering'] },
+  { name: 'sig-fir1', src: 'v = fir1(6, 0.4);', vars: ['v'], tol: 1e-5, domain: 'fourier', tags: ['fir1', 'fir-filter', 'window-method', 'filter-design'] },
+  { name: 'sig-resample', src: 'v = resample([1 2 3 4 5 6], 3, 2);', vars: ['v'], tol: 1e-4, domain: 'fourier', tags: ['resample', 'polyphase', 'rate-conversion'] },
 
   // ══════════ geometry (9) ══════════
   { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'area'] },
@@ -654,7 +666,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment'] },
   { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fminimax', 'minimax'] },
 
-  // ══════════ statistics (40) ══════════
+  // ══════════ statistics (44) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -695,6 +707,10 @@ export const CASES: OracleCase[] = [
   { name: 'stat-rng-reproducibility', src: 'rng(42); a = rand(1, 5); rng(42); b = rand(1, 5); v = norm(a - b);', vars: ['v'], tol: 1e-15, domain: 'statistics', tags: ['rng', 'seed', 'reproducibility-invariant'] },
   { name: 'stat-mat-hat-matrix', src: "X = [1 1; 1 2; 1 3]; H = X/(X'*X)*X'; v = norm(H*H - H);", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['hat-matrix', 'projection', 'regression'] },
   { name: 'stat-mat-centering', src: 'n = 4; C = eye(n) - ones(n)/n; v = norm(C*ones(n,1));', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['centering-matrix'] },
+  { name: 'stat-dist-cdfs', src: 'v = [chi2cdf(3, 2) tcdf(1.5, 5) fcdf(2, 3, 10) betapdf(0.3, 2, 3)];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['chi2cdf', 'tcdf', 'fcdf', 'betapdf', 'distributions'] },
+  { name: 'stat-glmfit-binomial', src: "X = [1 2 3 4 5 6]'; y = [0 1 0 1 1 1]'; v = glmfit(X, y, 'binomial');", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['glmfit', 'logistic-regression', 'irls'] },
+  { name: 'stat-glmfit-normal', src: "v = glmfit([1 2 3 4 5]', [2.1 3.9 6.2 7.8 10.1]');", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['glmfit', 'identity-link', 'regression'] },
+  { name: 'stat-ksdensity-bw', src: "[f, xi] = ksdensity([1 2 2 3 3 3 4], 2.5, 'Bandwidth', 0.5); v = f;", vars: ['v'], tol: 1e-5, domain: 'statistics', tags: ['ksdensity', 'kernel-density', 'fixed-bandwidth'] },
 
   // ══════════ symbolic (50) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
