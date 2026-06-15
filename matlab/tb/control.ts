@@ -5,7 +5,7 @@ import type { Builtin } from '../builtins';
 import {
   type Value, type Mat, type StructV, type Cell, type ClassV, isObject, isCell, makeObject, makeCell, scalar, bool, colVec, rowVec, toArray, asScalar, asString, toMat as m, makeStr, matRows, fromRows,
 } from '../values';
-import { schur, schurEig, expm } from '../linalg';   // shared robust LA core (Francis QR / scaling-squaring), not a local reimpl
+import { schur, schurEig, expm, svdC } from '../linalg';   // shared robust LA core (Francis QR / scaling-squaring), not a local reimpl
 import type { ToolboxModule } from './types';
 import { HELP_CONTROL } from '../help';
 
@@ -828,6 +828,127 @@ function ssFeedback(G: SS, H: SS, sign: number): SS {
 }
 // add two same-shape matrices, tolerating empty operands
 const matAddT = (A: number[][], B: number[][]): number[][] => A.map((r, i) => r.map((x, j) => x + (B[i]?.[j] ?? 0)));
+
+// ── H2 / H-infinity norms + Redheffer lower LFT (on the SS core) ──
+/** Largest singular value σ_max of the frequency-response matrix G(s)=C(sI−A)⁻¹B+D at the complex
+ *  point s (continuous: s=jω; discrete: s=e^{jωTs}). Solves the complex system (sI−A)X=B via
+ *  Gauss-Jordan with partial pivoting, forms G, and returns σ_max (svdC for MIMO; |G| for SISO). */
+function sigmaMaxAt(s: SS, sre: number, sim: number): number {
+  const n = s.A.length, ny = s.D.length, nu = s.D[0]?.length ?? 0;
+  // Gr+iGi = D + C·(sI−A)⁻¹·B, computed column-wise by solving (sI−A)·x_j = B(:,j).
+  const Gr = s.D.map((r) => r.slice()), Gi = zeros2(ny, nu);
+  if (n > 0) {
+    // augmented complex system [ (sI−A) | B ]  (ny columns of B → nu RHS)
+    const Ar: number[][] = [], Ai: number[][] = [];
+    for (let i = 0; i < n; i++) {
+      Ar[i] = []; Ai[i] = [];
+      for (let j = 0; j < n; j++) { Ar[i][j] = (i === j ? sre : 0) - s.A[i][j]; Ai[i][j] = (i === j ? sim : 0); }
+      for (let j = 0; j < nu; j++) { Ar[i][n + j] = s.B[i][j]; Ai[i][n + j] = 0; }
+    }
+    // complex Gauss-Jordan with partial pivoting (by modulus)
+    for (let col = 0; col < n; col++) {
+      let piv = col, pmag = Ar[col][col] ** 2 + Ai[col][col] ** 2;
+      for (let r = col + 1; r < n; r++) { const mg = Ar[r][col] ** 2 + Ai[r][col] ** 2; if (mg > pmag) { pmag = mg; piv = r; } }
+      [Ar[col], Ar[piv]] = [Ar[piv], Ar[col]]; [Ai[col], Ai[piv]] = [Ai[piv], Ai[col]];
+      const dr = Ar[col][col], di = Ai[col][col], dd = dr * dr + di * di || 1e-300;
+      for (let j = col; j < n + nu; j++) { const ar = Ar[col][j], ai = Ai[col][j]; Ar[col][j] = (ar * dr + ai * di) / dd; Ai[col][j] = (ai * dr - ar * di) / dd; }
+      for (let r = 0; r < n; r++) if (r !== col) { const fr = Ar[r][col], fi = Ai[r][col]; for (let j = col; j < n + nu; j++) { Ar[r][j] -= fr * Ar[col][j] - fi * Ai[col][j]; Ai[r][j] -= fr * Ai[col][j] + fi * Ar[col][j]; } }
+    }
+    // X = solution block; G += C·X
+    for (let i = 0; i < ny; i++) for (let j = 0; j < nu; j++) { let xr = 0, xi = 0; for (let k = 0; k < n; k++) { xr += s.C[i][k] * Ar[k][n + j]; xi += s.C[i][k] * Ai[k][n + j]; } Gr[i][j] += xr; Gi[i][j] += xi; }
+  }
+  if (ny === 1 && nu === 1) return Math.hypot(Gr[0][0], Gi[0][0]);
+  const M = m(rowVec([])); M.rows = ny; M.cols = nu; M.data = Float64Array.from(vecCM(Gr)); M.idata = Float64Array.from(vecCM(Gi));
+  return svdC(M).s[0];
+}
+/** Frequency grid (rad/s) seeded by the system's natural frequencies (|eigenvalues of A|), so the
+ *  H∞ peak isn't missed for fast/slow/lightly-damped systems. */
+function hinfGrid(s: SS): number[] {
+  const ev = eigOfMat(s.A); const feats: number[] = [];
+  for (let i = 0; i < ev.re.length; i++) { const mg = Math.hypot(ev.re[i], ev.im[i]); if (mg > 1e-9) feats.push(mg); }
+  let lo = -3, hi = 3;
+  if (feats.length) { lo = Math.floor(Math.log10(Math.min(...feats))) - 3; hi = Math.ceil(Math.log10(Math.max(...feats))) + 3; }
+  const grid = [0]; const N = 4000;
+  for (let i = 0; i <= N; i++) grid.push(10 ** (lo + ((hi - lo) * i) / N));
+  return grid;
+}
+/** [ninf, fpeak] = H∞ norm of a stable LTI system: sup_ω σ_max(G(jω)). Coarse grid scan, then a
+ *  golden-section refine of the peak bracket (continuous s=jω; discrete s=e^{jωTs}). */
+function hinfNorm(s: SS): { ninf: number; fpeak: number } {
+  const disc = s.Ts !== 0; const Ts = s.Ts || 1;
+  const sval = (w: number): { re: number; im: number } => disc ? { re: Math.cos(w * Ts), im: Math.sin(w * Ts) } : { re: 0, im: w };
+  const grid = hinfGrid(s);
+  const sig = grid.map((w) => { const sv = sval(w); return sigmaMaxAt(s, sv.re, sv.im); });
+  let ip = 0; for (let i = 1; i < sig.length; i++) if (sig[i] > sig[ip]) ip = i;
+  // golden-section refine within [grid[ip-1], grid[ip+1]]
+  let a = grid[Math.max(0, ip - 1)], b = grid[Math.min(grid.length - 1, ip + 1)];
+  const f = (w: number): number => { const sv = sval(w); return sigmaMaxAt(s, sv.re, sv.im); };
+  const gr = (Math.sqrt(5) - 1) / 2; let c = b - gr * (b - a), d = a + gr * (b - a), fc = f(c), fd = f(d);
+  for (let it = 0; it < 200 && b - a > 1e-12 * Math.max(1, b); it++) {
+    if (fc > fd) { b = d; d = c; fd = fc; c = b - gr * (b - a); fc = f(c); }
+    else { a = c; c = d; fc = fd; d = a + gr * (b - a); fd = f(d); }
+  }
+  const wpk = 0.5 * (a + b), fpk = f(wpk);
+  const ninf = Math.max(fpk, sig[ip]); const fpeak = fpk >= sig[ip] ? wpk : grid[ip];
+  return { ninf, fpeak };
+}
+/** H2 norm of a stable continuous LTI system: sqrt(trace(C·Wc·Cᵀ)) with Wc the controllability
+ *  Gramian (A Wc + Wc Aᵀ + B Bᵀ = 0). Discrete: sqrt(trace(C Wc Cᵀ + D Dᵀ)). Inf if a continuous
+ *  system has nonzero feedthrough D. */
+function h2Norm(s: SS): number {
+  const disc = s.Ts !== 0;
+  const dNorm2 = s.D.reduce((acc, r) => acc + r.reduce((a2, x) => a2 + x * x, 0), 0);
+  if (!disc && dNorm2 > 1e-300) return Infinity;
+  if (s.A.length === 0) return Math.sqrt(dNorm2);
+  const BB = mmul(s.B, matT(s.B));
+  const Wc = disc ? dlyapSolve(s.A, BB) : lyapSolve(s.A, BB);
+  const CWcCt = mmul(mmul(s.C, Wc), matT(s.C));
+  let tr = traceM(CWcCt); if (disc) tr += dNorm2;
+  return Math.sqrt(Math.max(0, tr));
+}
+/** Lower LFT (Redheffer star) of P with K. K consumes the last size(K,1) outputs and last
+ *  size(K,2) inputs of P. Returns the SS interconnection. Static gains realize as 0-state SS. */
+function ssLowerLFT(P: SS, K: SS): SS {
+  const pny = P.D.length, pnu = P.D[0]?.length ?? 0;
+  const kny = K.D.length, knu = K.D[0]?.length ?? 0;     // K is kny×knu; feedback width = knu (P outputs) by knu? see below
+  // Partition P: z (first pny−knu outputs) / y (last knu outputs feeding K);  w (first pnu−kny inputs) / u (last kny inputs from K).
+  const z = pny - knu, w = pnu - kny;
+  if (z < 0 || w < 0) throw new Error('lft: dimension mismatch between P and K');
+  // Build closed-loop SS by interconnecting on the shared signals (u=K·y, K input = y = P lower outputs).
+  // States: [xP; xK]. Internal algebraic loop solved on the feedthrough blocks.
+  const nP = P.A.length, nK = K.A.length;
+  // partition P D: rows [z;y]  cols [w;u]
+  const sub = (M: number[][], r0: number, r1: number, c0: number, c1: number): number[][] => { const o: number[][] = []; for (let i = r0; i < r1; i++) { o.push([]); for (let j = c0; j < c1; j++) o[o.length - 1].push(M[i]?.[j] ?? 0); } return o; };
+  const Dzw = sub(P.D, 0, z, 0, w), Dzu = sub(P.D, 0, z, w, w + kny);
+  const Dyw = sub(P.D, z, z + knu, 0, w), Dyu = sub(P.D, z, z + knu, w, w + kny);
+  const Cz = sub(P.C, 0, z, 0, nP), Cy = sub(P.C, z, z + knu, 0, nP);
+  const Bw = sub(P.B, 0, nP, 0, w), Bu = sub(P.B, 0, nP, w, w + kny);
+  // K: inputs = y (size knu), outputs = u (size kny). Dk = K.D (kny×knu).
+  const Dk = K.D, Ck = K.C, Bk = K.B, Ak = K.A;
+  // Solve algebraic loop: y = Dyw w + Dyu u + Cy xP ; u = Dk y + Ck xK.
+  // ⇒ y = (I − Dyu Dk)⁻¹ (Dyw w + Dyu Ck xK + Cy xP)
+  const I1 = eyeN(knu); const Minv = matInv(matSub(I1, smul(Dyu, Dk)));
+  const y_xP = smul(Minv, Cy), y_xK = smul(Minv, smul(Dyu, Ck)), y_w = smul(Minv, Dyw);
+  // u = Dk y + Ck xK
+  const u_xP = smul(Dk, y_xP), u_xK = matAddT(Ck, smul(Dk, y_xK)), u_w = smul(Dk, y_w);
+  // State eqs: xP' = A xP + Bw w + Bu u ; xK' = Ak xK + Bk y
+  const A11 = matAddT(P.A, smul(Bu, u_xP));        // nP×nP
+  const A12 = smul(Bu, u_xK);                      // nP×nK
+  const A21 = smul(Bk, y_xP);                      // nK×nP
+  const A22 = matAddT(Ak, smul(Bk, y_xK));         // nK×nK
+  const B1 = matAddT(Bw, smul(Bu, u_w));           // nP×w
+  const B2 = smul(Bk, y_w);                        // nK×w
+  // outputs z = Dzw w + Dzu u + Cz xP
+  const Cz1 = matAddT(Cz, smul(Dzu, u_xP));        // z×nP
+  const Cz2 = smul(Dzu, u_xK);                     // z×nK
+  const Dcl = matAddT(Dzw, smul(Dzu, u_w));        // z×w
+  const nT = nP + nK;
+  const A = zeros2(nT, nT), B = zeros2(nT, w), C = zeros2(z, nT);
+  for (let i = 0; i < nP; i++) { for (let j = 0; j < nP; j++) A[i][j] = A11[i]?.[j] ?? 0; for (let j = 0; j < nK; j++) A[i][nP + j] = A12[i]?.[j] ?? 0; for (let j = 0; j < w; j++) B[i][j] = B1[i]?.[j] ?? 0; }
+  for (let i = 0; i < nK; i++) { for (let j = 0; j < nP; j++) A[nP + i][j] = A21[i]?.[j] ?? 0; for (let j = 0; j < nK; j++) A[nP + i][nP + j] = A22[i]?.[j] ?? 0; for (let j = 0; j < w; j++) B[nP + i][j] = B2[i]?.[j] ?? 0; }
+  for (let i = 0; i < z; i++) { for (let j = 0; j < nP; j++) C[i][j] = Cz1[i]?.[j] ?? 0; for (let j = 0; j < nK; j++) C[i][nP + j] = Cz2[i]?.[j] ?? 0; }
+  return { A, B, C, D: Dcl, Ts: combTs(P, K) };
+}
 
 // SISO (num,den) view of an operand, or null if MIMO. Lets tf/zpk arithmetic stay polynomial
 // (exact, and able to represent improper results that a proper state-space cannot).
@@ -1899,6 +2020,39 @@ export const CONTROL: ToolboxModule = {
         return Promise.resolve([C_pid, { kind: 'struct', rows: 1, cols: 1, fields } as StructV]);
       }
       return ret(C_pid);
+    },
+
+    /** x = ltitr(A,B,u[,x0]) — LTI time response: x(k+1)=A x(k)+B u(k). u is Nt×nu; returns the
+     *  Nt×nx state trajectory (row 1 = x0, default zeros; the last input row is not propagated). */
+    ltitr: (a) => {
+      const A = matRows(m(a[0])), B = matRows(m(a[1])); const uM = m(a[2]);
+      const nx = A.length, nu = B[0]?.length ?? 0; const Nt = uM.rows;
+      const U = matRows(uM);   // Nt×nu
+      let x = a.length >= 4 ? toArray(m(a[3])).slice() : new Array(nx).fill(0);
+      const rows: number[][] = [];
+      for (let k = 0; k < Nt; k++) {
+        rows.push(x.slice());
+        const xn = new Array(nx).fill(0);
+        for (let i = 0; i < nx; i++) { let s = 0; for (let j = 0; j < nx; j++) s += A[i][j] * x[j]; for (let j = 0; j < nu; j++) s += B[i][j] * (U[k]?.[j] ?? 0); xn[i] = s; }
+        x = xn;
+      }
+      return ret(fromRows(rows));
+    },
+    /** H2 norm of a stable LTI system (continuous: sqrt(trace(C Wc Cᵀ)); Inf if D≠0). */
+    h2norm: (a) => ret(scalar(h2Norm(toSS(a[0])))),
+    /** [ninf,fpeak] = H∞ norm of a stable LTI system: peak of σ_max(G(jω)) over ω. */
+    hinfnorm: (a, n) => {
+      const r = hinfNorm(toSS(a[0]));
+      return Promise.resolve(n >= 2 ? [scalar(r.ninf), scalar(r.fpeak)] : [scalar(r.ninf)]);
+    },
+    /** M = lft(P,K[,nu,ny]) — Redheffer lower LFT (star product). K consumes the last
+     *  size(K,1) outputs and size(K,2) inputs of P. Static matrices realize as 0-state SS. */
+    lft: (a) => {
+      const Pss = toSS(a[0]), Kss = toSS(a[1]);
+      const M = ssLowerLFT(Pss, Kss);
+      const staticP = !isObject(a[0]) && !isObject(a[1]);
+      if (staticP && M.A.length === 0) return ret(fromRows(M.D));   // static→static matrix result
+      return ret(fromSS(M, rcls(a[0], a[1])));
     },
 
     /** W = gram(sys,type) — controllability ('c') or observability ('o') Gramian via Lyapunov eqn. */

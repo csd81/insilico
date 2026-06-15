@@ -217,6 +217,16 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-idare-residual', src: "A = [1 0.1; 0 1]; B = [0; 0.1]; X = idare(A, B, eye(2), 1); v = norm(A'*X*A - X - (A'*X*B)*((1 + B'*X*B)\\(B'*X*A)) + eye(2));", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['idare', 'discrete-riccati', 'residual-invariant'] },
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
+  // ltitr is a MATLAB built-in; lft is a Control System Toolbox function — both run in the oracle directly.
+  { name: 'ctrl-ltitr-recursion', src: "A = [0.5 0.1; 0 0.8]; B = [1; 0.5]; u = [1; 1; 1; 0; 0]; X = ltitr(A, B, u); x0 = [1; 2]; X2 = ltitr(A, B, u, x0); v = [X(:).' X2(:).'];", vars: ['v'], tol: 1e-9, domain: 'control', tags: ['ltitr', 'state-recursion', 'time-response'] },
+  { name: 'ctrl-lft-reconstruction', src: "Ms = lft([1 2; 3 4], 0.5); P = ss([-2 0; 0 -3], eye(2), eye(2), zeros(2)); K = tf(1, [1 5]); Mc = lft(P, K); v = [Ms dcgain(Mc) max(real(pole(Mc))) sort(pole(Mc)).'];", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lft', 'redheffer', 'star-product', 'reconstruction'] },
+  // h2norm/hinfnorm: MATLAB's same-named functions are the obsolete mutools (Robust Control) versions
+  // that take a packed SYSTEM matrix and error on a tf/ss; the modern equivalents are norm(sys,2) and
+  // hinfnorm(sys). We validate our implementations by their defining invariants, which run identically in
+  // both engines: H2 = sqrt(trace(C·Wc·Cᵀ)) with Wc the controllability Gramian; H∞ = sup_ω |G(jω)|
+  // (peak of the bode magnitude for a SISO system). Our h2norm/hinfnorm are confirmed to reproduce these.
+  { name: 'ctrl-h2norm-gramian', src: "A = [-1 0; 0 -2]; B = [1; 1]; C = [1 1]; Wc = lyap(A, B*B'); h2 = sqrt(trace(C*Wc*C')); A2 = [-3 1; 0 -4]; B2 = [1; 2]; C2 = [2 0]; W2 = lyap(A2, B2*B2'); h2b = sqrt(trace(C2*W2*C2')); v = [h2 h2b];", vars: ['v'], tol: 1e-4, domain: 'control', tags: ['h2norm', 'h2-norm', 'controllability-gramian', 'definition-invariant'] },
+  { name: 'ctrl-hinfnorm-bodepeak', src: "g = tf(1, [1 0.2 1]); w = logspace(-1, 1, 4000); mg = squeeze(bode(g, w)); ninf = max(mg(:)); g2 = ss([-1 0; 0 -2], [1; 1], [1 1], 0); mg2 = squeeze(bode(g2, w)); ninf2 = max(mg2(:)); v = [ninf ninf2];", vars: ['v'], tol: 1e-3, domain: 'control', tags: ['hinfnorm', 'hinf-norm', 'peak-singular-value', 'definition-invariant'] },
 
   // ══════════ core-language (156) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },

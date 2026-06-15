@@ -79,6 +79,7 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
     'care', 'dare', 'idare', 'lyapchol', 'lqr', 'dlqr', 'lqe', 'kalman',   // lyap/dlyap removed (identical to base)
     'acker', 'place', 'c2d',
     'step', 'impulse', 'lsim', 'lsiminfo', 'bode', 'bodemag', 'margin', 'stepinfo', 'feedback',
+    'lft', 'ltitr', 'h2norm', 'hinfnorm',
   ]),
   // signal: validated/core filter design + response + filtering, spectral estimation (validate-next),
   // common windows used by filters; the peripheral tail (pulse/radar generators, telecom helpers,
