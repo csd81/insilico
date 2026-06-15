@@ -509,6 +509,7 @@ export const CASES: OracleCase[] = [
   // Breadth restore: 1–2 deterministic functions per math-adjacent toolbox (values + roundtrip/
   // orthonormality invariants).
   { name: 'tb-rf-sparams', src: "S = [0.1 0.2; 0.2 0.1]; Z = s2z(S, 50); Sr = z2s(Z, 50); v = [real(Z(1,1)) real(Z(1,2)) norm(Sr(:) - S(:))];", vars: ['v'], tol: 1e-6, domain: 'complex-arithmetic', tags: ['s2z', 'z2s', 'network-parameters', 'roundtrip-invariant'] },
+  { name: 'tb-rf-sparams2', src: "S = [0.1 0.2; 0.2 0.1]; Y = s2y(S, 50); A = s2abcd(S, 50); ys = y2s(Y, 50); as = abcd2s(A, 50); v = [real(Y(1,1)) real(Y(1,2)) real(A(1,1)) real(A(1,2)) real(A(2,1)) norm(ys(:) - S(:)) norm(as(:) - S(:))];", vars: ['v'], tol: 1e-6, domain: 'complex-arithmetic', tags: ['s2y', 'y2s', 's2abcd', 'abcd2s', 'network-parameters', 'roundtrip-invariant'] },
   { name: 'tb-financial', src: 'v = [fvfix(0.05, 10, 100, 0) effrr(0.06, 12) nomrr(0.06, 12)];', vars: ['v'], tol: 1e-6, domain: 'numerical-methods', tags: ['fvfix', 'effrr', 'nomrr', 'time-value-of-money'] },
   { name: 'tb-mapping', src: 'v = [distance(0, 0, 0, 90) distance(0, 0, 1, 0) km2rad(6371)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['distance', 'km2rad', 'great-circle', 'geodesy'] },
   { name: 'tb-robotics', src: "T = eul2tform([0.1 0.2 0.3]); R = T(1:3, 1:3); v = [T(1,1) T(1,4) T(4,4) norm(R*R' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['eul2tform', 'homogeneous-transform', 'orthonormality-invariant'] },

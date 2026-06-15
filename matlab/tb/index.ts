@@ -190,7 +190,7 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   pde: new Set(['assema']),
   // Breadth restore: 1–2 deterministic, MATLAB-exact functions per math-adjacent toolbox so each
   // exposes a validated core (the rest of every toolbox's surface stays unregistered).
-  rf: new Set(['s2z', 'z2s']),                  // S↔Z network-parameter conversions
+  rf: new Set(['s2z', 'z2s', 's2y', 'y2s', 's2abcd', 'abcd2s']),   // S ↔ Z/Y/ABCD network-parameter conversions
   financial: new Set(['fvfix', 'effrr']),        // future value of fixed payments; effective rate
   mapping: new Set(['distance', 'km2rad', 'nm2deg', 'km2sm']),   // distance + unit conversions (deg2nm differs)
   robotics: new Set(['eul2tform']),              // Euler angles → homogeneous transform
