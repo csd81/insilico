@@ -190,4 +190,8 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // rule diverges from MATLAB (counts can match but edges differ); auto-binning is not locked. ──
   ...bulkD('needs-oracle', 'direct', 'statistics', 'movsum movprod movstd movvar movmad'),
   ...bulkD('needs-oracle', 'direct', 'core-language', 'cummax cummin reverse'),
+
+  // ── Pass 2G: integer types, casts, binary reinterpretation (MATLAB-specific semantics:
+  // saturation, round-half-away, idivide modes, little-endian typecast). All match exactly. ──
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'int8 int16 int32 int64 uint8 uint16 uint32 uint64 single cast typecast swapbytes idivide intmin intmax flintmax isfloat isinteger isnumeric isa class'),
 };

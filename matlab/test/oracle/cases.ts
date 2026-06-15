@@ -172,7 +172,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (130) ══════════
+  // ══════════ core-language (136) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -245,6 +245,12 @@ export const CASES: OracleCase[] = [
   { name: 'lang-cumprod', src: 'c = cumprod([1 2 3 4]);', vars: ['c'], domain: 'core-language' },
   { name: 'lang-cummax-cummin', src: "A = [3 1; 1 4; 2 2]; B1 = cummax(A, 1); B2 = cummax(A, 2); v = [cummax([3 1 4 1 5]) cummin([3 1 4 1 5]) cummax([3 1 4 1 5], 'reverse') B1(:).' B2(:).'];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['cummax', 'cummin', 'cumulative', 'dim', 'reverse'] },
   { name: 'lang-reverse', src: "v = char(reverse('hello'));", vars: ['v'], domain: 'core-language', tags: ['reverse', 'string'] },
+  { name: 'lang-int-saturate', src: 'a = int8([-200 -129 -128 -1 0 1 127 128 200]); b = uint8([-10 -1 0 1 255 256 300 3.7]);', vars: ['a', 'b'], domain: 'core-language', tags: ['int8', 'uint8', 'saturation', 'rounding', 'class-preservation'] },
+  { name: 'lang-int-cast-single', src: "a = cast([-1 0 1 256], 'uint8'); b = cast([1.2 1.5 1.8], 'int16'); s = single(1/3); v = [double(a) double(b) double(s) strcmp(class(a), 'uint8') strcmp(class(b), 'int16') strcmp(class(s), 'single')];", vars: ['v'], tol: 1e-7, domain: 'core-language', tags: ['cast', 'single', 'class', 'round-half-away'] },
+  { name: 'lang-int-minmax', src: "v = [double(intmin('int8')) double(intmax('int8')) double(intmax('uint8')) double(intmin('int16')) double(intmax('uint16')) flintmax];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['intmin', 'intmax', 'flintmax', 'integer-bounds'] },
+  { name: 'lang-int-idivide', src: "a = int32([-7 -7 7 7]); b = int32([3 -3 3 -3]); v = [double(idivide(a,b,'fix')) double(idivide(a,b,'floor')) double(idivide(a,b,'ceil')) double(idivide(a,b,'round'))];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['idivide', 'division-modes', 'fix', 'floor', 'ceil', 'round'] },
+  { name: 'lang-int-typecast', src: "u = uint16([1 256 513]); tb = typecast(u, 'uint8'); sw = swapbytes(u); v = [double(tb) double(sw)];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['typecast', 'swapbytes', 'byte-reinterpretation', 'little-endian'] },
+  { name: 'lang-int-predicates', src: "v = double([isinteger(uint8(1)) isfloat(single(1)) isnumeric(int16(1)) isa(uint8(1),'uint8') isinteger(single(1)) isfloat(int8(1))]);", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['isinteger', 'isfloat', 'isnumeric', 'isa', 'type-predicates'] },
   { name: 'lang-accumarray', src: 'v = accumarray([1; 2; 1; 3], [10; 20; 30; 40]);', vars: ['v'], domain: 'core-language' },
   { name: 'lang-repmat-tile', src: 'A = repmat([1 2], 2, 3);', vars: ['A'], domain: 'core-language' },
   { name: 'lang-circshift', src: 'v = circshift([1 2 3 4 5], 2);', vars: ['v'], domain: 'core-language' },
