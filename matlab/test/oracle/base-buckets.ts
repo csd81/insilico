@@ -256,4 +256,13 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   ...bulkD('needs-oracle', 'direct', 'graph', 'isdag findnode isisomorphic'),
   ...bulkD('needs-oracle', 'direct', 'geometry', 'volume area'),
   ...bulkD('needs-oracle', 'direct', 'statistics', 'isoutlier islocalmax islocalmin lscov'),
+
+  // ── Core-math gap closure: reciprocal/hyperbolic trig family, standard test matrices, cumulative
+  // trapezoid, spline minimum, kernel density. (Symbolic-toolbox specials — ellipticK/E, whittakerM,
+  // kummerU, pade — and stats ksdensity/pdeval are validated by case; toolbox ones aren't base.) ──
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'sec csc cot sech csch coth tanh secd cscd cotd'),
+  ...bulkD('needs-oracle', 'direct', 'linear-algebra', 'invhilb rosser peaks bucky membrane'),
+  ...bulkD('needs-oracle', 'direct', 'numerical-methods', 'cumtrapz'),
+  ...bulkD('needs-oracle', 'direct', 'approximation', 'fnmin pdeval'),
+  ...bulkD('needs-oracle', 'direct', 'calculus', 'ellipticK ellipticE whittakerM kummerU'),
 };

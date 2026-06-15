@@ -13,8 +13,8 @@ pnpm oracle:base-audit
 pnpm oracle:audit
 ```
 
-**Status (as of this revision):** 1033 tests green · 898 MATLAB oracle fixtures ·
-898/898 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1042 tests green · 907 MATLAB oracle fixtures ·
+907/907 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.
@@ -72,6 +72,7 @@ undefined in this MATLAB — now **unregistered** so the engine errors to match.
 | Iterative and preconditioned solvers | ✓ | `pcg`, `gmres`, `minres`, `bicg`, `bicgstab`, `cgs`, `lsqr`, `ilu`, `ichol`. |
 | Pagewise N-D linear algebra | ✓ | `pagemtimes`, `pageinv`, `pagemldivide`, `pagepinv`, `pageeig`, `pagesvd`, etc. |
 | Structured LA | ✓ | `toeplitz`, `levinson`, `hankel`, `compan`, `vander`, `hilb`, `pascal`, `wilkinson`. |
+| Test matrices | ✓ | `invhilb`, `rosser`, `peaks`, `bucky`, `membrane`, `magic`, `gallery` (validated by exact entries + structural invariants). |
 | Partial gaps | ~ | `gsvd` is validated for the one-output generalized singular values form; 5-output CS form is deferred. |
 
 ## Approximation, Interpolation, And Numerical Methods
@@ -130,8 +131,10 @@ Known fixed bug: `spectrogram` ignored scalar window-length input.
 | Descriptive statistics | ✓ | `mean`, `median`, `var`, `std`, `cov`, `corrcoef`, `corr`, `mode`, percentiles, `zscore`. |
 | Distributions | ✓ | Core `*pdf`/`*cdf`/`icdf`, distribution objects, fitted distribution smoke. |
 | Hypothesis tests | ✓ | `ttest`, `ttest2`, `kstest`, `kstest2`, `vartest`, `chi2gof`, `anova1`, `signrank`, `ranksum`. |
+| Diagnostics / density | ✓ | `isoutlier`, `islocalmax`, `islocalmin`, `lscov`, `ksdensity` (fixed bandwidth). |
 | Robust / smoothing / missing-data | ✓ | `robustfit`, Theil-Sen workflow, `smoothdata`, `fillmissing`, `rmmissing`, `standardizeMissing`. |
 | ML math smoke | ✓ | PCA/SVD, k-means with deterministic start, `knnsearch`, kernel ridge workflow, k-NN workflow. |
+| Advanced tests / nonlinear fit | deferred | `anova2`/`kruskalwallis`/`multcompare`/`nlinfit` exist in MATLAB but not in the curated sandbox; add only if a course needs them (not object-heavy, but Stats-toolbox surface). |
 | QMC / deterministic resampling | ✓ | `haltonset`+`net`, van der Corput, fixed-index bootstrap. |
 | RNG-output workflows | n/a | Exact MATLAB stream parity is not a target. Validate stochastic methods by invariants only. |
 | Large model objects | deferred | `fitlm`/`fitglm`/`fitcsvm`/`fitctree`/`fitrgp` are course-driven only. |
@@ -165,7 +168,8 @@ where MATLAB treats it as element separation.
 | Polynomial algebra | ✓ | `factor`, `expand`, `collect`, `coeffs`, `numden`, `resultant`, discriminant workflow, `gcd`. |
 | Transforms and ODE smoke | ✓ | `laplace`, `ilaplace`, `fourier`, `ztrans`, `dsolve`, `vpasolve`. |
 | Vector calculus | ✓ | `gradient`, `curl`, `divergence`, vector-calculus identities by numeric substitution. |
-| Symbolic convenience | ✓ | `vpa`, `matlabFunction`, `partfrac`, `poly2sym`, `str2sym`, `horner`, `rewrite`, `polynomialDegree`. |
+| Symbolic convenience | ✓ | `vpa`, `matlabFunction`, `partfrac`, `pade`, `poly2sym`, `str2sym`, `horner`, `rewrite`, `polynomialDegree`. |
+| Symbolic special functions | ✓ | `ellipticK`/`ellipticE`, `whittakerM`, `kummerU` at numeric points (`whittakerW` excluded — engine value ~0.1% off). |
 | Assumptions/display/introspection tail | ~ | Much of `assume*`, `symType`, `latex`, `pretty`, etc. is low-value for computational coverage. |
 | Serious CAS completeness | not targeted | Groebner bases, quantifier elimination, full assumption logic, and Risch-style integration are out of scope unless a course workflow demands a MATLAB-present subset. |
 
@@ -344,7 +348,10 @@ max-flow/min-cut invariants.
 `zeta`, `hurwitzZeta`, `polylog`, `dilog`, `psi`, `legendre`, `legendreP`,
 `chebyshevT`, `chebyshevU`, `hermiteH`, `laguerreL`, `jacobiP`,
 `gegenbauerC`, `hypergeom`, `heaviside`, `dirac`, `lambertw`, `wrightOmega`,
-`ei`, `logint`, `sinhint`, `coshint`.
+`ei`, `logint`, `sinhint`, `coshint`, `ellipticK`, `ellipticE`, `whittakerM`,
+`kummerU`. Reciprocal/hyperbolic trig: `sec`/`csc`/`cot`/`sech`/`csch`/`coth`/
+`tanh` (+ `secd`/`cscd`/`cotd`). (`whittakerW` present but ~0.1% imprecise — not
+locked.)
 
 ### Coding / Information Theory / Number Theory
 

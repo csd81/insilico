@@ -22,7 +22,7 @@ export interface OracleCase {
 
 export const CASES: OracleCase[] = [
 
-  // ══════════ approximation (35) ══════════
+  // ══════════ approximation (36) ══════════
   { name: 'approx-polyfit-line', src: 'x = [0 1 2 3 4]; y = 2*x + 1; p = polyfit(x, y, 1);', vars: ['p'], domain: 'approximation' },
   { name: 'approx-polyfit-centered', src: 'x = [0 1 2 3 4]; y = [1 3 7 13 21]; [p, S, mu] = polyfit(x, y, 2); df = S.df; nr = S.normr;', vars: ['p', 'mu', 'df', 'nr'], tol: 1e-6, domain: 'approximation', tags: ['polyfit', 'centered-scaled', 'multi-output'] },
   { name: 'approx-polyval', src: 'v = polyval([1 -3 2], 5);', vars: ['v'], domain: 'approximation' },
@@ -68,8 +68,11 @@ export const CASES: OracleCase[] = [
   { name: 'interp-helpers', src: "a = interp1q([1;2;3], [1;4;9], 2.5); pp = csapi([1 2 3 4], [1 4 9 16]); q = fnint(pp); ii = fnval(q,3) - fnval(q,1); ord = fnbrk(pp, 'order'); ds = dsearchn([0 0; 1 0; 0 1; 1 1], [0.6 0.4]); v = [a ii ord ds];", vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['interp1q', 'fnint', 'fnbrk', 'dsearchn'] },
   // ── Polynomial helpers: characteristic polynomial from roots, polynomial division, minimal poly. ──
   { name: 'poly-helpers', src: '[q, r] = deconv([1 0 0 1], [1 1]); v = [poly([1 2]) q r];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['poly', 'deconv', 'polynomial-division'] },
+  // ── Spline minimum (fnmin, exact) + pde-solution evaluation (pdeval), the latter validated by an
+  // analytic-decay invariant since the underlying pdepe state differs by integrator. ──
+  { name: 'interp-fnmin-pdeval', src: 'pp = csapi(1:5, [1 8 27 64 125]); [mv, ml] = fnmin(pp, [1 5]); x = linspace(0,1,11); tt = [0 0.025 0.05]; sol = pdepe(0, @(xx,t,u,dudx) deal(1,dudx,0), @(xx) sin(pi*xx), @(xl,ul,xr,ur,t) deal(ul,0,ur,0), x, tt); uq = pdeval(0, x, sol(end,:), 0.5); v = [mv ml double(abs(uq - exp(-pi^2*0.05)) < 0.01)];', vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['fnmin', 'pdeval', 'spline-minimum', 'pde-evaluation'] },
 
-  // ══════════ calculus (55) ══════════
+  // ══════════ calculus (57) ══════════
   { name: 'cal-limit-oneside-right', src: "syms x; v = sign(double(limit(1/x, x, 0, 'right')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-oneside-left', src: "syms x; v = sign(double(limit(1/x, x, 0, 'left')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-removable-oneside', src: "syms x; v = double(limit((x^2-1)/(x-1), x, 1, 'left'));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
@@ -131,6 +134,11 @@ export const CASES: OracleCase[] = [
   // Dawson; and inverse-incomplete + exponential-integral family. All match MATLAB. ──
   { name: 'spec-bessel-erf', src: 'v = double([real(besselh(0,1,1)) imag(besselh(0,1,1)) erfcx(1) erfi(1) dawson(1)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['besselh', 'erfcx', 'erfi', 'dawson'] },
   { name: 'spec-inverse', src: 'v = double([gammaincinv(0.5,2) betaincinv(0.5,2,3) wrightOmega(1) ei(1) logint(2) sinhint(1) coshint(1)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['gammaincinv', 'betaincinv', 'wrightOmega', 'ei', 'logint', 'sinhint', 'coshint'] },
+  // ── Symbolic-toolbox special functions at numeric points: complete elliptic integrals K/E,
+  // Whittaker M and Kummer U. (whittakerW excluded — the engine value is ~0.1% off, a documented
+  // precision gap.) ──
+  { name: 'special-elliptic-full', src: 'v = double([ellipticK(0.5) ellipticE(0.5)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['ellipticK', 'ellipticE', 'complete-elliptic-integral'] },
+  { name: 'special-whittaker', src: 'v = double([whittakerM(1,1,1) kummerU(1,2,1)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['whittakerM', 'kummerU', 'confluent-hypergeometric'] },
 
   // ══════════ coding (20) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },
@@ -209,7 +217,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (154) ══════════
+  // ══════════ core-language (155) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -380,6 +388,8 @@ export const CASES: OracleCase[] = [
   { name: 'pred-shape', src: 'v = double([isscalar(5) isvector([1 2]) isrow([1 2]) iscolumn([1;2]) ismatrix([1 2;3 4]) islogical(true) isfinite(1) isfinite(Inf) isreal(1) isreal(1+2i)]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['isscalar', 'isvector', 'isrow', 'iscolumn', 'ismatrix', 'islogical', 'isfinite', 'isreal'] },
   { name: 'set-sort', src: 'v = double([issorted([1 2 3]) issorted([3 2 1]) issortedrows([1 2;3 4]) ismembertol(1.0001,[1 2],0.01) allunique([1 2 3]) allunique([1 1 2]) numunique([1 1 2 3 3])]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['issorted', 'issortedrows', 'ismembertol', 'allunique', 'numunique'] },
   { name: 'named-ops', src: 'v = [plus(2,3) minus(5,2) times(2,3) mtimes(2,3) uplus(4) uminus(4) rdivide(6,2) ldivide(2,6) mpower(2,3)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['plus', 'minus', 'times', 'mtimes', 'uplus', 'uminus', 'rdivide', 'ldivide', 'mpower'] },
+  // ── Reciprocal + hyperbolic trig family (and degree variants). All exact. ──
+  { name: 'math-trig-recip', src: 'v = [sec(0) csc(pi/2) cot(pi/4) sech(0) csch(1) coth(1) tanh(1) secd(60) cscd(30) cotd(45)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['sec', 'csc', 'cot', 'sech', 'csch', 'coth', 'tanh', 'secd', 'cscd', 'cotd'] },
 
   // ══════════ dynamical-systems (5) ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },
@@ -474,7 +484,7 @@ export const CASES: OracleCase[] = [
   // (positive: relabeled path; negative: path vs triangle). ──
   { name: 'geo-mesh', src: "v = double([isdag(digraph([1 2],[2 3])) isdag(digraph([1 2 3],[2 3 1])) findnode(graph({'a','b'},{'b','a'}),'b') isisomorphic(graph([1 2],[2 3]),graph([3 2],[2 1])) isisomorphic(graph([1 2],[2 3]),graph([1 2 3],[2 3 1]))]);", vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['isdag', 'findnode', 'isisomorphic', 'graph-structure'] },
 
-  // ══════════ linear-algebra (52) ══════════
+  // ══════════ linear-algebra (54) ══════════
   { name: 'la-vec-mag-2d', src: 'v = [2 2]; mag = sqrt(v(1)^2 + v(2)^2);', vars: ['mag'], tol: 1e-9, domain: 'linear-algebra' },
   { name: 'la-vec-mag-3d', src: 'v = [4 5 5]; mag = sqrt(v(1)^2 + v(2)^2 + v(3)^2);', vars: ['mag'], tol: 1e-9, domain: 'linear-algebra' },
   { name: 'la-atand-neg', src: 't = atand(-3/2);', vars: ['t'], tol: 1e-9, domain: 'linear-algebra' },
@@ -531,6 +541,11 @@ export const CASES: OracleCase[] = [
   // ── Matrix predicates and norm/selection helpers. All exact. ──
   { name: 'pred-matrix', src: 'A = [2 1; 1 2]; v = double([issymmetric(A) ishermitian(A) isdiag(eye(2)) istriu(triu(magic(3))) istril(tril(magic(3))) isbanded(eye(3),0,0) issparse(speye(2)) issymmetric([1 2;3 4])]);', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['issymmetric', 'ishermitian', 'isdiag', 'istriu', 'istril', 'isbanded', 'issparse'] },
   { name: 'num-helpers', src: 'v = [vecnorm([3 4;6 8]) round(normest([3 0;0 4])) mink([5 2 8 1],2) maxk([5 2 8 1],2)];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['vecnorm', 'normest', 'mink', 'maxk'] },
+  // ── Standard numerical test matrices: inverse Hilbert (exact integers), Rosser (clustered
+  // eigenvalues), Wilkinson, peaks/bucky/membrane (deterministic). Validated by exact entries +
+  // structural properties (size, nnz, degree, max). ──
+  { name: 'mat-test-1', src: 'H = invhilb(3); R = rosser; W = wilkinson(3); v = [H(:)\x27 size(R,1) trace(R) R(1,1) W(1,1) W(2,2)];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['invhilb', 'rosser', 'wilkinson', 'test-matrices'] },
+  { name: 'mat-test-2', src: 'Z = peaks(3); A = bucky; M = membrane(1,5); v = full([Z(2,2) size(A,1) nnz(A) sum(A(1,:)) size(M,1) round(max(M(:)))]);', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['peaks', 'bucky', 'membrane', 'test-matrices'] },
 
   // ══════════ machine-learning (14) ══════════
   { name: 'ml-kmeans-lloyd', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; C = [1 1; 5 7]; for it = 1:10, d1 = sum((X - C(1,:)).^2, 2); d2 = sum((X - C(2,:)).^2, 2); a = d2 < d1; C(1,:) = mean(X(~a,:)); C(2,:) = mean(X(a,:)); end; v = sort(C(:,1));", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['k-means', 'lloyd', 'clustering', 'fixed-init'] },
@@ -740,7 +755,7 @@ export const CASES: OracleCase[] = [
   // hand-rolled, NOT copied), cross-checked against MATLAB's `\` by residual + solution-difference. ──
   { name: 'mla-linear-systems', src: "A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; n = 3; M = [A b]; for k = 1:n-1, for i = k+1:n, f = M(i,k)/M(k,k); M(i,:) = M(i,:) - f*M(k,:); end; end; x = zeros(n,1); for i = n:-1:1, x(i) = (M(i,end) - M(i,1:n)*x)/M(i,i); end; xref = A\\b; v = [x' norm(x - xref) norm(A*x - b)];", vars: ['v'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['course-workflow', 'gaussian-elimination', 'back-substitution'] },
 
-  // ══════════ numerical-methods (30) ══════════
+  // ══════════ numerical-methods (31) ══════════
   { name: 'num-newton-sqrt2', src: 'x = 1; for k = 1:20, x = x - (x^2 - 2)/(2*x); end', vars: ['x'], domain: 'numerical-methods' },
   { name: 'num-trapz', src: 'x = linspace(0,1,1001); y = x.^2; I = trapz(x, y);', vars: ['I'], domain: 'numerical-methods' },
   { name: 'num-lu-solve', src: 'A = [4 3; 6 3]; b = [10; 12]; [L,U,P] = lu(A); y = L\\(P*b); x = U\\y;', vars: ['x'], domain: 'numerical-methods' },
@@ -774,6 +789,8 @@ export const CASES: OracleCase[] = [
   // end-to-end against MATLAB, with the analytic error as a secondary sanity invariant. ──
   { name: 'nm-gauss2pt', src: 'a = 0; b = 1; f = @(x) x.^3 + 1; x1 = -1/sqrt(3); x2 = 1/sqrt(3); m = (b-a)/2; c = (b+a)/2; I = m*(f(m*x1+c) + f(m*x2+c)); v = [I abs(I - 1.25)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['course-workflow', 'gauss-legendre', '2-point-quadrature'] },
   { name: 'nm-simpson', src: 'f = @(x) sin(x); a = 0; b = pi; n = 10; h = (b-a)/n; x = a:h:b; fx = f(x); I = h/3*(fx(1) + fx(end) + 4*sum(fx(2:2:end-1)) + 2*sum(fx(3:2:end-2))); v = [I abs(I - 2)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['course-workflow', 'composite-simpson', 'quadrature'] },
+  // ── Cumulative trapezoidal integration (uniform + with explicit x). Exact. ──
+  { name: 'num-cumtrapz', src: 'v = [cumtrapz([1 2 3 4]) cumtrapz([0 1 2], [1 2 3])];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['cumtrapz', 'cumulative-integration'] },
 
   // ══════════ numerical-ode (34) ══════════
   { name: 'ode-heun', src: 'h = 0.1; y = 1; for k = 1:10, yp = y + h*y; y = y + h/2*(y + yp); end', vars: ['y'], tol: 1e-9, domain: 'numerical-ode', tags: ['improved-euler', 'heun'] },
@@ -912,7 +929,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-assignment', src: "C = [3 1 2; 2 3 1; 1 2 3]; f = C(:); Aeq = zeros(6,9); for r = 1:3, Aeq(r, (r-1)*3 + (1:3)) = 1; end; for c = 1:3, Aeq(3+c, c:3:9) = 1; end; beq = ones(6,1); x = intlinprog(f, 1:9, [], [], Aeq, beq, zeros(9,1), ones(9,1)); X = reshape(round(x), 3, 3); v = [round(f'*x) all(sum(X,1)==1) all(sum(X,2)'==1)];", vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['intlinprog', 'assignment-problem', 'binary-milp'] },
   { name: 'opt-setcover', src: 'A = [1 0 0 1; 1 1 0 0; 0 1 0 1; 0 1 1 0; 0 0 1 1]; x = intlinprog(ones(4,1), 1:4, -A, -ones(5,1), [], [], zeros(4,1), ones(4,1)); xr = round(x); v = [sum(xr) all(A*xr >= 1)];', vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['intlinprog', 'set-cover', 'covering-milp'] },
 
-  // ══════════ statistics (68) ══════════
+  // ══════════ statistics (69) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -988,8 +1005,11 @@ export const CASES: OracleCase[] = [
   // least squares (lscov) validated by residual. ──
   { name: 'stats-diag', src: 'v = double([isoutlier([1 2 3 100 4 5]) islocalmax([1 3 2 5 4]) islocalmin([5 3 4 1 2])]);', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['isoutlier', 'islocalmax', 'islocalmin'] },
   { name: 'stats-lscov', src: 'x = lscov([1 1; 1 2; 1 3], [2; 4; 6]); v = [x\x27 norm([1 1; 1 2; 1 3]*x - [2; 4; 6])];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['lscov', 'least-squares', 'residual'] },
+  // ── Kernel density estimate at a point with an explicit bandwidth (default bandwidth differs by
+  // rule-of-thumb, so it is pinned). Exact with the bandwidth fixed. ──
+  { name: 'stats-ksdensity', src: "[fd, xi] = ksdensity([1 2 2 3 3 3 4], 2, 'Bandwidth', 0.5); v = [fd xi];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['ksdensity', 'kernel-density', 'fixed-bandwidth'] },
 
-  // ══════════ symbolic (59) ══════════
+  // ══════════ symbolic (60) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
   { name: 'sym-diag-matrix', src: 'syms a b c; M = [a 1 2; 3 b 4; 5 6 c]; d = diag(M); D = diag(d); val = double(subs(D, [a b c], [7 8 9])); v = val(:).\x27;', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['diag', 'symbolic-matrix'] },
   { name: 'sym-poly-gcd', src: 'syms x; g = gcd(x^2 - 1, x^2 - 2*x + 1); c = sym2poly(g);', vars: ['c'], tol: 1e-9, domain: 'symbolic', tags: ['gcd', 'polynomial'] },
@@ -1053,6 +1073,8 @@ export const CASES: OracleCase[] = [
   // equationsToMatrix + symbolic solve; forward Laplace transform evaluated numerically. ──
   { name: 'sym-resultant-discriminant', src: 'syms x; r1 = resultant(x^2 - 1, x - 1, x); p = x^2 - 5*x + 6; r2 = resultant(p, diff(p, x), x); v = double([r1 r2]);', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['resultant', 'discriminant', 'elimination'] },
   { name: 'sym-vectorcalc', src: 'syms x y z; f = x^2*y + sin(y*z) + x*z^2; gx = diff(f,x); gy = diff(f,y); gz = diff(f,z); cx = diff(gz,y) - diff(gy,z); cy = diff(gx,z) - diff(gz,x); cz = diff(gy,x) - diff(gx,y); F = [x*y*z; x^2*z; sin(y)*z^2]; Cx = diff(F(3),y) - diff(F(2),z); Cy = diff(F(1),z) - diff(F(3),x); Cz = diff(F(2),x) - diff(F(1),y); dc = diff(Cx,x) + diff(Cy,y) + diff(Cz,z); p = [x y z]; q = [1.3 2.1 0.7]; v = double([subs(cx,p,q) subs(cy,p,q) subs(cz,p,q) subs(dc,p,q)]);', vars: ['v'], tol: 1e-6, domain: 'symbolic', tags: ['curl', 'gradient', 'divergence', 'vector-calculus-identity'] },
+  // ── Padé rational approximation of exp(x), evaluated numerically. ──
+  { name: 'sym-pade', src: "syms x; p = pade(exp(x), 'Order', [2 2]); v = double(subs(p, x, 0.5));", vars: ['v'], tol: 1e-6, domain: 'symbolic', tags: ['pade', 'rational-approximation'] },
 
   // ══════════ topology (6) ══════════
   { name: 'topo-betti-hollow-triangle', src: 'B1 = [-1 0 1; 1 -1 0; 0 1 -1]; r1 = rank(B1); v = [3 - r1; 3 - r1];', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['betti-numbers', 'simplicial-complex', 'boundary-matrix', 'homology'] },
