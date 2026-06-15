@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 981 tests green · 846 MATLAB oracle fixtures ·
-846/846 cases classified across 22 domains.
+**Status (as of this revision):** 988 tests green · 853 MATLAB oracle fixtures ·
+853/853 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -291,8 +291,16 @@ real MATLAB (with the analytic-solution error as a secondary sanity invariant).
   integration; explicit FTCS, backward-Euler, and Crank–Nicolson heat (with tridiagonal
   solves); and 1-D + 2-D wave equation (leapfrog). All run identically to MATLAB to 8 sig
   figs. Tagged `course-workflow` in `cases.ts`.
+- **Batch 2 — remaining-function sweep (7 cases):** the explicitly-requested tail, all present
+  and matching MATLAB. Coordinate transforms `cart2pol`/`pol2cart`/`cart2sph`/`sph2cart`/
+  `deg2rad`/`rad2deg` (round-trip + known values); remaining special functions `hurwitzZeta`/
+  `polylog`/`dirac`; solver variants `ode23tb`/`bvp5c`/`pdepe`/`dde23` (accuracy / known-solution
+  invariants); spline helpers `csape`/`csapi`/`fnval`/`fnder`; graph algorithms
+  `shortestpathtree`/`allpaths`/`allcycles` (by count, since path/cycle order is non-unique);
+  sparse `sprank`/`colperm`/`symamd` (orderings locked by permutation length, `sprank` exact);
+  and geometry `inpolygon`/`rectint`/`polyarea`.
 
-### Remaining base/core backlog (~434 uncategorized)
+### Remaining base/core backlog (~410 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -303,20 +311,21 @@ shape, for demand-driven triage — not a TODO list:
 - **special functions, remaining (~40):** Pass 2K validated the orthogonal-polynomial
   families (`legendreP`/`chebyshevT`/`chebyshevU`/`hermiteH`/`laguerreL`/`jacobiP`/
   `gegenbauerC`), `hypergeom`, `zeta`/`dilog`/`psi`, `heaviside`/`lambertw`, and
-  `fresnels`/`fresnelc`/`sinint`/`cosint`/`expint`. Remainder: bessel/`ellip*` variants
-  not in Pass 2E, `hurwitzZeta`/`polylog`, and `dirac` (distributional — needs care).
+  `fresnels`/`fresnelc`/`sinint`/`cosint`/`expint`; the example-driven sweep added
+  `hurwitzZeta`/`polylog`/`dirac`. Remainder: bessel/`ellip*` variants not in Pass 2E.
 - **elementary math, operators:** `cosh`/`sinh`/`tanh`/`sec`/`csc`/`cot` families,
   `plus`/`minus`/`times`/`mtimes`/`mrdivide`/`power` (operator-named forms, exercised via
   the operators but rarely named). Bit ops (`bitand`/`bitor`/`bitxor`/`bitshift`/`bitget`/
   `bitset`/`bitcmp`) validated in Pass 2M.
-- **solver variants:** Pass 2N validated `ode23s`/`ode23t`/`ode78`/`ode89` (accuracy invariant)
-  and the least-squares family `lsqnonneg`/`lsqminnorm`/`lsqlin`/`lsqnonlin`/`lsqcurvefit`
-  (KKT/residual). Remainder: `ode23tb`, `bvp5c`, `dde*`, `pdepe`/`pdeval`, and the RNG-based
-  global optimizers `particleswarm`/`patternsearch`/`simulannealbnd` (not deterministic).
+- **solver variants:** Pass 2N validated `ode23s`/`ode23t`/`ode78`/`ode89` and the
+  least-squares family `lsqnonneg`/`lsqminnorm`/`lsqlin`/`lsqnonlin`/`lsqcurvefit`; the
+  example-driven sweep added `ode23tb`/`bvp5c`/`pdepe`/`dde23` (accuracy / known-solution
+  invariants). Remainder: `pdeval`/`bvp4c` higher-output forms and the RNG-based global
+  optimizers `particleswarm`/`patternsearch`/`simulannealbnd` (not deterministic).
 - **interpolation / spline:** core validated in Pass 2J (`spline`/`pchip`/`ppval`/`mkpp`/
-  `unmkpp`/`griddedInterpolant`/`scatteredInterpolant`/`interp2`/`interp3`); remainder is
-  the Curve-Fitting-Toolbox B-spline helpers `csape`/`csapi`/`fn*` and `interp1q`
-  (`griddatan` declined — errors in MATLAB for the probed inputs).
+  `unmkpp`/`griddedInterpolant`/`scatteredInterpolant`/`interp2`/`interp3`); the example-driven
+  sweep added the pp-function helpers `csape`/`csapi`/`fnval`/`fnder`. Remainder is the rest of
+  the `fn*` family and `interp1q` (`griddatan` declined — errors in MATLAB for the probed inputs).
 - **stats / data utilities:** validated in Pass 2O (`prctile`/`quantile`/`iqr`/`mad`/`geomean`/
   `harmmean`/`zscore`/`rms`/`normalize`/`rescale`/`detrend`/`smoothdata` + missing-data
   `rmmissing`/`fillmissing`/`standardizeMissing`/`anynan`). Remainder is table/timetable-bound
@@ -328,12 +337,12 @@ shape, for demand-driven triage — not a TODO list:
   `struct2cell`/`cell2struct`/`fieldnames`/`rmfield`/`isfield`/`orderfields`/`setfield`/
   `getfield`/`structfun`); remainder is display/`disp`-style and table-bridging helpers.
 - **containers (~5):** `containers.Map`/`dictionary`/`keys`/`values`/`entries`.
-- **graph algorithms, remaining (~29):** `shortestpathtree`/`allpaths`/`allcycles`/
-  `bctree`/`biconncomp`/… (core graph already validated).
-- **sparse remainder (~6), geometry remainder (~2)** (`voronoi`/`inpolygon` plus the
-  polyshape/alphaShape object ecosystem, parked in `defer`; geometry math-core now
-  validated — Pass 2H), **coordinate transforms**
-  (`cart2pol`/`pol2cart`/`sph2cart`/`deg2rad`/`rad2deg`), **test matrices**
+- **graph algorithms, remaining (~26):** the example-driven sweep added `shortestpathtree`/
+  `allpaths`/`allcycles`; remainder is `bctree`/`biconncomp`/… (core graph already validated).
+- **sparse remainder, geometry remainder:** the example-driven sweep added `sprank`/`colperm`/
+  `symamd` (sparse) and `inpolygon`/`rectint`/`polyarea` + coordinate transforms `cart2pol`/
+  `pol2cart`/`cart2sph`/`sph2cart`/`deg2rad`/`rad2deg` (geometry). Remainder is the polyshape/
+  alphaShape object ecosystem (parked in `defer`), **test matrices**
   (`bucky`/`peaks`/`rosser`/`membrane`/`invhilb`/`wilkinson`), and misc utilities.
 
 Already parked (not in the ~504): `datetime`/`duration`, `table`/`timetable`,

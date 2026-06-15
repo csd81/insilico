@@ -221,4 +221,13 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // ── Pass 2O: deterministic stats / data utilities (percentiles, dispersion, normalization,
   // detrend/smoothing, missing-data). All match MATLAB exactly. ──
   ...bulkD('needs-oracle', 'direct', 'statistics', 'prctile quantile iqr mad geomean harmmean zscore rms normalize rescale detrend smoothdata rmmissing fillmissing standardizeMissing anynan'),
+
+  // ── Demand-driven remainder (example-driven, post-campaign): coordinate transforms, remaining
+  // special functions, solver variants, spline helpers, graph/sparse/geometry remainder. ──
+  ...bulkD('needs-oracle', 'direct', 'geometry', 'cart2pol pol2cart cart2sph sph2cart deg2rad rad2deg inpolygon rectint polyarea'),
+  ...bulkD('needs-oracle', 'direct', 'calculus', 'hurwitzZeta polylog dirac'),
+  ...bulkD('needs-oracle', 'invariant', 'numerical-ode', 'ode23tb bvp5c pdepe'),
+  ...bulkD('needs-oracle', 'direct', 'approximation', 'csape csapi fnval fnder'),
+  ...bulkD('needs-oracle', 'direct', 'graph', 'shortestpathtree allpaths allcycles numedges'),
+  ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'sprank colperm symamd'),
 };

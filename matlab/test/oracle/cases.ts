@@ -22,7 +22,7 @@ export interface OracleCase {
 
 export const CASES: OracleCase[] = [
 
-  // ══════════ approximation (32) ══════════
+  // ══════════ approximation (33) ══════════
   { name: 'approx-polyfit-line', src: 'x = [0 1 2 3 4]; y = 2*x + 1; p = polyfit(x, y, 1);', vars: ['p'], domain: 'approximation' },
   { name: 'approx-polyfit-centered', src: 'x = [0 1 2 3 4]; y = [1 3 7 13 21]; [p, S, mu] = polyfit(x, y, 2); df = S.df; nr = S.normr;', vars: ['p', 'mu', 'df', 'nr'], tol: 1e-6, domain: 'approximation', tags: ['polyfit', 'centered-scaled', 'multi-output'] },
   { name: 'approx-polyval', src: 'v = polyval([1 -3 2], 5);', vars: ['v'], domain: 'approximation' },
@@ -60,8 +60,11 @@ export const CASES: OracleCase[] = [
   { name: 'interp-pchip-vals', src: 'a = pchip([0 1 2 3 4], [0 1 8 27 64], [0.5 1.5 2.5 3.5]); b = ppval(pchip([1 2 3 4], [1 -1 1 -1]), 2.5); v = [a b];', vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['pchip', 'ppval', 'shape-preserving'] },
   { name: 'interp-gridded-scattered', src: "F = griddedInterpolant([1 2 3 4], [1 4 9 16], 'spline'); G = scatteredInterpolant([0;1;0;1;0.5], [0;0;1;1;0.5], [0;1;1;2;1]); v = [F(2.5) G(0.5,0.5) G(0.25,0.25)];", vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['griddedInterpolant', 'scatteredInterpolant', 'interpolant-objects'] },
   { name: 'interp-2d-3d', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X.^2 + Y; a = interp2(X, Y, Z, 1.5, 2.5); b = interp2(X, Y, Z, 2.5, 1.5); [X3, Y3, Z3] = meshgrid(1:2, 1:2, 1:2); V = X3 + 2*Y3 + 3*Z3; c = interp3(X3, Y3, Z3, V, 1.5, 1.5, 1.5); v = [a b c];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['interp2', 'interp3', 'gridded-nd'] },
+  // ── Demand-driven remainder spline helpers: csape/csapi pp builders + fnval/fnder. On cubic
+  // data both recover the exact cubic; the pp-function form (fn*) is the Curve-Fitting interface. ──
+  { name: 'interp-csape-csapi-fn', src: 'pp1 = csape([1 2 3 4 5], [1 8 27 64 125]); pp2 = csapi([1 2 3 4 5], [1 8 27 64 125]); d = fnder(pp2); v = [fnval(pp1, 2.5) fnval(pp2, 2.5) fnval(d, 3)];', vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['csape', 'csapi', 'fnval', 'fnder'] },
 
-  // ══════════ calculus (52) ══════════
+  // ══════════ calculus (53) ══════════
   { name: 'cal-limit-oneside-right', src: "syms x; v = sign(double(limit(1/x, x, 0, 'right')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-oneside-left', src: "syms x; v = sign(double(limit(1/x, x, 0, 'left')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-removable-oneside', src: "syms x; v = double(limit((x^2-1)/(x-1), x, 1, 'left'));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
@@ -117,6 +120,8 @@ export const CASES: OracleCase[] = [
   { name: 'spec-legendre-cheb', src: 'v = double([legendreP(3,0.5) chebyshevT(4,0.3) chebyshevU(3,0.3)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['legendreP', 'chebyshevT', 'chebyshevU', 'orthogonal-polynomials'] },
   { name: 'spec-orthopoly', src: 'v = double([hermiteH(3,0.5) laguerreL(3,0.5) jacobiP(2,1,1,0.3) gegenbauerC(3,2,0.3)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['hermiteH', 'laguerreL', 'jacobiP', 'gegenbauerC'] },
   { name: 'spec-hypergeom-heaviside-lambertw', src: 'v = double([hypergeom([1 2],3,0.5) heaviside(-1) heaviside(0) heaviside(2) lambertw(1) lambertw(-1,-exp(-1))]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['hypergeom', 'heaviside', 'lambertw', 'branch'] },
+  // ── Demand-driven remainder special functions: Hurwitz zeta, polylogarithm, Dirac delta. ──
+  { name: 'spec-hurwitz-polylog', src: 'v = double([hurwitzZeta(2,1) hurwitzZeta(2,2) polylog(2,0.5) polylog(2,1) isinf(dirac(0)) dirac(1) dirac(-3)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['hurwitzZeta', 'polylog', 'dirac', 'special-functions'] },
 
   // ══════════ coding (18) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },
@@ -387,7 +392,7 @@ export const CASES: OracleCase[] = [
   { name: 'fourier-ifft2', src: "Y = ifft2([1 2; 3 4]); X = magic(4); r = norm(ifft2(fft2(X)) - X, 'fro'); v = [real(Y(:)).' imag(Y(:)).' r];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['ifft2', 'roundtrip-invariant'] },
   { name: 'fourier-ifftshift', src: 'A = ifftshift([1 2 3 4]); B = ifftshift([1 2; 3 4]); v = [A B(:).\x27];', vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['ifftshift', 'n-d', 'quadrant-swap'] },
 
-  // ══════════ geometry (15) ══════════
+  // ══════════ geometry (17) ══════════
   { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'area'] },
   { name: 'geom-convhull-perimeter', src: 'x = [0 1 1 0]; y = [0 0 1 1]; k = convhull(x, y); per = sum(sqrt(diff(x(k)).^2 + diff(y(k)).^2));', vars: ['per'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'perimeter'] },
   { name: 'geom-convhulln-volume-3d', src: 'P = [0 0 0;1 0 0;0 1 0;0 0 1;1 1 1;1 1 0;1 0 1;0 1 1]; [k, vol] = convhulln(P); v = vol;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'volume', 'convhulln'] },
@@ -403,8 +408,12 @@ export const CASES: OracleCase[] = [
   { name: 'geom-nearest-circum-incenter', src: "P = [0 0; 1 0; 0 1]; DT = delaunayTriangulation(P); cc = circumcenter(DT); ic = incenter(DT); d = [norm(cc - [0 0]) norm(cc - [1 0]) norm(cc - [0 1])]; ceq = max(d) - min(d); Bi = cartesianToBarycentric(DT, 1, ic); inside = double(all(Bi >= -1e-9)); Pn = [0 0; 1 0; 1 1; 0 1]; DTn = delaunayTriangulation(Pn); vi = nearestNeighbor(DTn, [0.1 0.15]); v = [vi, ceq, inside];", vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['nearestNeighbor', 'circumcenter', 'incenter', 'equidistance-invariant'] },
   { name: 'geom-connectivity', src: 'P = [0 0; 1 0; 1 1; 0 1]; DT = delaunayTriangulation(P); fb = freeBoundary(DT); E = edges(DT); n = neighbors(DT); v = [size(fb,1) size(E,1) size(DT.ConnectivityList,1) sum(n(:) > 0 & ~isnan(n(:)))];', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['freeBoundary', 'edges', 'neighbors', 'connectivity-invariant'] },
   { name: 'geom-voronoi-alphashape-tri', src: "P = [0 0; 2 0; 2 2; 0 2; 1 1]; [V, C] = voronoin(P); x = [0 1 1 0 0.5]'; y = [0 0 1 1 0.5]'; kk = boundary(x, y, 0); shp = alphaShape(x, y, Inf); TR = triangulation([1 2 3], [0 0; 1 0; 0 1]); v = [numel(C) polyarea(x(kk), y(kk)) area(shp) size(freeBoundary(TR),1)];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['voronoin', 'boundary', 'alphaShape', 'triangulation', 'area-invariant'] },
+  // ── Demand-driven remainder: coordinate transforms (round-trip exactness + known values) and
+  // assorted geometry utilities (point-in-polygon, rectangle intersection area, polygon area). ──
+  { name: 'xform-roundtrip', src: '[th, rh] = cart2pol(3, 4); [x, y] = pol2cart(th, rh); [az, el, r] = cart2sph(1, 2, 2); [X, Y, Z] = sph2cart(az, el, r); v = [th rh x y az el r X Y Z deg2rad(180) rad2deg(pi)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['cart2pol', 'pol2cart', 'cart2sph', 'sph2cart', 'deg2rad', 'rad2deg', 'roundtrip'] },
+  { name: 'geo-remainder', src: 'v = [double(inpolygon(0.5, 0.5, [0 1 1 0], [0 0 1 1])) rectint([0 0 2 2], [1 1 2 2]) polyarea([0 1 1 0], [0 0 1 1])];', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['inpolygon', 'rectint', 'polyarea'] },
 
-  // ══════════ graph (12) ══════════
+  // ══════════ graph (13) ══════════
   { name: 'graph-laplacian', src: 'A = [0 1 0; 1 0 1; 0 1 0]; D = diag(sum(A, 2)); L = D - A; ev = sort(eig(L));', vars: ['ev'], tol: 1e-9, domain: 'graph', tags: ['spectral-graph', 'laplacian'] },
   { name: 'graph-distributed-consensus', src: 'A = [0 1 0 1; 1 0 1 0; 0 1 0 1; 1 0 1 0]; D = diag(sum(A, 2)); L = D - A; W = eye(4) - 0.2*L; x = [1; 2; 3; 4]; for k = 1:200, x = W*x; end', vars: ['x'], tol: 1e-6, domain: 'graph', tags: ['distributed-optimization', 'consensus', 'graph-laplacian'] },
   { name: 'graph-adjacency-powers', src: 'A = [0 1 1; 1 0 1; 1 1 0]; W = A^3;', vars: ['W'], tol: 1e-9, domain: 'graph', tags: ['adjacency', 'walk-counts'] },
@@ -417,6 +426,9 @@ export const CASES: OracleCase[] = [
   { name: 'graph-maxflow', src: 'G = digraph([1 1 2 3], [2 3 4 4], [2 3 2 3]); f = maxflow(G, 1, 4);', vars: ['f'], tol: 1e-9, domain: 'graph', tags: ['maxflow'] },
   { name: 'graph-minspantree', src: 'G = graph([1 1 2 3], [2 3 3 4], [1 4 2 3]); T = minspantree(G); w = sum(T.Edges.Weight);', vars: ['w'], tol: 1e-9, domain: 'graph', tags: ['minspantree'] },
   { name: 'graph-matchpairs-assignment', src: 'C = [1 5 4; 3 2 6; 5 4 3]; M = matchpairs(C, 100); v = sortrows(M);', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['assignment-problem', 'bipartite-matching', 'matchpairs'] },
+  // ── Demand-driven remainder graph algorithms, validated by counts (path/tree/cycle order is
+  // non-unique): shortestpathtree edge count, allpaths enumeration, allcycles enumeration. ──
+  { name: 'graph-paths-cycles', src: 'G = graph([1 2 3], [2 3 4]); tr = shortestpathtree(G, 1); D = digraph([1 1 2], [2 3 3]); P = allpaths(D, 1, 3); C = allcycles(digraph([1 2 3], [2 3 1])); v = [numedges(tr) numel(P) numel(C)];', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['shortestpathtree', 'allpaths', 'allcycles', 'enumeration-count'] },
 
   // ══════════ linear-algebra (42) ══════════
   { name: 'la-vec-mag-2d', src: 'v = [2 2]; mag = sqrt(v(1)^2 + v(2)^2);', vars: ['mag'], tol: 1e-9, domain: 'linear-algebra' },
@@ -491,7 +503,7 @@ export const CASES: OracleCase[] = [
   { name: 'nt-chinese-remainder', src: 'n = [3 5 7]; a = [2 3 2]; N = prod(n); x = 0; for k = 1:numel(n), Nk = N/n(k); t = 0; nt = 1; rr = n(k); nr = mod(Nk, n(k)); while nr ~= 0, q = floor(rr/nr); tmp = t - q*nt; t = nt; nt = tmp; tmp = rr - q*nr; rr = nr; nr = tmp; end; inv = mod(t, n(k)); x = x + a(k)*Nk*inv; end; v = mod(x, N);', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['chinese-remainder-theorem', 'modular-arithmetic'] },
   { name: 'nt-carmichael-fermat-witness', src: 'v = [powermod(2, 10, 341) powermod(2, 340, 341) isprime(341)];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['carmichael', 'fermat-test', 'powermod', 'composite'] },
 
-  // ══════════ numerical-linear-algebra (162) ══════════
+  // ══════════ numerical-linear-algebra (163) ══════════
   { name: 'nla-mldivide', src: 'A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; x = A\\b;', vars: ['x'], domain: 'numerical-linear-algebra' },
   { name: 'nla-det', src: 'd = det([1 2 3; 4 5 6; 7 8 10]);', vars: ['d'], domain: 'numerical-linear-algebra' },
   { name: 'nla-inv', src: 'B = inv([4 3; 6 3]);', vars: ['B'], domain: 'numerical-linear-algebra' },
@@ -656,6 +668,9 @@ export const CASES: OracleCase[] = [
   // pagewise solvers validated by residual invariants (page order/factorization may differ). ──
   { name: 'nla-tensorprod', src: "A = reshape(1:24, 2, 3, 4); B = reshape(1:12, 4, 3); C = tensorprod(A, B, 3, 1); D = tensorprod([1 2; 3 4], [5 6; 7 8]); s = tensorprod([1 2 3], [4 5 6], 'all'); v = [size(C) C(2,3,2) size(D) D(2,1,2,2) s];", vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['tensorprod', 'nd-shape', 'contraction', 'outer-product'] },
   { name: 'nla-pagesolve', src: 'A = cat(3, [2 1; 0 3], [1 0; 2 2]); B = cat(3, [4 5; 6 7], [1 1; 0 2]); X = pagemrdivide(B, A); R1 = max(abs(reshape(pagemtimes(X,A) - B, [], 1))); Y = pagemldivide(A, B); R2 = max(abs(reshape(pagemtimes(A,Y) - B, [], 1))); Ap = cat(3, [1 0; 0 1; 1 1], [2 0; 0 2; 1 0]); Bp = cat(3, [1; 2; 3], [1; 0; 1]); Z = pagelsqminnorm(Ap, Bp); v = [R1 R2 size(Z,1) size(Z,3)];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['pagemrdivide', 'pagemldivide', 'pagelsqminnorm', 'residual-invariant'] },
+  // ── Demand-driven sparse remainder: structural rank + fill-reducing orderings. The orderings
+  // (colperm/symamd) are non-unique permutations — locked by permutation length, sprank is unique. ──
+  { name: 'sparse-remainder', src: 'v = [sprank(sparse([1 0 1; 0 1 0; 0 0 1])) numel(colperm(sparse(magic(4)))) numel(symamd(sparse(magic(4) + eye(4))))];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['sprank', 'colperm', 'symamd', 'structural-rank', 'ordering'] },
 
   // ══════════ numerical-methods (30) ══════════
   { name: 'num-newton-sqrt2', src: 'x = 1; for k = 1:20, x = x - (x^2 - 2)/(2*x); end', vars: ['x'], domain: 'numerical-methods' },
@@ -692,7 +707,7 @@ export const CASES: OracleCase[] = [
   { name: 'nm-gauss2pt', src: 'a = 0; b = 1; f = @(x) x.^3 + 1; x1 = -1/sqrt(3); x2 = 1/sqrt(3); m = (b-a)/2; c = (b+a)/2; I = m*(f(m*x1+c) + f(m*x2+c)); v = [I abs(I - 1.25)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['course-workflow', 'gauss-legendre', '2-point-quadrature'] },
   { name: 'nm-simpson', src: 'f = @(x) sin(x); a = 0; b = pi; n = 10; h = (b-a)/n; x = a:h:b; fx = f(x); I = h/3*(fx(1) + fx(end) + 4*sum(fx(2:2:end-1)) + 2*sum(fx(3:2:end-2))); v = [I abs(I - 2)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['course-workflow', 'composite-simpson', 'quadrature'] },
 
-  // ══════════ numerical-ode (32) ══════════
+  // ══════════ numerical-ode (33) ══════════
   { name: 'ode-heun', src: 'h = 0.1; y = 1; for k = 1:10, yp = y + h*y; y = y + h/2*(y + yp); end', vars: ['y'], tol: 1e-9, domain: 'numerical-ode', tags: ['improved-euler', 'heun'] },
   { name: 'ode-harmonic-rk4', src: 'h = 0.01; y = [1; 0]; A = [0 1; -1 0]; for k = 1:628, k1 = A*y; k2 = A*(y+h/2*k1); k3 = A*(y+h/2*k2); k4 = A*(y+h*k3); y = y + h/6*(k1+2*k2+2*k3+k4); end', vars: ['y'], tol: 1e-6, domain: 'numerical-ode', tags: ['rk4', 'harmonic-oscillator', 'system'] },
   { name: 'ode-ode45', src: '[t, y] = ode45(@(t, y) y, [0 1], 1); yf = y(end);', vars: ['yf'], tol: 1e-2, domain: 'numerical-ode', tags: ['ode45'] },
@@ -729,6 +744,10 @@ export const CASES: OracleCase[] = [
   { name: 'nm-euler-ode', src: 'f = @(t,y) -2*y; h = 0.01; t = 0; y = 1; for k = 1:100, y = y + h*f(t,y); t = t + h; end; v = [y abs(y - exp(-2))];', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['course-workflow', 'forward-euler', 'time-stepping'] },
   { name: 'nm-euler-system', src: 'h = 0.001; X = [1; 0]; A = [0 1; -1 0]; for k = 1:1000, X = X + h*(A*X); end; v = [X.\x27 X.\x27*X];', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['course-workflow', 'euler-system', 'harmonic-oscillator'] },
   { name: 'nm-rk4', src: 'f = @(t,y) y; h = 0.1; t = 0; y = 1; for k = 1:10, k1 = f(t,y); k2 = f(t+h/2, y+h/2*k1); k3 = f(t+h/2, y+h/2*k2); k4 = f(t+h, y+h*k3); y = y + h/6*(k1 + 2*k2 + 2*k3 + k4); t = t + h; end; v = [y abs(y - exp(1))];', vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['course-workflow', 'runge-kutta-4', 'time-stepping'] },
+  // ── Demand-driven remainder solvers, validated by accuracy / known-solution invariants (the
+  // per-step state differs by integrator): ode23tb (stiff TR-BDF2), bvp5c (BVP y''+y=0 → sin),
+  // pdepe (1-D heat MOL vs analytic decay), dde23 (constant-delay y'=-y(t-1), exact y(2)=-1/2). ──
+  { name: 'solver-variants', src: "f = @(t,y) -y; e = exp(-1); [~, y1] = ode23tb(f, [0 1], 1); sol = bvp5c(@(x,y)[y(2); -y(1)], @(ya,yb)[ya(1); yb(1)-1], bvpinit(linspace(0,pi/2,5), [0 1])); yp = deval(sol, pi/4); xx = linspace(0,1,11); tt = linspace(0,0.1,3); ps = pdepe(0, @(x,t,u,dudx)deal(1,dudx,0), @(x)sin(pi*x), @(xl,ul,xr,ur,t)deal(ul,0,ur,0), xx, tt); pu = ps(end,:); ds = dde23(@(t,y,Z)-Z, 1, 1, [0 2]); v = [double(abs(y1(end)-e)<1e-2) double(abs(yp(1)-sin(pi/4))<1e-3) double(max(abs(pu - exp(-pi^2*0.1)*sin(pi*xx)))<0.05) double(abs(deval(ds,2)+0.5)<1e-2)];", vars: ['v'], tol: 1e-9, domain: 'numerical-ode', tags: ['ode23tb', 'bvp5c', 'pdepe', 'dde23', 'solver-invariant'] },
 
   // ══════════ numerical-pde (39) ══════════
   { name: 'pde-poisson-1d', src: 'n = 5; h = 1/(n+1); A = 2*eye(n) - diag(ones(n-1,1),1) - diag(ones(n-1,1),-1); f = ones(n,1)*h^2; u = A\\f;', vars: ['u'], tol: 1e-9, domain: 'numerical-pde', tags: ['finite-difference', 'poisson', 'dirichlet'] },
