@@ -157,13 +157,76 @@ target (validate / move out genuine breadth), not a quarantine target — core
 primitives can't be de-registered. **`pnpm oracle:base-audit`** buckets base/core by
 risk + contract relevance using explicit metadata in `base-buckets.ts` (contract-core
 / needs-oracle / ts-only-ok / defer / out-of-scope / alias-helper / uncategorized) —
-judge base/core by those buckets, not the raw %. The 53 contract-core builtins are
-all categorized and covered (52 direct + `mldivide` indirect via `\`); the
+judge base/core by those buckets, not the raw %. The 124 contract-core builtins are
+all categorized and covered (123 direct + `mldivide` indirect via `\`); the
 `uncategorized` bucket is the triage backlog. Always read the audit output, not a raw
 `Object.keys(tb.builtins)` source count (that includes quarantined functions which
 error at runtime — the source-vs-registry gap). Kept-but-unreferenced toolbox
 functions are core-math candidates scheduled for validation; `symbolic` is the
 largest remaining toolbox tail.
+
+### Base/core high-risk sweep — Pass 2 (complete)
+
+Pass 2 swept the **bug-prone math-core** of base/core — functions with non-unique
+outputs, N-D shape semantics, or MATLAB-specific conventions — validating by
+invariants where factor/sign/order is non-unique. **~75 high-risk functions
+validated** across: pagewise N-D linear algebra (`pagemtimes`/`pageinv`/`pageeig`/
+`pagesvd`/…), sparse structure + reordering (`symrcm`/`colamd`/`amd`/`dmperm`/`etree`/
+`sp*`), N-D FFT (`fftn`/`ifftn`/`ifft2`), dense decompositions (`gsvd`/`qz`/`ordqz`/
+`ordschur`/`cdf2rdf`/`rsf2csf`/`qr{update,insert,delete}`), special functions
+(`bessel*`/`erf*`/`gamma*`/`ellip*`/`legendre`/`airy`/`psi`), moving-window/cumulative
+reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
+(`int*`/`uint*`/`cast`/`typecast`/`swapbytes`/`idivide` saturation/rounding/endianness).
+
+- **1 real crash fixed:** `pagenorm(A,'fro')` parsed the `'fro'` char arg as a numeric
+  `p` and threw. Now handles the norm-type string.
+- **Documented divergences (not silent bugs):** `gsvd` is the 1-output generalized
+  singular values only (the 5-output CS-decomposition form is a deferred gap);
+  `histcounts` auto-binning uses a different edge rule than MATLAB (only the
+  explicit-`edges` form is locked); `reverse('hello')` returns a string vs MATLAB's
+  char (value validated via `char()`); `qrupdate` requires full `qr` (MATLAB rejects
+  economy); `legendreP` is Symbolic-only and absent in this MATLAB (not validated).
+- **Totals after Pass 2:** 929 tests / 794 fixtures; base/core `uncategorized` 579 → 504.
+
+**The sweep is marked complete.** The goal was never zero `uncategorized` — it was
+*no unvalidated high-risk computational core*. Further base/core validation is
+**demand-driven**: add cases when a course/example needs a specific function, not to
+chase the percentage.
+
+### Remaining base/core backlog (~504 uncategorized)
+
+All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
+shape, for demand-driven triage — not a TODO list:
+
+- **strings / text + numeric-string conversions (~67):** `str*`, `regexp*`,
+  `pad`/`erase`/`extract`/`insert`/`replace`/`split`/`join`, `dec2*`/`hex2*`/`num2*`.
+- **type predicates (~44):** `is*` (`isscalar`/`iscolumn`/`ishermitian`/`issorted`/…).
+- **special functions, remaining (~58):** bessel/`ellip*` variants, `jacobi*`/
+  `chebyshev*`/`hermite*`/`laguerre*`/`gegenbauer*`, `hypergeom`, `zeta`/`hurwitzZeta`/
+  `polylog`/`dilog`, `heaviside`/`dirac`, `lambertw`, `fresnel*`/`sinint`/`cosint`/`expint`.
+- **elementary math, operators, bit ops:** `cosh`/`sinh`/`tanh`/`sec`/`csc`/`cot`
+  families, `plus`/`minus`/`times`/`mtimes`/`mrdivide`/`power`, `bitand`/`bitor`/
+  `bitxor`/`bitshift`/`bitget`/`bitset`.
+- **solver variants:** `ode23s`/`ode23t`/`ode23tb`/`ode78`/`ode89`, `bvp5c`, `dde*`,
+  `pdepe`/`pdeval`; **optimization:** `particleswarm`/`patternsearch`/`simulannealbnd`/
+  `lsqnonneg`/`lsqminnorm`.
+- **interpolation / spline:** `mkpp`/`unmkpp`/`csape`/`csapi`/`fn*`/`griddatan`/`interp1q`.
+- **stats / data utilities:** `prctile`/`quantile`/`iqr`/`mad`/`geomean`/`harmmean`/
+  `zscore`/`rms`/`normalize`/`rescale`/`detrend`/`smoothdata`; missing-data
+  (`rmmissing`/`fillmissing`/`standardizeMissing`/`anynan`).
+- **N-D / shape:** `shiftdim`/`ipermute`/`ndims`/`repelem`/`tensorprod`/`pagemrdivide`/
+  `pagelsqminnorm`.
+- **struct/cell utilities (~8):** `struct2cell`/`cell2struct`/`structfun`/`orderfields`/…
+- **containers (~5):** `containers.Map`/`dictionary`/`keys`/`values`/`entries`.
+- **graph algorithms, remaining (~29):** `shortestpathtree`/`allpaths`/`allcycles`/
+  `bctree`/`biconncomp`/… (core graph already validated).
+- **sparse remainder (~6), geometry remainder (~6), coordinate transforms**
+  (`cart2pol`/`pol2cart`/`sph2cart`/`deg2rad`/`rad2deg`), **test matrices**
+  (`bucky`/`peaks`/`rosser`/`membrane`/`invhilb`/`wilkinson`), and misc utilities.
+
+Already parked (not in the ~504): `datetime`/`duration`, `table`/`timetable`,
+`categorical`, the geometry-OBJECT and graph-OBJECT-mutation ecosystems → `defer`
+(132); graphics/FigureSpec, VFS/file, display, RNG, validators → `ts-only-ok` (331).
 
 ### Validate existing (implemented + oracle-validated)
 All oracle-validated — no validation backlog remains:
