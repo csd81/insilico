@@ -1028,6 +1028,14 @@ export const CASES: OracleCase[] = [
   // Murty k-best assignment: the K lowest total assignment costs (the costs are the unique invariant;
   // the assignment cells are non-unique under ties).
   { name: 'fusion-assignkbest', src: "cost = [10 5 8; 7 9 6; 4 3 2]; [A, ur, uc, c] = assignkbest(cost, 100, 5); v = double(c(:)');", vars: ['v'], tol: 1e-9, domain: 'optimization', tags: ['assignkbest', 'murty', 'k-best-assignment'] },
+  // Gap-closure: deterministic-math functions that were registered but had no oracle case yet.
+  { name: 'gap-quadrature-deprecated', src: 'v = [quadl(@(x) x.^2, 0, 1) dblquad(@(x,y) x.*y, 0, 1, 0, 1) triplequad(@(x,y,z) x.*y.*z, 0, 1, 0, 1, 0, 1)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['quadl', 'dblquad', 'triplequad', 'quadrature'] },
+  { name: 'gap-elementary', src: 'v = [cospi(0.5) realsqrt(16) height([1 2; 3 4; 5 6]) logspace(0, 2, 3)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['cospi', 'realsqrt', 'height', 'logspace'] },
+  { name: 'gap-perms', src: "P = perms([1 2 3]); v = [size(P,1) reshape(P', 1, [])];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['perms', 'permutations'] },
+  { name: 'gap-linalg', src: "x = linsolve([2 0; 0 4], [2; 8]); c = condeig([2 1; 0 3]); s = subspace([1; 0; 0], [1; 1; 0]); v = [x' c' s];", vars: ['v'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['linsolve', 'condeig', 'subspace'] },
+  { name: 'gap-polydiv', src: '[q, r] = polydiv([1 -3 2], [1 -1]); v = [q r];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['polydiv', 'polynomial-division'] },
+  { name: 'gap-numbertheory', src: 'B = bernsteinMatrix(3, [0 0.5 1]); v = [double(fibonacci(10)) double(nthprime(10)) double(nextprime(20)) double(prevprime(20)) double(B(2,:))];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['fibonacci', 'nthprime', 'nextprime', 'prevprime', 'bernsteinMatrix'] },
+  { name: 'gap-missing', src: 'v = double([allfinite([1 2 Inf]) anymissing([1 NaN 3]) ismissing([1 NaN 3])]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['allfinite', 'anymissing', 'ismissing'] },
 
   // ══════════ statistics (69) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
