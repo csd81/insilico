@@ -189,4 +189,11 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // barycentric round-trip, nearest-neighbor identity, circumcenter equidistance, connectivity
   // counts), never raw vertex/simplex ordering (engines may pick different diagonals). ──
   ...bulkD('needs-oracle', 'invariant', 'geometry', 'delaunayTriangulation triangulation delaunayn pointLocation cartesianToBarycentric barycentricToCartesian nearestNeighbor circumcenter incenter freeBoundary edges neighbors alphaShape boundary'),
+
+  // ── Pass 2I: N-D / shape semantics. shiftdim/ipermute/ndims/repelem are exact; tensorprod
+  // is exact (fixed a shape regression — output was flattened to 2-D instead of [restA,restB]);
+  // pagewise solvers (pagemrdivide/pagemldivide/pagelsqminnorm) validated by residual invariants. ──
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'shiftdim ipermute ndims repelem isequal'),
+  ...bulkD('needs-oracle', 'direct', 'numerical-linear-algebra', 'tensorprod'),
+  ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'pagemrdivide pagemldivide pagelsqminnorm'),
 };

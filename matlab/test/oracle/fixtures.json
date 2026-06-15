@@ -3779,6 +3779,80 @@
       "real": 12
     }
   },
+  "ndi_shiftdim": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        7
+      ],
+      "real": [
+        6,
+        1,
+        0,
+        1,
+        4,
+        1,
+        2
+      ]
+    }
+  },
+  "ndi_permute": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        4,
+        2,
+        3,
+        1,
+        7
+      ]
+    }
+  },
+  "ndi_repelem": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        12
+      ],
+      "real": [
+        1,
+        1,
+        2,
+        2,
+        3,
+        3,
+        10,
+        20,
+        20,
+        20,
+        24,
+        4
+      ]
+    }
+  },
+  "ndi_ndims_squeeze": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        5,
+        4,
+        3,
+        2,
+        3,
+        4
+      ]
+    }
+  },
   "dyn_fixed_point": {
     "x": {
       "class": "double",
@@ -7749,6 +7823,42 @@
         1
       ],
       "real": 1
+    }
+  },
+  "nla_tensorprod": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        10
+      ],
+      "real": [
+        2,
+        3,
+        3,
+        420,
+        2,
+        2,
+        2,
+        2,
+        24,
+        32
+      ]
+    }
+  },
+  "nla_pagesolve": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        0,
+        0,
+        2,
+        2
+      ]
     }
   },
   "num_newton_sqrt2": {

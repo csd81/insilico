@@ -172,7 +172,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (136) ══════════
+  // ══════════ core-language (140) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -309,6 +309,12 @@ export const CASES: OracleCase[] = [
   { name: 'lang-closure-capture-by-value', src: 'a = 1; f = @(x) x + a; a = 2; v = f(5);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['anonymous-function', 'lexical-scoping', 'snapshot-closure'] },
   { name: 'lang-nested-function-handle', src: 'f = @(a) @(x) a*x.^2; g = f(3); v = g(2);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['anonymous-function', 'currying'] },
   { name: 'lang-break-continue', src: 's = 0; for k = 1:10, if k == 3, continue; end; if k == 6, break; end; s = s + k; end; v = s;', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['break', 'continue', 'control-flow'] },
+  // ── Pass 2I: N-D / shape semantics (shiftdim leading-singleton + negative shift, permute/
+  // ipermute round-trip, repelem scalar/per-element/2-D, ndims/squeeze trailing-singleton). ──
+  { name: 'ndi-shiftdim', src: 'A = reshape(1:6, 1, 1, 6); B = shiftdim(A, 2); C = reshape(1:24, 2, 3, 4); [D, nsh] = shiftdim(C); E = shiftdim(C, -1); v = [size(B,1) size(B,2) nsh isequal(D,C) ndims(E) size(E,1) size(E,2)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['shiftdim', 'nd-shape', 'leading-singleton'] },
+  { name: 'ndi-permute', src: 'A = reshape(1:24, 2, 3, 4); P = permute(A, [3 1 2]); Q = ipermute(P, [3 1 2]); v = [size(P) isequal(Q,A) P(2,1,1)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['permute', 'ipermute', 'nd-roundtrip'] },
+  { name: 'ndi-repelem', src: 'a = repelem([1 2 3], 2); b = repelem([10 20], [1 3]); C = repelem([1 2; 3 4], 2, 3); v = [a b numel(C) C(3,4)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['repelem', 'per-element-counts', '2d'] },
+  { name: 'ndi-ndims-squeeze', src: 'A = reshape(1:24, 2, 1, 3, 1, 4); B = squeeze(A); v = [ndims(A) size(A,5) ndims(B) size(B)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['ndims', 'squeeze', 'interior-singletons'] },
 
   // ══════════ dynamical-systems (5) ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },
@@ -450,7 +456,7 @@ export const CASES: OracleCase[] = [
   { name: 'nt-chinese-remainder', src: 'n = [3 5 7]; a = [2 3 2]; N = prod(n); x = 0; for k = 1:numel(n), Nk = N/n(k); t = 0; nt = 1; rr = n(k); nr = mod(Nk, n(k)); while nr ~= 0, q = floor(rr/nr); tmp = t - q*nt; t = nt; nt = tmp; tmp = rr - q*nr; rr = nr; nr = tmp; end; inv = mod(t, n(k)); x = x + a(k)*Nk*inv; end; v = mod(x, N);', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['chinese-remainder-theorem', 'modular-arithmetic'] },
   { name: 'nt-carmichael-fermat-witness', src: 'v = [powermod(2, 10, 341) powermod(2, 340, 341) isprime(341)];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['carmichael', 'fermat-test', 'powermod', 'composite'] },
 
-  // ══════════ numerical-linear-algebra (160) ══════════
+  // ══════════ numerical-linear-algebra (162) ══════════
   { name: 'nla-mldivide', src: 'A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; x = A\\b;', vars: ['x'], domain: 'numerical-linear-algebra' },
   { name: 'nla-det', src: 'd = det([1 2 3; 4 5 6; 7 8 10]);', vars: ['d'], domain: 'numerical-linear-algebra' },
   { name: 'nla-inv', src: 'B = inv([4 3; 6 3]);', vars: ['B'], domain: 'numerical-linear-algebra' },
@@ -611,6 +617,10 @@ export const CASES: OracleCase[] = [
   { name: 'nla-jordan-defective-structure', src: 'A = [2 1 0; 0 2 0; 0 0 3]; J = double(jordan(A)); v = sum(sum(triu(J, 1)));', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['jordan-form', 'defective', 'block-structure'] },
   { name: 'nla-mat-hurwitz-stable', src: 'A = [-1 1; 0 -2]; v = double(all(real(eig(A)) < 0));', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['hurwitz-stable', 'eigenvalue-condition'] },
   { name: 'nla-mat-convergent', src: 'A = [0.5 0.1; 0 0.3]; v = double(max(abs(eig(A))) < 1);', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['convergent-matrix', 'spectral-radius'] },
+  // ── Pass 2I: tensorprod N-D output shape (regression — engine had flattened to 2-D) and
+  // pagewise solvers validated by residual invariants (page order/factorization may differ). ──
+  { name: 'nla-tensorprod', src: "A = reshape(1:24, 2, 3, 4); B = reshape(1:12, 4, 3); C = tensorprod(A, B, 3, 1); D = tensorprod([1 2; 3 4], [5 6; 7 8]); s = tensorprod([1 2 3], [4 5 6], 'all'); v = [size(C) C(2,3,2) size(D) D(2,1,2,2) s];", vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['tensorprod', 'nd-shape', 'contraction', 'outer-product'] },
+  { name: 'nla-pagesolve', src: 'A = cat(3, [2 1; 0 3], [1 0; 2 2]); B = cat(3, [4 5; 6 7], [1 1; 0 2]); X = pagemrdivide(B, A); R1 = max(abs(reshape(pagemtimes(X,A) - B, [], 1))); Y = pagemldivide(A, B); R2 = max(abs(reshape(pagemtimes(A,Y) - B, [], 1))); Ap = cat(3, [1 0; 0 1; 1 1], [2 0; 0 2; 1 0]); Bp = cat(3, [1; 2; 3], [1; 0; 1]); Z = pagelsqminnorm(Ap, Bp); v = [R1 R2 size(Z,1) size(Z,3)];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['pagemrdivide', 'pagemldivide', 'pagelsqminnorm', 'residual-invariant'] },
 
   // ══════════ numerical-methods (28) ══════════
   { name: 'num-newton-sqrt2', src: 'x = 1; for k = 1:20, x = x - (x^2 - 2)/(2*x); end', vars: ['x'], domain: 'numerical-methods' },

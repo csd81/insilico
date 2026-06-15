@@ -7998,12 +7998,15 @@ function tensorProd(A: Mat, B: Mat, opts: Value[]): Mat {
         out[ia + ib * na] = acc;
       }
     }
-    return na === 1 || nb === 1 ? mat(na * nb, 1, out) : mat(na, nb, out);
+    // Output keeps the N-D shape [restA…, restB…] (column-major over it), as MATLAB does;
+    // a fully-contracted pair (both rest empty) collapses to a scalar.
+    const odims = [...restA, ...restB];
+    return makeND(odims.length ? odims : [1, 1], out);
   }
-  // outer product: vec(A) ⊗ vec(B) → (numelA × numelB)
+  // outer product: C(i…,j…) = A(i…) * B(j…) → shape [size(A), size(B)], column-major.
   const out = new Float64Array(A.data.length * B.data.length);
   for (let j = 0; j < B.data.length; j++) for (let i = 0; i < A.data.length; i++) out[i + j * A.data.length] = A.data[i] * B.data[j];
-  return mat(A.data.length, B.data.length, out);
+  return makeND([...da, ...db], out);
 }
 
 // ── Symbolic Math helpers ───────────────────────────────────────────────

@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 935 tests green · 800 MATLAB oracle fixtures ·
-800/800 cases classified across 22 domains.
+**Status (as of this revision):** 941 tests green · 806 MATLAB oracle fixtures ·
+806/806 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -201,14 +201,24 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   parser divergence (documented, not yet fixed): inside `[]`, `vi (expr)` with a space
   before `(` should be two elements (MATLAB whitespace rule) but the engine reads it as
   indexing `vi(expr)`; cases use explicit commas/temps to avoid the ambiguity.
-- **Totals after Pass 2:** 935 tests / 800 fixtures; base/core `uncategorized` 579 → 500.
+- **Pass 2I — N-D / shape semantics:** 6 cases over `shiftdim` (leading-singleton trim +
+  negative shift), `permute`/`ipermute` round-trip, `repelem` (scalar/per-element/2-D),
+  `ndims`/`squeeze` (interior singletons), `tensorprod`, and the pagewise solvers
+  `pagemrdivide`/`pagemldivide`/`pagelsqminnorm` (residual invariants). **Fixed a silent
+  shape bug:** `tensorprod` flattened its result to 2-D (`[6 3]`, `[4 4]`) instead of the
+  N-D `[restA…, restB…]` / `[size(A), size(B)]` MATLAB produces (`[2 3 3]`, `[2 2 2 2]`) —
+  the contracted data was column-major-correct, only the final shape was wrong.
+- **Totals after Pass 2:** 941 tests / 806 fixtures; base/core `uncategorized` 579 → 492.
 
-**The sweep is marked complete.** The goal was never zero `uncategorized` — it was
-*no unvalidated high-risk computational core*. Further base/core validation is
-**demand-driven**: add cases when a course/example needs a specific function, not to
-chase the percentage.
+**The high-risk numerical-linear-algebra sweep is done; the broader core-math/semantics
+triage is not.** The remaining `uncategorized` is *not* dismissed as breadth — most of it
+is core computational math or core MATLAB semantics, and it continues in **prioritized
+passes** (next: 2J interpolation/spline internals → 2K remaining special functions →
+2L struct/cell semantics → 2M bit/integer operators → 2N optimization/solver variants →
+2O stats/data utilities). Genuinely lower-priority tails (display/format, UI-ish helpers,
+table/timetable breadth, VFS/file, compatibility aliases, path/host) stay deferred.
 
-### Remaining base/core backlog (~500 uncategorized)
+### Remaining base/core backlog (~492 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -229,8 +239,9 @@ shape, for demand-driven triage — not a TODO list:
 - **stats / data utilities:** `prctile`/`quantile`/`iqr`/`mad`/`geomean`/`harmmean`/
   `zscore`/`rms`/`normalize`/`rescale`/`detrend`/`smoothdata`; missing-data
   (`rmmissing`/`fillmissing`/`standardizeMissing`/`anynan`).
-- **N-D / shape:** `shiftdim`/`ipermute`/`ndims`/`repelem`/`tensorprod`/`pagemrdivide`/
-  `pagelsqminnorm`.
+- **N-D / shape:** validated in Pass 2I (`shiftdim`/`ipermute`/`ndims`/`repelem`/
+  `tensorprod`/`pagemrdivide`/`pagemldivide`/`pagelsqminnorm`); remainder is `repmat`
+  edge cases and rarely-named reshapers.
 - **struct/cell utilities (~8):** `struct2cell`/`cell2struct`/`structfun`/`orderfields`/…
 - **containers (~5):** `containers.Map`/`dictionary`/`keys`/`values`/`entries`.
 - **graph algorithms, remaining (~29):** `shortestpathtree`/`allpaths`/`allcycles`/
