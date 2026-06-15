@@ -86,7 +86,7 @@ all green. See `pnpm test`.
 
 | Area | Status |
 |---|---|
-| Toolboxes | 15 registered (`matlab/tb/`); only oracle-checked functions. Many per-toolbox functions are stubs and not registered. |
+| Toolboxes | **9 registered** (`matlab/tb/`): comm, control, curvefit, dsp, optim, pde, signal, stats, symbolic — the in-scope numerical/matrix domains. Out-of-scope domain toolboxes (images, mapping, nav, nnet, rl, econ) are **de-registered** (source kept, not exposed at runtime). Within registered toolboxes only a subset of functions is oracle-validated — coverage is per case (`docs/coverage-map.md`), not per toolbox. |
 | Symbolic math (`sym`) | A small exact rule-based CAS — see **[symbolic-boundary.md](symbolic-boundary.md)** for the precise domain of validity. In brief: `diff` is complete; `int` is exact for polynomials/`sqrt`/linear-substitution/by-parts-forms/`1/(x^2+a^2)`/real-pole rational functions/improper bounds, and derivative-divides substitution `int(2x·exp(x^2))` (else unevaluated — no Risch); `limit` does substitution + symbolic & numeric L'Hôpital (else unevaluated — no Gruntz); `solve` does numeric polynomial roots + linear symbolic/literal equations + the quadratic formula with symbolic coefficients; symbolic matrices support `det`/`inv`/`*`/`\` (Cramer). `simplify`/`expand`/`collect`/`factor`/`taylor`/`jacobian`/`hessian`/`matlabFunction`/`laplace` present. Not full Symbolic Toolbox. |
 | Tables / timetables | Construction, variable access, CSV import. Not the full join/groupby surface. |
 | `datetime` / `duration` | Present; not exhaustively covered. |

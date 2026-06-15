@@ -2,11 +2,15 @@
 // tables plus a name→toolbox map. Merged into the global BUILTINS in builtins.ts AFTER which
 // the base entries are spread, so base MATLAB always wins on a name collision (see plan §3).
 //
-// NOTE: only validated, oracle-checked toolbox modules are registered here.
-// Out-of-scope domain toolboxes have been removed to keep the engine focused on numerical
-// analysis and matrix computation: aerospace, antenna/rf, audio, bioinfo, financial/fininst,
-// lidar/radar, textanalytics, vision (earlier), and comm-adjacent/industry domains
-// fixedpoint, fusion, fuzzy, gads, ident, parallel, phased, risk, robotics, wavelet.
+// Registration is limited to in-scope numerical/matrix-computation domains. Out-of-scope
+// domain toolboxes are NOT registered (source kept under matlab/tb/ but not exposed at
+// runtime): aerospace, antenna/rf, audio, bioinfo, financial/fininst, lidar/radar,
+// textanalytics, vision (earlier); fixedpoint, fusion, fuzzy, gads, ident, parallel, phased,
+// risk, robotics, wavelet; and — de-registered as low-value breadth — econ (econometrics),
+// images (image processing), mapping (geodesy), nav (navigation/coord frames), nnet
+// (deep-learning layers/training), rl (reinforcement learning). None of these were used by
+// any oracle case. Within the registered toolboxes individual functions may still be
+// unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per toolbox.
 import type { Builtin } from '../builtins';
 import type { Value } from '../values';
 import type { HelpEntry } from '../help/types';
@@ -15,24 +19,17 @@ import { COMM } from './comm';
 import { CONTROL } from './control';
 import { CURVEFIT } from './curvefit';
 import { DSP } from './dsp';
-import { ECON } from './econ';
-import { IMAGES } from './images';
-import { MAPPING } from './mapping';
-import { NAV } from './nav';
-import { NNET } from './nnet';
 // OPTIM registered for fgoalattain ONLY (no base equivalent); the other 13 builtins are
 // quarantined inside optim.ts (11 duplicate correct base builtins, optimvar/optimproblem stubs).
 import { OPTIM } from './optim';
 import { Pde } from './pde';
-import { RL } from './rl';
 import { SIGNAL } from './signal';
 import { STATS } from './stats';
 import { SYMBOLIC } from './symbolic';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
-  COMM, CONTROL, CURVEFIT, DSP, ECON, IMAGES, MAPPING, NAV, NNET, OPTIM, Pde,
-  RL, SIGNAL, STATS, SYMBOLIC,
+  COMM, CONTROL, CURVEFIT, DSP, OPTIM, Pde, SIGNAL, STATS, SYMBOLIC,
 ];
 
 export const TOOLBOX_BUILTINS: Record<string, Builtin> = {};

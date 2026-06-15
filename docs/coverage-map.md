@@ -124,6 +124,18 @@ Recently closed (multi-output forms now implemented + oracle-validated):
 `[p,S,mu] = polyfit` (centered/scaled), `[L,U,P,Q] = lu` (sparse, `P*A*Q = L*U`),
 `diag` of a symbolic matrix (extract + construct), symbolic polynomial `gcd`.
 
+**Registered toolboxes (9):** comm, control, curvefit, dsp, optim, pde, signal,
+stats, symbolic — the in-scope numerical/matrix domains. Out-of-scope domain
+toolboxes are **de-registered** (source kept under `matlab/tb/`, not exposed at
+runtime) so the "oracle-checked toolbox" claim isn't overstated: images (image
+processing), mapping (geodesy), nav (navigation/coordinate frames), nnet
+(deep-learning layers/training), rl (reinforcement learning), econ (econometrics).
+None were used by any oracle case. Calling them now returns "undefined function",
+matching MATLAB without those toolboxes. Note: registered ≠ validated — within the
+9 toolboxes many functions are still unvalidated core-math candidates (oracle
+coverage is per case, above), and the large unvalidated tails in `signal`/`stats`
+are the next curation target.
+
 ### Validate existing (implemented + oracle-validated)
 All oracle-validated — no validation backlog remains:
 - **Decompositions / matrix functions:** `eig`/`svd`/`qr`/`lu`/`chol`,
