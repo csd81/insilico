@@ -196,4 +196,9 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   ...bulkD('needs-oracle', 'direct', 'core-language', 'shiftdim ipermute ndims repelem isequal'),
   ...bulkD('needs-oracle', 'direct', 'numerical-linear-algebra', 'tensorprod'),
   ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'pagemrdivide pagemldivide pagelsqminnorm'),
+
+  // ── Pass 2J: interpolation / spline internals. pp-structure (mkpp/unmkpp/ppval) + spline/pchip
+  // values; interpolant objects (griddedInterpolant/scatteredInterpolant) + interp2/interp3.
+  // spline 3-point not-a-knot and 2-D 'spline' diverge in representation (values agree) — documented. ──
+  ...bulkD('needs-oracle', 'direct', 'approximation', 'spline pchip mkpp unmkpp ppval griddedInterpolant scatteredInterpolant interp2 interp3'),
 };

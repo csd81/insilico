@@ -22,7 +22,7 @@ export interface OracleCase {
 
 export const CASES: OracleCase[] = [
 
-  // ══════════ approximation (27) ══════════
+  // ══════════ approximation (32) ══════════
   { name: 'approx-polyfit-line', src: 'x = [0 1 2 3 4]; y = 2*x + 1; p = polyfit(x, y, 1);', vars: ['p'], domain: 'approximation' },
   { name: 'approx-polyfit-centered', src: 'x = [0 1 2 3 4]; y = [1 3 7 13 21]; [p, S, mu] = polyfit(x, y, 2); df = S.df; nr = S.normr;', vars: ['p', 'mu', 'df', 'nr'], tol: 1e-6, domain: 'approximation', tags: ['polyfit', 'centered-scaled', 'multi-output'] },
   { name: 'approx-polyval', src: 'v = polyval([1 -3 2], 5);', vars: ['v'], domain: 'approximation' },
@@ -50,6 +50,16 @@ export const CASES: OracleCase[] = [
   { name: 'approx-na-pade-exp', src: "syms x; pp = pade(exp(x), 'Order', [2 2]); v = double(subs(pp, x, 0.5));", vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['pade-approximant', 'rational-approximation'] },
   { name: 'approx-na-bezier-decasteljau', src: 'P = [0 1 3 2]; t = 0.5; while numel(P) > 1, P = (1-t)*P(1:end-1) + t*P(2:end); end; v = P;', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['bezier', 'de-casteljau'] },
   { name: 'approx-na-bspline-deboor', src: "kn = [0 0 0 0 1 2 3 3 3 3]; P = [0 1 3 2 4 5]; pdeg = 3; t = 1.5; k = find(kn <= t, 1, 'last'); k = min(k, numel(P)); d = P(k-pdeg:k); for r = 1:pdeg, for j = pdeg:-1:r, i = k-pdeg+j; al = (t - kn(i))/(kn(i+pdeg-r+1) - kn(i)); d(j+1) = (1-al)*d(j) + al*d(j+1); end; end; v = d(pdeg+1);", vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['b-spline', 'de-boor'] },
+  // ── Pass 2J: interpolation / spline internals. spline pp-structure (np/order/breaks) is locked
+  // only for ≥4 points; the 3-point not-a-knot collapse diverges (MATLAB: 1 piece order 3; engine:
+  // 2 cubic pieces) while values agree — so spline/pchip are otherwise validated by ppval values.
+  // mkpp/unmkpp round-trip uses an explicit pp (no not-a-knot ambiguity). interp2/interp3 locked on
+  // the linear method (the 2-D 'spline' method inherits the 3-point not-a-knot divergence). ──
+  { name: 'interp-spline-ppval', src: 'pp = spline([1 2 3 4 5], [1 4 9 16 25]); [br, co, np, od] = unmkpp(pp); v = [np od numel(br) ppval(pp, [1.5 2.5 3.5 4.5])];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['spline', 'unmkpp', 'ppval', 'pp-structure'] },
+  { name: 'interp-mkpp-unmkpp', src: 'pp = mkpp([0 1 2 3], [1 0 0; 2 0 1; 1 1 0]); [br, co, np, od] = unmkpp(pp); v = [np od numel(br) ppval(pp, [0.5 1.5 2.5])];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['mkpp', 'unmkpp', 'roundtrip', 'ppval'] },
+  { name: 'interp-pchip-vals', src: 'a = pchip([0 1 2 3 4], [0 1 8 27 64], [0.5 1.5 2.5 3.5]); b = ppval(pchip([1 2 3 4], [1 -1 1 -1]), 2.5); v = [a b];', vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['pchip', 'ppval', 'shape-preserving'] },
+  { name: 'interp-gridded-scattered', src: "F = griddedInterpolant([1 2 3 4], [1 4 9 16], 'spline'); G = scatteredInterpolant([0;1;0;1;0.5], [0;0;1;1;0.5], [0;1;1;2;1]); v = [F(2.5) G(0.5,0.5) G(0.25,0.25)];", vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['griddedInterpolant', 'scatteredInterpolant', 'interpolant-objects'] },
+  { name: 'interp-2d-3d', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X.^2 + Y; a = interp2(X, Y, Z, 1.5, 2.5); b = interp2(X, Y, Z, 2.5, 1.5); [X3, Y3, Z3] = meshgrid(1:2, 1:2, 1:2); V = X3 + 2*Y3 + 3*Z3; c = interp3(X3, Y3, Z3, V, 1.5, 1.5, 1.5); v = [a b c];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['interp2', 'interp3', 'gridded-nd'] },
 
   // ══════════ calculus (47) ══════════
   { name: 'cal-limit-oneside-right', src: "syms x; v = sign(double(limit(1/x, x, 0, 'right')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },

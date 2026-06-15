@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 941 tests green · 806 MATLAB oracle fixtures ·
-806/806 cases classified across 22 domains.
+**Status (as of this revision):** 946 tests green · 811 MATLAB oracle fixtures ·
+811/811 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -208,17 +208,28 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   shape bug:** `tensorprod` flattened its result to 2-D (`[6 3]`, `[4 4]`) instead of the
   N-D `[restA…, restB…]` / `[size(A), size(B)]` MATLAB produces (`[2 3 3]`, `[2 2 2 2]`) —
   the contracted data was column-major-correct, only the final shape was wrong.
-- **Totals after Pass 2:** 941 tests / 806 fixtures; base/core `uncategorized` 579 → 492.
+- **Pass 2J — interpolation / spline internals:** 5 cases over `spline`/`pchip`/`ppval`,
+  `mkpp`/`unmkpp` round-trip, `griddedInterpolant`/`scatteredInterpolant`, and
+  `interp2`/`interp3`. The piecewise-polynomial **structure** (pieces/order/breaks) is
+  locked only for ≥4-point splines; the **3-point not-a-knot collapse** diverges in
+  representation (MATLAB returns 1 piece order 3 / breaks `[1 3]`; the engine keeps 2
+  cubic pieces / breaks `[1 2 3]`) while the interpolated **values agree** — so spline/
+  pchip are otherwise validated by `ppval` values, and `interp2`/`interp3` are locked on
+  the linear method (the 2-D `'spline'` method inherits the same not-a-knot divergence).
+  Documented, not a silent bug. `griddatan` declined here — errored in MATLAB R2026a for
+  the probed inputs while the engine was more permissive (not a clean oracle target).
+- **Totals after Pass 2:** 946 tests / 811 fixtures; base/core `uncategorized` 579 → 490.
 
 **The high-risk numerical-linear-algebra sweep is done; the broader core-math/semantics
 triage is not.** The remaining `uncategorized` is *not* dismissed as breadth — most of it
 is core computational math or core MATLAB semantics, and it continues in **prioritized
-passes** (next: 2J interpolation/spline internals → 2K remaining special functions →
-2L struct/cell semantics → 2M bit/integer operators → 2N optimization/solver variants →
-2O stats/data utilities). Genuinely lower-priority tails (display/format, UI-ish helpers,
-table/timetable breadth, VFS/file, compatibility aliases, path/host) stay deferred.
+passes** (done: 2H geometry, 2I N-D/shape, 2J interpolation/spline; next: 2K remaining
+special functions → 2L struct/cell semantics → 2M bit/integer operators → 2N optimization/
+solver variants → 2O stats/data utilities). Genuinely lower-priority tails (display/format,
+UI-ish helpers, table/timetable breadth, VFS/file, compatibility aliases, path/host) stay
+deferred.
 
-### Remaining base/core backlog (~492 uncategorized)
+### Remaining base/core backlog (~490 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -235,7 +246,10 @@ shape, for demand-driven triage — not a TODO list:
 - **solver variants:** `ode23s`/`ode23t`/`ode23tb`/`ode78`/`ode89`, `bvp5c`, `dde*`,
   `pdepe`/`pdeval`; **optimization:** `particleswarm`/`patternsearch`/`simulannealbnd`/
   `lsqnonneg`/`lsqminnorm`.
-- **interpolation / spline:** `mkpp`/`unmkpp`/`csape`/`csapi`/`fn*`/`griddatan`/`interp1q`.
+- **interpolation / spline:** core validated in Pass 2J (`spline`/`pchip`/`ppval`/`mkpp`/
+  `unmkpp`/`griddedInterpolant`/`scatteredInterpolant`/`interp2`/`interp3`); remainder is
+  the Curve-Fitting-Toolbox B-spline helpers `csape`/`csapi`/`fn*` and `interp1q`
+  (`griddatan` declined — errors in MATLAB for the probed inputs).
 - **stats / data utilities:** `prctile`/`quantile`/`iqr`/`mad`/`geomean`/`harmmean`/
   `zscore`/`rms`/`normalize`/`rescale`/`detrend`/`smoothdata`; missing-data
   (`rmmissing`/`fillmissing`/`standardizeMissing`/`anynan`).
