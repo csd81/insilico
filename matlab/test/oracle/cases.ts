@@ -532,6 +532,18 @@ export const CASES: OracleCase[] = [
   { name: 'val-elementary', src: 'v = [nthroot(-8, 3) atan2d(1, 1) sinpi(0.5) nextpow2(100) reallog(exp(2))];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['nthroot', 'atan2d', 'sinpi', 'nextpow2', 'reallog'] },
   { name: 'val-divisors', src: 'v = double(divisors(12));', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['divisors'] },
   { name: 'val-linalg', src: "v = [condest([2 0; 0 4]) norm(funm([1 1; 0 1], @exp) - expm([1 1; 0 1]), 'fro')];", vars: ['v'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['condest', 'funm'] },
+  // Batch 2 of present-but-unreferenced math (46 functions). Excluded: hermiteForm (wrong HNF),
+  // ldexp (engine-only; MATLAB lacks it), bernstein (ambiguous), minpoly/whittakerW (known bugs).
+  { name: 'val-invtrig', src: 'v = [acot(2) asec(2) acsc(2) asinh(1) acosh(2) atanh(0.5) acoth(2) asech(0.5) acsch(1)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['acot', 'asec', 'acsc', 'asinh', 'acosh', 'atanh', 'acoth', 'asech', 'acsch'] },
+  { name: 'val-degtrig', src: 'v = [tand(30) asind(0.5) acotd(1) acscd(2) asecd(2) cscd(30)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['tand', 'asind', 'acotd', 'acscd', 'asecd', 'cscd'] },
+  { name: 'val-elementary2', src: 'v = [log10(1000) log1p(0.5) pow2(3) realpow(2, 3) sinc(0.5)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['log10', 'log1p', 'pow2', 'realpow', 'sinc'] },
+  { name: 'val-elliptic-complete', src: 'v = [double(ellipticCK(0.5)) double(ellipticCE(0.5)) double(ellipticCPi(0.3, 0.5)) double(ellipticNome(0.5))];', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['ellipticCK', 'ellipticCE', 'ellipticCPi', 'ellipticNome'] },
+  { name: 'val-jacobi-elliptic', src: 'v = [double(jacobiCN(0.5, 0.3)) double(jacobiDN(0.5, 0.3)) double(jacobiAM(0.5, 0.3)) double(jacobiSC(0.5, 0.3)) double(jacobiCD(0.5, 0.3)) double(jacobiNC(0.5, 0.3))];', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['jacobiCN', 'jacobiDN', 'jacobiAM', 'jacobiSC', 'jacobiCD', 'jacobiNC'] },
+  // kroneckerDelta/jacobiSymbol/factorIntegerPower excluded: MATLAB requires sym args, the engine
+  // requires double (each errors on the other's type) — no shared oracle src.
+  { name: 'val-special2', src: 'v = [double(ssinint(1)) double(rectangularPulse(0.5)) double(triangularPulse(0.5)) double(signIm(2 + 3i))];', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['ssinint', 'rectangularPulse', 'triangularPulse', 'signIm'] },
+  { name: 'val-linalg2', src: "S = double(smithForm([2 4; 6 8])); L = full(laplacian(graph([1 2 3], [2 3 1]))); C = corr2cov([1 2], [1 0.5; 0.5 1]); v = [S(:)' L(:)' C(:)'];", vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['smithForm', 'laplacian', 'corr2cov'] },
+  { name: 'val-geometry-wrap', src: '[la, lo] = antipode(45, 90); v = [wrapToPi(4) wrapTo180(270) wrapTo360(-90) wrapTo2Pi(7) la lo azimuth(0, 0, 0, 90)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['wrapToPi', 'wrapTo180', 'wrapTo360', 'wrapTo2Pi', 'antipode', 'azimuth'] },
   { name: 'aero-angle-dcm-quat', src: "q = angle2quat(0.1, 0.2, 0.3); D = angle2dcm(0.1, 0.2, 0.3); [a1, a2, a3] = dcm2angle(D); v = [q a1 a2 a3 norm(D*D' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['angle2quat', 'angle2dcm', 'dcm2angle', 'roundtrip', 'orthogonality-invariant'] },
   // Fuzzy membership functions (closed-form, deterministic): triangular/trapezoidal/Gaussian/
   // generalized-bell/sigmoidal evaluated on a shared universe. Restored + registered by allow-list.
