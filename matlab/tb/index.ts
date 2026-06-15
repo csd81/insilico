@@ -25,6 +25,15 @@
 // images (image processing), mapping (geodesy), nnet
 // (deep-learning layers/training), rl (reinforcement learning), pde (PDE-Toolbox object/mesh
 // machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases). None
+// (wavelet + aerospace + econ + fusion + nav + pde are now RESTORED + selectively registered via
+// RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion algebra;
+// econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection fusion;
+// nav: WGS84 geodetic↔ECEF transforms; pde: linear-triangle FEM area-integral assembly assema);
+// images (image processing), mapping (geodesy), nnet
+// (deep-learning layers/training), rl (reinforcement learning); pde's [p,e,t]-mesh FEM
+// area-integral assembly (assema) is now registered, but the PDEModel object/mesh-generation/
+// boundary surface (incl. assemb — needs the legacy text-expression boundary matrix) stays
+// unregistered; curvefit (B-spline object subsystem — base spline/polyfit/interp cover it). None
 // of these were used by any oracle case. Within the registered toolboxes individual functions
 // may still be unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per
 // toolbox.
@@ -51,6 +60,7 @@ import { NAV } from './nav';
 import { FIXEDPOINT } from './fixedpoint';
 import { CURVEFIT } from './curvefit';
 import { FUZZY } from './fuzzy';
+import { Pde } from './pde';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
@@ -63,6 +73,7 @@ export const TOOLBOXES: ToolboxModule[] = [
   FIXEDPOINT,  // restored — only the CORDIC elementary-function math (allow-list below)
   CURVEFIT,    // restored — Franke surface + single-B-spline ppform + spmak/B-form fnval/fnder/fnint
   FUZZY,       // restored — deterministic fuzzy membership functions (allow-list below)
+  Pde,         // restored — linear-triangle FEM area-integral assembly assema (allow-list below)
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -163,6 +174,14 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // generalized-bell/sigmoidal) + discrete defuzzification + the legacy named-MF evaluator. The full
   // FIS/ANFIS rule-base/inference object system stays unregistered.
   fuzzy: new Set(['trimf', 'trapmf', 'gaussmf', 'gbellmf', 'defuzz', 'sigmf', 'evalmf']),
+  // pde: ONLY assema — legacy [p,t]-mesh linear-triangle FEM area-integral assembly of the
+  // stiffness K, mass M and load F for a scalar 2-D PDE (-div(c·grad u)+a·u=f). Exact MATLAB
+  // R2026a parity on a fixed mesh across all numeric coefficient forms (c isotropic/diagonal/
+  // symmetric/full-tensor, scalar a,f). assemb is DECLINED: it consumes the legacy boundary
+  // matrix b, a packed-column encoding whose q/g/h/r entries are ASCII text expressions requiring
+  // a MATLAB expression evaluator the sandbox deliberately lacks — cannot be cleanly oracle-
+  // validated. The PDEModel-object/mesh-generation/assempde/adaptmesh surface stays unregistered.
+  pde: new Set(['assema']),
 };
 
 /** Intentional-duplicate policy. A name implemented in BOTH base and a toolbox is a cross-layer

@@ -232,6 +232,13 @@ Registered toolboxes are limited to in-scope numerical/matrix domains:
   closed-form membership functions only — `trimf`/`trapmf`/`gaussmf`/`gbellmf`/`sigmf`, discrete
   `defuzz` (centroid/bisector/mom/som/lom), and the legacy named-MF evaluator `evalmf`. Exact
   MATLAB parity; the FIS/ANFIS rule-base/inference object system stays unregistered.
+- `pde` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): **only** `assema`,
+  the legacy `[p,t]`-mesh linear-triangle FEM area-integral assembly of stiffness `K`, mass `M`
+  and load `F` for a scalar 2-D PDE `-div(c·grad u)+a·u=f`. Verified to exact MATLAB R2026a parity
+  on a fixed 4-triangle unit-square mesh across all numeric coefficient forms (`c` isotropic /
+  diagonal / symmetric / full 2×2 tensor; scalar `a`,`f`), plus the structural invariants `K=K'`
+  and zero row-sums. `assemb` and the `assempde`/`adaptmesh`/`pdeasmc`/`pdeasmf` /
+  PDEModel-object / mesh-generation surface stay unregistered (see Declined).
 
 **Restored source pool (source-only, NOT registered).** The previously-deleted toolbox source
 files were brought back as a curated pool under `matlab/tb/` (antenna, audio,
@@ -244,6 +251,8 @@ until a function is registered).
 
 Out-of-scope domain toolboxes are de-registered but source is retained under
 `matlab/tb/`: images, mapping, nnet, rl, pde, plus the restored pool above.
+`matlab/tb/`: images, mapping, nnet, rl, curvefit, plus the restored pool above (nav, econ,
+fusion and pde are restored + selectively registered via `RESTORED_TOOLBOX_KEEP`).
 Calling an unregistered function returns "undefined function", matching MATLAB without the
 corresponding toolbox.
 
@@ -462,6 +471,18 @@ locked.)
   normalization, a scale↔frequency map, and a cone-of-influence — convention-heavy and
   not reproducible to tolerance without porting MATLAB's exact Morse construction. The
   related `wfilters`/`centfrq` are validated; `cwt` stays unregistered.
+- `assemb` (PDE Toolbox): real MATLAB R2026a function (`[Q,G,H,R]=assemb(b,p,e)`) but
+  **deliberately declined**. It consumes the legacy boundary-condition matrix `b` — a
+  packed-column encoding where each boundary segment's column is
+  `[N; M; len(q); len(g); len(h); len(r); ASCII(q); ASCII(g); ASCII(h); ASCII(r)]` and the
+  q/g/h/r entries are **text expressions** (e.g. `'0'`, `'sin(x)'`). Reproducing it requires a
+  MATLAB-syntax expression evaluator the sandbox deliberately lacks (the sibling `assema` already
+  declines text-expression coefficients for the same reason). Probed directly: a hand-built `b`
+  with constant Dirichlet `h='1'`,`r='0'` does reproduce MATLAB's `H`/`R` exactly, but there is no
+  convention-independent way to validate the general (inhomogeneous / Neumann) case without the
+  evaluator, so shipping it would be a plausible-but-unverified FEM assembler. Its sibling `assema`
+  (numeric-only coefficients, no text) **is** registered + oracle-validated. `assempde`/`adaptmesh`/
+  `pdeasmc`/`pdeasmf` stay deferred for the same boundary/coefficient-expression dependence.
 - Exact random-output parity: not a valid oracle target.
 
 ## Out Of Scope
