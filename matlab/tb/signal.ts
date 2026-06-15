@@ -1062,10 +1062,9 @@ export const SIGNAL: ToolboxModule = {
     },
     // ── window functions (return L×1 columns, MATLAB convention) ──
     rectwin: (a) => ret(colVec(new Array(Math.max(0, Math.round(asScalar(a[0])))).fill(1))),
-    // hann/hamming/blackman/bartlett are identical to the base builtins — deleted here to avoid
-    // duplicate code (base wins anyway). hanning is KEPT: it genuinely differs (returns the hann
-    // window: zero endpoints), whereas base hanning matches MATLAB's hanning. See DUPLICATE_POLICY.
-    hanning: (a) => window(a, 1, (n, N) => 0.5 - 0.5 * Math.cos((2 * Math.PI * n) / N)),
+    // hann/hamming/blackman/bartlett/hanning are all provided by the base builtins, which match
+    // MATLAB exactly — removed here to avoid duplicate code. (The old signal.hanning was wrong: it
+    // returned the hann window [0 .5 1 .5 0]; MATLAB's hanning(5) is [.25 .75 1 .75 .25], as base does.)
     blackmanharris: (a) => window(a, 1, (n, N) => { const x = (2 * Math.PI * n) / N; return 0.35875 - 0.48829 * Math.cos(x) + 0.14128 * Math.cos(2 * x) - 0.01168 * Math.cos(3 * x); }),
     nuttallwin: (a) => window(a, 1, (n, N) => { const x = (2 * Math.PI * n) / N; return 0.3635819 - 0.4891775 * Math.cos(x) + 0.1365995 * Math.cos(2 * x) - 0.0106411 * Math.cos(3 * x); }),
     flattopwin: (a) => window(a, 1, (n, N) => { const x = (2 * Math.PI * n) / N; return 0.21557895 - 0.41663158 * Math.cos(x) + 0.277263158 * Math.cos(2 * x) - 0.083578947 * Math.cos(3 * x) + 0.006947368 * Math.cos(4 * x); }),

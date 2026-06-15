@@ -212,25 +212,33 @@ describe('functions', () => {
   });
 });
 
-// Function-registry resolution. Identical cross-layer duplicates were deleted from their toolbox
-// modules (base is the single implementation); only genuine divergences keep both copies, with the
-// alternative reachable via the qualified `toolbox.name(...)` call. See DUPLICATE_POLICY.
+// Function-registry resolution. Every cross-layer duplicate was resolved by keeping the single
+// MATLAB-correct implementation (the other copy was byte-identical or outright wrong) — see
+// DUPLICATE_POLICY. These tests pin that the survivors are the right ones.
 describe('function registry', () => {
   it('base implementation answers an unqualified name', async () => {
     const r = await run("v = hamming(4)';");   // base.hamming (the only hamming now)
     expectMat(r.get('v'), { rows: 1, cols: 4, data: [0.08, 0.77, 0.77, 0.08], tol: 1e-2 });
   });
 
-  it('a kept divergent duplicate: base.hanning ≠ signal.hanning, qualified call reaches the toolbox copy', async () => {
-    const b = await run("v = hanning(5)';");    // base = MATLAB hanning (nonzero endpoints)
-    const s = await run("v = signal.hanning(5)';");  // signal = hann window (zero endpoints)
-    expectMat(b.get('v'), { rows: 1, cols: 5, data: [0.25, 0.75, 1, 0.75, 0.25], tol: 1e-9 });
-    expectMat(s.get('v'), { rows: 1, cols: 5, data: [0, 0.5, 1, 0.5, 0], tol: 1e-9 });
+  it('hanning is the MATLAB hanning window (NOT the hann window), and hann/hanning differ', async () => {
+    const hg = await run("v = hanning(5)';");   // MATLAB hanning(5) = [.25 .75 1 .75 .25] (nonzero endpoints)
+    const hn = await run("v = hann(5)';");       // MATLAB hann(5)    = [0 .5 1 .5 0]       (zero endpoints)
+    expectMat(hg.get('v'), { rows: 1, cols: 5, data: [0.25, 0.75, 1, 0.75, 0.25], tol: 1e-9 });
+    expectMat(hn.get('v'), { rows: 1, cols: 5, data: [0, 0.5, 1, 0.5, 0], tol: 1e-9 });
   });
 
-  it('a deduplicated former-duplicate is base-only (toolbox copy removed)', async () => {
+  it('a deduplicated name is base-only (the toolbox copy was removed)', async () => {
     const r = await run("v = signal.hamming(4);");   // hamming was deleted from signal; no longer namespace-addressable
     assert.ok(r.error, 'signal.hamming should no longer resolve (it is base-only now)');
+  });
+
+  it('hypergeom is one polymorphic function: numeric arg → double, symbolic arg → sym', async () => {
+    const n = await run("v = hypergeom([1 2], 3, 0.5);");
+    expectMat(n.get('v'), { rows: 1, cols: 1, data: [1.545177444], tol: 1e-6 });
+    const s = await run("syms x; v = char(hypergeom([1 2], 3, x));");
+    const sv = s.get('v');
+    assert.ok(sv && (sv as { isChar?: boolean }).isChar, 'symbolic hypergeom returns a sym (char-able)');
   });
 
   it('an unregistered restored-toolbox function is not callable', async () => {

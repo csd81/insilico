@@ -890,7 +890,9 @@ export const BUILTINS: Record<string, Builtin> = {
   ellipticCE: ew((mm) => ellipkeFn(1 - mm)[1]),
   ellipticE: async (a) => { if (a.length >= 2) return ret(elementwise(m(a[0]), m(a[1]), (phi, mm) => simpsonInt((t) => Math.sqrt(1 - mm * Math.sin(t) ** 2), 0, phi, 2000))); return ret(map(m(a[0]), (mm) => ellipkeFn(mm)[1])); },
   ellipticF: async (a) => ret(elementwise(m(a[0]), m(a[1]), (phi, mm) => simpsonInt((t) => 1 / Math.sqrt(1 - mm * Math.sin(t) ** 2), 0, phi, 2000))),
-  hypergeom: async (a) => { const as = toArray(m(a[0])); const bs = toArray(m(a[1])); return ret(map(m(a[2]), (x) => hyperPFQ(as, bs, x))); },
+  // hypergeom lives in the Symbolic Math Toolbox in MATLAB (hypergeom.m + @sym/hypergeom.m) — a
+  // single polymorphic function (numeric args → double, sym args → sym). Its symbolic impl already
+  // has a numeric fast-path, so there is no separate base copy; symbolic.hypergeom owns the name.
   jacobiSN: async (a) => { const mm = asScalar(a[1]); return ret(map(m(a[0]), (u) => sncndn(u, 1 - mm)[0])); },
   jacobiCN: async (a) => { const mm = asScalar(a[1]); return ret(map(m(a[0]), (u) => sncndn(u, 1 - mm)[1])); },
   jacobiDN: async (a) => { const mm = asScalar(a[1]); return ret(map(m(a[0]), (u) => sncndn(u, 1 - mm)[2])); },

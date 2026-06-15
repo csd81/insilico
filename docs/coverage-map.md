@@ -224,21 +224,27 @@ validated; coverage is per oracle case.
 
 ### Function registry — cross-layer duplicates
 
-A few names are implemented in both base (`builtins.ts`) and a toolbox. **Base wins by
-default** (it is spread last into `BUILTINS`); a toolbox never silently overwrites base. When a
-duplicate genuinely differs, the toolbox copy stays reachable via the **qualified
-`toolbox.name(...)` call** (e.g. `signal.hanning(5)`). Every cross-layer duplicate is documented
-in `DUPLICATE_POLICY` (`tb/index.ts`) and enforced by **`pnpm registry:audit`**, which fails on
-any undocumented or stale duplicate. The 13 former behaviorally-identical duplicates
-(`bartlett`/`blackman`/`hamming`/`hann`, `dlyap`/`lyap`/`ss2tf`,
-`normcdf`/`normpdf`/`pdist`/`range`/`squareform`) were **deleted from their toolbox modules** —
-base is the single implementation, so they are no longer duplicates. Two genuine divergences
-remain (both kept): `hanning` (base matches MATLAB's symmetric window; `signal.hanning` returns
-the `hann` window) and `hypergeom` (base evaluates the `pFq` series numerically; `symbolic.hypergeom`
-returns a symbolic expression — the interpreter routes a symbolic argument to the symbolic impl
-and numeric arguments to base). Fixed in passing: base `pdist` ignored its distance-metric
-argument (always Euclidean); it now honours `cityblock`/`chebychev`/`minkowski`/`cosine`, matching
-MATLAB. Also fixed: `char(sym)` now returns the expression string (was erroring).
+Some names were once implemented in both base (`builtins.ts`) and a toolbox. **Base wins by
+default** (it is spread last into `BUILTINS`); a toolbox never silently overwrites base. Each
+former duplicate was resolved by probing MATLAB R2026a and keeping the **single implementation
+that matches it** — there are **no cross-layer duplicates left**. `DUPLICATE_POLICY` (`tb/index.ts`)
+and **`pnpm registry:audit`** stay in place to catch any new duplicate that creeps in (the audit
+fails on any undocumented or stale entry). What was resolved:
+
+- **Byte-identical toolbox copies deleted** (base is the single impl): `bartlett`/`blackman`/
+  `hamming`/`hann` (signal), `dlyap`/`lyap`/`ss2tf` (control),
+  `normcdf`/`normpdf`/`pdist`/`range`/`squareform` (stats).
+- **`hanning`** — `signal.hanning` was **wrong** (it returned the `hann` window `[0 .5 1 .5 0]`);
+  MATLAB's `hanning(5)` is `[.25 .75 1 .75 .25]`, which base produces. The wrong copy was deleted.
+- **`hypergeom`** — MATLAB has **one** `hypergeom` (Symbolic Math Toolbox: `hypergeom.m` +
+  `@sym/hypergeom.m`), polymorphic over numeric/symbolic args. The symbolic impl already has a
+  numeric fast-path, so the redundant base copy was deleted; `symbolic.hypergeom` is the single
+  owner and the interpreter dispatches numeric→`double`, sym→`sym` from it.
+
+Fixed in passing: base `pdist` ignored its distance-metric argument (always Euclidean); it now
+honours `cityblock`/`chebychev`/`minkowski`/`cosine`, matching MATLAB. Also fixed: `char(sym)` now
+returns the expression string (was erroring), and the unevaluated symbolic `hypergeom([1, 2], 3, x)`
+prints with MATLAB-style brackets.
 
 The next migration steps (a single `buildRegistry` that owns base + toolbox registration with
 qualified-name resolution and `which -all`/`functionInfo` introspection, then deleting the

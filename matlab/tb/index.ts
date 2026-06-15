@@ -72,7 +72,7 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
   signal: new Set([
     'hilbert', 'findpeaks', 'butter', 'freqz', 'filtfilt', 'fir1',
     'periodogram', 'pwelch', 'spectrogram', 'stft', 'czt', 'dct',
-    'hanning', 'kaiser', 'rectwin', 'triang', 'gausswin',   // hamming/hann/blackman/bartlett removed (identical to base)
+    'kaiser', 'rectwin', 'triang', 'gausswin',   // hamming/hann/hanning/blackman/bartlett removed (base is MATLAB-correct)
     'dftmtx', 'interp', 'levinson', 'overshoot', 'square',
   ]),
   // stats: the 8 core distribution families (cdf/pdf/inv/fit/stat), the validated inference suite,
@@ -114,14 +114,17 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
  *  qualified `toolbox.name(...)` call, and `differs` explains the divergence. */
 export interface DuplicatePolicy { defaultOwner: 'base' | string; sameBehavior: boolean; differs?: string; note?: string; }
 export const DUPLICATE_POLICY: Record<string, DuplicatePolicy> = {
-  // The 13 former same-behavior duplicates (bartlett/blackman/hamming/hann, dlyap/lyap/ss2tf,
-  // normcdf/normpdf/pdist/range/squareform) were deleted from their toolbox modules — base is the
-  // single implementation now, so they are no longer duplicates. Only genuine, kept divergences remain:
-  // ── genuine difference — base is the MATLAB-correct one ──
-  hanning: { defaultOwner: 'base', sameBehavior: false, differs: 'signal.hanning returns the hann window (zero endpoints, symmetric over N-1); base matches MATLAB hanning (symmetric over N+1, nonzero endpoints). Base is correct; the signal copy is shadowed.' },
-  // ── different DOMAINS, dispatched by argument type (both kept; the interpreter routes a symbolic
-  //    argument to the symbolic impl, a numeric argument to the numeric base) ──
-  hypergeom: { defaultOwner: 'base', sameBehavior: false, differs: 'base hypergeom evaluates the pFq series numerically; symbolic.hypergeom returns a symbolic expression. resolveCall routes a sym argument to the symbolic version and numeric arguments to base — they are complementary, not interchangeable.' },
+  // No cross-layer duplicates remain. Every former duplicate was resolved by probing MATLAB and
+  // keeping the SINGLE implementation that matches it (the other copy was either byte-identical or
+  // outright wrong), so there is nothing to choose between:
+  //   • bartlett/blackman/hamming/hann, dlyap/lyap/ss2tf, normcdf/normpdf/pdist/range/squareform —
+  //     toolbox copies were byte-identical to base → deleted; base is the single impl.
+  //   • hanning — the signal copy was WRONG (it returned the hann window); MATLAB's hanning(5) is
+  //     [.25 .75 1 .75 .25], which base produces → signal copy deleted.
+  //   • hypergeom — MATLAB has ONE hypergeom (Symbolic Math Toolbox: hypergeom.m + @sym/hypergeom.m),
+  //     polymorphic over numeric/symbolic args. The symbolic impl already has a numeric fast-path,
+  //     so the redundant base copy was deleted; symbolic.hypergeom is the single owner.
+  // This table (and `pnpm registry:audit`) stays in place to catch any NEW duplicate that creeps in.
 };
 
 export const TOOLBOX_BUILTINS: Record<string, Builtin> = {};
