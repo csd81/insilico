@@ -290,7 +290,7 @@ class Parser {
       case 'ident': return { t: 'ident', name: e.name };
       case 'index': return { t: 'index', target: this.toLValue(e.target), args: e.args };
       case 'cell': return { t: 'cell', target: this.toLValue(e.target), args: e.args };
-      case 'field': return { t: 'field', target: this.toLValue(e.target), name: e.name };
+      case 'field': return { t: 'field', target: this.toLValue(e.target), name: e.name, nameExpr: e.nameExpr };
       default: throw new SyntaxError('invalid assignment target');
     }
   }
@@ -386,6 +386,7 @@ class Parser {
       if (this.atPunct('(')) { e = { t: 'index', target: e, args: this.parseArgList('(', ')') }; continue; }
       if (this.atPunct('{')) { e = { t: 'cell', target: e, args: this.parseArgList('{', '}') }; continue; }
       if (this.atOp('.') && (this.peek(1).kind === 'ident' || this.peek(1).kind === 'kw')) { this.next(); const name = this.next().value; e = { t: 'field', target: e, name }; continue; }   // reserved words (e.g. s.function) are valid field names
+      if (this.atOp('.') && this.peek(1).kind === 'punct' && this.peek(1).value === '(') { this.next(); this.expectPunct('('); const wasM = this.inMatrix; this.inMatrix = false; const nameExpr = this.parseExpr(); this.inMatrix = wasM; this.expectPunct(')'); e = { t: 'field', target: e, nameExpr }; continue; }   // s.(expr) dynamic field
       break;
     }
     return e;

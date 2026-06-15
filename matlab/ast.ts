@@ -15,7 +15,7 @@ export type Expr =
   | { t: 'celllit'; rows: Expr[][] }              // {a b; c d}
   | { t: 'index'; target: Expr; args: Expr[] }    // f(...) — call OR subscript
   | { t: 'cell'; target: Expr; args: Expr[] }     // c{...}
-  | { t: 'field'; target: Expr; name: string }    // s.name
+  | { t: 'field'; target: Expr; name?: string; nameExpr?: Expr }    // s.name or s.(expr)
   | { t: 'anon'; params: string[]; body: Expr; src?: string }   // @(x) expr
   | { t: 'handle'; name: string };                // @name
 
@@ -23,7 +23,7 @@ export type LValue =
   | { t: 'ident'; name: string }
   | { t: 'index'; target: LValue; args: Expr[] }
   | { t: 'cell'; target: LValue; args: Expr[] }
-  | { t: 'field'; target: LValue; name: string };
+  | { t: 'field'; target: LValue; name?: string; nameExpr?: Expr };
 
 export type Stmt =
   | { t: 'expr'; e: Expr; suppressed: boolean }

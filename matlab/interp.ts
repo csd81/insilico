@@ -437,13 +437,14 @@ export class Interpreter implements Env {
     switch (lv.t) {
       case 'ident': scope.vars.set(lv.name, val); return;
       case 'field': {
+        const lvName = lv.name ?? asString(await this.evalExpr(lv.nameExpr!, scope));   // s.(expr) dynamic field
         if (lv.target.t === 'ident') {
           const cur = scope.vars.get(lv.target.name);
-          if (cur && cur.kind === 'gobj') { this.graphics.setAxesProp(lv.name, val); return; }
+          if (cur && cur.kind === 'gobj') { this.graphics.setAxesProp(lvName, val); return; }
           // d.Format = "..." / d.TimeZone = "..." on a datetime: display-only, keep it a datetime.
-          if (cur && isTemporal(cur) && ['format', 'timezone'].includes(lv.name.toLowerCase())) return;
+          if (cur && isTemporal(cur) && ['format', 'timezone'].includes(lvName.toLowerCase())) return;
           const fields = cur && isStruct(cur) ? new Map(cur.fields) : new Map<string, Value[]>();
-          fields.set(lv.name, [val]);
+          fields.set(lvName, [val]);
           scope.vars.set(lv.target.name, { kind: 'struct', rows: 1, cols: 1, fields });
           return;
         }
@@ -464,9 +465,9 @@ export class Interpreter implements Env {
             else st.cols = need;
           }
           const total = st.rows * st.cols;
-          if (!st.fields.has(lv.name)) st.fields.set(lv.name, []);
+          if (!st.fields.has(lvName)) st.fields.set(lvName, []);
           for (const [, arr] of st.fields) { while (arr.length < total) arr.push(empty()); }
-          const farr = st.fields.get(lv.name)!;
+          const farr = st.fields.get(lvName)!;
           for (const idx of lin) farr[idx - 1] = val;
           scope.vars.set(sname, st);
           return;
@@ -475,9 +476,9 @@ export class Interpreter implements Env {
         // lv.target (or treat a missing path as a new struct), set the field, write it back.
         let container: Value | undefined;
         try { container = await this.evalExpr(lv.target as unknown as Expr, scope); } catch { container = undefined; }
-        if (container && container.kind === 'gobj') { this.graphics.setAxesProp(lv.name, val); return; }
+        if (container && container.kind === 'gobj') { this.graphics.setAxesProp(lvName, val); return; }
         const nfields = container && isStruct(container) ? new Map(container.fields) : new Map<string, Value[]>();
-        nfields.set(lv.name, [val]);
+        nfields.set(lvName, [val]);
         const nrows = container && isStruct(container) ? container.rows : 1, ncols = container && isStruct(container) ? container.cols : 1;
         await this.assignLValue(lv.target, { kind: 'struct', rows: nrows || 1, cols: ncols || 1, fields: nfields } as StructV, scope);
         return;
@@ -701,16 +702,17 @@ export class Interpreter implements Env {
       case 'handle': return [this.makeHandle(e.name)];
       case 'field': {
         const t = await this.evalExpr(e.target, scope);
-        if (t.kind === 'gobj') return [gobjProperty(e.name)];
-        if (isStruct(t)) { const vals = t.fields.get(e.name); if (!vals) throw new MatError(`reference to non-existent field '${e.name}'`); return vals.length ? vals : []; }
-        if (isMap(t)) { if (e.name === 'Count') return [scalar(t.store.size)]; if (e.name === 'KeyType') return [makeStr(t.keyKind)]; if (e.name === 'ValueType') return [makeStr(t.valType)]; throw new MatError(`No appropriate method, property, or field '${e.name}' for class 'containers.Map'.`); }
-        if (t.kind === 'graph') return [graphProperty(t, e.name)];
-        if (t.kind === 'geom') return [geomProperty(t, e.name)];
-        if (t.kind === 'quantum') return [quantumProperty(t, e.name)];
-        if (t.kind === 'object') { const p = t.props.get(e.name); if (p === undefined) throw new MatError(`No appropriate method, property, or field '${e.name}' for class '${t.className}'.`); return [p]; }
-        if (t.kind === 'temporal') return [temporalProperty(t, e.name)];
-        if (t.kind === 'table') { const i = t.vars.indexOf(e.name); if (i >= 0) return [t.cols[i]]; if (e.name === 'Properties') return [scalar(0)]; if (t.isTimetable && (e.name === 'Time' || e.name === t.rowDimName) && t.rowTimes) return [t.rowTimes]; throw new MatError(`unrecognized table variable '${e.name}'`); }
-        throw new MatError(`cannot read field '.${e.name}'`);
+        const name = e.name ?? asString(await this.evalExpr(e.nameExpr!, scope));   // s.(expr) dynamic field
+        if (t.kind === 'gobj') return [gobjProperty(name)];
+        if (isStruct(t)) { const vals = t.fields.get(name); if (!vals) throw new MatError(`reference to non-existent field '${name}'`); return vals.length ? vals : []; }
+        if (isMap(t)) { if (name === 'Count') return [scalar(t.store.size)]; if (name === 'KeyType') return [makeStr(t.keyKind)]; if (name === 'ValueType') return [makeStr(t.valType)]; throw new MatError(`No appropriate method, property, or field '${name}' for class 'containers.Map'.`); }
+        if (t.kind === 'graph') return [graphProperty(t, name)];
+        if (t.kind === 'geom') return [geomProperty(t, name)];
+        if (t.kind === 'quantum') return [quantumProperty(t, name)];
+        if (t.kind === 'object') { const p = t.props.get(name); if (p === undefined) throw new MatError(`No appropriate method, property, or field '${name}' for class '${t.className}'.`); return [p]; }
+        if (t.kind === 'temporal') return [temporalProperty(t, name)];
+        if (t.kind === 'table') { const i = t.vars.indexOf(name); if (i >= 0) return [t.cols[i]]; if (name === 'Properties') return [scalar(0)]; if (t.isTimetable && (name === 'Time' || name === t.rowDimName) && t.rowTimes) return [t.rowTimes]; throw new MatError(`unrecognized table variable '${name}'`); }
+        throw new MatError(`cannot read field '.${name}'`);
       }
       case 'cell': return this.evalCellContent(e.target, e.args, scope);
       case 'index': return this.evalIndexOrCall(e, scope, nargout);
@@ -726,12 +728,12 @@ export class Interpreter implements Env {
     }
     // fully-qualified toolbox call, e.g. phased.steervec(...) — addresses a specific owner,
     // bypassing the default precedence pick (MATLAB package-namespace form). Always unambiguous.
-    if (target.t === 'field' && target.target.t === 'ident' && !scope.vars.has(target.target.name)) {
+    if (target.t === 'field' && target.name && target.target.t === 'ident' && !scope.vars.has(target.target.name)) {
       const tb = TOOLBOX_BY_ID.get(target.target.name);
       if (tb && target.name in tb.builtins) { const args = await this.evalArgs(e.args, scope); return tb.builtins[target.name](args, nargout, this); }
     }
     // namespaced builtin call, e.g. containers.Map(...)
-    if (target.t === 'field' && target.target.t === 'ident' && !scope.vars.has(target.target.name)) {
+    if (target.t === 'field' && target.name && target.target.t === 'ident' && !scope.vars.has(target.target.name)) {
       const dotted = `${target.target.name}.${target.name}`;
       if (this.hasCallable(dotted)) { const args = await this.evalArgs(e.args, scope); return this.resolveCall(dotted, args, nargout); }
     }

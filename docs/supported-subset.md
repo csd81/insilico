@@ -7,7 +7,7 @@ intentionally out of scope. It is a contract, not a bug list — items under
 "Intentionally unsupported" are deliberate scope decisions, not defects.
 
 Behavior is mechanically verified against **real MATLAB** via the oracle suite
-(`matlab/test/oracle/`, 912 committed fixtures) plus TS-only tests — 1047 total,
+(`matlab/test/oracle/`, 913 committed fixtures) plus TS-only tests — 1048 total,
 all green. See `pnpm test`. The systematic base/core triage campaign (Pass 2A–2O) is
 complete; further validation is **example/course-driven**. How cases are chosen (oracle
 vs invariant vs TS-only, and when to decline) is documented in
@@ -99,7 +99,7 @@ vs invariant vs TS-only, and when to decline) is documented in
 | `datetime` / `duration` | Present; not exhaustively covered. |
 | `categorical` | Present; basic operations. |
 | N-D arrays | Numeric N-D is solid; N-D **cells/structs** are limited. |
-| Dynamic struct fields | `s.(name)` is **not** parsed; use static `s.field`. `fieldnames` is supported. |
+| Dynamic struct fields | **Supported** — `s.(name)` reads and writes (incl. loop-built field names and nested `s.(f).x`), alongside static `s.field` and `fieldnames`. |
 | `global` | Parsed but treated as a no-op (corpora don't rely on globals). |
 
 ---

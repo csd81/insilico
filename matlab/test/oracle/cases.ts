@@ -217,7 +217,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (155) ══════════
+  // ══════════ core-language (156) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -390,6 +390,9 @@ export const CASES: OracleCase[] = [
   { name: 'named-ops', src: 'v = [plus(2,3) minus(5,2) times(2,3) mtimes(2,3) uplus(4) uminus(4) rdivide(6,2) ldivide(2,6) mpower(2,3)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['plus', 'minus', 'times', 'mtimes', 'uplus', 'uminus', 'rdivide', 'ldivide', 'mpower'] },
   // ── Reciprocal + hyperbolic trig family (and degree variants). All exact. ──
   { name: 'math-trig-recip', src: 'v = [sec(0) csc(pi/2) cot(pi/4) sech(0) csch(1) coth(1) tanh(1) secd(60) cscd(30) cotd(45)];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['sec', 'csc', 'cot', 'sech', 'csch', 'coth', 'tanh', 'secd', 'cscd', 'cotd'] },
+  // ── Dynamic struct field access s.(expr): read, write, loop-built field names, and nested. Newly
+  // implemented (parser + interp); previously a parse error. ──
+  { name: 'lang-dynfield', src: "s.alpha = 5; n = 'alpha'; a = s.(n); m = 'beta'; s.(m) = 7; f = {'a','b','c'}; for i = 1:3, s.(f{i}) = i*10; end; s.inner.x = 9; fn = 'inner'; v = [a s.beta s.a s.b s.c s.(fn).x];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['dynamic-field', 'struct', 's.(name)'] },
 
   // ══════════ dynamical-systems (5) ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },

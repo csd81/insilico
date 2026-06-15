@@ -4464,6 +4464,23 @@
       ]
     }
   },
+  "lang_dynfield": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        5,
+        7,
+        10,
+        20,
+        30,
+        9
+      ]
+    }
+  },
   "dyn_fixed_point": {
     "x": {
       "class": "double",
