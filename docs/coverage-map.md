@@ -11,11 +11,28 @@ Coverage is measured by tagged oracle cases in `matlab/test/oracle/cases.ts`.
 pnpm oracle:coverage
 pnpm oracle:base-audit
 pnpm oracle:audit
+pnpm oracle:functions  # per-function index: cases + aspects + full/partial/untested
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1156 tests green · 1010 MATLAB oracle fixtures ·
-1007/1007 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1157 tests green · 1011 MATLAB oracle fixtures ·
+1011/1011 oracle cases classified across 22 domains.
+
+### Two-layer test model
+
+Oracle cases are validated at two complementary granularities:
+
+1. **Function cases** — a single owner `fn` validated across its *regimes* (`aspect`). The canonical
+   per-function regime checklist lives in `function-coverage.ts` (`REQUIRED_ASPECTS`); a function is
+   **full** only when every required aspect has a case, else **partial** (the missing regime is named),
+   **tested** (cases but no checklist), or **untested** (registered surface, no owning case).
+   `pnpm oracle:functions` inverts the suite into this index and flags duplicate `(fn, aspect)` pairs
+   (allowed if a deliberate extra-regime case, surfaced so accidental re-tests are visible).
+2. **Workflow cases** — cross-function integration (`workflow: [fns…]`), a separate confidence layer
+   kept out of single-function ownership (e.g. a Markov steady-state solved via `eig` vs via `null`).
+
+Ownership is explicit (`fn` on a case) or inferred (`tags` ∩ registry); migrating a case to explicit
+`fn`/`aspect` moves it from the "unattributed" backlog into the precise per-function index.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.

@@ -18,6 +18,19 @@ export interface OracleCase {
   /** Negative test: assert BOTH real MATLAB and the TS interpreter error on this src
    *  (validates the engine fails where MATLAB fails). When set, `vars` is ignored. */
   expectError?: boolean;
+  /** ── Per-function coverage index (additive; see functions.mjs / `pnpm oracle:functions`) ──
+   *  Owner function of a single-function case. When set, the case is attributed to `fn` in the
+   *  per-function index; when unset, ownership is inferred from `tags` ∩ the registry. */
+  fn?: string;
+  /** The regime/behaviour this case validates for its function, e.g. 'complex', 'defective',
+   *  'sparse', 'reconstruction-invariant', 'edge-empty'. Distinct aspects on one `fn` accumulate
+   *  toward its canonical checklist (REQUIRED_ASPECTS in function-coverage.ts). Falls back to the
+   *  technique `tags` (those that are not themselves function names) when unset. A list when one
+   *  case validates several regimes of the same function at once. */
+  aspect?: string | string[];
+  /** Marks a cross-function workflow/integration case; the array lists the functions it exercises.
+   *  Workflows are a SEPARATE confidence layer — kept out of single-function ownership/aspects. */
+  workflow?: string[];
 }
 
 export const CASES: OracleCase[] = [
@@ -547,12 +560,14 @@ export const CASES: OracleCase[] = [
   { name: 'aero-angle-dcm-quat', src: "q = angle2quat(0.1, 0.2, 0.3); D = angle2dcm(0.1, 0.2, 0.3); [a1, a2, a3] = dcm2angle(D); v = [q a1 a2 a3 norm(D*D' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['angle2quat', 'angle2dcm', 'dcm2angle', 'roundtrip', 'orthogonality-invariant'] },
   // Bug-fix validations (these functions were present but wrong before this batch):
   // hermiteForm now computes the row-style HNF (H=U·A, upper-triangular, balanced above-pivot residue).
-  { name: 'val-bugfix-hermiteform', src: 'H1 = hermiteForm([2 4; 6 8]); H2 = hermiteForm([6 1 0; -3 4 2; 9 0 5]); v = [reshape(double(H1), 1, 4) reshape(double(H2), 1, 9)];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['hermiteForm', 'bugfix'] },
-  // minpoly now respects Jordan-block sizes (Krylov dependency), not just distinct eigenvalues.
-  { name: 'val-bugfix-minpoly', src: 'm1 = double(minpoly([2 1 0; 0 2 0; 0 0 3])); m2 = double(minpoly([4 1 0 0; 0 4 1 0; 0 0 4 0; 0 0 0 4])); v = [m1 m2];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['minpoly', 'bugfix'] },
+  { name: 'val-bugfix-hermiteform', src: 'H1 = hermiteForm([2 4; 6 8]); H2 = hermiteForm([6 1 0; -3 4 2; 9 0 5]); v = [reshape(double(H1), 1, 4) reshape(double(H2), 1, 9)];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', fn: 'hermiteForm', aspect: 'square', tags: ['hermiteForm', 'bugfix'] },
+  // minpoly now respects Jordan-block sizes (Krylov dependency), not just distinct eigenvalues —
+  // exercised on both defective (Jordan blocks) and diagonalizable (repeated, semisimple) matrices.
+  { name: 'val-bugfix-minpoly', src: 'm1 = double(minpoly([2 1 0; 0 2 0; 0 0 3])); m2 = double(minpoly([4 1 0 0; 0 4 1 0; 0 0 4 0; 0 0 0 4])); m3 = double(minpoly([2 0 0; 0 2 0; 0 0 3])); v = [m1 m2 m3];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', fn: 'minpoly', aspect: ['defective', 'diagonalizable'], tags: ['minpoly', 'bugfix'] },
   // kummerU/whittakerW now use the stable Euler-integral form (+ upward a-recurrence), fixing the
-  // catastrophic cancellation of the two-M connection formula near integer b.
-  { name: 'val-kummer-whittaker', src: 'v = [double(whittakerW(1, 1, 2)) double(whittakerW(2, 0.5, 3)) double(kummerU(0.5, 3, 2)) double(kummerU(1, 2, 1.5)) double(kummerU(2, 2, 1))];', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['whittakerW', 'kummerU', 'bugfix'] },
+  // catastrophic cancellation of the two-M connection formula. Each validated across its regime axis.
+  { name: 'val-fn-kummeru', src: 'v = [double(kummerU(0.5, 3, 2)) double(kummerU(1, 2, 1.5)) double(kummerU(0.5, 2.5, 1.5)) double(kummerU(2, 1.5, 0.8))];', vars: ['v'], tol: 1e-6, domain: 'calculus', fn: 'kummerU', aspect: ['integer-b', 'noninteger-b'], tags: ['kummerU', 'bugfix'] },
+  { name: 'val-fn-whittakerw', src: 'v = [double(whittakerW(1, 1, 2)) double(whittakerW(0.5, 1.5, 2)) double(whittakerW(2, 0.5, 3)) double(whittakerW(-1, 2, 4))];', vars: ['v'], tol: 1e-6, domain: 'calculus', fn: 'whittakerW', aspect: ['positive-a', 'nonpositive-a'], tags: ['whittakerW', 'bugfix'] },
   // Fuzzy membership functions (closed-form, deterministic): triangular/trapezoidal/Gaussian/
   // generalized-bell/sigmoidal evaluated on a shared universe. Restored + registered by allow-list.
   { name: 'fuzzy-membership', src: "x = 0:0.5:4; v = [trimf(x,[1 2 3]) trapmf(x,[0.5 1.5 2.5 3.5]) gaussmf(x,[1 2]) gbellmf(x,[1.5 2 2]) sigmf(x,[3 2])];", vars: ['v'], tol: 1e-12, domain: 'numerical-methods', tags: ['trimf', 'trapmf', 'gaussmf', 'gbellmf', 'sigmf', 'fuzzy'] },
@@ -644,7 +659,7 @@ export const CASES: OracleCase[] = [
   { name: 'mla-eigenanalysis', src: "A = [4 1; 1 4]; [V, D] = eig(A); recon = norm(A*V - V*D); diagn = norm(V*D/V - A); ev = sort(diag(D))'; v = [ev recon diagn];", vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'eigenanalysis', 'diagonalization', 'reconstruction-invariant'] },
   { name: 'mla-eigen-power', src: 'A = [2 0; 0 5]; x = [1; 1]; for k = 1:50, x = A*x; x = x/norm(x); end; lam = x.\x27*A*x; v = [lam abs(x(1)) abs(x(2))];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'power-iteration', 'dominant-eigenvalue'] },
   { name: 'ala-balancing-chemical', src: "E = [1 0 -1 0; 4 0 0 -2; 0 2 -2 -1]; ns = null(E, 'r'); coef = ns/ns(1); v = [round(coef') norm(E*ns)];", vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'null-space', 'stoichiometry', 'integer-solution'] },
-  { name: 'ala-markov-steady', src: "P = [0.7 0.2; 0.3 0.8]; [V, D] = eig(P); [~, idx] = min(abs(diag(D) - 1)); p = V(:, idx); p = p/sum(p); v = [p' norm(P*p - p) sum(p)];", vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'markov-chain', 'steady-state', 'stationary-distribution'] },
+  { name: 'ala-markov-steady', src: "P = [0.7 0.2; 0.3 0.8]; [V, D] = eig(P); [~, idx] = min(abs(diag(D) - 1)); p = V(:, idx); p = p/sum(p); v = [p' norm(P*p - p) sum(p)];", vars: ['v'], tol: 1e-6, domain: 'linear-algebra', workflow: ['eig', 'diag'], tags: ['course-workflow', 'markov-chain', 'steady-state', 'stationary-distribution'] },
   { name: 'ala-static-forces', src: 'th1 = pi/6; th2 = pi/3; W = 100; A = [-cos(th1) cos(th2); sin(th1) sin(th2)]; b = [0; W]; T = A\\b; v = [T.\x27 norm(A*T - b)];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['course-workflow', 'static-equilibrium', 'linear-system'] },
   { name: 'vec-basics', src: 'u = [3 4 0]; mag = norm(u); uhat = u/mag; ang = atan2(u(2), u(1)); v = [mag uhat ang norm(uhat)];', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['course-workflow', 'vector-magnitude', 'unit-vector', 'orientation'] },
   { name: 'vec-arithmetic', src: 'a = [1 2 3]; b = [4 5 6]; c = [7 8 10]; dp = dot(a, b); cr = cross(a, b); proj = dot(a, b)/dot(b, b)*b; ang = acos(dot(a, b)/(norm(a)*norm(b))); trip = dot(a, cross(b, c)); v = [dp cr proj ang trip];', vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['course-workflow', 'dot', 'cross', 'projection', 'triple-product'] },
@@ -795,7 +810,7 @@ export const CASES: OracleCase[] = [
   { name: 'nla-orth', src: "Q = orth([1 0; 1 0; 0 1]); rr = norm(Q'*Q - eye(size(Q,2)));", vars: ['rr'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['orth'] },
   { name: 'nla-diagonalization-power', src: 'A = [2 1; 1 2]; [V, D] = eig(A); A5 = A^5; err = norm(A^5 - V*D^5/V);', vars: ['A5', 'err'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['diagonalization', 'matrix-power', 'end-to-end'] },
   { name: 'nla-markov-power', src: 'P = [0.9 0.1 0; 0.05 0.9 0.05; 0 0.2 0.8]; pic = [1 0 0]*P^300; resid = norm(pic*P - pic);', vars: ['pic', 'resid'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['markov-chain', 'steady-state', 'end-to-end'] },
-  { name: 'nla-markov-null', src: "P = [0.9 0.1 0; 0.05 0.9 0.05; 0 0.2 0.8]; w = null(P' - eye(3)); pin = (w/sum(w))';", vars: ['pin'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['markov-chain', 'null-space', 'end-to-end'] },
+  { name: 'nla-markov-null', src: "P = [0.9 0.1 0; 0.05 0.9 0.05; 0 0.2 0.8]; w = null(P' - eye(3)); pin = (w/sum(w))';", vars: ['pin'], tol: 1e-6, domain: 'numerical-linear-algebra', workflow: ['null'], tags: ['markov-chain', 'null-space', 'end-to-end'] },
   { name: 'nla-eig-identities', src: 'A = [4 1 0; 1 4 1; 0 1 4]; ev = sort(eig(A)); c1 = abs(sum(ev) - trace(A)); c2 = abs(prod(ev) - det(A));', vars: ['ev', 'c1', 'c2'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['eigenanalysis', 'trace-det-identity', 'end-to-end'] },
   { name: 'nla-matrix-chain', src: "A = [1 2; 3 4]; B = [5 6; 7 8]; C = (A*B + B*A)'; D = inv(A)*B - B*inv(A); s = trace(C) + norm(D, 'fro');", vars: ['s'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['matrix-operations', 'end-to-end'] },
   { name: 'nla-lsq-twoways', src: "t = [0 1 2 3 4]'; y = [1 3 2 5 4]'; A = [ones(5,1) t]; c = A\\y; cn = (A'*A)\\(A'*y); err = norm(c - cn);", vars: ['c', 'err'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['least-squares', 'normal-equations', 'end-to-end'] },
