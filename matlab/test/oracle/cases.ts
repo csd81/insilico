@@ -22,7 +22,7 @@ export interface OracleCase {
 
 export const CASES: OracleCase[] = [
 
-  // ══════════ approximation (33) ══════════
+  // ══════════ approximation (34) ══════════
   { name: 'approx-polyfit-line', src: 'x = [0 1 2 3 4]; y = 2*x + 1; p = polyfit(x, y, 1);', vars: ['p'], domain: 'approximation' },
   { name: 'approx-polyfit-centered', src: 'x = [0 1 2 3 4]; y = [1 3 7 13 21]; [p, S, mu] = polyfit(x, y, 2); df = S.df; nr = S.normr;', vars: ['p', 'mu', 'df', 'nr'], tol: 1e-6, domain: 'approximation', tags: ['polyfit', 'centered-scaled', 'multi-output'] },
   { name: 'approx-polyval', src: 'v = polyval([1 -3 2], 5);', vars: ['v'], domain: 'approximation' },
@@ -63,8 +63,11 @@ export const CASES: OracleCase[] = [
   // ── Demand-driven remainder spline helpers: csape/csapi pp builders + fnval/fnder. On cubic
   // data both recover the exact cubic; the pp-function form (fn*) is the Curve-Fitting interface. ──
   { name: 'interp-csape-csapi-fn', src: 'pp1 = csape([1 2 3 4 5], [1 8 27 64 125]); pp2 = csapi([1 2 3 4 5], [1 8 27 64 125]); d = fnder(pp2); v = [fnval(pp1, 2.5) fnval(pp2, 2.5) fnval(d, 3)];', vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['csape', 'csapi', 'fnval', 'fnder'] },
+  // ── Demand-driven remainder interpolation helpers: quick linear interp, pp integral/break info,
+  // nearest-neighbour search. ──
+  { name: 'interp-helpers', src: "a = interp1q([1;2;3], [1;4;9], 2.5); pp = csapi([1 2 3 4], [1 4 9 16]); q = fnint(pp); ii = fnval(q,3) - fnval(q,1); ord = fnbrk(pp, 'order'); ds = dsearchn([0 0; 1 0; 0 1; 1 1], [0.6 0.4]); v = [a ii ord ds];", vars: ['v'], tol: 1e-6, domain: 'approximation', tags: ['interp1q', 'fnint', 'fnbrk', 'dsearchn'] },
 
-  // ══════════ calculus (53) ══════════
+  // ══════════ calculus (55) ══════════
   { name: 'cal-limit-oneside-right', src: "syms x; v = sign(double(limit(1/x, x, 0, 'right')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-oneside-left', src: "syms x; v = sign(double(limit(1/x, x, 0, 'left')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-removable-oneside', src: "syms x; v = double(limit((x^2-1)/(x-1), x, 1, 'left'));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
@@ -122,6 +125,10 @@ export const CASES: OracleCase[] = [
   { name: 'spec-hypergeom-heaviside-lambertw', src: 'v = double([hypergeom([1 2],3,0.5) heaviside(-1) heaviside(0) heaviside(2) lambertw(1) lambertw(-1,-exp(-1))]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['hypergeom', 'heaviside', 'lambertw', 'branch'] },
   // ── Demand-driven remainder special functions: Hurwitz zeta, polylogarithm, Dirac delta. ──
   { name: 'spec-hurwitz-polylog', src: 'v = double([hurwitzZeta(2,1) hurwitzZeta(2,2) polylog(2,0.5) polylog(2,1) isinf(dirac(0)) dirac(1) dirac(-3)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['hurwitzZeta', 'polylog', 'dirac', 'special-functions'] },
+  // ── Demand-driven remainder special functions: Hankel (besselh), scaled/imag error functions,
+  // Dawson; and inverse-incomplete + exponential-integral family. All match MATLAB. ──
+  { name: 'spec-bessel-erf', src: 'v = double([real(besselh(0,1,1)) imag(besselh(0,1,1)) erfcx(1) erfi(1) dawson(1)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['besselh', 'erfcx', 'erfi', 'dawson'] },
+  { name: 'spec-inverse', src: 'v = double([gammaincinv(0.5,2) betaincinv(0.5,2,3) wrightOmega(1) ei(1) logint(2) sinhint(1) coshint(1)]);', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['gammaincinv', 'betaincinv', 'wrightOmega', 'ei', 'logint', 'sinhint', 'coshint'] },
 
   // ══════════ coding (18) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },
@@ -195,7 +202,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (150) ══════════
+  // ══════════ core-language (151) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -358,6 +365,9 @@ export const CASES: OracleCase[] = [
   // ── Course-workflow integration case: LSB steganography — embed a secret byte's bits into the
   // low bit of a uint8 cover vector and extract it, exercising the typed bit ops end-to-end. ──
   { name: 'ala-steganography', src: 'cover = uint8([100 150 200 50 75 125 175 225]); secret = uint8(181); bits = bitget(secret, 8:-1:1); stego = cover; for k = 1:8, stego(k) = bitset(cover(k), 1, bits(k)); end; ex = uint8(0); for k = 1:8, ex = bitset(ex, 9-k, bitget(stego(k), 1)); end; v = double([ex==secret max(abs(double(stego) - double(cover)))<=1 ex]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['course-workflow', 'steganography', 'lsb', 'bitset', 'bitget'] },
+  // ── Demand-driven remainder shape/array utilities: tolerance-dedupe, linear↔subscript index
+  // conversion, top-k rows, N-D convolution. ──
+  { name: 'shape-utils', src: 'u = uniquetol([1 1.0001 2], 0.01); si = sub2ind([3 3], 2, 3); [r, cc] = ind2sub([3 3], 8); tk = topkrows([3 1; 1 2; 2 5], 2); cv = convn([1 2 3], [1 1]); v = [u si r cc tk(:)\x27 cv];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['uniquetol', 'sub2ind', 'ind2sub', 'topkrows', 'convn'] },
 
   // ══════════ dynamical-systems (5) ══════════
   { name: 'dyn-fixed-point', src: 'x = 1; for k = 1:100, x = cos(x); end', vars: ['x'], tol: 1e-9, domain: 'dynamical-systems', tags: ['fixed-point-iteration'] },
@@ -366,7 +376,7 @@ export const CASES: OracleCase[] = [
   { name: 'dyn-newton-fixed-point', src: 'r = 3.5; x = 0.7; for k = 1:20, fx = r*x*(1-x) - x; fp = r*(1-2*x) - 1; x = x - fx/fp; end; v = x;', vars: ['v'], tol: 1e-7, domain: 'dynamical-systems', tags: ['newton', 'fixed-point', 'continuation'] },
   { name: 'dyn-stable-cycle-period4', src: 'r = 3.5; x = 0.5; for k = 1:1000, x = r*x*(1-x); end; c = zeros(4,1); for k = 1:4, x = r*x*(1-x); c(k) = x; end; v = sort(c);', vars: ['v'], tol: 1e-6, domain: 'dynamical-systems', tags: ['logistic-map', 'period-doubling', 'stable-cycle', 'bifurcation'] },
 
-  // ══════════ fourier (27) ══════════
+  // ══════════ fourier (28) ══════════
   { name: 'dsp-fft', src: 'Y = fft([1 2 3 4]);', vars: ['Y'], tol: 1e-9, domain: 'fourier', tags: ['fft'] },
   { name: 'dsp-conv', src: 'c = conv([1 2 1], [1 1]);', vars: ['c'], tol: 1e-9, domain: 'fourier', tags: ['convolution'] },
   { name: 'dsp-fft-ifft-roundtrip', src: 'x = [1 2 3 4]; y = real(ifft(fft(x)));', vars: ['y'], tol: 1e-9, domain: 'fourier', tags: ['fft', 'ifft', 'roundtrip'] },
@@ -394,6 +404,9 @@ export const CASES: OracleCase[] = [
   { name: 'fourier-fftn', src: 'X = reshape(1:8, 2, 2, 2); Y = fftn(X); Z = ifftn(Y); v = [real(Y(:)).\x27 imag(Y(:)).\x27 norm(Z(:) - X(:))];', vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['fftn', 'ifftn', 'n-d', 'roundtrip-invariant'] },
   { name: 'fourier-ifft2', src: "Y = ifft2([1 2; 3 4]); X = magic(4); r = norm(ifft2(fft2(X)) - X, 'fro'); v = [real(Y(:)).' imag(Y(:)).' r];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['ifft2', 'roundtrip-invariant'] },
   { name: 'fourier-ifftshift', src: 'A = ifftshift([1 2 3 4]); B = ifftshift([1 2; 3 4]); v = [A B(:).\x27];', vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['ifftshift', 'n-d', 'quadrant-swap'] },
+  // ── Spectral estimation (signal toolbox), validated by invariant — peak frequency + output
+  // dimensions, not raw spectra. Fixed: spectrogram ignored a scalar window-length argument. ──
+  { name: 'sig-spectral', src: "x = cos(2*pi*0.1*(0:127)); [pxx, w] = pwelch(x); [~, i] = max(pxx); [S, F] = spectrogram(x, 64, 32, 64, 2*pi); P = abs(S); [~, bn] = max(P(:,1)); st = stft(x, 'Window', hann(64), 'OverlapLength', 32, 'FFTLength', 64); v = [double(abs(w(i)/pi - 0.2) < 0.05) size(S) double(abs(F(bn)/pi - 0.2) < 0.05) size(st)];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['pwelch', 'spectrogram', 'stft', 'peak-frequency-invariant'] },
 
   // ══════════ geometry (17) ══════════
   { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'area'] },
@@ -416,7 +429,7 @@ export const CASES: OracleCase[] = [
   { name: 'xform-roundtrip', src: '[th, rh] = cart2pol(3, 4); [x, y] = pol2cart(th, rh); [az, el, r] = cart2sph(1, 2, 2); [X, Y, Z] = sph2cart(az, el, r); v = [th rh x y az el r X Y Z deg2rad(180) rad2deg(pi)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['cart2pol', 'pol2cart', 'cart2sph', 'sph2cart', 'deg2rad', 'rad2deg', 'roundtrip'] },
   { name: 'geo-remainder', src: 'v = [double(inpolygon(0.5, 0.5, [0 1 1 0], [0 0 1 1])) rectint([0 0 2 2], [1 1 2 2]) polyarea([0 1 1 0], [0 0 1 1])];', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['inpolygon', 'rectint', 'polyarea'] },
 
-  // ══════════ graph (13) ══════════
+  // ══════════ graph (15) ══════════
   { name: 'graph-laplacian', src: 'A = [0 1 0; 1 0 1; 0 1 0]; D = diag(sum(A, 2)); L = D - A; ev = sort(eig(L));', vars: ['ev'], tol: 1e-9, domain: 'graph', tags: ['spectral-graph', 'laplacian'] },
   { name: 'graph-distributed-consensus', src: 'A = [0 1 0 1; 1 0 1 0; 0 1 0 1; 1 0 1 0]; D = diag(sum(A, 2)); L = D - A; W = eye(4) - 0.2*L; x = [1; 2; 3; 4]; for k = 1:200, x = W*x; end', vars: ['x'], tol: 1e-6, domain: 'graph', tags: ['distributed-optimization', 'consensus', 'graph-laplacian'] },
   { name: 'graph-adjacency-powers', src: 'A = [0 1 1; 1 0 1; 1 1 0]; W = A^3;', vars: ['W'], tol: 1e-9, domain: 'graph', tags: ['adjacency', 'walk-counts'] },
@@ -432,6 +445,10 @@ export const CASES: OracleCase[] = [
   // ── Demand-driven remainder graph algorithms, validated by counts (path/tree/cycle order is
   // non-unique): shortestpathtree edge count, allpaths enumeration, allcycles enumeration. ──
   { name: 'graph-paths-cycles', src: 'G = graph([1 2 3], [2 3 4]); tr = shortestpathtree(G, 1); D = digraph([1 1 2], [2 3 3]); P = allpaths(D, 1, 3); C = allcycles(digraph([1 2 3], [2 3 1])); v = [numedges(tr) numel(P) numel(C)];', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['shortestpathtree', 'allpaths', 'allcycles', 'enumeration-count'] },
+  // ── Demand-driven remainder graph structure/traversal. adjacency entries + BFS/DFS visit order
+  // + successors + transitive closure edge count; then cycle detection / subgraph / transreduction. ──
+  { name: 'graph-structure', src: "G = graph([1 2 3], [2 3 4]); A = adjacency(G); b = bfsearch(G, 1)'; d = dfsearch(G, 1)'; D = digraph([1 1 2], [2 3 3]); T = transclosure(D); v = [full(A(1,2)) full(A(2,3)) b d successors(D,1)' numedges(T)];", vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['adjacency', 'bfsearch', 'dfsearch', 'successors', 'transclosure'] },
+  { name: 'graph-more', src: 'G = digraph([1 2 3], [2 3 1]); v = [double(hascycles(G)) numel(cyclebasis(graph([1 2 3], [2 3 1]))) numnodes(subgraph(graph([1 2 3 4], [2 3 4 1]), [1 2 3])) numedges(transreduction(digraph([1 1 2], [2 3 3])))];', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['hascycles', 'cyclebasis', 'subgraph', 'transreduction'] },
 
   // ══════════ linear-algebra (50) ══════════
   { name: 'la-vec-mag-2d', src: 'v = [2 2]; mag = sqrt(v(1)^2 + v(2)^2);', vars: ['mag'], tol: 1e-9, domain: 'linear-algebra' },
@@ -848,7 +865,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-lsqlin-lsqnonlin', src: 'x1 = lsqlin([1 1; 1 -1], [2; 0], [], []); x2 = lsqnonlin(@(x) [x(1)-1; x(2)-2], [0 0]); v = [x1.\x27 x2];', vars: ['v'], tol: 1e-5, domain: 'optimization', tags: ['lsqlin', 'lsqnonlin', 'known-solution'] },
   { name: 'opt-curvefit', src: 'b = lsqcurvefit(@(b,xd) b(1)*xd + b(2), [0 0], [1; 2; 3], [3; 5; 7]); v = round(b);', vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['lsqcurvefit', 'exact-line-recovery'] },
 
-  // ══════════ statistics (64) ══════════
+  // ══════════ statistics (66) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -915,6 +932,11 @@ export const CASES: OracleCase[] = [
   { name: 'ds-normalize-rescale', src: "v = [normalize([1 2 3 4 5]) normalize([1 2 3 4 5], 'range') rescale([1 2 3 4 5], -1, 1)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['normalize', 'rescale', 'min-max'] },
   { name: 'ds-detrend-smooth', src: "v = [detrend([1 2 3 5 5]) smoothdata([1 5 2 8 3], 'movmean', 3)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['detrend', 'smoothdata', 'moving-average'] },
   { name: 'ds-missing', src: "a = rmmissing([1 NaN 3 NaN 5]); b = fillmissing([1 NaN 3 NaN 5], 'linear'); c = standardizeMissing([1 2 -99 4], -99); v = [a b anynan([1 2 NaN]) anynan([1 2 3]) c(1) c(2) isnan(c(3)) c(4)];", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['rmmissing', 'fillmissing', 'standardizeMissing', 'anynan'] },
+  // ── Demand-driven remainder stats/data utilities. corr(x,y) is the scalar cross-correlation
+  // (fixed — it had returned the full 2×2 matrix); mode/movmax/movmin/pdist2/histc/histcounts2/
+  // rmse/corrcov. (meansq declined — not a MATLAB R2026a function.) ──
+  { name: 'ds-corr-mode-mov', src: "c = corr([1 2 3 4]', [2 4 6 9]'); v = [c mode([1 2 2 3 3 3 4]) movmax([1 5 2 8 3], 3) movmin([1 5 2 8 3], 3)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['corr', 'mode', 'movmax', 'movmin'] },
+  { name: 'ds-pdist2-hist', src: 'D = pdist2([0 0; 1 1], [1 0; 0 1]); h = histc([1 2 2 3 4 4 4], 1:4); n2 = histcounts2([1 2 3], [1 2 3], [0 2 4], [0 2 4]); C = [4 2; 2 3]; R = corrcov(C); v = [D(:)\x27 h n2(:)\x27 rmse([1 2 3], [1 2 4]) R(1,2)];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['pdist2', 'histc', 'histcounts2', 'rmse', 'corrcov'] },
 
   // ══════════ symbolic (57) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },

@@ -1242,9 +1242,12 @@ export const SIGNAL: ToolboxModule = {
     spectrogram: (a, nargout) => {
       const x = toArray(m(a[0])), xIm0 = m(a[0]).idata, xIm = xIm0 ? Array.from(xIm0) : null, nx = x.length;
       const isRealX = !xIm0;
-      const winArg = a.length > 1 && isMat(a[1]) && m(a[1]).rows * m(a[1]).cols > 1 ? a[1] : undefined;
+      const winIsVec = a.length > 1 && isMat(a[1]) && !(a[1] as Mat).isChar && m(a[1]).rows * m(a[1]).cols > 1;
+      const winArg = winIsVec ? a[1] : undefined;
+      // A scalar 2nd arg is the window *length* (→ Hamming window of that length), matching MATLAB.
+      const winLen = !winIsVec && a.length > 1 && isMat(a[1]) && !(a[1] as Mat).isChar && m(a[1]).rows * m(a[1]).cols === 1 ? Math.round(asScalar(a[1])) : undefined;
       const nwinDefault = Math.max(2, Math.floor(nx / 4.5));
-      const win = winArg !== undefined ? toArray(m(winArg)) : hammingWin(nwinDefault);
+      const win = winArg !== undefined ? toArray(m(winArg)) : hammingWin(winLen ?? nwinDefault);
       const nwin = win.length;
       const ovGiven = a.length > 2 && isMat(a[2]) && m(a[2]).rows * m(a[2]).cols >= 1;
       const noverlap = ovGiven ? Math.round(asScalar(a[2])) : Math.round(nwin / 2);

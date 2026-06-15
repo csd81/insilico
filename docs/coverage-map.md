@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 998 tests green · 863 MATLAB oracle fixtures ·
-863/863 cases classified across 22 domains.
+**Status (as of this revision):** 1007 tests green · 872 MATLAB oracle fixtures ·
+872/872 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -309,8 +309,19 @@ real MATLAB (with the analytic-solution error as a secondary sanity invariant).
   Vector Arithmetic: magnitude/unit/orientation and dot/cross/projection/triple-product. No new
   functions and no bugs — all reuse already-validated builtins; locked against MATLAB with
   reconstruction/equilibrium residuals as invariants where eigenvectors / null spaces are non-unique.
+- **Batch 4 — fresh-audit remainder sweep (9 cases):** the prioritized high-value tail from a
+  registry re-audit. Spectral estimation `pwelch`/`spectrogram`/`stft` (peak-frequency + output-
+  dimension invariants — the signal toolbox is now 25/25 referenced); special functions `besselh`/
+  `erfcx`/`erfi`/`dawson`/`gammaincinv`/`betaincinv`/`wrightOmega`/`ei`/`logint`/`sinhint`/`coshint`;
+  graph structure/traversal `adjacency`/`bfsearch`/`dfsearch`/`successors`/`transclosure`/`hascycles`/
+  `cyclebasis`/`subgraph`/`transreduction`; interpolation helpers `interp1q`/`fnint`/`fnbrk`/
+  `dsearchn`; stats utilities `corr`/`mode`/`movmax`/`movmin`/`pdist2`/`histc`/`histcounts2`/`rmse`/
+  `corrcov`; shape utilities `uniquetol`/`sub2ind`/`ind2sub`/`topkrows`/`convn`. **Fixed 2 silent
+  bugs:** `corr(x,y)` returned the full 2×2 correlation matrix instead of the scalar cross-correlation;
+  `spectrogram` ignored a scalar window-length argument (fell back to a too-short default window and
+  errored). `meansq` declined — not a MATLAB R2026a function.
 
-### Remaining base/core backlog (~410 uncategorized)
+### Remaining base/core backlog (~371 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -321,8 +332,10 @@ shape, for demand-driven triage — not a TODO list:
 - **special functions, remaining (~40):** Pass 2K validated the orthogonal-polynomial
   families (`legendreP`/`chebyshevT`/`chebyshevU`/`hermiteH`/`laguerreL`/`jacobiP`/
   `gegenbauerC`), `hypergeom`, `zeta`/`dilog`/`psi`, `heaviside`/`lambertw`, and
-  `fresnels`/`fresnelc`/`sinint`/`cosint`/`expint`; the example-driven sweep added
-  `hurwitzZeta`/`polylog`/`dirac`. Remainder: bessel/`ellip*` variants not in Pass 2E.
+  `fresnels`/`fresnelc`/`sinint`/`cosint`/`expint`; the example-driven sweeps added
+  `hurwitzZeta`/`polylog`/`dirac`, `besselh`/`erfcx`/`erfi`/`dawson`, and the inverse-incomplete +
+  exponential-integral family `gammaincinv`/`betaincinv`/`wrightOmega`/`ei`/`logint`/`sinhint`/
+  `coshint`. Remainder: `ellip*` variants not in Pass 2E and `whittakerM/W`/`kummerU`.
 - **elementary math, operators:** `cosh`/`sinh`/`tanh`/`sec`/`csc`/`cot` families,
   `plus`/`minus`/`times`/`mtimes`/`mrdivide`/`power` (operator-named forms, exercised via
   the operators but rarely named). Bit ops (`bitand`/`bitor`/`bitxor`/`bitshift`/`bitget`/
@@ -334,12 +347,15 @@ shape, for demand-driven triage — not a TODO list:
   optimizers `particleswarm`/`patternsearch`/`simulannealbnd` (not deterministic).
 - **interpolation / spline:** core validated in Pass 2J (`spline`/`pchip`/`ppval`/`mkpp`/
   `unmkpp`/`griddedInterpolant`/`scatteredInterpolant`/`interp2`/`interp3`); the example-driven
-  sweep added the pp-function helpers `csape`/`csapi`/`fnval`/`fnder`. Remainder is the rest of
-  the `fn*` family and `interp1q` (`griddatan` declined — errors in MATLAB for the probed inputs).
+  sweeps added the pp-function helpers `csape`/`csapi`/`fnval`/`fnder`/`fnint`/`fnbrk`, plus
+  `interp1q` and `dsearchn`. Remainder is the rest of the `fn*` family and `tsearchn` (`griddatan`
+  declined — errors in MATLAB for the probed inputs).
 - **stats / data utilities:** validated in Pass 2O (`prctile`/`quantile`/`iqr`/`mad`/`geomean`/
   `harmmean`/`zscore`/`rms`/`normalize`/`rescale`/`detrend`/`smoothdata` + missing-data
-  `rmmissing`/`fillmissing`/`standardizeMissing`/`anynan`). Remainder is table/timetable-bound
-  grouping/summary helpers (`groupsummary`/`grpstats`/…) and `trimmean` (not implemented).
+  `rmmissing`/`fillmissing`/`standardizeMissing`/`anynan`); the fresh-audit sweep added `corr`
+  (scalar form fixed), `mode`/`movmax`/`movmin`/`pdist2`/`histc`/`histcounts2`/`rmse`/`corrcov`.
+  Remainder is table/timetable-bound grouping/summary helpers (`groupsummary`/`grpstats`/…);
+  `trimmean`/`meansq` declined (not MATLAB R2026a functions).
 - **N-D / shape:** validated in Pass 2I (`shiftdim`/`ipermute`/`ndims`/`repelem`/
   `tensorprod`/`pagemrdivide`/`pagemldivide`/`pagelsqminnorm`); remainder is `repmat`
   edge cases and rarely-named reshapers.
@@ -347,8 +363,10 @@ shape, for demand-driven triage — not a TODO list:
   `struct2cell`/`cell2struct`/`fieldnames`/`rmfield`/`isfield`/`orderfields`/`setfield`/
   `getfield`/`structfun`); remainder is display/`disp`-style and table-bridging helpers.
 - **containers (~5):** `containers.Map`/`dictionary`/`keys`/`values`/`entries`.
-- **graph algorithms, remaining (~26):** the example-driven sweep added `shortestpathtree`/
-  `allpaths`/`allcycles`; remainder is `bctree`/`biconncomp`/… (core graph already validated).
+- **graph algorithms, remaining (~16):** the example-driven sweeps added `shortestpathtree`/
+  `allpaths`/`allcycles`, then `adjacency`/`bfsearch`/`dfsearch`/`successors`/`transclosure`/
+  `hascycles`/`cyclebasis`/`subgraph`/`transreduction`; remainder is `bctree`/`biconncomp`/
+  `incidence`/`predecessors`/… (core graph already validated).
 - **sparse remainder, geometry remainder:** the example-driven sweep added `sprank`/`colperm`/
   `symamd` (sparse) and `inpolygon`/`rectint`/`polyarea` + coordinate transforms `cart2pol`/
   `pol2cart`/`cart2sph`/`sph2cart`/`deg2rad`/`rad2deg` (geometry). Remainder is the polyshape/

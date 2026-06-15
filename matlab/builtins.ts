@@ -2941,8 +2941,23 @@ export const BUILTINS: Record<string, Builtin> = {
     return ret(bool(true));
   },
   corr: async (a) => {
-    let X = m(a[0]); if (a.length >= 2) X = horzcat([colvecOf(X), colvecOf(m(a[1]))]);
-    const C = covMatrix(X); const p = C.rows; const R = zeros(p, p);
+    if (a.length >= 2) {
+      // corr(X,Y): columns are variables; result(i,j) = Pearson corr of X(:,i) with Y(:,j).
+      // Vector inputs (either orientation) are treated as a single variable → scalar.
+      let X = m(a[0]), Y = m(a[1]);
+      if ((X.rows === 1 || X.cols === 1) && (Y.rows === 1 || Y.cols === 1)) { X = colvecOf(X); Y = colvecOf(Y); }
+      const n = X.rows, px = X.cols, py = Y.cols;
+      const colMean = (M: Mat, j: number) => { let s = 0; for (let k = 0; k < M.rows; k++) s += M.data[k + j * M.rows]; return s / M.rows; };
+      const mx = Array.from({ length: px }, (_, j) => colMean(X, j)), my = Array.from({ length: py }, (_, j) => colMean(Y, j));
+      const R = zeros(px, py);
+      for (let i = 0; i < px; i++) for (let j = 0; j < py; j++) {
+        let sxy = 0, sxx = 0, syy = 0;
+        for (let k = 0; k < n; k++) { const dx = X.data[k + i * n] - mx[i], dy = Y.data[k + j * n] - my[j]; sxy += dx * dy; sxx += dx * dx; syy += dy * dy; }
+        R.data[i + j * px] = sxy / Math.sqrt(sxx * syy);
+      }
+      return ret(R);
+    }
+    const C = covMatrix(m(a[0])); const p = C.rows; const R = zeros(p, p);
     for (let i = 0; i < p; i++) for (let j = 0; j < p; j++) R.data[i + j * p] = C.data[i + j * p] / Math.sqrt(C.data[i + i * p] * C.data[j + j * p]);
     return ret(R);
   },

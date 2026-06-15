@@ -230,4 +230,13 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   ...bulkD('needs-oracle', 'direct', 'approximation', 'csape csapi fnval fnder'),
   ...bulkD('needs-oracle', 'direct', 'graph', 'shortestpathtree allpaths allcycles numedges'),
   ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'sprank colperm symamd'),
+
+  // ── Demand-driven remainder, fresh-audit follow-up. Fixed two base/toolbox bugs en route:
+  // corr(x,y) returned a 2×2 matrix instead of the scalar cross-correlation; spectrogram ignored a
+  // scalar window-length argument. (pwelch/spectrogram/stft are signal-toolbox, validated by case.) ──
+  ...bulkD('needs-oracle', 'direct', 'calculus', 'besselh erfcx erfi dawson gammaincinv betaincinv wrightOmega ei logint sinhint coshint'),
+  ...bulkD('needs-oracle', 'direct', 'graph', 'adjacency bfsearch dfsearch successors transclosure hascycles cyclebasis subgraph transreduction numnodes'),
+  ...bulkD('needs-oracle', 'direct', 'approximation', 'interp1q fnint fnbrk dsearchn'),
+  ...bulkD('needs-oracle', 'direct', 'statistics', 'corr mode movmax movmin pdist2 histc histcounts2 rmse corrcov'),
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'uniquetol sub2ind ind2sub topkrows convn'),
 };
