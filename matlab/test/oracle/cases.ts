@@ -516,6 +516,12 @@ export const CASES: OracleCase[] = [
   // Extend registered toolboxes with more verified deterministic functions (existing source).
   { name: 'tb-fuzzy-mfs2', src: 'v = [pimf([0 1 2 3 4], [1 2 3 4]) smf([0 1 2 3 4], [1 3]) zmf([0 1 2 3 4], [1 3]) dsigmf([0 1 2 3], [5 1 5 3]) psigmf([0 1 2 3], [5 1 -5 3]) gauss2mf([0 1 2 3], [1 0 1 2])];', vars: ['v'], tol: 1e-6, domain: 'numerical-methods', tags: ['pimf', 'smf', 'zmf', 'dsigmf', 'psigmf', 'gauss2mf', 'membership-function'] },
   { name: 'tb-econ-mapping2', src: "L = lagmatrix([1 2 3 4 5]', [1 2]); Lf = L(~isnan(L)); v = [Lf' nm2deg(60) km2sm(1.609344)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['lagmatrix', 'nm2deg', 'km2sm', 'unit-conversion'] },
+  // Close the validation gap for present-but-unreferenced deterministic math functions.
+  { name: 'val-special-numtheory', src: 'v = [double(igamma(2, 1.5)) double(pochhammer(3, 4)) double(harmonic(5)) double(eulerPhi(12)) double(bernoulli(4)) double(euler(4))];', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['igamma', 'pochhammer', 'harmonic', 'eulerPhi', 'bernoulli', 'euler'] },
+  { name: 'val-elliptic', src: 'v = [double(ellipticF(0.5, 0.3)) double(ellipticPi(0.3, 0.5)) double(jacobiSN(0.5, 0.3))];', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['ellipticF', 'ellipticPi', 'jacobiSN'] },
+  { name: 'val-elementary', src: 'v = [nthroot(-8, 3) atan2d(1, 1) sinpi(0.5) nextpow2(100) reallog(exp(2))];', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['nthroot', 'atan2d', 'sinpi', 'nextpow2', 'reallog'] },
+  { name: 'val-divisors', src: 'v = double(divisors(12));', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['divisors'] },
+  { name: 'val-linalg', src: "v = [condest([2 0; 0 4]) norm(funm([1 1; 0 1], @exp) - expm([1 1; 0 1]), 'fro')];", vars: ['v'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['condest', 'funm'] },
   { name: 'aero-angle-dcm-quat', src: "q = angle2quat(0.1, 0.2, 0.3); D = angle2dcm(0.1, 0.2, 0.3); [a1, a2, a3] = dcm2angle(D); v = [q a1 a2 a3 norm(D*D' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['angle2quat', 'angle2dcm', 'dcm2angle', 'roundtrip', 'orthogonality-invariant'] },
   // Fuzzy membership functions (closed-form, deterministic): triangular/trapezoidal/Gaussian/
   // generalized-bell/sigmoidal evaluated on a shared universe. Restored + registered by allow-list.
