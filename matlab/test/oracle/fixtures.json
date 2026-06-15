@@ -927,6 +927,101 @@
       ]
     }
   },
+  "coding_conversions": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        9
+      ],
+      "real": [
+        5,
+        1,
+        0,
+        1,
+        15,
+        1,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "coding_cyclpoly_rsgen": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        9
+      ],
+      "real": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        3,
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "coding_gen2par_weight": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        11
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+        0,
+        1,
+        2
+      ]
+    }
+  },
+  "coding_utils": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        1,
+        2,
+        3,
+        1,
+        -2
+      ]
+    }
+  },
+  "coding_vec2mat": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        3
+      ],
+      "real": [
+        1,
+        4,
+        2,
+        5,
+        3,
+        6
+      ]
+    }
+  },
   "cplx_complex_mul": {
     "z": {
       "class": "double",

@@ -94,7 +94,7 @@ export const CASES: OracleCase[] = [
   { name: 'cal-subst-nested', src: 'syms x; v = double(int(cos(x)*exp(sin(x)), 0, pi/2));', vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
   { name: 'cal-cumtrapz', src: 'v = cumtrapz([1 2 3 4]);', vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['cumtrapz', 'cumulative-integral'] },
 
-  // ══════════ coding (13) ══════════
+  // ══════════ coding (18) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },
   { name: 'coding-hammgen', src: '[H, G, n, k] = hammgen(3); v = [n k size(H, 1)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['hamming-code', 'parity-check', 'error-correction'] },
   { name: 'coding-biterr', src: '[num, rate] = biterr([1 0 1 1], [1 1 1 0]); v = [num rate];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['bit-error-rate', 'biterr'] },
@@ -108,6 +108,11 @@ export const CASES: OracleCase[] = [
   { name: 'coding-gf-minimal-polynomial', src: "p = primpoly(4, 'min', 'nodisplay'); m = gfminpol([1 2], 4); v = [p; m(:, end)];", vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'primitive-polynomial', 'minimal-polynomial'] },
   { name: 'coding-gf-arithmetic', src: 'v = [gfadd([1 0 1], [1 1 0], 2) gfmul([1 2 3], [2 3 4], 5) gfsub([3 1], [1 2], 5) gfdiv([4 2], [2 1], 5)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf-arithmetic', 'gfadd', 'gfmul', 'gfsub', 'gfdiv'] },
   { name: 'coding-gfconv-rank', src: 'v = [gfconv([1 1 1], [1 1], 2) gfrank([1 0; 1 1; 0 1], 2)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gfconv', 'gfrank', 'polynomial-multiply'] },
+  { name: 'coding-conversions', src: 'v = [bi2de([1 0 1]) de2bi(5) oct2dec(17) oct2poly(13)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['bi2de', 'de2bi', 'oct2dec', 'oct2poly', 'base-conversion'] },
+  { name: 'coding-cyclpoly-rsgen', src: 'v = double([cyclpoly(7, 4) rsgenpolycoeffs(7, 3)]);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['cyclpoly', 'rsgenpolycoeffs', 'generator-polynomial'] },
+  { name: 'coding-gen2par-weight', src: 'G = [1 0 0 1 1; 0 1 0 1 0; 0 0 1 0 1]; H = gen2par(G); v = [H(:).\x27 gfweight(G)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['gen2par', 'gfweight', 'parity-check', 'minimum-distance'] },
+  { name: 'coding-utils', src: 'v = [gftrunc([1 2 3 0 0]) symerr([1 2 3 4], [1 0 3 4]) finddelay([0 0 1 2 3], [1 2 3 0 0])];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['gftrunc', 'symerr', 'finddelay'] },
+  { name: 'coding-vec2mat', src: 'v = vec2mat([1 2 3 4 5 6], 3);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['vec2mat', 'reshape'] },
 
   // ══════════ complex-arithmetic (14) ══════════
   { name: 'cplx-complex-mul', src: 'z = (1+2i) * (3-1i);', vars: ['z'], domain: 'complex-arithmetic' },
