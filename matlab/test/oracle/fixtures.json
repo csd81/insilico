@@ -846,6 +846,50 @@
       "real": 0
     }
   },
+  "coding_convenc_trellis": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        9
+      ],
+      "real": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "coding_cyclic_orthogonality": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "coding_gf_minimal_polynomial": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        19,
+        1,
+        1
+      ]
+    }
+  },
   "cplx_complex_mul": {
     "z": {
       "class": "double",
@@ -1123,6 +1167,47 @@
         1
       ],
       "real": 81.71887200158994
+    }
+  },
+  "ctrl_controllability_observability": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        2
+      ]
+    }
+  },
+  "ctrl_care_residual": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        3.4084534030863745e-16,
+        0.23606797749978967,
+        0.2360679774997896
+      ]
+    }
+  },
+  "ctrl_dare_residual": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        4.484865596051784e-15,
+        0.4220824403854539,
+        1.243928853903714
+      ]
     }
   },
   "lang_colon_range": {
@@ -4146,6 +4231,49 @@
       "real": 1.22
     }
   },
+  "ml_softmax_regression_gradient": {
+    "v": {
+      "class": "double",
+      "size": [
+        5,
+        1
+      ],
+      "real": [
+        0.8182352739946369,
+        -0.2581684162986369,
+        -0.36640262376756244,
+        0.2581684162986369,
+        0.36640262376756244
+      ]
+    }
+  },
+  "ml_gaussian_process_posterior": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        0.661667575007564,
+        0.035020486661309636
+      ]
+    }
+  },
+  "ml_svm_dual_margin": {
+    "v": {
+      "class": "double",
+      "size": [
+        3,
+        1
+      ],
+      "real": [
+        0.5000000045801555,
+        0.5000000045801555,
+        0.9999999908396892
+      ]
+    }
+  },
   "nls_newton_system": {
     "x": {
       "class": "double",
@@ -4262,6 +4390,51 @@
         3,
         3,
         5
+      ]
+    }
+  },
+  "nt_primes_list": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        10
+      ],
+      "real": [
+        2,
+        3,
+        5,
+        7,
+        11,
+        13,
+        17,
+        19,
+        23,
+        29
+      ]
+    }
+  },
+  "nt_chinese_remainder": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 23
+    }
+  },
+  "nt_carmichael_fermat_witness": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1,
+        1,
+        0
       ]
     }
   },
@@ -8662,6 +8835,46 @@
         1
       ],
       "real": 1
+    }
+  },
+  "topo_betti_disconnected_graph": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        3,
+        0
+      ]
+    }
+  },
+  "topo_betti_square_cycle": {
+    "v": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        1,
+        1
+      ]
+    }
+  },
+  "topo_filtration_components": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        3,
+        2,
+        1
+      ]
     }
   }
 }

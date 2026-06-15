@@ -94,7 +94,7 @@ export const CASES: OracleCase[] = [
   { name: 'cal-subst-nested', src: 'syms x; v = double(int(cos(x)*exp(sin(x)), 0, pi/2));', vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
   { name: 'cal-cumtrapz', src: 'v = cumtrapz([1 2 3 4]);', vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['cumtrapz', 'cumulative-integral'] },
 
-  // ══════════ coding (8) ══════════
+  // ══════════ coding (11) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },
   { name: 'coding-hammgen', src: '[H, G, n, k] = hammgen(3); v = [n k size(H, 1)];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['hamming-code', 'parity-check', 'error-correction'] },
   { name: 'coding-biterr', src: '[num, rate] = biterr([1 0 1 1], [1 1 1 0]); v = [num rate];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['bit-error-rate', 'biterr'] },
@@ -103,6 +103,9 @@ export const CASES: OracleCase[] = [
   { name: 'coding-gf2-divide', src: '[q, r] = gfdeconv([1 0 0 1], [1 1]); v = [q r];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['gf2', 'polynomial-division', 'gfdeconv'] },
   { name: 'coding-hamming-syndrome', src: "[H, G] = hammgen(3); c = mod(G(1,:), 2); e = zeros(1,7); e(3) = 1; r = mod(c + e, 2); v = mod(H*r', 2)';", vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['hamming-code', 'syndrome', 'error-detection'] },
   { name: 'coding-generator-paritycheck', src: "[H, G] = hammgen(3); v = sum(sum(mod(G*H', 2)));", vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['generator-matrix', 'parity-check', 'orthogonality'] },
+  { name: 'coding-convenc-trellis', src: 'tr = poly2trellis(3, [7 5]); y = convenc([1 0 1 1], tr); [ok, msg] = istrellis(tr); v = [y ok];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['convolutional-code', 'trellis', 'convenc', 'istrellis'] },
+  { name: 'coding-cyclic-orthogonality', src: "[H, G] = cyclgen(7, [1 0 1 1]); v = sum(sum(mod(G*H', 2)));", vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['cyclic-code', 'parity-check', 'generator-matrix', 'orthogonality'] },
+  { name: 'coding-gf-minimal-polynomial', src: "p = primpoly(4, 'min', 'nodisplay'); m = gfminpol([1 2], 4); v = [p; m(:, end)];", vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'primitive-polynomial', 'minimal-polynomial'] },
 
   // ══════════ complex-arithmetic (14) ══════════
   { name: 'cplx-complex-mul', src: 'z = (1+2i) * (3-1i);', vars: ['z'], domain: 'complex-arithmetic' },
@@ -120,7 +123,7 @@ export const CASES: OracleCase[] = [
   { name: 'cplx-complex-sort', src: 'x = sort([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
   { name: 'cplx-complex-max-mag', src: 'x = max([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
 
-  // ══════════ control (11) ══════════
+  // ══════════ control (14) ══════════
   { name: 'ctrl-tf-dcgain', src: 'v = dcgain(tf(4, [1 3 2]));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['tf', 'dcgain'] },
   { name: 'ctrl-zpk-dcgain', src: 'v = dcgain(zpk([], [-1 -1], 3));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['zpk', 'dcgain'] },
   { name: 'ctrl-ss-dcgain', src: 'v = dcgain(ss([0 1; -1 -2], [0; 1], [1 0], 0));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['ss', 'state-space', 'dcgain'] },
@@ -132,6 +135,9 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lqr-gain', src: 'K = lqr([0 1; 0 0], [0; 1], eye(2), 1); v = K;', vars: ['v'], tol: 1e-4, domain: 'control', tags: ['lqr', 'optimal-control'] },
   { name: 'ctrl-bode-magnitude', src: '[mag, ph] = bode(tf(1, [1 1]), 1); v = mag;', vars: ['v'], tol: 1e-6, domain: 'control', tags: ['bode', 'frequency-response'] },
   { name: 'ctrl-margin-phase', src: '[Gm, Pm] = margin(tf(5, [1 3 2])); v = Pm;', vars: ['v'], tol: 1e-3, domain: 'control', tags: ['margin', 'phase-margin', 'stability'] },
+  { name: 'ctrl-controllability-observability', src: 'A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; v = [rank(ctrb(A, B)) rank(obsv(A, C))];', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['controllability', 'observability', 'state-space'] },
+  { name: 'ctrl-care-residual', src: "A = [0 1; -2 -3]; B = [0; 1]; Q = eye(2); R = 1; [X, L, G] = care(A, B, Q, R); r = norm(A'*X + X*A - X*B*(R\\B')*X + Q); v = [r; G(:)];", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['care', 'riccati', 'residual-invariant', 'lqr'] },
+  { name: 'ctrl-dare-residual', src: "A = [1 1; 0 1]; B = [0; 1]; Q = eye(2); R = 1; [X, L, G] = dare(A, B, Q, R); r = norm(X - (A'*X*A - A'*X*B*((R + B'*X*B)\\(B'*X*A)) + Q)); v = [r; G(:)];", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['dare', 'riccati', 'residual-invariant', 'dlqr'] },
 
   // ══════════ core-language (128) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
@@ -353,7 +359,7 @@ export const CASES: OracleCase[] = [
   { name: 'la-mat-rotation', src: "th = 0.5; R = [cos(th) -sin(th); sin(th) cos(th)]; v = [norm(R'*R - eye(2)) det(R)];", vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['rotation-matrix', 'special-orthogonal'] },
   { name: 'la-mat-gram-psd', src: "A = [1 2; 3 4]; G = A'*A; v = double(all(eig(G) >= -1e-9));", vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['gram-matrix', 'positive-semidefinite'] },
 
-  // ══════════ machine-learning (7) ══════════
+  // ══════════ machine-learning (10) ══════════
   { name: 'ml-kmeans-lloyd', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; C = [1 1; 5 7]; for it = 1:10, d1 = sum((X - C(1,:)).^2, 2); d2 = sum((X - C(2,:)).^2, 2); a = d2 < d1; C(1,:) = mean(X(~a,:)); C(2,:) = mean(X(a,:)); end; v = sort(C(:,1));", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['k-means', 'lloyd', 'clustering', 'fixed-init'] },
   { name: 'ml-kmeans-builtin', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; [idx, C, sumd] = kmeans(X, 2, 'Start', [1 1; 5 7]); v = [sort(C(:,1)).' sum(sumd)];", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['kmeans', 'clustering', 'deterministic-start'] },
   { name: 'ml-knnsearch', src: "[idx, d] = knnsearch([0 0; 1 1; 2 2; 3 3], [0.9 0.9], 'K', 2);", vars: ['idx', 'd'], tol: 1e-6, domain: 'machine-learning', tags: ['knnsearch', 'nearest-neighbor', 'euclidean'] },
@@ -361,6 +367,9 @@ export const CASES: OracleCase[] = [
   { name: 'ml-rbf-kernel', src: "X = [0; 1; 2]; g = 0.5; D = (X - X').^2; K = exp(-g*D); v = K(:,2);", vars: ['v'], tol: 1e-7, domain: 'machine-learning', tags: ['rbf-kernel', 'gaussian-kernel', 'kernel-matrix'] },
   { name: 'ml-kernel-ridge', src: "X = [0; 1; 2; 3]; y = [0; 1; 4; 9]; g = 0.5; D = (X - X').^2; K = exp(-g*D); lam = 0.1; al = (K + lam*eye(4))\\y; v = norm(K*al - y);", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['kernel-ridge-regression', 'regularization'] },
   { name: 'ml-nn-forward', src: 'x = [1; 2]; W1 = [0.1 0.2; 0.3 0.4]; b1 = [0.1; 0.1]; h = max(W1*x + b1, 0); W2 = [0.5 0.6]; b2 = 0.2; v = W2*h + b2;', vars: ['v'], tol: 1e-9, domain: 'machine-learning', tags: ['neural-network', 'forward-pass', 'relu'] },
+  { name: 'ml-softmax-regression-gradient', src: 'X = [1 0; 1 1; 1 2]; W = [0.2 -0.1; -0.3 0.4]; T = [1 0; 0 1; 1 0]; Z = X*W; Z = Z - max(Z, [], 2); P = exp(Z)./sum(exp(Z), 2); loss = -sum(sum(T.*log(P)))/size(X, 1); G = X\'*(P - T)/size(X, 1); v = [loss; G(:)];', vars: ['v'], tol: 1e-9, domain: 'machine-learning', tags: ['softmax-regression', 'cross-entropy', 'gradient'] },
+  { name: 'ml-gaussian-process-posterior', src: "x = [0; 1; 2]; y = [0; 1; 0]; xs = 1.5; ell = 1; sig2 = 0.01; K = exp(-((x - x').^2)/(2*ell^2)) + sig2*eye(3); ks = exp(-((x - xs).^2)/(2*ell^2)); mu = ks'*(K\\y); kss = 1 + sig2; varp = kss - ks'*(K\\ks); v = [mu; varp];", vars: ['v'], tol: 1e-9, domain: 'machine-learning', tags: ['gaussian-process', 'rbf-kernel', 'posterior'] },
+  { name: 'ml-svm-dual-margin', src: "K = [1 -1; -1 1]; y = [1; -1]; H = (y*y').*K; Aeq = y'; beq = 0; f = -ones(2,1); a = quadprog(H, f, [], [], Aeq, beq, zeros(2,1), []); margin = 1/sqrt(a'*(H*a)); v = [a; margin];", vars: ['v'], tol: 1e-5, domain: 'machine-learning', tags: ['svm', 'dual', 'quadratic-programming', 'margin'] },
 
   // ══════════ nonlinear-systems (5) ══════════
   { name: 'nls-newton-system', src: 'F = @(x) [x(1)^2 + x(2)^2 - 1; x(1) - x(2)]; J = @(x) [2*x(1) 2*x(2); 1 -1]; x = [1; 1]; for k = 1:10, x = x - J(x)\\F(x); end', vars: ['x'], tol: 1e-9, domain: 'nonlinear-systems', tags: ['newton', 'jacobian'] },
@@ -369,12 +378,15 @@ export const CASES: OracleCase[] = [
   { name: 'nls-na-false-position', src: "f = @(x) x^2 - 2; a = 1; b = 2; for k = 1:60, c = (a*f(b) - b*f(a))/(f(b) - f(a)); if f(a)*f(c) < 0, b = c; else, a = c; end; end; err = abs(c - sqrt(2));", vars: ['err'], tol: 1e-7, domain: 'nonlinear-systems', tags: ['regula-falsi', 'false-position', 'root-finding'] },
   { name: 'nls-na-brent-fzero', src: 'v = fzero(@(x) x^3 - 2*x - 5, 2);', vars: ['v'], tol: 1e-6, domain: 'nonlinear-systems', tags: ['brent', 'fzero', 'root-finding'] },
 
-  // ══════════ number-theory (5) ══════════
+  // ══════════ number-theory (8) ══════════
   { name: 'nt-gcd-lcm', src: 'v = [gcd(252, 198) lcm(4, 6)];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['gcd', 'lcm', 'euclidean'] },
   { name: 'nt-modular-exponentiation', src: 'v = powermod(3, 100, 7);', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['modular-exponentiation', 'powermod'] },
   { name: 'nt-modular-inverse', src: 'a = 3; n = 7; t = 0; nt = 1; rr = n; nr = a; while nr ~= 0, q = floor(rr/nr); tmp = t - q*nt; t = nt; nt = tmp; tmp = rr - q*nr; rr = nr; nr = tmp; end; if t < 0, t = t + n; end; v = t;', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['modular-inverse', 'extended-euclid'] },
   { name: 'nt-primality', src: 'v = [isprime(97) isprime(100)];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['primality', 'isprime'] },
   { name: 'nt-integer-factorization', src: 'v = factor(360);', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['integer-factorization', 'factor'] },
+  { name: 'nt-primes-list', src: 'v = primes(30);', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['prime-sieve', 'primes'] },
+  { name: 'nt-chinese-remainder', src: 'n = [3 5 7]; a = [2 3 2]; N = prod(n); x = 0; for k = 1:numel(n), Nk = N/n(k); t = 0; nt = 1; rr = n(k); nr = mod(Nk, n(k)); while nr ~= 0, q = floor(rr/nr); tmp = t - q*nt; t = nt; nt = tmp; tmp = rr - q*nr; rr = nr; nr = tmp; end; inv = mod(t, n(k)); x = x + a(k)*Nk*inv; end; v = mod(x, N);', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['chinese-remainder-theorem', 'modular-arithmetic'] },
+  { name: 'nt-carmichael-fermat-witness', src: 'v = [powermod(2, 10, 341) powermod(2, 340, 341) isprime(341)];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['carmichael', 'fermat-test', 'powermod', 'composite'] },
 
   // ══════════ numerical-linear-algebra (131) ══════════
   { name: 'nla-mldivide', src: 'A = [2 1 -1; -3 -1 2; -2 1 2]; b = [8; -11; -3]; x = A\\b;', vars: ['x'], domain: 'numerical-linear-algebra' },
@@ -730,8 +742,11 @@ export const CASES: OracleCase[] = [
   { name: 'sym-dg-curve-curvature', src: 'syms t; x = 2*cos(t); y = 2*sin(t); xp = diff(x,t); yp = diff(y,t); xpp = diff(xp,t); ypp = diff(yp,t); k = abs(xp*ypp - yp*xpp)/(xp^2 + yp^2)^(3/2); v = double(subs(k, t, 0.5));', vars: ['v'], tol: 1e-7, domain: 'symbolic', tags: ['differential-geometry', 'curvature', 'parametric-curve'] },
   { name: 'sym-dg-jacobian-polar-det', src: 'syms r th; J = jacobian([r*cos(th); r*sin(th)], [r th]); d = simplify(det(J)); v = double(subs(d, [r th], [3 0.5]));', vars: ['v'], tol: 1e-7, domain: 'symbolic', tags: ['differential-geometry', 'jacobian', 'coordinate-transform'] },
 
-  // ══════════ topology (3) ══════════
+  // ══════════ topology (6) ══════════
   { name: 'topo-betti-hollow-triangle', src: 'B1 = [-1 0 1; 1 -1 0; 0 1 -1]; r1 = rank(B1); v = [3 - r1; 3 - r1];', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['betti-numbers', 'simplicial-complex', 'boundary-matrix', 'homology'] },
   { name: 'topo-betti-filled-triangle', src: 'B1 = [-1 0 1; 1 -1 0; 0 1 -1]; B2 = [1; -1; 1]; r1 = rank(B1); r2 = rank(B2); v = [3 - r1; 3 - r1 - r2];', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['betti-numbers', 'contractible', 'homology'] },
   { name: 'topo-euler-characteristic', src: 'V = 3; E = 3; F = 1; v = V - E + F;', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['euler-characteristic', 'simplicial-complex'] },
+  { name: 'topo-betti-disconnected-graph', src: 'B1 = [-1; 1; 0; 0]; V = 4; E = 1; r1 = rank(B1); v = [V - r1; E - r1];', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['betti-numbers', 'disconnected-components', 'boundary-matrix'] },
+  { name: 'topo-betti-square-cycle', src: 'B1 = [-1 0 0 1; 1 -1 0 0; 0 1 -1 0; 0 0 1 -1]; V = 4; E = 4; r1 = rank(B1); v = [V - r1; E - r1];', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['betti-numbers', 'cycle-rank', 'homology'] },
+  { name: 'topo-filtration-components', src: 'x = [0; 1; 3]; epsv = [0.5 1.5 2.5]; v = zeros(size(epsv)); for k = 1:numel(epsv), d = abs(x - x\'); A = double((d <= epsv(k)) & (d > 0)); seen = false(3,1); c = 0; for i = 1:3, if ~seen(i), c = c + 1; stack = i; seen(i) = true; while ~isempty(stack), u = stack(end); stack(end) = []; nb = find(A(u,:)); for j = nb, if ~seen(j), seen(j) = true; stack(end+1) = j; end; end; end; end; end; v(k) = c; end', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['filtration', 'connected-components', 'persistent-homology-smoke'] },
 ];
