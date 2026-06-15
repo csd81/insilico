@@ -114,7 +114,7 @@ export const CASES: OracleCase[] = [
   { name: 'coding-utils', src: 'v = [gftrunc([1 2 3 0 0]) symerr([1 2 3 4], [1 0 3 4]) finddelay([0 0 1 2 3], [1 2 3 0 0])];', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['gftrunc', 'symerr', 'finddelay'] },
   { name: 'coding-vec2mat', src: 'v = vec2mat([1 2 3 4 5 6], 3);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['vec2mat', 'reshape'] },
 
-  // ══════════ complex-arithmetic (14) ══════════
+  // ══════════ complex-arithmetic (15) ══════════
   { name: 'cplx-complex-mul', src: 'z = (1+2i) * (3-1i);', vars: ['z'], domain: 'complex-arithmetic' },
   { name: 'cplx-complex-conj-transpose', src: "A = [1+2i 3-1i]; c = A';", vars: ['c'], domain: 'complex-arithmetic' },
   { name: 'cplx-complex-abs', src: 'm = abs(3 + 4i);', vars: ['m'], domain: 'complex-arithmetic' },
@@ -129,6 +129,7 @@ export const CASES: OracleCase[] = [
   { name: 'cplx-complex-lt', src: 'x = (1+1i) < 2;', vars: ['x'], domain: 'complex-arithmetic' },
   { name: 'cplx-complex-sort', src: 'x = sort([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
   { name: 'cplx-complex-max-mag', src: 'x = max([1+1i 2]);', vars: ['x'], domain: 'complex-arithmetic' },
+  { name: 'cplx-squeeze-conj-angle', src: 'a = squeeze(ones(1, 1, 3)); c = conj(2 - 3i); v = [size(a) angle(1 + 1i) imag(3 + 4i) real(c) imag(c)];', vars: ['v'], tol: 1e-6, domain: 'complex-arithmetic', tags: ['squeeze', 'conj', 'angle', 'imag', 'contract-core'] },
 
   // ══════════ control (33) ══════════
   { name: 'ctrl-tf-dcgain', src: 'v = dcgain(tf(4, [1 3 2]));', vars: ['v'], tol: 1e-9, domain: 'control', tags: ['tf', 'dcgain'] },

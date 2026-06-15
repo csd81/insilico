@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 885 tests green · 750 MATLAB oracle fixtures ·
-750/750 cases classified across 22 domains.
+**Status (as of this revision):** 886 tests green · 751 MATLAB oracle fixtures ·
+751/751 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -154,7 +154,12 @@ metric; the base/core ratio is a large *undercount* because the name scan only s
 the headline function in each case, while base primitives (`size`/`zeros`/`colon`/
 indexing/`sum`/`sqrt`/…) run in nearly every case unnamed. Base/core is a triage
 target (validate / move out genuine breadth), not a quarantine target — core
-primitives can't be de-registered. Always read the audit output, not a raw
+primitives can't be de-registered. **`pnpm oracle:base-audit`** buckets base/core by
+risk + contract relevance using explicit metadata in `base-buckets.ts` (contract-core
+/ needs-oracle / ts-only-ok / defer / out-of-scope / alias-helper / uncategorized) —
+judge base/core by those buckets, not the raw %. The 53 contract-core builtins are
+all categorized and covered (52 direct + `mldivide` indirect via `\`); the
+`uncategorized` bucket is the triage backlog. Always read the audit output, not a raw
 `Object.keys(tb.builtins)` source count (that includes quarantined functions which
 error at runtime — the source-vs-registry gap). Kept-but-unreferenced toolbox
 functions are core-math candidates scheduled for validation; `symbolic` is the

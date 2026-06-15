@@ -1185,6 +1185,23 @@
       "real": 2
     }
   },
+  "cplx_squeeze_conj_angle": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        6
+      ],
+      "real": [
+        3,
+        1,
+        0.7853981633974483,
+        4,
+        2,
+        3
+      ]
+    }
+  },
   "ctrl_tf_dcgain": {
     "v": {
       "class": "double",

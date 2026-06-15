@@ -12,6 +12,7 @@
     "oracle:generate": "tsc -p tsconfig.test.json && node matlab/test/oracle/generate.mjs",
     "oracle:coverage": "tsc -p tsconfig.test.json && node matlab/test/oracle/coverage.mjs",
     "oracle:audit": "tsc -p tsconfig.test.json && node matlab/test/oracle/registry-audit.mjs",
+    "oracle:base-audit": "tsc -p tsconfig.test.json && node matlab/test/oracle/base-audit.mjs",
     "clean": "rm -rf .test-dist dist"
   },
   "dependencies": {
