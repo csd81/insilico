@@ -203,6 +203,65 @@ const crosscorr: Builtin = (a) => {
   for (let k = -L; k <= L; k++) { let s = 0; for (let t = 0; t < N; t++) { const tk = t + k; if (tk >= 0 && tk < N) s += dx[t] * dy[tk]; } xcf.push(s / denom); }
   return Promise.resolve([colVec(xcf)]);
 };
+/** OLS coefficients of Y on design X (rows) via the normal equations. */
+function olsFit(X: number[][], Y: number[]): number[] {
+  const p = X[0].length;
+  const XtX = Array.from({ length: p }, (_, i) => Array.from({ length: p }, (_, j) => { let s = 0; for (let r = 0; r < X.length; r++) s += X[r][i] * X[r][j]; return s; }));
+  const Xty = Array.from({ length: p }, (_, i) => { let s = 0; for (let r = 0; r < X.length; r++) s += X[r][i] * Y[r]; return s; });
+  return solveSym(XtX, Xty).x;
+}
+const parseNamed = (a: Value[], key: string): Value | undefined => {
+  for (let i = 1; i + 1 < a.length; i++) if (!isMat(a[i]) || (a[i] as Mat).isChar) { if (asString(a[i]).toLowerCase() === key) return a[i + 1]; }
+  return undefined;
+};
+/** parcorr(y[,'NumLags',L]): sample partial autocorrelation. MATLAB's default fits an OLS AR(k)
+ *  regression y_t on [1, y_{t-1}, …, y_{t-k}] for each k and takes the last coefficient; PACF(0)=1. */
+const parcorr: Builtin = (a) => {
+  const y = toArray(m(a[0])), N = y.length;
+  const nl = parseNamed(a, 'numlags'); let nlags = nl ? Math.round(asScalar(nl)) : Math.min(20, N - 1);
+  const pacf = [1];
+  for (let k = 1; k <= nlags; k++) {
+    const X: number[][] = [], Y: number[] = [];
+    for (let t = k; t < N; t++) { const row = [1]; for (let j = 1; j <= k; j++) row.push(y[t - j]); X.push(row); Y.push(y[t]); }
+    pacf.push(olsFit(X, Y)[k]);
+  }
+  return Promise.resolve([colVec(pacf)]);
+};
+// ── chi-square via the regularized lower incomplete gamma P(s,x) (for ARCH LM test) ──
+function lgammaFn(x: number): number {
+  const c = [76.18009172947146, -86.50532032941677, 24.01409824083091, -1.231739572450155, 0.1208650973866179e-2, -0.5395239384953e-5];
+  let y = x, tmp = x + 5.5; tmp -= (x + 0.5) * Math.log(tmp); let ser = 1.000000000190015;
+  for (let j = 0; j < 6; j++) ser += c[j] / ++y;
+  return -tmp + Math.log(2.5066282746310005 * ser / x);
+}
+/** Regularized lower incomplete gamma P(s,x) = γ(s,x)/Γ(s). */
+function gammaP(s: number, x: number): number {
+  if (x <= 0) return 0;
+  const gln = lgammaFn(s);
+  if (x < s + 1) { let ap = s, sum = 1 / s, del = sum; for (let n = 0; n < 300; n++) { ap++; del *= x / ap; sum += del; if (Math.abs(del) < Math.abs(sum) * 1e-16) break; } return sum * Math.exp(-x + s * Math.log(x) - gln); }
+  let b = x + 1 - s, c = 1e300, d = 1 / b, h = d;
+  for (let i = 1; i < 300; i++) { const an = -i * (i - s); b += 2; d = an * d + b; if (Math.abs(d) < 1e-300) d = 1e-300; c = b + an / c; if (Math.abs(c) < 1e-300) c = 1e-300; d = 1 / d; const del = d * c; h *= del; if (Math.abs(del - 1) < 1e-16) break; }
+  return 1 - Math.exp(-x + s * Math.log(x) - gln) * h;
+}
+const chi2cdf_ = (x: number, k: number): number => gammaP(k / 2, x / 2);
+const chi2inv_ = (p: number, k: number): number => { let lo = 0, hi = 1e4; for (let i = 0; i < 200; i++) { const mid = (lo + hi) / 2; if (chi2cdf_(mid, k) < p) lo = mid; else hi = mid; } return (lo + hi) / 2; };
+/** archtest(res[,'Lags',q][,'Alpha',a]): Engle's ARCH LM test for conditional heteroscedasticity.
+ *  Auxiliary regression of e_t² on [1, e_{t-1}², …, e_{t-q}²]; statistic = T·R² ~ χ²(q). */
+const archtest: Builtin = (a, nargout) => {
+  const e = toArray(m(a[0])), N = e.length;
+  const lq = parseNamed(a, 'lags'); const q = lq ? Math.round(asScalar(lq)) : 1;
+  const al = parseNamed(a, 'alpha'); const alpha = al ? asScalar(al) : 0.05;
+  const e2 = e.map((v) => v * v);
+  const X: number[][] = [], Y: number[] = [];
+  for (let t = q; t < N; t++) { const row = [1]; for (let j = 1; j <= q; j++) row.push(e2[t - j]); X.push(row); Y.push(e2[t]); }
+  const T = X.length; const beta = olsFit(X, Y);
+  const ybar = Y.reduce((s, v) => s + v, 0) / T; let SSE = 0, SST = 0;
+  for (let r = 0; r < T; r++) { let yh = 0; for (let j = 0; j < beta.length; j++) yh += X[r][j] * beta[j]; SSE += (Y[r] - yh) ** 2; SST += (Y[r] - ybar) ** 2; }
+  const R2 = SST > 0 ? 1 - SSE / SST : 0;
+  const stat = T * R2, pVal = 1 - chi2cdf_(stat, q), cv = chi2inv_(1 - alpha, q);
+  void nargout;
+  return Promise.resolve([bool(stat > cv), scalar(pVal), scalar(stat), scalar(cv)]);
+};
 /** aicbic(logL,numParam[,numObs]): Akaike (and Bayesian) information criteria. */
 const aicbic: Builtin = (a, nargout) => { const L = asScalar(a[0]), k = asScalar(a[1]); const outs: Value[] = [scalar(-2 * L + 2 * k)]; if (nargout >= 2) { if (a.length < 3 || !isMat(a[2])) throw new MatError('aicbic: numObs is required to compute the Bayesian information criterion (BIC)'); outs.push(scalar(-2 * L + k * Math.log(asScalar(a[2])))); } return Promise.resolve(outs); };
 
@@ -210,7 +269,7 @@ export const ECON: ToolboxModule = {
   id: 'econ',
   name: 'Econometrics Toolbox',
   docBase: 'https://www.mathworks.com/help/econ/ref/',
-  builtins: { adftest, pptest, price2ret, ret2price, tick2ret, ret2tick, lagmatrix, aicbic, autocorr, crosscorr },
+  builtins: { adftest, pptest, price2ret, ret2price, tick2ret, ret2tick, lagmatrix, aicbic, autocorr, crosscorr, parcorr, archtest },
   help: HELP_ECON,
 };
 // Augmented Dickey-Fuller critical-value tables, extracted verbatim from the
