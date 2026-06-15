@@ -378,6 +378,127 @@ async function cordicqr(args: Value[]): Promise<Value[]> {
   return [mat(mm, mm, Qd), mat(mm, nn, Rd)];
 }
 
+/** Circular CORDIC rotation mode for trig: rotate the vector (x0,y0) by the angle z0.
+ *  z0 must already be reduced into the convergence range [-pi/2, pi/2]. Returns the
+ *  gain-corrected (x, y) ≈ (x0·cos z0 - y0·sin z0, x0·sin z0 + y0·cos z0). */
+function cordicRotMode(x0: number, y0: number, z0: number, niter: number, gain: number): [number, number] {
+  let x = x0, y = y0, z = z0;
+  for (let k = 0; k < niter; k++) {
+    const d = z < 0 ? -1 : 1;
+    const f = d * Math.pow(2, -k);
+    const xn = x - f * y, yn = y + f * x;
+    x = xn; y = yn;
+    z -= d * Math.atan(Math.pow(2, -k));
+  }
+  return [x * gain, y * gain];
+}
+
+/** cos/sin of theta via circular CORDIC. Pre-reduces theta into [-pi/2, pi/2] by 180° folding
+ *  (cos/sin flip sign across a half-turn), so the full real line is covered. Returns [sin, cos]. */
+function cordicSinCosScalar(theta: number, niter: number, gain: number): [number, number] {
+  // Wrap into (-pi, pi].
+  let t = theta - 2 * Math.PI * Math.round(theta / (2 * Math.PI));
+  let sign = 1;
+  if (t > Math.PI / 2) { t -= Math.PI; sign = -1; }
+  else if (t < -Math.PI / 2) { t += Math.PI; sign = -1; }
+  // Rotate (1,0) by t → (cos t, sin t).
+  const [c, s] = cordicRotMode(1, 0, t, niter, gain);
+  return [sign * s, sign * c];
+}
+
+/** cordiccos(theta[,niter]) — cosine via circular CORDIC. */
+async function cordiccos(args: Value[]): Promise<Value[]> {
+  const T = m(args[0]);
+  const niter = args.length > 1 ? Math.max(1, Math.round(asScalar(m(args[1])))) : DEFAULT_NITER;
+  const gain = circularGain(niter);
+  const out = zeros(T.rows, T.cols);
+  for (let i = 0; i < T.data.length; i++) out.data[i] = cordicSinCosScalar(T.data[i], niter, gain)[1];
+  return [out];
+}
+
+/** cordicsin(theta[,niter]) — sine via circular CORDIC. */
+async function cordicsin(args: Value[]): Promise<Value[]> {
+  const T = m(args[0]);
+  const niter = args.length > 1 ? Math.max(1, Math.round(asScalar(m(args[1])))) : DEFAULT_NITER;
+  const gain = circularGain(niter);
+  const out = zeros(T.rows, T.cols);
+  for (let i = 0; i < T.data.length; i++) out.data[i] = cordicSinCosScalar(T.data[i], niter, gain)[0];
+  return [out];
+}
+
+/** cordicsincos(theta[,niter]) → [sin, cos] computed together. */
+async function cordicsincos(args: Value[]): Promise<Value[]> {
+  const T = m(args[0]);
+  const niter = args.length > 1 ? Math.max(1, Math.round(asScalar(m(args[1])))) : DEFAULT_NITER;
+  const gain = circularGain(niter);
+  const S = zeros(T.rows, T.cols), C = zeros(T.rows, T.cols);
+  for (let i = 0; i < T.data.length; i++) {
+    const [s, c] = cordicSinCosScalar(T.data[i], niter, gain);
+    S.data[i] = s; C.data[i] = c;
+  }
+  return [S, C];
+}
+
+/** cordiccart2pol(x, y[,niter]) → [theta, r]. Circular CORDIC vectoring drives y→0; the
+ *  accumulated angle is the phase and the residual magnitude (gain-corrected) is the radius.
+ *  Full-plane coverage via a pre-rotation by ±π when x<0 (atan2 quadrant fold). */
+function cordicCart2PolScalar(x0: number, y0: number, niter: number, gain: number): [number, number] {
+  let x = x0, y = y0, off = 0;
+  if (x < 0) {
+    // Pre-rotate by ±pi so the vector lands in the right half-plane (convergence range).
+    if (y >= 0) { x = -x; y = -y; off = Math.PI; }
+    else { x = -x; y = -y; off = -Math.PI; }
+  }
+  let z = 0;
+  for (let k = 0; k < niter; k++) {
+    const d = y >= 0 ? -1 : 1;             // drive y toward 0
+    const f = d * Math.pow(2, -k);
+    const xn = x - f * y, yn = y + f * x;
+    x = xn; y = yn;
+    z -= d * Math.atan(Math.pow(2, -k));
+  }
+  // z accumulates the original phase (vectoring drives y→0); add the quadrant offset.
+  return [z + off, x * gain];
+}
+
+async function cordiccart2pol(args: Value[]): Promise<Value[]> {
+  const X = m(args[0]), Y = m(args[1]);
+  const niter = args.length > 2 ? Math.max(1, Math.round(asScalar(m(args[2])))) : DEFAULT_NITER;
+  const gain = circularGain(niter);
+  const big = X.data.length >= Y.data.length ? X : Y;
+  const n = big.data.length;
+  const TH = zeros(big.rows, big.cols), R = zeros(big.rows, big.cols);
+  for (let i = 0; i < n; i++) {
+    const xv = X.data.length === 1 ? X.data[0] : X.data[i];
+    const yv = Y.data.length === 1 ? Y.data[0] : Y.data[i];
+    const [th, r] = cordicCart2PolScalar(xv, yv, niter, gain);
+    TH.data[i] = th; R.data[i] = r;
+  }
+  return [TH, R];
+}
+
+/** cordicpol2cart(theta, r[,niter]) → [x, y] = (r·cos theta, r·sin theta) via circular CORDIC
+ *  rotation of the vector (r, 0) by theta (reduced into [-pi/2, pi/2] with 180° sign-folding). */
+async function cordicpol2cart(args: Value[]): Promise<Value[]> {
+  const TH = m(args[0]), R = m(args[1]);
+  const niter = args.length > 2 ? Math.max(1, Math.round(asScalar(m(args[2])))) : DEFAULT_NITER;
+  const gain = circularGain(niter);
+  const big = TH.data.length >= R.data.length ? TH : R;
+  const n = big.data.length;
+  const X = zeros(big.rows, big.cols), Y = zeros(big.rows, big.cols);
+  for (let i = 0; i < n; i++) {
+    const tv = TH.data.length === 1 ? TH.data[0] : TH.data[i];
+    const rv = R.data.length === 1 ? R.data[0] : R.data[i];
+    // Fold theta into [-pi/2, pi/2]; sign flips both components.
+    let t = tv - 2 * Math.PI * Math.round(tv / (2 * Math.PI)), sign = 1;
+    if (t > Math.PI / 2) { t -= Math.PI; sign = -1; }
+    else if (t < -Math.PI / 2) { t += Math.PI; sign = -1; }
+    const [x, y] = cordicRotMode(rv, 0, t, niter, gain);
+    X.data[i] = sign * x; Y.data[i] = sign * y;
+  }
+  return [X, Y];
+}
+
 export const FIXEDPOINT: ToolboxModule = {
   id: 'fixedpoint',
   name: 'Fixed-Point Designer',
@@ -396,6 +517,11 @@ export const FIXEDPOINT: ToolboxModule = {
     cordicsqrt,
     cordicrotate,
     cordicqr,
+    cordiccos,
+    cordicsin,
+    cordicsincos,
+    cordiccart2pol,
+    cordicpol2cart,
   },
   help: HELP_FIXEDPOINT,
 };

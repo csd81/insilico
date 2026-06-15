@@ -170,10 +170,12 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // octavebw2bw deferred — the engine's bw2octavebw returns NaN; the rest match MATLAB exactly.)
   audio: new Set(['mel2hz', 'hz2mel', 'bark2hz', 'hz2bark', 'erb2hz', 'hz2erb']),
   // fixedpoint: only the deterministic CORDIC elementary-function math — square root (hyperbolic
-  // CORDIC), complex rotation (x·exp(iθ)), and QR via CORDIC Givens rotations. Software double-
-  // precision emulation matching MATLAB to ~1e-8; the fi/numerictype/quantizer object surface
-  // stays unregistered.
-  fixedpoint: new Set(['cordicsqrt', 'cordicrotate', 'cordicqr']),
+  // CORDIC), complex rotation (x·exp(iθ)), QR via CORDIC Givens rotations, and the circular-CORDIC
+  // trig/coordinate set (cos/sin/sincos, cart2pol/pol2cart, full-range via angle pre-reduction).
+  // Software double-precision emulation matching MATLAB to ~1e-8; the fi/numerictype/quantizer
+  // object surface stays unregistered.
+  fixedpoint: new Set(['cordicsqrt', 'cordicrotate', 'cordicqr',
+    'cordiccos', 'cordicsin', 'cordicsincos', 'cordiccart2pol', 'cordicpol2cart']),
   // curvefit: Franke's 2-D test surface, the lone B-spline B_{1,k} in ppform (bspline), the B-form
   // constructor (spmak), and B-form-aware fnval/fnder/fnint (extend base's pp-only versions to the
   // 'B-' form; base still wins on the shared names — see DUPLICATE_POLICY). The fit/fittype/smooth

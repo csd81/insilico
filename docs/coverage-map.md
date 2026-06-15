@@ -216,10 +216,13 @@ Registered toolboxes are limited to in-scope numerical/matrix domains:
   unregistered.
 - `fixedpoint` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): the
   deterministic CORDIC elementary-function math only — `cordicsqrt` (hyperbolic CORDIC square
-  root), `cordicrotate` (circular-CORDIC complex rotation, `x·exp(iθ)`) and `cordicqr` (QR via
-  CORDIC Givens rotations). Software double-precision emulation, validated by invariant (sqrt vs
-  `sqrt`, rotate vs `x·exp(iθ)`, QR by `Q*R≈A` + `Q'Q≈I`). The fi/numerictype/quantizer object
-  surface stays unregistered.
+  root), `cordicrotate` (circular-CORDIC complex rotation, `x·exp(iθ)`), `cordicqr` (QR via
+  CORDIC Givens rotations), and the circular-CORDIC trig/coordinate set — `cordiccos`/`cordicsin`/
+  `cordicsincos` and `cordiccart2pol`/`cordicpol2cart` (full real-line / full-plane coverage via
+  angle pre-reduction into `[-π/2, π/2]`). Software double-precision emulation, validated by
+  invariant (sqrt vs `sqrt`, rotate vs `x·exp(iθ)`, QR by `Q*R≈A` + `Q'Q≈I`, cos/sin vs `cos`/`sin`
+  + `sin²+cos²=1`, cart2pol vs `atan2`/`hypot` across all quadrants, pol2cart↔cart2pol roundtrip).
+  The fi/numerictype/quantizer object surface stays unregistered.
 - `curvefit` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): Franke's 2-D test
   surface (`franke`), the lone B-spline `B_{1,k}` in ppform (`bspline`), the B-form constructor
   (`spmak`), and B-form-aware `fnval`/`fnder`/`fnint` (a strict superset of the base pp-only
