@@ -172,7 +172,7 @@ export const CASES: OracleCase[] = [
   { name: 'ctrl-lyapchol', src: "A = [-1 0; 0 -2]; B = [1; 1]; R = lyapchol(A, B); X = R'*R; v = norm(A*X + X*A' + B*B');", vars: ['v'], tol: 1e-6, domain: 'control', tags: ['lyapchol', 'lyapunov', 'cholesky-factor'] },
   { name: 'ctrl-realization-eig', src: "A = [0 1; -2 -3]; B = [0; 1]; C = [1 0]; a1 = ctrbf(A, B, C); a2 = obsvf(A, B, C); v = [sort(eig(canon(ss(A, B, C, 0), 'modal').A)).' sort(eig(a1)).' sort(eig(a2)).' sort(eig(ss2ss(ss(A, B, C, 0), [1 0; 1 1]).A)).' sort(eig(sminreal(ss(A, B, C, 0)).A)).'];", vars: ['v'], tol: 1e-5, domain: 'control', tags: ['canon', 'ctrbf', 'obsvf', 'ss2ss', 'sminreal', 'eig-invariant'] },
 
-  // ══════════ core-language (128) ══════════
+  // ══════════ core-language (129) ══════════
   { name: 'lang-colon-range', src: 'v = 1:2:9;', vars: ['v'], domain: 'core-language' },
   { name: 'lang-end-index', src: 'v = [5 6 7 8]; a = v(end); b = v(end-1);', vars: ['a', 'b'], domain: 'core-language' },
   { name: 'lang-submatrix', src: 'A = magic(4); S = A(2:3, 2:3);', vars: ['S'], domain: 'core-language' },
@@ -243,6 +243,7 @@ export const CASES: OracleCase[] = [
   { name: 'lang-unique-values', src: 'u = unique([3 1 4 1 5 9 2 6]);', vars: ['u'], domain: 'core-language' },
   { name: 'lang-histcounts', src: 'nc = histcounts([1 2 2 3 3 3], 1:4);', vars: ['nc'], domain: 'core-language' },
   { name: 'lang-cumprod', src: 'c = cumprod([1 2 3 4]);', vars: ['c'], domain: 'core-language' },
+  { name: 'lang-cummax-cummin', src: "A = [3 1; 1 4; 2 2]; B1 = cummax(A, 1); B2 = cummax(A, 2); v = [cummax([3 1 4 1 5]) cummin([3 1 4 1 5]) cummax([3 1 4 1 5], 'reverse') B1(:).' B2(:).'];", vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['cummax', 'cummin', 'cumulative', 'dim', 'reverse'] },
   { name: 'lang-accumarray', src: 'v = accumarray([1; 2; 1; 3], [10; 20; 30; 40]);', vars: ['v'], domain: 'core-language' },
   { name: 'lang-repmat-tile', src: 'A = repmat([1 2], 2, 3);', vars: ['A'], domain: 'core-language' },
   { name: 'lang-circshift', src: 'v = circshift([1 2 3 4 5], 2);', vars: ['v'], domain: 'core-language' },
@@ -725,7 +726,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment'] },
   { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fminimax', 'minimax'] },
 
-  // ══════════ statistics (55) ══════════
+  // ══════════ statistics (58) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -781,6 +782,9 @@ export const CASES: OracleCase[] = [
   { name: 'stat-cdf-pdf-generic', src: "v = [cdf('Normal', 1, 0, 1) pdf('Poisson', 2, 3)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['cdf', 'pdf', 'generic-distribution-dispatch'] },
   { name: 'stat-dist-fit2', src: 'v = [betafit([0.1 0.2 0.3 0.4 0.5 0.6]) gamfit([1 2 3 2 1 4])];', vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['distribution-fitting', 'betafit', 'gamfit', 'mle'] },
   { name: 'stat-fitdist-makedist', src: "pd = makedist('Normal', 'mu', 2, 'sigma', 3); pd2 = fitdist([2 3 4 5]', 'Normal'); v = [pd.mu pd2.mu pd2.sigma];", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['makedist', 'fitdist', 'distribution-object'] },
+  { name: 'stat-moving-window', src: 'x = [1 2 3 4 5]; v = [movsum(x, 3) movprod([1 2 3 4], 2) movstd(x, 3) movvar(x, 3) movmad([1 2 10 4 5], 3)];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['movsum', 'movprod', 'movstd', 'movvar', 'movmad', 'moving-window', 'endpoint-shrink'] },
+  { name: 'stat-accumarray-discretize', src: 'v = [accumarray([1; 2; 1; 3], [10; 20; 30; 40]).\x27 discretize([0.2 1.5 2.7 3.1], [0 1 2 3 4])];', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['accumarray', 'discretize', 'binning'] },
+  { name: 'stat-histcounts-edges', src: '[n, e] = histcounts([0.2 1.5 2.7 3.1 0.5], [0 1 2 3 4]); v = [n e];', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['histcounts', 'explicit-edges', 'binning'] },
 
   // ══════════ symbolic (57) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },

@@ -183,4 +183,11 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // ── Pass 2E: special functions (deterministic values). besselj/beta/gamma/legendre/psi
   // were bucketed in the 1.5 backfill; these are the rest. legendreP is Symbolic-only (absent). ──
   ...bulkD('needs-oracle', 'direct', 'calculus', 'bessely besseli besselk erf erfc erfinv erfcinv gammaln gammainc betainc betaln ellipke ellipj airy'),
+
+  // ── Pass 2F: moving-window / cumulative reductions + binning (endpoint/dim conventions).
+  // movmean/movmedian/accumarray/discretize/histcounts already bucketed in the 1.5 backfill.
+  // NOTE: histcounts is validated with EXPLICIT edges only — its auto-bin-edge 'nice number'
+  // rule diverges from MATLAB (counts can match but edges differ); auto-binning is not locked. ──
+  ...bulkD('needs-oracle', 'direct', 'statistics', 'movsum movprod movstd movvar movmad'),
+  ...bulkD('needs-oracle', 'direct', 'core-language', 'cummax cummin'),
 };
