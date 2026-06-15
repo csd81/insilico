@@ -7,7 +7,7 @@ import {
   asString, asScalar, toMat as m, applyClass,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_SIGNAL } from '../help/toolbox-help';
+import { HELP_SIGNAL } from '../help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 /** Reduce a vector to a scalar, or a matrix column-wise to a row vector (MATLAB dim convention). */

@@ -8,7 +8,7 @@ import {
   asString, asScalar, toMat as m, MatError, mat, fromRows, matRows, isCell, isStr, makeCell, bool,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_STATS } from '../help/toolbox-help';
+import { HELP_STATS } from '../help';
 import { inv, det, schur, svd, qr } from '../linalg';
 import { erf, erfc } from '../specfun';
 import { matmul, transpose } from '../values';

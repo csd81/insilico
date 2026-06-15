@@ -7,7 +7,7 @@ import {
   type Value, rowVec, colVec, scalar, toArray, asString, asScalar, toMat as m, type Mat, isMat, isCell, makeCell, mat,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_WAVELET } from '../help/toolbox-help';
+import { HELP_WAVELET } from '../help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 const asRow = (src: Mat, xs: number[]) => (src.rows === 1 ? rowVec(xs) : colVec(xs));

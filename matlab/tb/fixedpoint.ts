@@ -5,7 +5,7 @@ import {
   mat, zeros, makeObject, str, bool,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_FIXEDPOINT } from '../help/toolbox-help';
+import { HELP_FIXEDPOINT } from '../help';
 
 // ── numerictype: describe a fixed-point format ─────────────────────────────────────────
 async function numerictype(args: Value[]): Promise<Value[]> {

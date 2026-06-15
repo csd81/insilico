@@ -7,7 +7,7 @@ import type { Builtin } from '../builtins';
 import { type Value, type Mat, map, toMat as m, asScalar, asString, toArray, colVec, rowVec, scalar, str, mat, fromRows, isStr } from '../values';
 import type { ToolboxModule } from './types';
 import { WGS84_A, WGS84_F } from '../physconst';
-import { HELP_MAPPING } from '../help/toolbox-help';
+import { HELP_MAPPING } from '../help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 const R = 6371;                 // mean Earth radius, km (MATLAB default sphere)

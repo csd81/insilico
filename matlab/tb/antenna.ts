@@ -27,7 +27,7 @@
 
 import { type Value, type Mat, toMat as m } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_ANTENNA } from '../help/toolbox-help';
+import { HELP_ANTENNA } from '../help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 

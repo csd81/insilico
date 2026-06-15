@@ -6,7 +6,7 @@ import {
 } from '../values';
 import { erf } from '../specfun';
 import type { ToolboxModule } from './types';
-import { HELP_FININST } from '../help/toolbox-help';
+import { HELP_FININST } from '../help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 

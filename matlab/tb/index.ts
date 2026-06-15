@@ -17,7 +17,8 @@
 // toolbox.
 import type { Builtin } from '../builtins';
 import type { Value } from '../values';
-import type { HelpEntry } from '../help/types';
+import type { HelpEntry } from '../help';
+import { setToolboxHelpRefs } from '../help';
 import type { ToolboxModule } from './types';
 import { COMM } from './comm';
 import { CONTROL } from './control';
@@ -171,3 +172,8 @@ for (const tb of TOOLBOXES) {
   if (tb.constants) for (const [k, v] of Object.entries(tb.constants)) if (!(k in TOOLBOX_CONSTANTS)) TOOLBOX_CONSTANTS[k] = v;
   for (const [k, h] of Object.entries(tb.help)) if (!(k in TOOLBOX_HELP)) TOOLBOX_HELP[k] = h;
 }
+
+// Inject the toolbox registry into the help renderer. help/ owns the HELP_<TOOLBOX> maps (which the
+// toolbox modules import), so it must not import ../tb at load time — instead we push the registry
+// to it here, once it is fully built. This keeps the dependency one-directional (tb → help).
+setToolboxHelpRefs(FUNC_TOOLBOX, TOOLBOX_HELP);

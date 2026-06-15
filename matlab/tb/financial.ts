@@ -7,7 +7,7 @@ import {
 } from '../values';
 import { erf } from '../specfun';
 import type { ToolboxModule } from './types';
-import { HELP_FINANCIAL } from '../help/toolbox-help';
+import { HELP_FINANCIAL } from '../help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 const arg = (a: Value[], i: number, d: number) => (a.length > i && isMat(a[i]) && a[i].kind === 'num' && (a[i] as { rows: number }).rows ? asScalar(a[i]) : d);

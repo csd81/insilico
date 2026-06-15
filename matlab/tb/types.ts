@@ -3,7 +3,7 @@
 // BUILTINS/help registries (base MATLAB always takes precedence). See plan §2.
 import type { Builtin } from '../builtins';
 import type { Value } from '../values';
-import type { HelpEntry } from '../help/types';
+import type { HelpEntry } from '../help';
 
 export interface ToolboxModule {
   /** Short id matching the reference-data dir, e.g. 'stats'. */

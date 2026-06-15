@@ -19,7 +19,7 @@ import {
 } from '../values';
 import { mldivide } from '../linalg';
 import type { ToolboxModule } from './types';
-import { HELP_PDE } from '../help/toolbox-help';
+import { HELP_PDE } from '../help';
 
 // ── small Mat<->rows helpers (rowsOf = canonical matRows from values.ts) ─────
 /** Build a Mat from an array of rows. */

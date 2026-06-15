@@ -23,7 +23,7 @@
 import type { Builtin } from '../builtins';
 import { type Value, scalar, rowVec, asScalar, toMat as m } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_UAV } from '../help/toolbox-help';
+import { HELP_UAV } from '../help';
 
 const G = 9.81; // gravitational acceleration (m/s^2), same as MATLAB default
 

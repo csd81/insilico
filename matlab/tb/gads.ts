@@ -4,7 +4,7 @@ import {
   type Value, scalar, rowVec, toArray, asScalar, toMat as m, isMat, MatError, mat, zeros,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_GADS } from '../help/toolbox-help';
+import { HELP_GADS } from '../help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 const retv = (...vs: Value[]): Promise<Value[]> => Promise.resolve(vs);

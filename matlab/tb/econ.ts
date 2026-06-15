@@ -12,7 +12,7 @@ import {
   type Value, type Mat, isMat, rowVec, colVec, mat, scalar, bool, toArray, asString, asScalar, toMat as m, MatError,
 } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_ECON } from '../help/toolbox-help';
+import { HELP_ECON } from '../help';
 
 // ── linear algebra: OLS via normal equations (solve (X'X)β = X'y) ────────────
 function solveSym(A: number[][], b: number[]): { x: number[]; inv: number[][] } {

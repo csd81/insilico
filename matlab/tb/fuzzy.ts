@@ -3,7 +3,7 @@
 // and validated exactly against the live oracle. See fuzzy.VALIDATION.md.
 import { type Value, map, toMat as m, toArray, scalar, asString, MatError } from '../values';
 import type { ToolboxModule } from './types';
-import { HELP_FUZZY } from '../help/toolbox-help';
+import { HELP_FUZZY } from '../help';
 
 const ret = (v: Value): Promise<Value[]> => Promise.resolve([v]);
 
