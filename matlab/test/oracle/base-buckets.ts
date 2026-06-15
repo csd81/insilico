@@ -26,7 +26,7 @@ export interface BaseMeta { bucket: Bucket; validation: Validation; domain?: str
 
 const cc = (validation: Validation, domain: string): BaseMeta => ({ bucket: 'contract-core', validation, domain });
 
-export const BASE_BUCKETS: Record<string, BaseMeta> = {
+const CONTRACT_CORE: Record<string, BaseMeta> = {
   // ── contract-core: array construction ──
   zeros: cc('direct', 'core-language'), ones: cc('direct', 'core-language'),
   eye: cc('direct', 'core-language'), diag: cc('direct', 'core-language'),
@@ -63,4 +63,77 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   roots: cc('direct', 'approximation'), interp1: cc('direct', 'approximation'),
   integral: cc('direct', 'numerical-methods'), fzero: cc('direct', 'nonlinear-systems'),
   ode45: cc('direct', 'numerical-ode'),
+};
+
+// ── Pass 1 (classification only, no runtime change): assign obvious low-risk buckets. ──
+// Risky/unclear functions (shape/N-D/sparse/complex/multi-output/non-unique/special functions)
+// are intentionally left out → they surface as `uncategorized` (the needs-oracle pass-2 queue).
+const names = (s: string): string[] => s.trim().split(/\s+/).filter(Boolean);
+const bulk = (bucket: Bucket, validation: Validation, list: string): Record<string, BaseMeta> =>
+  Object.fromEntries(names(list).map((n) => [n, { bucket, validation }]));
+
+// ts-only-ok: MATLAB oracle is the wrong validator (graphics/FigureSpec, VFS/file, display/format,
+// argument-validation guards, UI, and RNG — random streams aren't reproducible against MATLAB).
+const TS_ONLY = `
+GraphPlot RandStream abyss addpoints alpha alphamap animatedline annotation area assert autumn
+axis bar bar3 bar3h barh beep binscatter blanks bone box boxchart boxplot brighten bubblechart
+bubblechart3 camlight caxis celldisp cla clc clearpoints clf clim close cmap2gray colorbar
+colormap colororder comet comet3 compass compassplot coneplot contour contour3 contourc contourf
+contourslice cool copper csvread csvwrite cylinder daspect delete dir disp display dlmread dlmwrite
+doc donutchart drawnow edit error errorbar etreeplot eval evalc exist ezcontour ezcontourf ezmesh
+ezmeshc ezplot ezplot3 ezpolar ezsurf ezsurfc fclose fcontour feather feof fgetl fgets figure
+fileparts filesep fill fill3 fimplicit fimplicit3 flag fmesh fontname fontsize fopen format fplot
+fplot3 fpolarplot fprintf fread frewind fscanf fseek fsurf ftell fullfile fwrite gca gcf geobasemap
+geobubble geolimits geoplot geoscatter gray grid gtext heatmap help hex2rgb highlight hist histogram
+histogram2 hold hot hsv hsv2rgb im2gray image imagesc importdata input inputname int2str jet
+jsondecode jsonencode lasterr lasterror legend lighting line lines linkaxes load loglog lookfor ls
+mat2str material mesh meshc meshz mustBeColumn mustBeFinite mustBeFloat mustBeGreaterThan
+mustBeGreaterThanOrEqual mustBeInRange mustBeInteger mustBeLessThan mustBeLessThanOrEqual mustBeMatrix
+mustBeMember mustBeNegative mustBeNonNan mustBeNonempty mustBeNonnegative mustBeNonpositive
+mustBeNonzero mustBeNonzeroLengthText mustBeNumeric mustBeNumericOrLogical mustBePositive mustBeReal
+mustBeRow mustBeScalarOrEmpty mustBeSorted mustBeText mustBeTextScalar mustBeVector nargchk narginchk
+nargoutchk nebula nexttile num2str orderedcolors parallelplot pareto parula patch pathsep pause
+pbaspect pcolor pie pie3 piechart pink plot plot3 plotmatrix polaraxes polarbubblechart
+polarhistogram polarplot polarscatter prism quiver quiver3 rand randi randn randperm randsample rat
+rats readcell readmatrix readtable readtimetable readvars rectangle rethrow rgb2gray rgb2hex rgb2hsv
+rgbplot ribbon rlim rng rtickangle rticklabels rticks save scatter scatter3 semilogx semilogy set
+sgtitle shading sky slice sphere sprand sprandn sprandsym spring sscanf stackedplot stairs stem stem3
+stream2 stream3 streamline subplot subtitle summer surf surface surfc surfl surfnorm swarmchart
+swarmchart3 tetramesh text textscan thetalim thetaticklabels thetaticks throw tiledlayout title
+treelayout treeplot trimesh triplot trisurf turbo type useToolbox validateattributes ver view
+violinplot voronoi warning waterfall which who whos winter writecell writematrix writetable xlabel
+xlim xline xlsread xscale xtickangle xtickformat xticklabels xticks ylabel ylim yline yscale
+ytickangle ytickformat yticklabels yticks yyaxis zlabel zlim zscale ztickangle ztickformat
+zticklabels zticks`;
+
+// alias-helper: compatibility wrappers / deprecated names that delegate to a covered primitive.
+const ALIAS = `cholinc colmmd dblquad dsearch findstr flipdim luinc qmr quad quad2d quadgk quadl
+quadv reallog realpow realsqrt strvcat symmmd triplequad`;
+
+// defer: real MATLAB-ish but not current priority (table/timetable, categorical, datetime/duration,
+// graph-object mutation, triangulation/polyshape geometry ecosystem, timing).
+const DEFER = `NaT addboundary addcats addedge addnode addtodate addvars alphaShape alphaSpectrum
+alphaTriangulation array2table barycentricToCartesian boundaryFacets boundingbox cartesianToBarycentric
+categorical categories cell2table centroid circumcenter clock convexHull countcats cputime
+criticalAlpha date datenum datestr datetime datevec day days delaunayTriangulation digraph duration
+edgeAttachments edges entries eomday etime faceNormal featureEdges findgroups flipedge freeBoundary
+graph groupcounts groupsummary head holes hour hours inShape incenter innerjoin isInterior isbetween
+iscategorical iscategory isdatetime isduration isinterior isnat istable istabular istimetable join
+labeledge labelnode mergecats mergevars milliseconds minute minutes month movevars nearestNeighbor now
+nsidedpoly numEntries numRegions numboundaries numsides outerjoin overlaps perimeter pointLocation
+polybuffer polyshape regions removecats removevars renamecats renamevars reordercats reordernodes
+rmboundary rmedge rmholes rmnode rmslivers rotate rowfun second seconds sortboundaries sortregions
+struct2table subtract summary surfaceArea table table2array table2cell table2struct tail tic timeit
+timetable toc today translate triangulation varfun vertexAttachments vertexNormal voronoiDiagram
+weekday year years ymd`;
+
+// out-of-scope-candidate: NOT removed — flagged for review. Non-MATLAB / pseudo-MATLAB / internal.
+const OUT_OF_SCOPE = `abort inline printf size_equal`;
+
+export const BASE_BUCKETS: Record<string, BaseMeta> = {
+  ...CONTRACT_CORE,
+  ...bulk('ts-only-ok', 'ts-only', TS_ONLY),
+  ...bulk('alias-helper', 'none', ALIAS),
+  ...bulk('defer', 'none', DEFER),
+  ...bulk('out-of-scope', 'none', OUT_OF_SCOPE),
 };
