@@ -179,4 +179,8 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // (qz/cholupdate already bucketed in the 1.5 backfill.) gsvd is the 1-output generalized
   // singular values; the 5-output [U,V,X,C,S] CS-decomposition form is a deferred gap.
   ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'gsvd ordqz ordschur cdf2rdf rsf2csf qrupdate qrinsert qrdelete'),
+
+  // ── Pass 2E: special functions (deterministic values). besselj/beta/gamma/legendre/psi
+  // were bucketed in the 1.5 backfill; these are the rest. legendreP is Symbolic-only (absent). ──
+  ...bulkD('needs-oracle', 'direct', 'calculus', 'bessely besseli besselk erf erfc erfinv erfcinv gammaln gammainc betainc betaln ellipke ellipj airy'),
 };

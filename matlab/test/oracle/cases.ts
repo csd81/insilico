@@ -51,7 +51,7 @@ export const CASES: OracleCase[] = [
   { name: 'approx-na-bezier-decasteljau', src: 'P = [0 1 3 2]; t = 0.5; while numel(P) > 1, P = (1-t)*P(1:end-1) + t*P(2:end); end; v = P;', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['bezier', 'de-casteljau'] },
   { name: 'approx-na-bspline-deboor', src: "kn = [0 0 0 0 1 2 3 3 3 3]; P = [0 1 3 2 4 5]; pdeg = 3; t = 1.5; k = find(kn <= t, 1, 'last'); k = min(k, numel(P)); d = P(k-pdeg:k); for r = 1:pdeg, for j = pdeg:-1:r, i = k-pdeg+j; al = (t - kn(i))/(kn(i+pdeg-r+1) - kn(i)); d(j+1) = (1-al)*d(j) + al*d(j+1); end; end; v = d(pdeg+1);", vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['b-spline', 'de-boor'] },
 
-  // ══════════ calculus (41) ══════════
+  // ══════════ calculus (47) ══════════
   { name: 'cal-limit-oneside-right', src: "syms x; v = sign(double(limit(1/x, x, 0, 'right')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-oneside-left', src: "syms x; v = sign(double(limit(1/x, x, 0, 'left')));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
   { name: 'cal-limit-removable-oneside', src: "syms x; v = double(limit((x^2-1)/(x-1), x, 1, 'left'));", vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['limit', 'one-sided'] },
@@ -93,6 +93,12 @@ export const CASES: OracleCase[] = [
   { name: 'cal-subst-power', src: 'syms x; v = double(int(x^2*(x^3+1)^4, 0, 1));', vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
   { name: 'cal-subst-nested', src: 'syms x; v = double(int(cos(x)*exp(sin(x)), 0, pi/2));', vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['integration', 'substitution', 'derivative-divides'] },
   { name: 'cal-cumtrapz', src: 'v = cumtrapz([1 2 3 4]);', vars: ['v'], tol: 1e-9, domain: 'calculus', tags: ['cumtrapz', 'cumulative-integral'] },
+  { name: 'cal-bessel', src: 'x = [0.5 1.5 3.0]; v = [besselj(0, x) bessely(1, x) besseli(0, x) besselk(1, x)];', vars: ['v'], tol: 1e-7, domain: 'calculus', tags: ['special-functions', 'besselj', 'bessely', 'besseli', 'besselk'] },
+  { name: 'cal-erf-gamma', src: 'x = [0 0.5 1.5]; v = [erf(x) erfc(x) gamma(x+1) gammaln(x+1) erfinv(0.5) erfcinv(0.3)];', vars: ['v'], tol: 1e-7, domain: 'calculus', tags: ['special-functions', 'erf', 'erfc', 'gamma', 'gammaln', 'erfinv'] },
+  { name: 'cal-incgamma-beta', src: 'v = [gammainc(1.2, 2.5) betainc(0.4, 2, 5) beta(2, 5) betaln(2, 5)];', vars: ['v'], tol: 1e-7, domain: 'calculus', tags: ['special-functions', 'gammainc', 'betainc', 'beta', 'betaln', 'incomplete'] },
+  { name: 'cal-elliptic', src: '[K, E] = ellipke(0.5); [sn, cn, dn] = ellipj(0.7, 0.5); v = [K E sn cn dn];', vars: ['v'], tol: 1e-7, domain: 'calculus', tags: ['special-functions', 'ellipke', 'ellipj', 'elliptic', 'multi-output'] },
+  { name: 'cal-airy-psi', src: 'v = [airy(0.5) psi(3.5)];', vars: ['v'], tol: 1e-7, domain: 'calculus', tags: ['special-functions', 'airy', 'psi', 'digamma'] },
+  { name: 'cal-legendre', src: 'P = legendre(3, 0.25); v = P(:).\x27;', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['special-functions', 'legendre', 'associated-legendre'] },
 
   // ══════════ coding (18) ══════════
   { name: 'coding-gf2-polymul', src: 'a = [1 0 1]; b = [1 1]; v = mod(conv(a, b), 2);', vars: ['v'], tol: 1e-9, domain: 'coding', tags: ['finite-field', 'gf2', 'polynomial'] },
