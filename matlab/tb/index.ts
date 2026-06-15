@@ -155,7 +155,7 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   aero: new Set(['angle2dcm', 'dcm2angle', 'angle2quat', 'quatmultiply', 'quatrotate', 'quatinv']),
   // econ: deterministic time-series diagnostics (sample ACF/PACF/XCF, ADF unit-root, Engle ARCH LM).
   // The product's model-object/estimation surface (arima/garch/egarch …) stays unregistered.
-  econ: new Set(['autocorr', 'crosscorr', 'parcorr', 'adftest', 'archtest']),
+  econ: new Set(['autocorr', 'crosscorr', 'parcorr', 'adftest', 'archtest', 'lagmatrix']),
   // fusion: discrete-optimization assignment (Munkres/auction, optimal min-cost) + covariance-
   // intersection track fusion. The Sensor-Fusion product's tracker/object surface stays unregistered.
   fusion: new Set(['assignmunkres', 'assignauction', 'assignkbest', 'fusecovint']),
@@ -178,7 +178,8 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // fuzzy: only the deterministic closed-form membership functions (triangular/trapezoidal/Gaussian/
   // generalized-bell/sigmoidal) + discrete defuzzification + the legacy named-MF evaluator. The full
   // FIS/ANFIS rule-base/inference object system stays unregistered.
-  fuzzy: new Set(['trimf', 'trapmf', 'gaussmf', 'gbellmf', 'defuzz', 'sigmf', 'evalmf']),
+  fuzzy: new Set(['trimf', 'trapmf', 'gaussmf', 'gbellmf', 'defuzz', 'sigmf', 'evalmf',
+    'pimf', 'smf', 'zmf', 'dsigmf', 'psigmf', 'gauss2mf']),   // full deterministic MF set
   // pde: ONLY assema — legacy [p,t]-mesh linear-triangle FEM area-integral assembly of the
   // stiffness K, mass M and load F for a scalar 2-D PDE (-div(c·grad u)+a·u=f). Exact MATLAB
   // R2026a parity on a fixed mesh across all numeric coefficient forms (c isotropic/diagonal/
@@ -191,7 +192,7 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // exposes a validated core (the rest of every toolbox's surface stays unregistered).
   rf: new Set(['s2z', 'z2s']),                  // S↔Z network-parameter conversions
   financial: new Set(['fvfix', 'effrr']),        // future value of fixed payments; effective rate
-  mapping: new Set(['distance', 'km2rad']),      // great-circle distance; km→radians (deg2nm differs)
+  mapping: new Set(['distance', 'km2rad', 'nm2deg', 'km2sm']),   // distance + unit conversions (deg2nm differs)
   robotics: new Set(['eul2tform']),              // Euler angles → homogeneous transform
   images: new Set(['rgb2ntsc', 'ntsc2rgb']),     // RGB↔NTSC (YIQ) colour-space matrix transform
 };

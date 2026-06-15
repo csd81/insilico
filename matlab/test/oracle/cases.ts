@@ -513,6 +513,9 @@ export const CASES: OracleCase[] = [
   { name: 'tb-mapping', src: 'v = [distance(0, 0, 0, 90) distance(0, 0, 1, 0) km2rad(6371)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['distance', 'km2rad', 'great-circle', 'geodesy'] },
   { name: 'tb-robotics', src: "T = eul2tform([0.1 0.2 0.3]); R = T(1:3, 1:3); v = [T(1,1) T(1,4) T(4,4) norm(R*R' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['eul2tform', 'homogeneous-transform', 'orthonormality-invariant'] },
   { name: 'tb-images-color', src: 'n = rgb2ntsc([0.5 0.2 0.3]); rgb = ntsc2rgb(n); v = [n norm(rgb - [0.5 0.2 0.3])];', vars: ['v'], tol: 1e-6, domain: 'linear-algebra', tags: ['rgb2ntsc', 'ntsc2rgb', 'colour-space', 'roundtrip-invariant'] },
+  // Extend registered toolboxes with more verified deterministic functions (existing source).
+  { name: 'tb-fuzzy-mfs2', src: 'v = [pimf([0 1 2 3 4], [1 2 3 4]) smf([0 1 2 3 4], [1 3]) zmf([0 1 2 3 4], [1 3]) dsigmf([0 1 2 3], [5 1 5 3]) psigmf([0 1 2 3], [5 1 -5 3]) gauss2mf([0 1 2 3], [1 0 1 2])];', vars: ['v'], tol: 1e-6, domain: 'numerical-methods', tags: ['pimf', 'smf', 'zmf', 'dsigmf', 'psigmf', 'gauss2mf', 'membership-function'] },
+  { name: 'tb-econ-mapping2', src: "L = lagmatrix([1 2 3 4 5]', [1 2]); Lf = L(~isnan(L)); v = [Lf' nm2deg(60) km2sm(1.609344)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['lagmatrix', 'nm2deg', 'km2sm', 'unit-conversion'] },
   { name: 'aero-angle-dcm-quat', src: "q = angle2quat(0.1, 0.2, 0.3); D = angle2dcm(0.1, 0.2, 0.3); [a1, a2, a3] = dcm2angle(D); v = [q a1 a2 a3 norm(D*D' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['angle2quat', 'angle2dcm', 'dcm2angle', 'roundtrip', 'orthogonality-invariant'] },
   // Fuzzy membership functions (closed-form, deterministic): triangular/trapezoidal/Gaussian/
   // generalized-bell/sigmoidal evaluated on a shared universe. Restored + registered by allow-list.
