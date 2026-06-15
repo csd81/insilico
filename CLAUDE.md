@@ -39,7 +39,7 @@ GUI/App Designer, and proof-based pure math.
   "missing" functions turn out already-implemented-but-unvalidated.
 - **Validate by invariant** when outputs aren't unique; lock the deterministic
   projection (`double(subs(...))`, residuals, sorted spectra), never a convention.
-- **Commit each finished, green batch locally** with a scoped message; **hold
-  `git push` until asked.**
+- **Commit and push after each finished, green batch** with a scoped message
+  (push immediately — not held).
 - Match the surrounding code's style; preserve MATLAB column-major, 1-based,
   value-copy semantics. Keep edits scoped.
