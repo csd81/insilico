@@ -1,8 +1,8 @@
 // Fixed-Point Designer Toolbox — fi (fixed-point number), numerictype, fimath, quantizer.
 // Implements fixed-point quantization, bit-accurate arithmetic, and code-generation metadata.
 import {
-  type Value, scalar, rowVec, colVec, toArray, asScalar, asString, toMat as m, isMat, isStr, isObject, isStruct, truthy, MatError,
-  mat, zeros, makeObject, str, bool,
+  type Value, type Mat, scalar, rowVec, colVec, toArray, asScalar, asString, toMat as m, isMat, isStr, isObject, isStruct, truthy, MatError,
+  mat, zeros, makeObject, str, bool, cscalar, finishComplex,
 } from '../values';
 import type { ToolboxModule } from './types';
 import { HELP_FIXEDPOINT } from '../help';
@@ -224,6 +224,160 @@ async function accumneg(args: Value[]): Promise<Value[]> {
   return [makeObject('fi', props)];
 }
 
+// ── CORDIC algorithms ──────────────────────────────────────────────────────────────────
+// Software (double-precision) emulation of MATLAB's CORDIC builtins. CORDIC computes
+// elementary functions with shift-and-add iterations; here we run enough iterations that the
+// result is accurate to double precision, matching MATLAB's default behavior for double inputs.
+// Default iteration counts mirror MATLAB's full-precision defaults (sqrt: 52, rotate: 52). An
+// explicit `niter` argument reproduces the partial-convergence intermediate result exactly.
+
+const DEFAULT_NITER = 52;
+
+/** Hyperbolic CORDIC vectoring constant K_h = prod sqrt(1 - 2^(-2i)) over the executed iterations,
+ *  including the repeated indices (4,13,40,...) required for hyperbolic convergence. */
+function hyperbolicGain(niter: number): { gain: number; idx: number[] } {
+  // Build the iteration index sequence: 1,2,3,4,4,5,...,13,13,14,... (repeat 4,13,40,121,...).
+  const idx: number[] = [];
+  let i = 1, nextRepeat = 4;
+  while (idx.length < niter) {
+    idx.push(i);
+    if (i === nextRepeat && idx.length < niter) { idx.push(i); nextRepeat = 3 * nextRepeat + 1; }
+    i++;
+  }
+  let gain = 1;
+  for (const k of idx) gain *= Math.sqrt(1 - Math.pow(2, -2 * k));
+  return { gain, idx };
+}
+
+/** cordicsqrt(x[,niter]) — square root via hyperbolic CORDIC.
+ *  Uses the identity sqrt(w) = sqrt((w+0.25)^2 - (w-0.25)^2) with the hyperbolic vectoring mode,
+ *  which converges for w in [0.25, ~2). The input is range-reduced by powers of 4 into that band
+ *  (sqrt(4^k · w) = 2^k · sqrt(w)) so the whole positive line is covered. */
+function cordicSqrtScalar(x0: number, niter: number): number {
+  if (!(x0 > 0)) return 0;             // MATLAB returns 0 for x<=0 (non-positive out of domain)
+  // Range-reduce x into [0.5, 2) by powers of 4 → sqrt scales by powers of 2.
+  let x = x0, scale = 1;
+  while (x >= 2) { x /= 4; scale *= 2; }
+  while (x < 0.5) { x *= 4; scale /= 2; }
+  // Hyperbolic vectoring: rotate (x_h, y_h) toward y_h=0; result magnitude = sqrt(xh^2 - yh^2).
+  let xh = x + 0.25, yh = x - 0.25;
+  const { gain, idx } = hyperbolicGain(niter);
+  for (const k of idx) {
+    const d = yh < 0 ? 1 : -1;          // drive yh toward 0
+    const f = d * Math.pow(2, -k);
+    const xn = xh + f * yh;
+    const yn = yh + f * xh;
+    xh = xn; yh = yn;
+  }
+  return (xh / gain) * scale;
+}
+
+async function cordicsqrt(args: Value[]): Promise<Value[]> {
+  const X = m(args[0]);
+  const niter = args.length > 1 ? Math.max(1, Math.round(asScalar(m(args[1])))) : DEFAULT_NITER;
+  const out = zeros(X.rows, X.cols);
+  for (let i = 0; i < X.data.length; i++) out.data[i] = cordicSqrtScalar(X.data[i], niter);
+  return [out];
+}
+
+/** Circular CORDIC rotation of (xr,xi) by angle theta (theta reduced into [-pi/2, pi/2]).
+ *  Returns the rotated complex pair (already gain-corrected). */
+function cordicRotateScalar(theta: number, xr: number, xi: number, niter: number, gain: number): [number, number] {
+  // Quadrant pre-reduction: fold theta into [-pi/2, pi/2] by 180° pre-rotation (negate vector).
+  let t = theta, sr = xr, si = xi;
+  // wrap into (-pi, pi]
+  t = t - 2 * Math.PI * Math.round(t / (2 * Math.PI));
+  if (t > Math.PI / 2) { t -= Math.PI; sr = -sr; si = -si; }
+  else if (t < -Math.PI / 2) { t += Math.PI; sr = -sr; si = -si; }
+  let z = t;
+  for (let k = 0; k < niter; k++) {
+    const d = z < 0 ? -1 : 1;
+    const f = d * Math.pow(2, -k);
+    const xn = sr - f * si;
+    const yn = si + f * sr;
+    sr = xn; si = yn;
+    z -= d * Math.atan(Math.pow(2, -k));
+  }
+  return [sr * gain, si * gain];
+}
+
+/** Circular CORDIC gain K = prod sqrt(1 + 2^(-2k)) for k=0..niter-1. */
+function circularGain(niter: number): number {
+  let g = 1;
+  for (let k = 0; k < niter; k++) g *= Math.sqrt(1 + Math.pow(2, -2 * k));
+  return 1 / g;
+}
+
+/** cordicrotate(theta, x[,niter]) — rotate complex x by theta, i.e. x·exp(i·theta). */
+async function cordicrotate(args: Value[]): Promise<Value[]> {
+  const theta = asScalar(m(args[0]));
+  const X = m(args[1]);
+  const niter = args.length > 2 ? Math.max(1, Math.round(asScalar(m(args[2])))) : DEFAULT_NITER;
+  const gain = circularGain(niter);
+  const re = new Float64Array(X.data.length), im = new Float64Array(X.data.length);
+  for (let i = 0; i < X.data.length; i++) {
+    const [zr, zi] = cordicRotateScalar(theta, X.data[i], X.idata ? X.idata[i] : 0, niter, gain);
+    re[i] = zr; im[i] = zi;
+  }
+  if (X.data.length === 1) return [cscalar(re[0], im[0])];
+  return [finishComplex(X.rows, X.cols, re, im)];
+}
+
+/** cordicqr(A[,niter]) — QR factorization via CORDIC Givens rotations. Returns [Q, R] with full
+ *  (non-economy) Q (m×m) and R (m×n). Each Givens rotation that zeros a sub-diagonal entry is
+ *  applied via circular CORDIC vectoring (angle accumulated, gain-corrected), mirroring MATLAB. */
+async function cordicqr(args: Value[]): Promise<Value[]> {
+  const A = m(args[0]);
+  const mm = A.rows, nn = A.cols;
+  const niter = args.length > 1 ? Math.max(1, Math.round(asScalar(m(args[1])))) : DEFAULT_NITER;
+  const gain = circularGain(niter);
+  // R starts as a copy of A; Q^T accumulates the inverse rotations (start as identity).
+  const R: number[][] = []; for (let r = 0; r < mm; r++) { R.push([]); for (let c = 0; c < nn; c++) R[r][c] = A.data[r + c * mm]; }
+  const Qt: number[][] = []; for (let r = 0; r < mm; r++) { Qt.push([]); for (let c = 0; c < mm; c++) Qt[r][c] = r === c ? 1 : 0; }
+
+  // Vectoring: rotate the 2-vector (a,b) so b→0, returning the accumulated angle z.
+  const vectorAngle = (a: number, b: number): number => {
+    let x = a, y = b, z = 0;
+    for (let k = 0; k < niter; k++) {
+      const d = y >= 0 ? -1 : 1;           // drive y toward 0
+      const f = d * Math.pow(2, -k);
+      const xn = x - f * y, yn = y + f * x;
+      x = xn; y = yn;
+      z -= d * Math.atan(Math.pow(2, -k));
+    }
+    return z;
+  };
+  // Rotate a pair of row-vectors (rowP, rowQ) by angle (circular, gain-corrected) in place.
+  const applyRotation = (rows: number[][], p: number, q: number, len: number, z: number): void => {
+    for (let c = 0; c < len; c++) {
+      let x = rows[p][c], y = rows[q][c]; let zz = z;
+      for (let k = 0; k < niter; k++) {
+        const d = zz < 0 ? -1 : 1;
+        const f = d * Math.pow(2, -k);
+        const xn = x - f * y, yn = y + f * x;
+        x = xn; y = yn;
+        zz -= d * Math.atan(Math.pow(2, -k));
+      }
+      rows[p][c] = x * gain; rows[q][c] = y * gain;
+    }
+  };
+
+  for (let c = 0; c < Math.min(mm, nn); c++) {
+    for (let r = mm - 1; r > c; r--) {
+      // Zero R[r][c] against the pivot R[c][c] via a Givens rotation of rows c and r.
+      const z = vectorAngle(R[c][c], R[r][c]);
+      applyRotation(R, c, r, nn, z);
+      applyRotation(Qt, c, r, mm, z);
+    }
+  }
+  // Q = (Q^T)^T.
+  const Qd = new Float64Array(mm * mm);
+  for (let r = 0; r < mm; r++) for (let cc = 0; cc < mm; cc++) Qd[cc + r * mm] = Qt[r][cc]; // transpose
+  const Rd = new Float64Array(mm * nn);
+  for (let r = 0; r < mm; r++) for (let c = 0; c < nn; c++) Rd[r + c * mm] = R[r][c];
+  return [mat(mm, mm, Qd), mat(mm, nn, Rd)];
+}
+
 export const FIXEDPOINT: ToolboxModule = {
   id: 'fixedpoint',
   name: 'Fixed-Point Designer',
@@ -239,6 +393,9 @@ export const FIXEDPOINT: ToolboxModule = {
     fipref,
     fixdt,
     accumneg,
+    cordicsqrt,
+    cordicrotate,
+    cordicqr,
   },
   help: HELP_FIXEDPOINT,
 };

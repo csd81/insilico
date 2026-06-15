@@ -5,12 +5,12 @@
 // Registration is limited to in-scope numerical/matrix-computation domains. Out-of-scope
 // domain toolboxes are NOT registered (source kept under matlab/tb/ but not exposed at
 // runtime): antenna/rf, audio, bioinfo, financial/fininst, lidar/radar,
-// textanalytics, vision (earlier); fixedpoint, fuzzy, gads, ident, parallel, phased,
+// textanalytics, vision (earlier); fuzzy, gads, ident, parallel, phased,
 // risk, robotics;
-// (wavelet + aerospace + econ + fusion are now RESTORED + selectively registered via
-// RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion algebra;
-// econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection fusion;
-// nav: WGS84 geodetic↔ECEF transforms);
+// (wavelet + aerospace + econ + fusion + nav + fixedpoint are now RESTORED + selectively
+// registered via RESTORED_TOOLBOX_KEEP — wavelet: DCT + DWT; aerospace: rotation/quaternion
+// algebra; econ: time-series diagnostics; fusion: optimal assignment + covariance-intersection
+// fusion; nav: WGS84 geodetic↔ECEF transforms; fixedpoint: CORDIC sqrt/rotate/QR);
 // images (image processing), mapping (geodesy), nnet
 // (deep-learning layers/training), rl (reinforcement learning), pde (PDE-Toolbox object/mesh
 // machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases),
@@ -38,6 +38,7 @@ import { AEROSPACE } from './aerospace';
 import { ECON } from './econ';
 import { FUSION } from './fusion';
 import { NAV } from './nav';
+import { FIXEDPOINT } from './fixedpoint';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
@@ -47,6 +48,7 @@ export const TOOLBOXES: ToolboxModule[] = [
   ECON,        // restored — unit-root + deterministic time-series diagnostics (allow-list below)
   FUSION,      // restored — optimal assignment + covariance-intersection fusion (allow-list below)
   NAV,         // restored — WGS84 geodetic↔ECEF coordinate transforms (allow-list below)
+  FIXEDPOINT,  // restored — only the CORDIC elementary-function math (allow-list below)
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -130,6 +132,11 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // nav: deterministic WGS84 geodetic ↔ ECEF transforms. (lookangles deferred — its satPos
   // convention couldn't be pinned cleanly against MATLAB; lla2ned/lla2enu pending verification.)
   nav: new Set(['lla2ecef', 'ecef2lla']),
+  // fixedpoint: only the deterministic CORDIC elementary-function math — square root (hyperbolic
+  // CORDIC), complex rotation (x·exp(iθ)), and QR via CORDIC Givens rotations. Software double-
+  // precision emulation matching MATLAB to ~1e-8; the fi/numerictype/quantizer object surface
+  // stays unregistered.
+  fixedpoint: new Set(['cordicsqrt', 'cordicrotate', 'cordicqr']),
 };
 
 /** Intentional-duplicate policy. A name implemented in BOTH base and a toolbox is a cross-layer

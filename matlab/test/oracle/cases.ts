@@ -824,6 +824,12 @@ export const CASES: OracleCase[] = [
   { name: 'nm-simpson', src: 'f = @(x) sin(x); a = 0; b = pi; n = 10; h = (b-a)/n; x = a:h:b; fx = f(x); I = h/3*(fx(1) + fx(end) + 4*sum(fx(2:2:end-1)) + 2*sum(fx(3:2:end-2))); v = [I abs(I - 2)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['course-workflow', 'composite-simpson', 'quadrature'] },
   // ── Cumulative trapezoidal integration (uniform + with explicit x). Exact. ──
   { name: 'num-cumtrapz', src: 'v = [cumtrapz([1 2 3 4]) cumtrapz([0 1 2], [1 2 3])];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['cumtrapz', 'cumulative-integration'] },
+  // ── CORDIC elementary functions (Fixed-Point Designer, software double emulation). Validated by
+  // INVARIANT, since CORDIC is approximate and Q/R are non-unique: sqrt against the true sqrt,
+  // rotate against x·exp(iθ), and QR against reconstruction (Q*R≈A) + orthonormality (Q'Q≈I). ──
+  { name: 'fp-cordicsqrt', src: 'v = [abs(double(cordicsqrt(2)) - sqrt(2)) abs(double(cordicsqrt(7)) - sqrt(7)) abs(double(cordicsqrt(0.5)) - sqrt(0.5)) abs(double(cordicsqrt(1000)) - sqrt(1000)) abs(double(cordicsqrt(1e-4)) - 1e-2)];', vars: ['v'], tol: 1e-4, domain: 'numerical-methods', tags: ['cordicsqrt', 'hyperbolic-cordic', 'sqrt-invariant'] },
+  { name: 'fp-cordicrotate', src: 'x = 2 + 1i; r1 = double(cordicrotate(pi/6, x, 30)); r2 = double(cordicrotate(2.5, x, 30)); v = [abs(r1 - x*exp(1i*pi/6)) abs(r2 - x*exp(1i*2.5)) abs(abs(r1) - abs(x))];', vars: ['v'], tol: 1e-4, domain: 'numerical-methods', tags: ['cordicrotate', 'circular-cordic', 'complex-rotation-invariant'] },
+  { name: 'fp-cordicqr', src: "A = [4 1; 3 2; 0 5]; [Q, R] = cordicqr(A, 30); Q = double(Q); R = double(R); v = [norm(Q*R - A, 'fro') norm(Q'*Q - eye(3), 'fro') size(R,1) size(R,2) size(Q,1)];", vars: ['v'], tol: 1e-4, domain: 'numerical-methods', tags: ['cordicqr', 'givens-cordic', 'qr-reconstruction-invariant', 'orthogonality-invariant'] },
 
   // ══════════ numerical-ode (34) ══════════
   { name: 'ode-heun', src: 'h = 0.1; y = 1; for k = 1:10, yp = y + h*y; y = y + h/2*(y + yp); end', vars: ['y'], tol: 1e-9, domain: 'numerical-ode', tags: ['improved-euler', 'heun'] },

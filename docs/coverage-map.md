@@ -208,6 +208,12 @@ Registered toolboxes are limited to in-scope numerical/matrix domains:
   matrices) and scalar-first `[w x y z]` quaternions `angle2quat`/`quatmultiply`/`quatrotate`/
   `quatinv` (Hamilton product). Exact MATLAB parity; the model/environment/UI surface stays
   unregistered.
+- `fixedpoint` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): the
+  deterministic CORDIC elementary-function math only — `cordicsqrt` (hyperbolic CORDIC square
+  root), `cordicrotate` (circular-CORDIC complex rotation, `x·exp(iθ)`) and `cordicqr` (QR via
+  CORDIC Givens rotations). Software double-precision emulation, validated by invariant (sqrt vs
+  `sqrt`, rotate vs `x·exp(iθ)`, QR by `Q*R≈A` + `Q'Q≈I`). The fi/numerictype/quantizer object
+  surface stays unregistered.
 
 **Restored source pool (source-only, NOT registered).** The previously-deleted toolbox source
 files were brought back as a curated pool under `matlab/tb/` (antenna, audio,
