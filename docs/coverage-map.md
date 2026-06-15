@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 965 tests green · 830 MATLAB oracle fixtures ·
-830/830 cases classified across 22 domains.
+**Status (as of this revision):** 971 tests green · 836 MATLAB oracle fixtures ·
+836/836 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -244,17 +244,24 @@ reductions (`mov*`/`cummax`/`cummin`) + binning, and integer/cast semantics
   `ode23s`/`ode23t`/`ode78`/`ode89` on `y'=-y` validated by an accuracy bar both engines clear
   (step-by-step state differs by integrator). RNG-based global optimizers (`particleswarm`/
   `simulannealbnd`/`ga`) left out — not deterministically oracle-checkable.
-- **Totals after Pass 2:** 965 tests / 830 fixtures; base/core `uncategorized` 579 → 449.
+- **Pass 2O — deterministic stats / data utilities:** 6 cases over `prctile`/`quantile`/`iqr`
+  (percentile-interpolation conventions), `mad`/`geomean`/`harmmean`, `zscore`/`rms`,
+  `normalize`/`rescale`, `detrend`/`smoothdata`, and missing-data handling `rmmissing`/
+  `fillmissing`/`standardizeMissing`/`anynan`. All match MATLAB R2026a exactly. `trimmean`
+  declined — not implemented (`exist == 0` in the engine).
+- **Totals after Pass 2:** 971 tests / 836 fixtures; base/core `uncategorized` 579 → 434.
 
-**The high-risk numerical-linear-algebra sweep is done; the broader core-math/semantics
-triage is not.** The remaining `uncategorized` is *not* dismissed as breadth — most of it
-is core computational math or core MATLAB semantics, and it continues in **prioritized
-passes** (done: 2H geometry, 2I N-D/shape, 2J interpolation/spline, 2K special functions,
-2L struct/cell, 2M bit/integer, 2N optimization/solver variants; next: 2O stats/data
-utilities). Genuinely lower-priority tails (display/format, UI-ish helpers, table/timetable
-breadth, VFS/file, compatibility aliases, path/host) stay deferred.
+**The high-risk numerical-linear-algebra sweep is done, and the prioritized core-math/
+semantics triage (2H–2O) is now complete.** The remaining `uncategorized` was *never*
+dismissed as breadth — the computationally-core passes are done: **2H** geometry/triangulation,
+**2I** N-D/shape, **2J** interpolation/spline, **2K** special functions, **2L** struct/cell,
+**2M** bit/integer, **2N** optimization/solver variants, **2O** stats/data utilities. Further
+base/core validation is now **demand-driven** (add a case when an example needs a specific
+function). The remaining ~434 is genuinely lower-priority tail — display/format, UI-ish
+helpers, table/timetable breadth, VFS/file, compatibility aliases, path/host — that the MATLAB
+oracle either has no opinion on or that isn't computational-math core.
 
-### Remaining base/core backlog (~449 uncategorized)
+### Remaining base/core backlog (~434 uncategorized)
 
 All unreferenced/untested, and **lower-risk** (the high-risk math-core is done). Rough
 shape, for demand-driven triage — not a TODO list:
@@ -279,9 +286,10 @@ shape, for demand-driven triage — not a TODO list:
   `unmkpp`/`griddedInterpolant`/`scatteredInterpolant`/`interp2`/`interp3`); remainder is
   the Curve-Fitting-Toolbox B-spline helpers `csape`/`csapi`/`fn*` and `interp1q`
   (`griddatan` declined — errors in MATLAB for the probed inputs).
-- **stats / data utilities:** `prctile`/`quantile`/`iqr`/`mad`/`geomean`/`harmmean`/
-  `zscore`/`rms`/`normalize`/`rescale`/`detrend`/`smoothdata`; missing-data
-  (`rmmissing`/`fillmissing`/`standardizeMissing`/`anynan`).
+- **stats / data utilities:** validated in Pass 2O (`prctile`/`quantile`/`iqr`/`mad`/`geomean`/
+  `harmmean`/`zscore`/`rms`/`normalize`/`rescale`/`detrend`/`smoothdata` + missing-data
+  `rmmissing`/`fillmissing`/`standardizeMissing`/`anynan`). Remainder is table/timetable-bound
+  grouping/summary helpers (`groupsummary`/`grpstats`/…) and `trimmean` (not implemented).
 - **N-D / shape:** validated in Pass 2I (`shiftdim`/`ipermute`/`ndims`/`repelem`/
   `tensorprod`/`pagemrdivide`/`pagemldivide`/`pagelsqminnorm`); remainder is `repmat`
   edge cases and rarely-named reshapers.

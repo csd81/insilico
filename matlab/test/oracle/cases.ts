@@ -793,7 +793,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-lsqlin-lsqnonlin', src: 'x1 = lsqlin([1 1; 1 -1], [2; 0], [], []); x2 = lsqnonlin(@(x) [x(1)-1; x(2)-2], [0 0]); v = [x1.\x27 x2];', vars: ['v'], tol: 1e-5, domain: 'optimization', tags: ['lsqlin', 'lsqnonlin', 'known-solution'] },
   { name: 'opt-curvefit', src: 'b = lsqcurvefit(@(b,xd) b(1)*xd + b(2), [0 0], [1; 2; 3], [3; 5; 7]); v = round(b);', vars: ['v'], tol: 1e-6, domain: 'optimization', tags: ['lsqcurvefit', 'exact-line-recovery'] },
 
-  // ══════════ statistics (58) ══════════
+  // ══════════ statistics (64) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -852,6 +852,14 @@ export const CASES: OracleCase[] = [
   { name: 'stat-moving-window', src: 'x = [1 2 3 4 5]; v = [movsum(x, 3) movprod([1 2 3 4], 2) movstd(x, 3) movvar(x, 3) movmad([1 2 10 4 5], 3)];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['movsum', 'movprod', 'movstd', 'movvar', 'movmad', 'moving-window', 'endpoint-shrink'] },
   { name: 'stat-accumarray-discretize', src: 'v = [accumarray([1; 2; 1; 3], [10; 20; 30; 40]).\x27 discretize([0.2 1.5 2.7 3.1], [0 1 2 3 4])];', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['accumarray', 'discretize', 'binning'] },
   { name: 'stat-histcounts-edges', src: '[n, e] = histcounts([0.2 1.5 2.7 3.1 0.5], [0 1 2 3 4]); v = [n e];', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['histcounts', 'explicit-edges', 'binning'] },
+  // ── Pass 2O: deterministic stats / data utilities (percentile interpolation conventions,
+  // dispersion measures, normalization/rescaling, detrend/smoothdata, missing-data handling). ──
+  { name: 'ds-prctile-quantile', src: 'v = [prctile([1 2 3 4 5 6 7 8 9 10], [25 50 75]) quantile([1 2 3 4 5], [0.25 0.5 0.75]) iqr([1 2 3 4 5 6 7 8])];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['prctile', 'quantile', 'iqr', 'percentile-interpolation'] },
+  { name: 'ds-mad-geo-harm', src: 'v = [mad([1 2 3 4 5]) mad([1 2 3 4 5], 1) geomean([1 2 4 8]) harmmean([1 2 4])];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['mad', 'geomean', 'harmmean', 'dispersion'] },
+  { name: 'ds-zscore-rms', src: 'v = [zscore([2 4 6 8]) rms([3 4])];', vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['zscore', 'rms', 'standardize'] },
+  { name: 'ds-normalize-rescale', src: "v = [normalize([1 2 3 4 5]) normalize([1 2 3 4 5], 'range') rescale([1 2 3 4 5], -1, 1)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['normalize', 'rescale', 'min-max'] },
+  { name: 'ds-detrend-smooth', src: "v = [detrend([1 2 3 5 5]) smoothdata([1 5 2 8 3], 'movmean', 3)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['detrend', 'smoothdata', 'moving-average'] },
+  { name: 'ds-missing', src: "a = rmmissing([1 NaN 3 NaN 5]); b = fillmissing([1 NaN 3 NaN 5], 'linear'); c = standardizeMissing([1 2 -99 4], -99); v = [a b anynan([1 2 NaN]) anynan([1 2 3]) c(1) c(2) isnan(c(3)) c(4)];", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['rmmissing', 'fillmissing', 'standardizeMissing', 'anynan'] },
 
   // ══════════ symbolic (57) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },

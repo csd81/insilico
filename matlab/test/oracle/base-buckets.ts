@@ -217,4 +217,8 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // ODE solver variants (accuracy invariant). All deterministic and MATLAB-present. ──
   ...bulkD('needs-oracle', 'invariant', 'optimization', 'lsqnonneg lsqminnorm lsqlin lsqnonlin lsqcurvefit'),
   ...bulkD('needs-oracle', 'invariant', 'numerical-ode', 'ode23s ode23t ode78 ode89'),
+
+  // ── Pass 2O: deterministic stats / data utilities (percentiles, dispersion, normalization,
+  // detrend/smoothing, missing-data). All match MATLAB exactly. ──
+  ...bulkD('needs-oracle', 'direct', 'statistics', 'prctile quantile iqr mad geomean harmmean zscore rms normalize rescale detrend smoothdata rmmissing fillmissing standardizeMissing anynan'),
 };
