@@ -6,7 +6,8 @@
 // domain toolboxes are NOT registered (source kept under matlab/tb/ but not exposed at
 // runtime): aerospace, antenna/rf, audio, bioinfo, financial/fininst, lidar/radar,
 // textanalytics, vision (earlier); fixedpoint, fusion, fuzzy, gads, ident, parallel, phased,
-// risk, robotics, wavelet; and — de-registered as low-value breadth — econ (econometrics),
+// risk, robotics; and — de-registered as low-value breadth — econ (econometrics),
+// (wavelet is now RESTORED + selectively registered via RESTORED_TOOLBOX_KEEP — DCT + DWT);
 // images (image processing), mapping (geodesy), nav (navigation/coord frames), nnet
 // (deep-learning layers/training), rl (reinforcement learning), pde (PDE-Toolbox object/mesh
 // machinery — PDEs are covered by the numerical-pde domain's inline finite-difference cases),
@@ -27,10 +28,13 @@ import { OPTIM } from './optim';
 import { SIGNAL } from './signal';
 import { STATS } from './stats';
 import { SYMBOLIC } from './symbolic';
+// Restored toolboxes (source brought back, registered selectively + validated). See RESTORED_TOOLBOX_KEEP.
+import { WAVELET } from './wavelet';
 
 /** All registered toolboxes, in precedence order (first wins on inter-toolbox collision). */
 export const TOOLBOXES: ToolboxModule[] = [
   COMM, CONTROL, DSP, OPTIM, SIGNAL, STATS, SYMBOLIC,
+  WAVELET,   // restored — registered via RESTORED_TOOLBOX_KEEP (validated subset only)
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -91,6 +95,17 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
   ]),
 };
 
+/** Restored-toolbox allow-lists. The deleted toolbox source files were brought back as a
+ *  curated pool (source-only by default); a restored toolbox is registered ONLY when it appears
+ *  here, and ONLY the named functions are exposed — each must be math/computation-adjacent,
+ *  deterministic, MATLAB R2026a-present, and oracle/invariant-validated. Source presence is not a
+ *  correctness promise; this allow-list is. Grow it as functions are validated. */
+export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
+  // wavelet: orthonormal DCT-II (matches MATLAB) + Haar/Daubechies DWT (orthonormal → perfect
+  // reconstruction), single/multi-level. Validated by exact values + reconstruction invariants.
+  wavelet: new Set(['dct', 'idct', 'dwt', 'idwt', 'wavedec', 'waverec', 'haart', 'ihaart']),
+};
+
 export const TOOLBOX_BUILTINS: Record<string, Builtin> = {};
 export const TOOLBOX_CONSTANTS: Record<string, () => Value> = {};
 export const TOOLBOX_HELP: Record<string, HelpEntry | string> = {};
@@ -119,7 +134,7 @@ export const NAME_OWNERS = new Map<string, string[]>();
 
 for (const tb of TOOLBOXES) {
   TOOLBOX_BY_ID.set(tb.id, tb);
-  const keep = TOOLBOX_KEEP[tb.id];
+  const keep = TOOLBOX_KEEP[tb.id] ?? RESTORED_TOOLBOX_KEEP[tb.id];
   for (const [name, fn] of Object.entries(tb.builtins)) {
     if (keep && !keep.has(name)) continue;   // curated allow-list: skip de-registered breadth
     const owners = NAME_OWNERS.get(name); if (owners) owners.push(tb.id); else NAME_OWNERS.set(name, [tb.id]);

@@ -13,8 +13,8 @@ pnpm oracle:base-audit
 pnpm oracle:audit
 ```
 
-**Status (as of this revision):** 1058 tests green · 918 MATLAB oracle fixtures ·
-918/918 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1061 tests green · 921 MATLAB oracle fixtures ·
+921/921 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.
@@ -198,18 +198,24 @@ See `docs/symbolic-boundary.md` for the precise supported symbolic subset.
 
 Registered toolboxes are limited to in-scope numerical/matrix domains:
 
-- `comm`
-- `control`
-- `dsp`
-- `optim`
-- `signal`
-- `stats`
-- `symbolic`
+- `comm`, `control`, `dsp`, `optim`, `signal`, `stats`, `symbolic`
+- `wavelet` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): orthonormal
+  DCT-II + Haar/Daubechies DWT (`dct`/`idct`/`dwt`/`idwt`/`wavedec`/`waverec`/`haart`/`ihaart`),
+  validated by exact values + perfect-reconstruction invariants.
+
+**Restored source pool (source-only, NOT registered).** The previously-deleted toolbox source
+files were brought back as a curated pool under `matlab/tb/` (aerospace, antenna, audio,
+bioinfo, financial, fininst, fixedpoint, fusion, fuzzy, gads, ident, lidar, parallel, phased,
+radar, rf, risk, robotics, textanalytics, uav, vision, wavelet; simulink skipped). A restored
+toolbox is exposed at runtime **only** via `RESTORED_TOOLBOX_KEEP`, and only after each function
+is probed against MATLAB R2026a and oracle/invariant-validated. Source presence is not a
+correctness promise — registration is. Help files follow registration (not wired into base help
+until a function is registered).
 
 Out-of-scope domain toolboxes are de-registered but source is retained under
-`matlab/tb/`: images, mapping, nav, nnet, rl, econ, pde, curvefit, plus previously
-quarantined domain breadth. Calling those functions now returns "undefined
-function", matching MATLAB without the corresponding toolbox.
+`matlab/tb/`: images, mapping, nav, nnet, rl, econ, pde, curvefit, plus the restored pool above.
+Calling an unregistered function returns "undefined function", matching MATLAB without the
+corresponding toolbox.
 
 Toolboxes are curated by allow-list. Run `pnpm oracle:audit` for the current
 registered/referenced breakdown. Registered does **not** mean every function is

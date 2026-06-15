@@ -401,7 +401,7 @@ export const CASES: OracleCase[] = [
   { name: 'dyn-newton-fixed-point', src: 'r = 3.5; x = 0.7; for k = 1:20, fx = r*x*(1-x) - x; fp = r*(1-2*x) - 1; x = x - fx/fp; end; v = x;', vars: ['v'], tol: 1e-7, domain: 'dynamical-systems', tags: ['newton', 'fixed-point', 'continuation'] },
   { name: 'dyn-stable-cycle-period4', src: 'r = 3.5; x = 0.5; for k = 1:1000, x = r*x*(1-x); end; c = zeros(4,1); for k = 1:4, x = r*x*(1-x); c(k) = x; end; v = sort(c);', vars: ['v'], tol: 1e-6, domain: 'dynamical-systems', tags: ['logistic-map', 'period-doubling', 'stable-cycle', 'bifurcation'] },
 
-  // ══════════ fourier (29) ══════════
+  // ══════════ fourier (32) ══════════
   { name: 'dsp-fft', src: 'Y = fft([1 2 3 4]);', vars: ['Y'], tol: 1e-9, domain: 'fourier', tags: ['fft'] },
   { name: 'dsp-conv', src: 'c = conv([1 2 1], [1 1]);', vars: ['c'], tol: 1e-9, domain: 'fourier', tags: ['convolution'] },
   { name: 'dsp-fft-ifft-roundtrip', src: 'x = [1 2 3 4]; y = real(ifft(fft(x)));', vars: ['y'], tol: 1e-9, domain: 'fourier', tags: ['fft', 'ifft', 'roundtrip'] },
@@ -435,6 +435,12 @@ export const CASES: OracleCase[] = [
   // ── Signal/Fourier tail: non-uniform FFT magnitude, cross-covariance, 2-D filtering. nufft
   // returns a column for a row input here (orientation divergence) — flattened with (:)'. ──
   { name: 'sig-tail', src: "X = nufft([1 2 3 4], 0:3); cc = xcov([1 2 3], [1 2 3]); F = filter2([1 1; 1 1], [1 2; 3 4]); v = [round(abs(X(:)))' cc(:)' F(:)'];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['nufft', 'xcov', 'filter2'] },
+  // ── Restored Wavelet Toolbox (selectively registered + validated): orthonormal DCT-II (exact vs
+  // MATLAB) and Haar/Daubechies DWT — single-level, multi-level wavedec/waverec, and haart — all
+  // orthonormal so perfect reconstruction holds (invariant). First validated restored-toolbox batch. ──
+  { name: 'wavelet-dct', src: 'x = [1 4 2 8]; d = dct(x); v = [d max(abs(idct(d) - x))];', vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['dct', 'idct', 'wavelet', 'restored-toolbox'] },
+  { name: 'wavelet-dwt', src: "x = [3 1 4 1 5 9 2 6]; [a1,d1] = dwt(x,'haar'); [a2,d2] = dwt(x,'db2'); v = [double(max(abs(idwt(a1,d1,'haar') - x))<1e-9) double(max(abs(idwt(a2,d2,'db2') - x))<1e-9) numel(a1) numel(d1)];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['dwt', 'idwt', 'wavelet', 'perfect-reconstruction'] },
+  { name: 'wavelet-multilevel-haart', src: "x = [1 2 3 4 5 6 7 8]; [c,l] = wavedec(x,2,'haar'); xr = waverec(c,l,'haar'); [a,d] = haart(x); hr = ihaart(a,d); v = [double(max(abs(xr - x))<1e-9) numel(c) l double(max(abs(hr(:) - x(:)))<1e-9) a];", vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['wavedec', 'waverec', 'haart', 'ihaart', 'multilevel'] },
 
   // ══════════ geometry (18) ══════════
   { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'area'] },

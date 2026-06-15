@@ -33,7 +33,7 @@ const repo = join(here, '..', '..', '..');
 const load = (p) => import(pathToFileURL(join(repo, '.test-dist', p)).href);
 
 const { CASES } = await load('test/oracle/cases.js');
-const { TOOLBOXES, TOOLBOX_KEEP, TOOLBOX_BUILTINS } = await load('tb/index.js');
+const { TOOLBOXES, TOOLBOX_KEEP, RESTORED_TOOLBOX_KEEP, TOOLBOX_BUILTINS } = await load("tb/index.js");
 const { BUILTINS } = await load('builtins.js');
 
 // Identifier tokens used in any oracle case source.
@@ -52,7 +52,7 @@ const baseNames = allNames.filter((n) => !tbRegistered.has(n));
 // Per-toolbox rows (registered = builtins surviving the allow-list).
 const rows = [];
 for (const tb of TOOLBOXES) {
-  const keep = TOOLBOX_KEEP[tb.id];
+  const keep = TOOLBOX_KEEP[tb.id] ?? RESTORED_TOOLBOX_KEEP[tb.id];
   const names = Object.keys(tb.builtins ?? {}).filter((n) => !keep || keep.has(n));
   const unref = names.filter((n) => !referenced.has(n)).sort();
   rows.push({ id: tb.id, reg: names.length, ref: refCount(names), curated: !!keep, unref });
