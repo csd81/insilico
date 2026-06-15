@@ -412,6 +412,9 @@ locked.)
 - `gammapdf`: wrong name; MATLAB uses `gampdf`, already validated.
 - `wronskian`: not present in the available MATLAB install; undefined-function
   behavior is correct.
+- `isschur`: not a public MATLAB R2026a function (`exist('isschur') == 0`); it is
+  an internal predicate, so there is nothing to oracle-validate against. The Schur
+  factorization itself is covered (`nla-schur`, `nla-ordeig`).
 - `sobolset`: real MATLAB function, deliberately declined because parity requires
   MATLAB's specific Joe-Kuo direction-number tables.
 - `griddatan`, `trimmean`, `meansq`: declined for the probed/current environment

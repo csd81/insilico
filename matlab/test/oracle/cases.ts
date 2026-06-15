@@ -24,6 +24,7 @@ export const CASES: OracleCase[] = [
 
   // ══════════ approximation (36) ══════════
   { name: 'approx-polyfit-line', src: 'x = [0 1 2 3 4]; y = 2*x + 1; p = polyfit(x, y, 1);', vars: ['p'], domain: 'approximation' },
+  { name: 'approx-padecoef', src: '[num, den] = padecoef(1, 2); v = [num den];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['padecoef', 'pade-approximation', 'time-delay'] },
   { name: 'approx-polyfit-centered', src: 'x = [0 1 2 3 4]; y = [1 3 7 13 21]; [p, S, mu] = polyfit(x, y, 2); df = S.df; nr = S.normr;', vars: ['p', 'mu', 'df', 'nr'], tol: 1e-6, domain: 'approximation', tags: ['polyfit', 'centered-scaled', 'multi-output'] },
   { name: 'approx-polyval', src: 'v = polyval([1 -3 2], 5);', vars: ['v'], domain: 'approximation' },
   { name: 'approx-roots', src: 'r = sort(roots([1 -3 2]));', vars: ['r'], domain: 'approximation' },
@@ -460,6 +461,9 @@ export const CASES: OracleCase[] = [
   { name: 'geom-pointlocation-barycentric', src: "P = [0 0; 1 0; 1 1; 0 1]; DT = delaunayTriangulation(P); q = [0.3 0.2]; ti = pointLocation(DT, q); B = cartesianToBarycentric(DT, ti, q); xy = barycentricToCartesian(DT, ti, B); v = double([all(B >= -1e-9) abs(sum(B) - 1) < 1e-9 norm(xy - q) < 1e-9]);", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['delaunayTriangulation', 'pointLocation', 'barycentric', 'roundtrip-invariant'] },
   { name: 'geom-nearest-circum-incenter', src: "P = [0 0; 1 0; 0 1]; DT = delaunayTriangulation(P); cc = circumcenter(DT); ic = incenter(DT); d = [norm(cc - [0 0]) norm(cc - [1 0]) norm(cc - [0 1])]; ceq = max(d) - min(d); Bi = cartesianToBarycentric(DT, 1, ic); inside = double(all(Bi >= -1e-9)); Pn = [0 0; 1 0; 1 1; 0 1]; DTn = delaunayTriangulation(Pn); vi = nearestNeighbor(DTn, [0.1 0.15]); v = [vi, ceq, inside];", vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['nearestNeighbor', 'circumcenter', 'incenter', 'equidistance-invariant'] },
   { name: 'geom-connectivity', src: 'P = [0 0; 1 0; 1 1; 0 1]; DT = delaunayTriangulation(P); fb = freeBoundary(DT); E = edges(DT); n = neighbors(DT); v = [size(fb,1) size(E,1) size(DT.ConnectivityList,1) sum(n(:) > 0 & ~isnan(n(:)))];', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['freeBoundary', 'edges', 'neighbors', 'connectivity-invariant'] },
+  // tsearchn: enclosing-simplex search + barycentric weights; an exterior query point yields NaN
+  // for both the triangle index and the weights (MATLAB convention; null→NaN in the fixture).
+  { name: 'geom-tsearchn', src: 'P = [0 0;1 0;0 1;1 1]; T = [1 2 3;2 4 3]; [t, bc] = tsearchn(P, T, [0.25 0.25; 0.75 0.75; -1 -1]);', vars: ['t', 'bc'], tol: 1e-9, domain: 'geometry', tags: ['tsearchn', 'point-location', 'barycentric', 'exterior-nan'] },
   { name: 'geom-voronoi-alphashape-tri', src: "P = [0 0; 2 0; 2 2; 0 2; 1 1]; [V, C] = voronoin(P); x = [0 1 1 0 0.5]'; y = [0 0 1 1 0.5]'; kk = boundary(x, y, 0); shp = alphaShape(x, y, Inf); TR = triangulation([1 2 3], [0 0; 1 0; 0 1]); v = [numel(C) polyarea(x(kk), y(kk)) area(shp) size(freeBoundary(TR),1)];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['voronoin', 'boundary', 'alphaShape', 'triangulation', 'area-invariant'] },
   // ── Demand-driven remainder: coordinate transforms (round-trip exactness + known values) and
   // assorted geometry utilities (point-in-polygon, rectangle intersection area, polygon area). ──
@@ -624,6 +628,9 @@ export const CASES: OracleCase[] = [
   { name: 'nla-null-space', src: 'A = [1 2 3; 2 4 6; 1 1 1]; r = rank(A); N = null(A); nc = norm(A*N); dn = size(N, 2);', vars: ['r', 'nc', 'dn'], tol: 1e-9, domain: 'numerical-linear-algebra' },
   { name: 'nla-eig-invariants', src: 'A = [4 1; 2 3]; [V, D] = eig(A); ev = sort(diag(D)); rr = norm(V*D*inv(V) - A);', vars: ['ev', 'rr'], tol: 1e-9, domain: 'numerical-linear-algebra' },
   { name: 'nla-cond-hilbert', src: 'c = cond(hilb(5));', vars: ['c'], tol: 1, domain: 'numerical-linear-algebra', tags: ['conditioning', 'cond'] },
+  { name: 'nla-rcond', src: 'v = [rcond(eye(3)) rcond([2 0; 0 4]) rcond([4 0 0; 0 2 0; 0 0 1])];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['rcond', 'reciprocal-condition'] },
+  { name: 'nla-planerot', src: "[G, y] = planerot([3; 4]); v = [G(1,1) G(1,2) G(2,1) G(2,2) y(1) y(2) norm(G*G' - eye(2), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['planerot', 'givens-rotation', 'orthogonal'] },
+  { name: 'nla-ordeig', src: "A = [2 1 0; 0 3 1; 0 0 5]; [U, T] = schur(A); e = ordeig(T); v = sort(e)';", vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['ordeig', 'schur', 'eigenvalues'] },
   { name: 'nla-rref', src: 'R = rref([1 2 3; 2 4 6; 1 1 1]);', vars: ['R'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['rref'] },
   { name: 'nla-projection', src: "A = [1 0; 1 1; 1 2]; b = [1; 2; 2]; proj = A*((A'*A)\\(A'*b));", vars: ['proj'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['projection', 'least-squares'] },
   { name: 'nla-qr-orthonormal', src: "[Q, R] = qr([1 1; 1 0; 0 1], 0); orth = Q'*Q;", vars: ['orth'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['orthogonalization', 'qr'] },
@@ -798,6 +805,9 @@ export const CASES: OracleCase[] = [
   { name: 'num-specfun-legendre', src: 'P = legendre(2, 0.5); v = P(1);', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['legendre', 'special-functions'] },
   { name: 'num-specfun-gamma-half', src: 'v = gamma(5.5);', vars: ['v'], tol: 1e-6, domain: 'numerical-methods', tags: ['gamma-function', 'special-functions'] },
   { name: 'num-integral2', src: 'v = integral2(@(x,y) x.*y, 0, 1, 0, 2);', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['integral2', 'cubature'] },
+  { name: 'num-integral3', src: 'v = integral3(@(x,y,z) x.*y.*z, 0, 1, 0, 1, 0, 1);', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['integral3', 'volume-integral'] },
+  { name: 'num-quad2d', src: 'v = [quad2d(@(x,y) x.*y, 0, 1, 0, 1) quad2d(@(x,y) x + y, 0, 1, 0, 2)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['quad2d', 'cubature'] },
+  { name: 'num-quadgk-improper', src: 'v = [quadgk(@(x) exp(-x.^2), 0, Inf) quadgk(@(x) 1./(1 + x.^2), 0, Inf)];', vars: ['v'], tol: 1e-8, domain: 'numerical-methods', tags: ['quadgk', 'gauss-kronrod', 'improper-integral'] },
   { name: 'num-gradient-2d', src: '[X, Y] = meshgrid(1:3, 1:3); Z = X.^2 + Y.^2; [FX, FY] = gradient(Z); v = [FX(2,2) FY(2,2)];', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['gradient', 'finite-difference'] },
   { name: 'num-del2', src: '[X, Y] = meshgrid(1:4, 1:4); Z = X.^2 - Y.^2; L = del2(Z); v = L(2,2);', vars: ['v'], tol: 1e-9, domain: 'numerical-methods', tags: ['del2', 'discrete-laplacian'] },
   // ── Course-workflow integration cases (quadrature). Original minimal implementations of standard
