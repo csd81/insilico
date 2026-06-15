@@ -211,3 +211,29 @@ describe('functions', () => {
     expectMat(r.get('v'), { rows: 1, cols: 3, data: [2, 3, 1] });
   });
 });
+
+// Function-registry resolution: base wins by default for a cross-layer duplicate; the toolbox
+// copy stays reachable via the qualified `toolbox.name(...)` call. See DUPLICATE_POLICY.
+describe('function registry', () => {
+  it('base wins by default for a duplicate name', async () => {
+    const r = await run("v = hamming(4)';");   // base.hamming
+    expectMat(r.get('v'), { rows: 1, cols: 4, data: [0.08, 0.77, 0.77, 0.08], tol: 1e-2 });
+  });
+
+  it('qualified toolbox call reaches the toolbox copy', async () => {
+    const r = await run("v = signal.hamming(4)';");
+    expectMat(r.get('v'), { rows: 1, cols: 4, data: [0.08, 0.77, 0.77, 0.08], tol: 1e-2 });
+  });
+
+  it('a genuinely-different duplicate: base.hanning ≠ signal.hanning', async () => {
+    const b = await run("v = hanning(5)';");    // base = MATLAB hanning (nonzero endpoints)
+    const s = await run("v = signal.hanning(5)';");  // signal = hann window (zero endpoints)
+    expectMat(b.get('v'), { rows: 1, cols: 5, data: [0.25, 0.75, 1, 0.75, 0.25], tol: 1e-9 });
+    expectMat(s.get('v'), { rows: 1, cols: 5, data: [0, 0.5, 1, 0.5, 0], tol: 1e-9 });
+  });
+
+  it('an unregistered restored-toolbox function is not callable', async () => {
+    const r = await run("x = dyaddown([1 2 3 4]);");   // wavelet source present, not in keep-list
+    assert.ok(r.error && /undefined/.test(r.error));
+  });
+});

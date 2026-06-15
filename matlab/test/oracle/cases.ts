@@ -442,7 +442,7 @@ export const CASES: OracleCase[] = [
   { name: 'wavelet-dwt', src: "x = [3 1 4 1 5 9 2 6]; [a1,d1] = dwt(x,'haar'); [a2,d2] = dwt(x,'db2'); v = [double(max(abs(idwt(a1,d1,'haar') - x))<1e-9) double(max(abs(idwt(a2,d2,'db2') - x))<1e-9) numel(a1) numel(d1)];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['dwt', 'idwt', 'wavelet', 'perfect-reconstruction'] },
   { name: 'wavelet-multilevel-haart', src: "x = [1 2 3 4 5 6 7 8]; [c,l] = wavedec(x,2,'haar'); xr = waverec(c,l,'haar'); [a,d] = haart(x); hr = ihaart(a,d); v = [double(max(abs(xr - x))<1e-9) numel(c) l double(max(abs(hr(:) - x(:)))<1e-9) a];", vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['wavedec', 'waverec', 'haart', 'ihaart', 'multilevel'] },
 
-  // ══════════ geometry (18) ══════════
+  // ══════════ geometry (19) ══════════
   { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'area'] },
   { name: 'geom-convhull-perimeter', src: 'x = [0 1 1 0]; y = [0 0 1 1]; k = convhull(x, y); per = sum(sqrt(diff(x(k)).^2 + diff(y(k)).^2));', vars: ['per'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'perimeter'] },
   { name: 'geom-convhulln-volume-3d', src: 'P = [0 0 0;1 0 0;0 1 0;0 0 1;1 1 1;1 1 0;1 0 1;0 1 1]; [k, vol] = convhulln(P); v = vol;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'volume', 'convhulln'] },
@@ -452,6 +452,9 @@ export const CASES: OracleCase[] = [
   { name: 'geom-polyarea', src: 'v = [polyarea([0 1 1 0], [0 0 1 1]); polyarea([0 1 0.5], [0 0 1])];', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['polygon', 'area', 'polyarea'] },
   { name: 'geom-inpolygon', src: 'v = [inpolygon(0.5, 0.5, [0 1 1 0], [0 0 1 1]), inpolygon(2, 2, [0 1 1 0], [0 0 1 1])];', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['point-in-polygon', 'inpolygon'] },
   { name: 'geom-pdist', src: 'v = pdist([0 0; 3 4]);', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['pairwise-distance', 'pdist'] },
+  // ── pdist distance metrics (fixed: base previously ignored the metric and always returned
+  // Euclidean — it now honours cityblock/chebychev/minkowski/cosine, matching MATLAB). ──
+  { name: 'geom-pdist-metrics', src: "P = [0 0; 3 4]; v = [pdist(P) pdist(P,'cityblock') pdist(P,'chebychev') pdist(P,'minkowski',3) pdist([1 0 0; 0 1 0],'cosine')];", vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['pdist', 'distance-metrics', 'cityblock', 'chebychev', 'minkowski'] },
   { name: 'geom-convhull', src: 'P2 = [0 0; 1 0; 1 1; 0 1; 0.5 0.5]; k = convhull(P2(:,1), P2(:,2)); P3 = [0 0 0; 1 0 0; 0 1 0; 0 0 1; 0.3 0.3 0.3]; [K, V] = convhulln(P3); td = delaunayn(P2); v = [numel(unique(k)) polyarea(P2(k,1), P2(k,2)) size(K,1) V size(td,1)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['convhull', 'convhulln', 'delaunayn', 'hull-area-volume-invariant'] },
   { name: 'geom-delaunay-area', src: "x = [0 1 1 0 0.5]'; y = [0 0 1 1 0.5]'; t = delaunay(x, y); A = 0; for i = 1:size(t,1), A = A + polyarea(x(t(i,:)), y(t(i,:))); end; v = [size(t,1) A];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['delaunay', 'triangle-count', 'total-area-invariant'] },
   { name: 'geom-pointlocation-barycentric', src: "P = [0 0; 1 0; 1 1; 0 1]; DT = delaunayTriangulation(P); q = [0.3 0.2]; ti = pointLocation(DT, q); B = cartesianToBarycentric(DT, ti, q); xy = barycentricToCartesian(DT, ti, B); v = double([all(B >= -1e-9) abs(sum(B) - 1) < 1e-9 norm(xy - q) < 1e-9]);", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['delaunayTriangulation', 'pointLocation', 'barycentric', 'roundtrip-invariant'] },

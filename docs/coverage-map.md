@@ -11,10 +11,11 @@ Coverage is measured by tagged oracle cases in `matlab/test/oracle/cases.ts`.
 pnpm oracle:coverage
 pnpm oracle:base-audit
 pnpm oracle:audit
+pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1061 tests green · 921 MATLAB oracle fixtures ·
-921/921 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1066 tests green · 922 MATLAB oracle fixtures ·
+922/922 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.
@@ -220,6 +221,24 @@ corresponding toolbox.
 Toolboxes are curated by allow-list. Run `pnpm oracle:audit` for the current
 registered/referenced breakdown. Registered does **not** mean every function is
 validated; coverage is per oracle case.
+
+### Function registry — cross-layer duplicates
+
+A few names are implemented in both base (`builtins.ts`) and a toolbox. **Base wins by
+default** (it is spread last into `BUILTINS`); a toolbox never silently overwrites base. The
+toolbox copy stays reachable via the **qualified `toolbox.name(...)` call** (e.g.
+`signal.hamming(4)`). Every cross-layer duplicate is documented in `DUPLICATE_POLICY`
+(`tb/index.ts`) and enforced by **`pnpm registry:audit`**, which fails on any undocumented or
+stale duplicate. Today there are 14: 13 are behaviorally identical (the toolbox copy is a dead
+delete-candidate) and 1 genuinely differs — `hanning` (base matches MATLAB's symmetric window;
+`signal.hanning` returns the `hann` window). Fixed in passing: base `pdist` ignored its
+distance-metric argument (always Euclidean); it now honours `cityblock`/`chebychev`/`minkowski`/
+`cosine`, matching MATLAB and the stats copy.
+
+The next migration steps (a single `buildRegistry` that owns base + toolbox registration with
+qualified-name resolution and `which -all`/`functionInfo` introspection, then deleting the
+behaviorally-identical toolbox copies) are tracked separately; the audit + policy above are the
+"single source of truth" foundation.
 
 Base/core builtins are judged by `pnpm oracle:base-audit`, not by raw reference
 percentage. Many core primitives are exercised indirectly and rarely appear as

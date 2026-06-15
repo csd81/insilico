@@ -106,6 +106,32 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   wavelet: new Set(['dct', 'idct', 'dwt', 'idwt', 'wavedec', 'waverec', 'haart', 'ihaart']),
 };
 
+/** Intentional-duplicate policy. A name implemented in BOTH base and a toolbox is a cross-layer
+ *  duplicate; base wins by default (it is spread last in BUILTINS). Every such duplicate must have
+ *  an entry here saying who owns the default and whether the behaviors agree — `pnpm registry:audit`
+ *  fails on any undocumented duplicate. `sameBehavior:true` ⇒ the toolbox copy is dead/redundant
+ *  (delete candidate). `sameBehavior:false` ⇒ keep both; the alternative is reachable via the
+ *  qualified `toolbox.name(...)` call, and `differs` explains the divergence. */
+export interface DuplicatePolicy { defaultOwner: 'base' | string; sameBehavior: boolean; differs?: string; note?: string; }
+export const DUPLICATE_POLICY: Record<string, DuplicatePolicy> = {
+  // ── identical to base (toolbox copy shadowed/dead — delete candidates) ──
+  bartlett: { defaultOwner: 'base', sameBehavior: true, note: 'signal copy identical to base.' },
+  blackman: { defaultOwner: 'base', sameBehavior: true, note: 'signal copy identical to base.' },
+  hamming: { defaultOwner: 'base', sameBehavior: true, note: 'signal copy identical to base.' },
+  hann: { defaultOwner: 'base', sameBehavior: true, note: 'signal copy identical to base.' },
+  dlyap: { defaultOwner: 'base', sameBehavior: true, note: 'control copy identical to base.' },
+  lyap: { defaultOwner: 'base', sameBehavior: true, note: 'control copy identical to base.' },
+  ss2tf: { defaultOwner: 'base', sameBehavior: true, note: 'control copy identical to base.' },
+  normcdf: { defaultOwner: 'base', sameBehavior: true, note: 'stats copy identical to base (incl. (x,mu,sigma) form).' },
+  normpdf: { defaultOwner: 'base', sameBehavior: true, note: 'stats copy identical to base (incl. (x,mu,sigma) form).' },
+  pdist: { defaultOwner: 'base', sameBehavior: true, note: 'base now honours the distance-metric arg (was Euclidean-only); matches stats copy.' },
+  range: { defaultOwner: 'base', sameBehavior: true, note: 'stats copy identical to base.' },
+  squareform: { defaultOwner: 'base', sameBehavior: true, note: 'stats copy identical to base.' },
+  hypergeom: { defaultOwner: 'base', sameBehavior: true, note: 'symbolic copy identical to base.' },
+  // ── genuine difference — base is the MATLAB-correct one ──
+  hanning: { defaultOwner: 'base', sameBehavior: false, differs: 'signal.hanning returns the hann window (zero endpoints, symmetric over N-1); base matches MATLAB hanning (symmetric over N+1, nonzero endpoints). Base is correct; the signal copy is shadowed.' },
+};
+
 export const TOOLBOX_BUILTINS: Record<string, Builtin> = {};
 export const TOOLBOX_CONSTANTS: Record<string, () => Value> = {};
 export const TOOLBOX_HELP: Record<string, HelpEntry | string> = {};

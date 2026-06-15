@@ -13,7 +13,8 @@
     "oracle:coverage": "tsc -p tsconfig.test.json && node matlab/test/oracle/coverage.mjs",
     "oracle:audit": "tsc -p tsconfig.test.json && node matlab/test/oracle/registry-audit.mjs",
     "oracle:base-audit": "tsc -p tsconfig.test.json && node matlab/test/oracle/base-audit.mjs",
-    "clean": "rm -rf .test-dist dist"
+    "clean": "rm -rf .test-dist dist",
+    "registry:audit": "tsc -p tsconfig.test.json && node matlab/test/oracle/registry-dups.mjs"
   },
   "dependencies": {
     "fflate": "^0.8.3",

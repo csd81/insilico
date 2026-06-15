@@ -2519,7 +2519,27 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   rectint: async (a) => { const A = m(a[0]), B = m(a[1]); const o = zeros(A.rows, B.rows); for (let i = 0; i < A.rows; i++) for (let j = 0; j < B.rows; j++) { const ax = A.data[i], ay = A.data[i + A.rows], aw = A.data[i + 2 * A.rows], ah = A.data[i + 3 * A.rows]; const bx = B.data[j], by = B.data[j + B.rows], bw = B.data[j + 2 * B.rows], bh = B.data[j + 3 * B.rows]; const ix = Math.max(0, Math.min(ax + aw, bx + bw) - Math.max(ax, bx)); const iy = Math.max(0, Math.min(ay + ah, by + bh) - Math.max(ay, by)); o.data[i + j * A.rows] = ix * iy; } return ret(o); },
   // ── distances ──
-  pdist: async (a) => { const X = m(a[0]); const out: number[] = []; for (let i = 0; i < X.rows; i++) for (let j = i + 1; j < X.rows; j++) { let s = 0; for (let c = 0; c < X.cols; c++) s += (X.data[i + c * X.rows] - X.data[j + c * X.rows]) ** 2; out.push(Math.sqrt(s)); } return ret(rowVec(out)); },
+  pdist: async (a) => {
+    const X = m(a[0]); const out: number[] = [];
+    const metric = a.length >= 2 && (isStr(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar)) ? asString(a[1]).toLowerCase() : 'euclidean';
+    const pMink = metric === 'minkowski' && a.length >= 3 ? asScalar(a[2]) : 2;
+    const at = (i: number, c: number) => X.data[i + c * X.rows];
+    for (let i = 0; i < X.rows; i++) for (let j = i + 1; j < X.rows; j++) {
+      let d = 0;
+      switch (metric) {
+        case 'euclidean': for (let c = 0; c < X.cols; c++) d += (at(i, c) - at(j, c)) ** 2; d = Math.sqrt(d); break;
+        case 'squaredeuclidean': for (let c = 0; c < X.cols; c++) d += (at(i, c) - at(j, c)) ** 2; break;
+        case 'cityblock': case 'manhattan': for (let c = 0; c < X.cols; c++) d += Math.abs(at(i, c) - at(j, c)); break;
+        case 'chebychev': for (let c = 0; c < X.cols; c++) d = Math.max(d, Math.abs(at(i, c) - at(j, c))); break;
+        case 'minkowski': for (let c = 0; c < X.cols; c++) d += Math.abs(at(i, c) - at(j, c)) ** pMink; d = d ** (1 / pMink); break;
+        case 'cosine': { let dot = 0, nu = 0, nv = 0; for (let c = 0; c < X.cols; c++) { dot += at(i, c) * at(j, c); nu += at(i, c) ** 2; nv += at(j, c) ** 2; } d = 1 - dot / (Math.sqrt(nu) * Math.sqrt(nv)); break; }
+        case 'hamming': { let cnt = 0; for (let c = 0; c < X.cols; c++) if (at(i, c) !== at(j, c)) cnt++; d = cnt / X.cols; break; }
+        default: throw new MatError(`pdist: unsupported distance metric '${metric}'.`);
+      }
+      out.push(d);
+    }
+    return ret(rowVec(out));
+  },
   pdist2: async (a) => { const X = m(a[0]), Y = m(a[1]); const o = zeros(X.rows, Y.rows); for (let i = 0; i < X.rows; i++) for (let j = 0; j < Y.rows; j++) { let s = 0; for (let c = 0; c < X.cols; c++) s += (X.data[i + c * X.rows] - Y.data[j + c * Y.rows]) ** 2; o.data[i + j * X.rows] = Math.sqrt(s); } return ret(o); },
   squareform: async (a) => { const V = m(a[0]); if (V.rows === 1 || V.cols === 1) { const v = toArray(V); const n = Math.round((1 + Math.sqrt(1 + 8 * v.length)) / 2); if (v.length > 1 && n * (n - 1) / 2 !== v.length) throw new MatError('squareform: input is not a valid condensed distance vector'); const o = zeros(n, n); let k = 0; for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) { o.data[i + j * n] = v[k]; o.data[j + i * n] = v[k]; k++; } return ret(o); } const n = V.rows; const out: number[] = []; for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) out.push(V.data[i + j * n]); return ret(rowVec(out)); },
   // ── residue ──

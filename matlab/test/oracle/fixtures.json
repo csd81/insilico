@@ -5193,6 +5193,22 @@
       "real": 5
     }
   },
+  "geom_pdist_metrics": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        5
+      ],
+      "real": [
+        5,
+        7,
+        4,
+        4.497941445275415,
+        1
+      ]
+    }
+  },
   "geom_convhull": {
     "v": {
       "class": "double",
