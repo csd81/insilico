@@ -504,6 +504,8 @@ export const CASES: OracleCase[] = [
   // WGS84 geodetic [lat lon alt] ↔ ECEF [x y z]. ECEF in metres (≈4.5e6), so tol is absolute-loose;
   // the roundtrip ecef2lla(lla2ecef(p))=p invariant ties it down to mm.
   { name: 'nav-lla-ecef', src: 'e = lla2ecef([45 90 1000]); l = ecef2lla([4517590.879 0 4487348.409]); p0 = [37.5 -122.3 55]; rt = ecef2lla(lla2ecef(p0)); v = [e l norm(rt - p0)];', vars: ['v'], tol: 1e-2, domain: 'geometry', tags: ['lla2ecef', 'ecef2lla', 'wgs84', 'roundtrip-invariant'] },
+  // Perceptual frequency-scale conversions (closed-form): mel/bark/ERB. Values + roundtrip invariants.
+  { name: 'audio-freq-scales', src: 'v = [mel2hz(1000) hz2mel(1000) bark2hz(5) hz2bark(1000) erb2hz(5) hz2erb(1000) hz2mel(mel2hz(440)) hz2bark(bark2hz(8)) hz2erb(erb2hz(12))];', vars: ['v'], tol: 1e-5, domain: 'fourier', tags: ['mel2hz', 'hz2mel', 'bark2hz', 'hz2bark', 'erb2hz', 'hz2erb', 'perceptual-scale'] },
   { name: 'aero-angle-dcm-quat', src: "q = angle2quat(0.1, 0.2, 0.3); D = angle2dcm(0.1, 0.2, 0.3); [a1, a2, a3] = dcm2angle(D); v = [q a1 a2 a3 norm(D*D' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['angle2quat', 'angle2dcm', 'dcm2angle', 'roundtrip', 'orthogonality-invariant'] },
   // Fuzzy membership functions (closed-form, deterministic): triangular/trapezoidal/Gaussian/
   // generalized-bell/sigmoidal evaluated on a shared universe. Restored + registered by allow-list.

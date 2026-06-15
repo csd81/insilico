@@ -16,8 +16,9 @@
 //   fuzzy       — deterministic membership functions (trimf/trapmf/gaussmf/gbellmf/sigmf/defuzz/evalmf)
 //   pde         — [p,e,t]-mesh FEM area-integral assembly (assema; assemb declined — needs the
 //                 legacy text-expression boundary matrix)
+//   audio       — perceptual frequency-scale conversions (mel/bark/ERB: mel2hz/hz2mel/bark2hz/…)
 //
-// NOT registered (source kept under matlab/tb/ but not exposed): antenna/rf, audio, bioinfo,
+// NOT registered (source kept under matlab/tb/ but not exposed): antenna/rf, bioinfo,
 // financial/fininst, lidar/radar, textanalytics, vision, gads, ident, parallel, phased, risk,
 // robotics, images, mapping, nnet, rl. Within the registered toolboxes individual functions may
 // still be unvalidated; oracle coverage is per case (see docs/coverage-map.md), not per toolbox.
@@ -42,6 +43,7 @@ import { ECON } from './econ';
 import { FUSION } from './fusion';
 import { NAV } from './nav';
 import { FIXEDPOINT } from './fixedpoint';
+import { AUDIO } from './audio';
 import { CURVEFIT } from './curvefit';
 import { FUZZY } from './fuzzy';
 import { Pde } from './pde';
@@ -58,6 +60,7 @@ export const TOOLBOXES: ToolboxModule[] = [
   CURVEFIT,    // restored — Franke surface + single-B-spline ppform + spmak/B-form fnval/fnder/fnint
   FUZZY,       // restored — deterministic fuzzy membership functions (allow-list below)
   Pde,         // restored — linear-triangle FEM area-integral assembly assema (allow-list below)
+  AUDIO,       // restored — deterministic perceptual frequency-scale conversions (allow-list below)
 ];
 
 /** Per-toolbox allow-lists: when a toolbox id appears here, ONLY the named builtins are
@@ -144,6 +147,9 @@ export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // nav: deterministic WGS84 geodetic ↔ ECEF transforms. (lookangles deferred — its satPos
   // convention couldn't be pinned cleanly against MATLAB; lla2ned/lla2enu pending verification.)
   nav: new Set(['lla2ecef', 'ecef2lla']),
+  // audio: closed-form perceptual frequency-scale conversions (mel/bark/ERB). (bw2octavebw/
+  // octavebw2bw deferred — the engine's bw2octavebw returns NaN; the rest match MATLAB exactly.)
+  audio: new Set(['mel2hz', 'hz2mel', 'bark2hz', 'hz2bark', 'erb2hz', 'hz2erb']),
   // fixedpoint: only the deterministic CORDIC elementary-function math — square root (hyperbolic
   // CORDIC), complex rotation (x·exp(iθ)), and QR via CORDIC Givens rotations. Software double-
   // precision emulation matching MATLAB to ~1e-8; the fi/numerictype/quantizer object surface
