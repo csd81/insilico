@@ -20,7 +20,7 @@ import {
   type ClassV, isObject, makeObject,
   toMat as m, factorialN, INT_LIMITS, applyClass,
 } from './values';
-import { type SymExpr, sN, sV, sAdd, sSub, sMul, sPow, sFn, sNeg, sDiv, simplifyExpr, diffExpr, subsExpr, evalExpr as symEval, exprToStr, symVars } from './sym';
+import { type SymExpr, sN, sV, sAdd, sSub, sMul, sPow, sFn, sNeg, sDiv, simplifyExpr, diffExpr, subsExpr, evalExpr as symEval, exprToStr, symVars, registerNumericFns } from './sym';
 import {
   det, inv, mldivide, illConditionWarning, qrRankWarning, diag, norm, eye, decomposition as decompositionFn,
   qr as qrDecomp, qrPivotOutputs, linsolveWithOptions, type LinsolveOptions, cholGeneral, luGeneral, jacobiEigSym, svd as svdReal,
@@ -6337,6 +6337,19 @@ function wrightOmegaFn(x: number): number {
   for (let i = 0; i < 100; i++) { const f = w + Math.log(w) - x, wn = w - f / (1 + 1 / w); if (Math.abs(wn - w) < 1e-15 * (Math.abs(wn) + 1)) { w = wn; break; } w = wn <= 0 ? w / 2 : wn; }
   return w;
 }
+
+// Make the symbolic substitution/evaluation path (sym.ts) reuse these base numeric kernels instead
+// of keeping a second, partial copy. Without this, double(subs(zeta(x),x,2.5)) etc. returned NaN
+// because sym.ts's built-in evaluator covered only the common elementary functions. Registering the
+// special-function kernels here keeps the numeric and symbolic paths polymorphic over one impl.
+registerNumericFns({
+  acot: (x) => Math.atan(1 / x), asec: (x) => Math.acos(1 / x), acsc: (x) => Math.asin(1 / x),
+  zeta: zetaFn, psi: digamma, erfi: erfiFn, dawson: dawsonFn,
+  fresnelc: (x) => fresnelCS(x)[0], fresnels: (x) => fresnelCS(x)[1],
+  ei: eiFn, logint: logintFn, sinhint: shiFn, coshint: chiFn,
+  ssinint: (x) => cisi(x)[0] - Math.PI / 2, dilog: dilogFn, wrightOmega: wrightOmegaFn,
+});
+
 /** Jacobi polynomial P_n^{(a,b)}(x) by recurrence. */
 function jacobiPFn(n: number, a: number, b: number, x: number): number {
   if (n === 0) return 1;

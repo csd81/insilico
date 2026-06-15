@@ -154,6 +154,14 @@ function fnDeriv(name: string, u: SymExpr): SymExpr | null {
     default: return null;
   }
 }
+/** Numeric kernels for named functions, injected by builtins.ts at load time so the symbolic
+ *  path (subs → double, fplot, constant-folding) reuses the SAME numeric implementations as the
+ *  base builtins — one source of truth, not a second hand-rolled copy that drifts. sym.ts keeps a
+ *  minimal built-in set (below) so it still evaluates the common functions when used standalone. */
+const EXTERNAL_FN: Record<string, (...args: number[]) => number> = {};
+export function registerNumericFns(fns: Record<string, (...args: number[]) => number>): void {
+  Object.assign(EXTERNAL_FN, fns);
+}
 /** Numeric value of a named function (for constant folding). */
 function evalFn(name: string, a: number[]): number | null {
   // relational / piecewise (multi-arg)
@@ -167,8 +175,9 @@ function evalFn(name: string, a: number[]): number | null {
   }
   const gammaFn = (x: number): number => { const g = 7; const c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61502916214059, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7]; if (x < 0.5) return Math.PI / (Math.sin(Math.PI * x) * gammaFn(1 - x)); x -= 1; let aa = c[0]; const t = x + g + 0.5; for (let i = 1; i < g + 2; i++) aa += c[i] / (x + i); return Math.sqrt(2 * Math.PI) * Math.pow(t, x + 0.5) * Math.exp(-t) * aa; };
   const erfFn = (x: number): number => { const t = 1 / (1 + 0.3275911 * Math.abs(x)); const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x); return x >= 0 ? y : -y; };
-  const f: Record<string, (x: number) => number> = { sin: Math.sin, cos: Math.cos, tan: Math.tan, exp: Math.exp, log: Math.log, log10: Math.log10, log2: Math.log2, sqrt: Math.sqrt, sinh: Math.sinh, cosh: Math.cosh, tanh: Math.tanh, asin: Math.asin, acos: Math.acos, atan: Math.atan, asinh: Math.asinh, acosh: Math.acosh, atanh: Math.atanh, abs: Math.abs, sign: Math.sign, cbrt: Math.cbrt, sec: (x) => 1 / Math.cos(x), csc: (x) => 1 / Math.sin(x), cot: (x) => 1 / Math.tan(x), sech: (x) => 1 / Math.cosh(x), csch: (x) => 1 / Math.sinh(x), coth: (x) => 1 / Math.tanh(x), gamma: gammaFn, gammaln: (x) => Math.log(Math.abs(gammaFn(x))), factorial: (x) => gammaFn(x + 1), erf: erfFn, erfc: (x) => 1 - erfFn(x), real: (x) => x, conj: (x) => x, sinc: (x) => (x === 0 ? 1 : Math.sin(Math.PI * x) / (Math.PI * x)), heaviside: (x) => (x > 0 ? 1 : x < 0 ? 0 : 0.5), imag: () => 0 };
-  return f[name] ? f[name](a[0]) : null;
+  const f: Record<string, (...a: number[]) => number> = { sin: Math.sin, cos: Math.cos, tan: Math.tan, exp: Math.exp, log: Math.log, log10: Math.log10, log2: Math.log2, sqrt: Math.sqrt, sinh: Math.sinh, cosh: Math.cosh, tanh: Math.tanh, asin: Math.asin, acos: Math.acos, atan: Math.atan, asinh: Math.asinh, acosh: Math.acosh, atanh: Math.atanh, abs: Math.abs, sign: Math.sign, cbrt: Math.cbrt, sec: (x) => 1 / Math.cos(x), csc: (x) => 1 / Math.sin(x), cot: (x) => 1 / Math.tan(x), sech: (x) => 1 / Math.cosh(x), csch: (x) => 1 / Math.sinh(x), coth: (x) => 1 / Math.tanh(x), gamma: gammaFn, gammaln: (x) => Math.log(Math.abs(gammaFn(x))), factorial: (x) => gammaFn(x + 1), erf: erfFn, erfc: (x) => 1 - erfFn(x), real: (x) => x, conj: (x) => x, sinc: (x) => (x === 0 ? 1 : Math.sin(Math.PI * x) / (Math.PI * x)), heaviside: (x) => (x > 0 ? 1 : x < 0 ? 0 : 0.5), imag: () => 0 };
+  const fn = f[name] ?? EXTERNAL_FN[name];
+  return fn ? fn(...a) : null;
 }
 
 /** Substitute every occurrence of variable `name` with expression `repl`. */
