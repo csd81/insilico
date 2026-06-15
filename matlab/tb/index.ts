@@ -127,7 +127,7 @@ export const TOOLBOX_KEEP: Record<string, Set<string>> = {
 export const RESTORED_TOOLBOX_KEEP: Record<string, Set<string>> = {
   // wavelet: orthonormal DCT-II (matches MATLAB) + Haar/Daubechies DWT (orthonormal → perfect
   // reconstruction), single/multi-level. Validated by exact values + reconstruction invariants.
-  wavelet: new Set(['dct', 'idct', 'dwt', 'idwt', 'wavedec', 'waverec', 'haart', 'ihaart']),
+  wavelet: new Set(['dct', 'idct', 'dwt', 'idwt', 'wavedec', 'waverec', 'haart', 'ihaart', 'wfilters', 'centfrq']),
   // aerospace (id 'aero'): only the deterministic rotation/quaternion algebra — direction-cosine
   // matrices and scalar-first quaternions (Hamilton product, rotation, inverse). Pure math, exact
   // MATLAB parity; the toolbox's model/environment/UI surface stays unregistered.

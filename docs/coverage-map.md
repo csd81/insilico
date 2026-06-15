@@ -205,7 +205,12 @@ Registered toolboxes are limited to in-scope numerical/matrix domains:
 - `comm`, `control`, `dsp`, `optim`, `signal`, `stats`, `symbolic`
 - `wavelet` — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`): orthonormal
   DCT-II + Haar/Daubechies DWT (`dct`/`idct`/`dwt`/`idwt`/`wavedec`/`waverec`/`haart`/`ihaart`),
-  validated by exact values + perfect-reconstruction invariants.
+  plus `wfilters` (the four DWT analysis/synthesis filters for haar/db1/db2, exact MATLAB
+  convention) and `centfrq` (wavelet center frequency, deterministic per-name constant matched to
+  MATLAB). Validated by exact values + perfect-reconstruction invariants. `cwt` is **declined**:
+  its output is a convention-heavy complex analytic-Morse filterbank (voices-per-octave scale grid,
+  L1 normalization, scale↔frequency map, COI) that cannot be cleanly reproduced to tolerance
+  without porting MATLAB's exact Morse construction — out of scope per the no-plausible-but-wrong rule.
 - `aerospace` (id `aero`) — **restored** + selectively registered (`RESTORED_TOOLBOX_KEEP`):
   deterministic rotation/quaternion algebra only — `angle2dcm`/`dcm2angle` (ZYX direction-cosine
   matrices) and scalar-first `[w x y z]` quaternions `angle2quat`/`quatmultiply`/`quatrotate`/
@@ -448,6 +453,11 @@ locked.)
   would be plausible-but-wrong. The companion analog/IIR pieces are validated:
   `besself` (Bessel `[b,a]`), `besselap` (Bessel `[z,p,k]` prototype), `butter`,
   `freqz`, and `filtfilt` are registered and oracle-checked.
+- `cwt` (Wavelet Toolbox continuous transform): declined. The default output is a
+  complex analytic-Morse-wavelet filterbank on a voices-per-octave scale grid with L1
+  normalization, a scale↔frequency map, and a cone-of-influence — convention-heavy and
+  not reproducible to tolerance without porting MATLAB's exact Morse construction. The
+  related `wfilters`/`centfrq` are validated; `cwt` stays unregistered.
 - Exact random-output parity: not a valid oracle target.
 
 ## Out Of Scope

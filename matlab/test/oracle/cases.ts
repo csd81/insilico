@@ -469,6 +469,12 @@ export const CASES: OracleCase[] = [
   { name: 'wavelet-dct', src: 'x = [1 4 2 8]; d = dct(x); v = [d max(abs(idct(d) - x))];', vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['dct', 'idct', 'wavelet', 'restored-toolbox'] },
   { name: 'wavelet-dwt', src: "x = [3 1 4 1 5 9 2 6]; [a1,d1] = dwt(x,'haar'); [a2,d2] = dwt(x,'db2'); v = [double(max(abs(idwt(a1,d1,'haar') - x))<1e-9) double(max(abs(idwt(a2,d2,'db2') - x))<1e-9) numel(a1) numel(d1)];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['dwt', 'idwt', 'wavelet', 'perfect-reconstruction'] },
   { name: 'wavelet-multilevel-haart', src: "x = [1 2 3 4 5 6 7 8]; [c,l] = wavedec(x,2,'haar'); xr = waverec(c,l,'haar'); [a,d] = haart(x); hr = ihaart(a,d); v = [double(max(abs(xr - x))<1e-9) numel(c) l double(max(abs(hr(:) - x(:)))<1e-9) a];", vars: ['v'], tol: 1e-6, domain: 'fourier', tags: ['wavedec', 'waverec', 'haart', 'ihaart', 'multilevel'] },
+  // wfilters: the four DWT filters [Lo_D,Hi_D,Lo_R,Hi_R] (MATLAB convention: Lo_R = scaling vector,
+  // Hi_R = qmf(Lo_R), decomposition = time-reversed). Exact coefficients for db2 + haar.
+  { name: 'wavelet-wfilters', src: "[LoD,HiD,LoR,HiR] = wfilters('db2'); [hLoD,hHiD,hLoR,hHiR] = wfilters('haar'); v = [LoD HiD LoR HiR hLoD hHiD hLoR hHiR];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['wfilters', 'wavelet', 'filter-bank', 'restored-toolbox'] },
+  // centfrq: center frequency (dominant-FFT-frequency of the reconstructed wavelet) for the
+  // orthogonal/biorthogonal families and the analytic wavelets — deterministic scalar per name.
+  { name: 'wavelet-centfrq', src: "v = [centfrq('morl') centfrq('db2') centfrq('haar') centfrq('sym4') centfrq('mexh') centfrq('db4') centfrq('coif1') centfrq('gaus3') centfrq('meyr') centfrq('bior2.2')];", vars: ['v'], tol: 1e-9, domain: 'fourier', tags: ['centfrq', 'wavelet', 'center-frequency', 'restored-toolbox'] },
 
   // ══════════ geometry (19) ══════════
   { name: 'geom-convhull-area', src: 'x = [0 1 1 0 0.5]; y = [0 0 1 1 0.5]; [k, a] = convhull(x, y); v = a;', vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['convex-hull', 'area'] },

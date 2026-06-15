@@ -5904,5 +5904,7 @@ export const HELP_WAVELET: Record<string, HelpEntry | string> = {
     qorthwavf: { summary: 'Kingsbury Q-shift filters for complex dual-tree transform', syntax: ['[LoDa,LoDb,HiDa,HiDb,LoRa,LoRb,HiRa,HiRb] = qorthwavf(num)'], seealso: ['qbiorthfilt', 'dualtree'] },
     biorwavf: { summary: 'Biorthogonal wavelet filter pair (reconstruction and decomposition)', syntax: ['[RF,DF] = biorwavf(wname)'], seealso: ['biorfilt', 'waveinfo'] },
     biorfilt: { summary: 'Biorthogonal wavelet filters (four-filter bank)', syntax: ['[LoD,HiD,LoR,HiR] = biorfilt(DF,RF)'], seealso: ['biorwavf', 'orthfilt'] },
+    wfilters: { summary: 'Wavelet decomposition/reconstruction filters', syntax: ['[Lo_D,Hi_D,Lo_R,Hi_R] = wfilters(wname)', '[F1,F2] = wfilters(wname,type)'], seealso: ['orthfilt', 'dwt'] },
+    centfrq: { summary: 'Wavelet center frequency', syntax: ['F = centfrq(wname)'], seealso: ['scal2frq', 'wfilters'] },
   };
 
