@@ -15,7 +15,7 @@ pnpm oracle:functions  # per-function index: cases + aspects + full/partial/unte
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1167 tests green · 1021 MATLAB oracle fixtures ·
+**Status (as of this revision):** 1168 tests green · 1021 MATLAB oracle fixtures ·
 1021/1021 oracle cases classified across 22 domains.
 
 ### Two-layer test model
@@ -35,6 +35,12 @@ Oracle cases are validated at two complementary granularities:
    plausible-but-wrong, asserting it errors in **both** MATLAB and the engine. Every function should
    have one; `pnpm oracle:functions` marks each `err✓/err✗` and lists the value-tested-but-no-error
    backlog. This is goal #2 ("no silently-wrong functions") made measurable per function.
+4. **Sym/num both-ways tests** — for every overloaded elementary function (the `SYM_ELEMENTARY`
+   unary set + the `SYM_BINARY` two-arg set in `interp.ts`), `symbolic-dual.test.ts` pins that the
+   numeric kernel and the symbolic path agree: `f(x0) == double(subs(f(x), x, x0))`. The two paths
+   share one set of numeric kernels (`registerNumericFns`) so they cannot drift. `oracle:functions`
+   reports the both-ways count (currently 60/60). This caught 16 special functions that returned NaN
+   through the symbolic path, and is what makes adding a symbolic overload safe.
 
 Ownership is explicit (`fn` on a case) or inferred (`tags` ∩ registry); migrating a case to explicit
 `fn`/`aspect` moves it from the "unattributed" backlog into the precise per-function index.

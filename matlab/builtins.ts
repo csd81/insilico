@@ -6397,6 +6397,16 @@ registerNumericFns({
   ei: eiFn, logint: logintFn, sinhint: shiFn, coshint: chiFn,
   ssinint: (x) => cisi(x)[0] - Math.PI / 2, dilog: dilogFn, wrightOmega: wrightOmegaFn,
 });
+// Two-argument elementary overloads (SYM_BINARY in interp.ts): numeric kernels must match the
+// corresponding builtins so f(num) and double(subs(f(sym),…)) agree (symbolic-dual.test.ts).
+registerNumericFns({
+  atan2: Math.atan2, hypot: Math.hypot,
+  mod: (x, y) => (y === 0 ? x : ((x % y) + y) % y),
+  beta: (x, y) => gammaFn(x) * gammaFn(y) / gammaFn(x + y),
+  nchoosek: (n, k) => { n = Math.round(n); k = Math.round(k); if (k < 0 || k > n) return 0; let r = 1; for (let i = 1; i <= k; i++) r = (r * (n - k + i)) / i; return r; },
+  besselj: (nu, x) => besseljFn(nu, x), bessely: (nu, x) => besselyFn(nu, x),
+  besseli: (nu, x) => besseliFn(nu, x), besselk: (nu, x) => besselkFn(nu, x),
+});
 
 /** Jacobi polynomial P_n^{(a,b)}(x) by recurrence. */
 function jacobiPFn(n: number, a: number, b: number, x: number): number {

@@ -17,7 +17,10 @@ import { type SymExpr, sN, sV, sAdd, sSub, sMul, sDiv, sPow, sFn, simplifyExpr, 
 import { symDet } from './sym-ops';
 
 /** Elementary functions that overload to symbolic when given a sym argument. */
-const SYM_ELEMENTARY = new Set(['sin', 'cos', 'tan', 'cot', 'sec', 'csc', 'asin', 'acos', 'atan', 'acot', 'asec', 'acsc', 'sinh', 'cosh', 'tanh', 'coth', 'sech', 'csch', 'asinh', 'acosh', 'atanh', 'exp', 'log', 'log10', 'log2', 'sqrt', 'abs', 'sign', 'cbrt', 'gamma', 'gammaln', 'erf', 'erfc', 'factorial', 'conj', 'real', 'imag', 'zeta', 'psi', 'sinc', 'erfi', 'dawson', 'fresnelc', 'fresnels', 'ei', 'logint', 'sinhint', 'coshint', 'ssinint', 'dilog', 'wrightOmega']);
+export const SYM_ELEMENTARY = new Set(['sin', 'cos', 'tan', 'cot', 'sec', 'csc', 'asin', 'acos', 'atan', 'acot', 'asec', 'acsc', 'sinh', 'cosh', 'tanh', 'coth', 'sech', 'csch', 'asinh', 'acosh', 'atanh', 'exp', 'log', 'log10', 'log2', 'sqrt', 'abs', 'sign', 'cbrt', 'gamma', 'gammaln', 'erf', 'erfc', 'factorial', 'conj', 'real', 'imag', 'zeta', 'psi', 'sinc', 'erfi', 'dawson', 'fresnelc', 'fresnels', 'ei', 'logint', 'sinhint', 'coshint', 'ssinint', 'dilog', 'wrightOmega']);
+// Two-argument elementary overloads (MATLAB returns sym when any arg is sym). Numeric kernels are
+// registered into sym.ts (registerNumericFns) so the symbolic form constant-folds to the same value.
+export const SYM_BINARY = new Set(['atan2', 'hypot', 'mod', 'beta', 'nchoosek', 'besselj', 'bessely', 'besseli', 'besselk']);
 import { det, inv, mldivide, illConditionWarning, qrRankWarning, decompositionSolve, decompositionRightSolve } from './linalg';
 import { BUILTINS, CONSTANTS, builtinHelp, docUrl, type Env } from './builtins';
 import { METHOD_NAMES, TOOLBOX_BY_ID, NAME_OWNERS, TOOLBOX_BUILTINS, lookupMethod } from './tb';
@@ -843,6 +846,16 @@ export class Interpreter implements Env {
     }
     // symbolic overload of elementary functions: f(sym) → sFn(f, …)
     if (args.length === 1 && isSym(args[0]) && SYM_ELEMENTARY.has(name)) { const s = args[0]; return [makeSym(s.rows, s.cols, s.exprs.map((e) => simplifyExpr(sFn(name, e))))]; }
+    // symbolic overload of two-argument elementary functions: f(sym, ·) → sFn(f, …) element-wise
+    // (scalar broadcast), reusing the same coercion/broadcast as symbolic operators.
+    if (args.length === 2 && SYM_BINARY.has(name) && (isSym(args[0]) || isSym(args[1]))) {
+      const A = toSymArr(args[0]), B = toSymArr(args[1]);
+      const scalarA = A.exprs.length === 1, scalarB = B.exprs.length === 1;
+      const nm = Math.max(A.exprs.length, B.exprs.length);
+      const out: SymExpr[] = new Array(nm);
+      for (let i = 0; i < nm; i++) out[i] = simplifyExpr(sFn(name, A.exprs[scalarA ? 0 : i], B.exprs[scalarB ? 0 : i]));
+      return [makeSym(scalarA ? B.rows : A.rows, scalarA ? B.cols : A.cols, out)];
+    }
     // OOP method dispatch: a call whose first argument is a class instance routes to that class's
     // overload (if any), so e.g. `series(tf,…)` → Control while `series(sym,…)` → Symbolic.
     if (args.length > 0 && METHOD_NAMES.has(name)) {

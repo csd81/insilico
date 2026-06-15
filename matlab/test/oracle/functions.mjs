@@ -26,8 +26,11 @@ const here = dirname(fileURLToPath(import.meta.url));
 const repo = join(here, '..', '..', '..');
 const load = (p) => import(pathToFileURL(join(repo, '.test-dist', p)).href);
 
+import { readFileSync } from 'node:fs';
+
 const { CASES } = await load('test/oracle/cases.js');
 const { REQUIRED_ASPECTS } = await load('test/oracle/function-coverage.js');
+const { SYM_ELEMENTARY, SYM_BINARY } = await load('interp.js');
 const { TOOLBOXES, TOOLBOX_KEEP, RESTORED_TOOLBOX_KEEP, TOOLBOX_BUILTINS } = await load('tb/index.js');
 const { BUILTINS } = await load('builtins.js');
 
@@ -152,6 +155,17 @@ if (dups.length) {
   console.log(`\nDuplicate (fn, aspect) pairs (${dups.length}) — allowed if intentional, else consolidate:`);
   for (const [k, cs] of dups.slice(0, 20)) console.log(`  ${k.padEnd(34)} ${cs.join(', ')}`);
 }
+
+// Sym/num overloaded functions: each must be validated BOTH ways (numeric kernel == symbolic path).
+// Coverage is proven by symbolic-dual.test.ts; parse which functions it exercises and cross-check
+// the engine's overload sets so the both-ways axis is full per function.
+const dualSrc = readFileSync(join(here, '..', 'ts-only', 'symbolic-dual.test.ts'), 'utf8');
+const dualTested = new Set([...dualSrc.matchAll(/(?:^|[\s{])([a-zA-Z]\w*):\s*(?:[-\d[])/g)].map((m) => m[1]));
+const overloaded = [...SYM_ELEMENTARY, ...SYM_BINARY];
+const dualGaps = overloaded.filter((f) => !dualTested.has(f));
+console.log(`\nSym/num overloaded functions — both-ways (numeric ≡ symbolic) coverage:`);
+console.log(`  unary (SYM_ELEMENTARY): ${SYM_ELEMENTARY.size}   binary (SYM_BINARY): ${SYM_BINARY.size}   total: ${overloaded.length}`);
+console.log(`  both-ways tested (symbolic-dual.test.ts): ${overloaded.length - dualGaps.length}/${overloaded.length}` + (dualGaps.length ? `   GAPS: ${dualGaps.join(', ')}` : '   ✓ full'));
 
 // Workflows: the separate integration layer.
 console.log(`\nWorkflow / integration cases (${workflows.length}):`);

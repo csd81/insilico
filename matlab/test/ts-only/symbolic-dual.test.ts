@@ -32,4 +32,25 @@ describe('numeric/symbolic dual consistency (SYM_ELEMENTARY)', () => {
     }
     assert.equal(bad.length, 0, `numeric/symbolic divergence:\n  ${bad.join('\n  ')}`);
   });
+
+  // Two-argument overloads (SYM_BINARY): same both-ways contract with x in one argument slot.
+  const B: Record<string, [string, number]> = {
+    atan2: ['atan2(x, 0.8)', 0.6], hypot: ['hypot(x, 0.8)', 0.6], mod: ['mod(x, 2)', 5.3],
+    beta: ['beta(x, 1.5)', 2.5], nchoosek: ['nchoosek(7, x)', 3],
+    besselj: ['besselj(1, x)', 0.6], bessely: ['bessely(1, x)', 0.6],
+    besseli: ['besseli(1, x)', 0.6], besselk: ['besselk(1, x)', 0.6],
+  };
+
+  it('binary f(num) equals double(subs(f(sym), x, x0)) for every two-arg overload', async () => {
+    const bad: string[] = [];
+    for (const [f, [call, x0]] of Object.entries(B)) {
+      const numCall = call.replaceAll('x', `(${x0})`);
+      const r = await run(`a = double(${numCall}); syms x; b = double(subs(${call}, x, ${x0})); d = abs(a - b);`);
+      if (r.error) { bad.push(`${f}: ${r.error}`); continue; }
+      const d = r.get('d') as { data?: ArrayLike<number> } | undefined;
+      const dv = d && d.data ? d.data[0] : NaN;
+      if (!(Number.isFinite(dv) && dv < 1e-6)) bad.push(`${f} Δ=${dv}`);
+    }
+    assert.equal(bad.length, 0, `numeric/symbolic divergence (binary):\n  ${bad.join('\n  ')}`);
+  });
 });
