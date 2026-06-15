@@ -1036,6 +1036,11 @@ export const CASES: OracleCase[] = [
   { name: 'gap-polydiv', src: '[q, r] = polydiv([1 -3 2], [1 -1]); v = [q r];', vars: ['v'], tol: 1e-9, domain: 'approximation', tags: ['polydiv', 'polynomial-division'] },
   { name: 'gap-numbertheory', src: 'B = bernsteinMatrix(3, [0 0.5 1]); v = [double(fibonacci(10)) double(nthprime(10)) double(nextprime(20)) double(prevprime(20)) double(B(2,:))];', vars: ['v'], tol: 1e-9, domain: 'number-theory', tags: ['fibonacci', 'nthprime', 'nextprime', 'prevprime', 'bernsteinMatrix'] },
   { name: 'gap-missing', src: 'v = double([allfinite([1 2 Inf]) anymissing([1 NaN 3]) ismissing([1 NaN 3])]);', vars: ['v'], tol: 1e-9, domain: 'core-language', tags: ['allfinite', 'anymissing', 'ismissing'] },
+  // Gap-closure batch 2: more registered deterministic-math functions.
+  { name: 'gap-tfqmr-nufftn', src: "A = [4 1 0; 1 4 1; 0 1 4]; b = [1; 2; 3]; x = tfqmr(A, b, 1e-10, 50); y = nufftn([1 2 3 4]); v = [norm(A*x - b) real(y(:))' imag(y(:))'];", vars: ['v'], tol: 1e-8, domain: 'numerical-linear-algebra', tags: ['tfqmr', 'nufftn', 'iterative-solver', 'nonuniform-fft'] },
+  { name: 'gap-data-clean', src: "g = findgroups([10 20 10 30 20]); f = filloutliers([1 2 3 100 5], 'linear'); r = rmoutliers([1 2 3 100 5]); v = double([g(:)' f(:)' r(:)']);", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['findgroups', 'filloutliers', 'rmoutliers'] },
+  { name: 'gap-special-stragglers', src: 'v = [double(jacobiZeta(0.5, 0.3)) nzmax(sparse([1 0; 0 2])) double(isPrimitiveRoot(3, 7))];', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['jacobiZeta', 'nzmax', 'isPrimitiveRoot'] },
+  { name: 'gap-fnzeros', src: 'pp = spline([0 1 2 3 4], [1 -1 1 -1 1]); z = fnzeros(pp); v = [size(z, 2) sort(z(1, :))];', vars: ['v'], tol: 1e-5, domain: 'approximation', tags: ['fnzeros', 'spline-roots'] },
 
   // ══════════ statistics (69) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },

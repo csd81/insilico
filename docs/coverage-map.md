@@ -14,8 +14,8 @@ pnpm oracle:audit
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1120 tests green · 974 MATLAB oracle fixtures ·
-974/974 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1124 tests green · 978 MATLAB oracle fixtures ·
+978/978 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.
@@ -481,6 +481,11 @@ locked.)
   evaluator, so shipping it would be a plausible-but-unverified FEM assembler. Its sibling `assema`
   (numeric-only coefficients, no text) **is** registered + oracle-validated. `assempde`/`adaptmesh`/
   `pdeasmc`/`pdeasmf` stay deferred for the same boundary/coefficient-expression dependence.
+- `quadv` (vector form), `ddesd`/`ddensd` (state-/general-delay DDE solvers), `odextend` (extend an
+  ODE solution object): registered but **not oracle-validated** — `quadv`'s vector integrand, the DDE
+  solvers' solution-structure/history calling conventions, and `odextend`'s solution-object extension
+  are convention-/shape-heavy enough that a clean MATLAB-value oracle isn't available here. The
+  scalar quadrature (`quadl`/`quad`/`integral`) and `dde23`/`ode*` workflows are validated instead.
 - Exact random-output parity: not a valid oracle target.
 
 ## Out Of Scope
