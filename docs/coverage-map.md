@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 819 tests green · 684 MATLAB oracle fixtures ·
-684/684 cases classified across 22 domains.
+**Status (as of this revision):** 825 tests green · 690 MATLAB oracle fixtures ·
+690/690 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -129,6 +129,10 @@ All oracle-validated — no validation backlog remains:
 - **Decompositions / matrix functions:** `eig`/`svd`/`qr`/`lu`/`chol`,
   `schur`/`hess`/`polyeig`, `expm`/`sqrtm`/`logm`, `pinv`/`rank`/`null`/`orth`/`rref`/`cond`
 - **Iterative / sparse solvers:** `gmres`/`minres`/`bicg`/`bicgstab`/`lsqr`, `eigs`/`svds`
+  — validated by residual norm + convergence flag on sparse/ill-conditioned systems
+  (incl. `ilu`/`ichol`-preconditioned and a preconditioned-vs-unpreconditioned
+  invariant). The Krylov backend solves directly, so iteration counts and exact
+  `relres` are **not** oracle-locked (only the result: solution residual + `flag==0`).
 - **ODE / DAE:** `ode45`/`ode23`/`ode113`/`ode15s`/`deval`; implicit DAE workflow
   `ode15i` (residual form `F(t,y,y')=0`, index-1 algebraic constraint) + `decic`
   (consistent initial conditions)

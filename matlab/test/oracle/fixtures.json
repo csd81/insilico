@@ -5358,6 +5358,78 @@
       "real": 4.440892098500626e-16
     }
   },
+  "nla_pcg_flag_sparse": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        0
+      ]
+    }
+  },
+  "nla_gmres_ilu_flag": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        8.671119018262734e-16
+      ]
+    }
+  },
+  "nla_bicgstab_flag_sparse": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        2.152802317486082e-15
+      ]
+    }
+  },
+  "nla_illcond_pcg_ichol": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        2.10301445050458e-13
+      ]
+    }
+  },
+  "nla_precond_vs_unprecond": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1
+    }
+  },
+  "nla_lsqr_sparse_overdetermined": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 2.275280134513746e-15
+    }
+  },
   "nla_illcond_sparse_solve": {
     "r": {
       "class": "double",
