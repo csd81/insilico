@@ -174,4 +174,9 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
 
   // ── Pass 2C: N-D FFT (forward values + ifftn/ifft2 roundtrip invariants). ──
   ...bulkD('needs-oracle', 'direct', 'fourier', 'fftn ifftn ifft2 ifftshift'),
+
+  // ── Pass 2D: dense decompositions / generalized eigenvalue edge functions (invariants). ──
+  // (qz/cholupdate already bucketed in the 1.5 backfill.) gsvd is the 1-output generalized
+  // singular values; the 5-output [U,V,X,C,S] CS-decomposition form is a deferred gap.
+  ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'gsvd ordqz ordschur cdf2rdf rsf2csf qrupdate qrinsert qrdelete'),
 };
