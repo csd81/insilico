@@ -171,4 +171,7 @@ export const BASE_BUCKETS: Record<string, BaseMeta> = {
   // ── Pass 2B: sparse structure + reordering (orderings validated by permutation invariants). ──
   ...bulkD('needs-oracle', 'direct', 'numerical-linear-algebra', 'spones spfun spalloc spconvert etree spaugment bandwidth'),
   ...bulkD('needs-oracle', 'invariant', 'numerical-linear-algebra', 'symrcm colamd amd dmperm'),
+
+  // ── Pass 2C: N-D FFT (forward values + ifftn/ifft2 roundtrip invariants). ──
+  ...bulkD('needs-oracle', 'direct', 'fourier', 'fftn ifftn ifft2 ifftshift'),
 };
