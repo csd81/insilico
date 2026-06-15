@@ -1621,25 +1621,27 @@ const rowsToMat = (R: number[][]): Mat => { const m = R.length, n = R[0]?.length
 function assertInt(R: number[][], who: string): void { for (const row of R) for (const v of row) if (Math.abs(v - Math.round(v)) > 1e-9) throw new MatError(`${who}: integer matrix required`); }
 /** Hermite normal form by column operations: A·V = H, V unimodular, H lower-triangular. */
 export function hermiteFormInt(A: Mat): { H: Mat; U: Mat } {
+  // Row-style Hermite normal form (MATLAB convention): H = U·A with U unimodular (m×m), H upper
+  // triangular, positive pivots, and each entry above a pivot reduced modulo that pivot.
   const R = matToRows(A); assertInt(R, 'hermiteForm'); R.forEach((row) => row.forEach((_, j) => (row[j] = Math.round(row[j]))));
-  const m = R.length, n = R[0].length; const H = R.map((r) => r.slice()); const V = idMat(n);
-  const swapCol = (a: number, b: number) => { for (let i = 0; i < m; i++) [H[i][a], H[i][b]] = [H[i][b], H[i][a]]; for (let i = 0; i < n; i++) [V[i][a], V[i][b]] = [V[i][b], V[i][a]]; };
-  const addCol = (dst: number, src: number, k: number) => { for (let i = 0; i < m; i++) H[i][dst] += k * H[i][src]; for (let i = 0; i < n; i++) V[i][dst] += k * V[i][src]; };
-  const negCol = (a: number) => { for (let i = 0; i < m; i++) H[i][a] = -H[i][a]; for (let i = 0; i < n; i++) V[i][a] = -V[i][a]; };
-  let pc = 0;
-  for (let r = 0; r < m && pc < n; r++) {
+  const m = R.length, n = R[0]?.length ?? 0; const H = R.map((r) => r.slice()); const U = idMat(m);
+  const swapRow = (a: number, b: number) => { [H[a], H[b]] = [H[b], H[a]]; [U[a], U[b]] = [U[b], U[a]]; };
+  const addRow = (dst: number, src: number, k: number) => { for (let j = 0; j < n; j++) H[dst][j] += k * H[src][j]; for (let j = 0; j < m; j++) U[dst][j] += k * U[src][j]; };
+  const negRow = (a: number) => { for (let j = 0; j < n; j++) H[a][j] = -H[a][j]; for (let j = 0; j < m; j++) U[a][j] = -U[a][j]; };
+  let pr = 0;
+  for (let c = 0; c < n && pr < m; c++) {
     let guard = 0;
     for (; ;) {
-      const nz = []; for (let c = pc; c < n; c++) if (H[r][c] !== 0) nz.push(c);
+      const nz = []; for (let r = pr; r < m; r++) if (H[r][c] !== 0) nz.push(r);
       if (!nz.length) break;
-      let piv = nz[0]; for (const c of nz) if (Math.abs(H[r][c]) < Math.abs(H[r][piv])) piv = c;
-      if (piv !== pc) swapCol(piv, pc);
-      let done = true; for (let c = pc + 1; c < n; c++) if (H[r][c] !== 0) { addCol(c, pc, -Math.round(H[r][c] / H[r][pc])); if (H[r][c] !== 0) done = false; }
+      let piv = nz[0]; for (const r of nz) if (Math.abs(H[r][c]) < Math.abs(H[piv][c])) piv = r;
+      if (piv !== pr) swapRow(piv, pr);
+      let done = true; for (let r = pr + 1; r < m; r++) if (H[r][c] !== 0) { addRow(r, pr, -Math.round(H[r][c] / H[pr][c])); if (H[r][c] !== 0) done = false; }
       if (done) break; if (++guard > 1000) break;
     }
-    if (pc < n && H[r][pc] !== 0) { if (H[r][pc] < 0) negCol(pc); for (let c = 0; c < pc; c++) { const q = Math.floor(H[r][c] / H[r][pc]); if (q) addCol(c, pc, -q); } pc++; }
+    if (pr < m && H[pr][c] !== 0) { if (H[pr][c] < 0) negRow(pr); for (let r = 0; r < pr; r++) { const q = Math.round(H[r][c] / H[pr][c]); if (q) addRow(r, pr, -q); } pr++; }
   }
-  return { H: rowsToMat(H), U: rowsToMat(V) };
+  return { H: rowsToMat(H), U: rowsToMat(U) };
 }
 /** Smith normal form: U·A·V = S, U,V unimodular, S diagonal with s₁|s₂|… */
 export function smithFormInt(A: Mat): { U: Mat; S: Mat; V: Mat } {

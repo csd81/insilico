@@ -1306,13 +1306,56 @@ export const BUILTINS: Record<string, Builtin> = {
     const A = m(a[0]); return ret(rowVec(charpolyC(A)));
   },
   minpoly: async (a) => {
-    // Minimal polynomial = monic product over DISTINCT eigenvalues (exact for diagonalizable A).
-    const A = m(a[0]); const { D } = generalEig(A, false);
-    const uniq: [number, number][] = [];
-    for (let i = 0; i < D.re.length; i++) { if (!uniq.some(([r, im]) => Math.hypot(r - D.re[i], im - D.im[i]) < 1e-6)) uniq.push([D.re[i], D.im[i]]); }
-    let cr = [1], ci = [0];                       // poly coeffs (high→low) in complex
-    for (const [r, im] of uniq) { const nr = [0], ni = [0]; for (let k = 0; k < cr.length; k++) { nr[k] = (nr[k] ?? 0) + cr[k]; ni[k] = (ni[k] ?? 0) + ci[k]; nr[k + 1] = (nr[k + 1] ?? 0) - (cr[k] * r - ci[k] * im); ni[k + 1] = (ni[k + 1] ?? 0) - (cr[k] * im + ci[k] * r); } cr = nr; ci = ni; }
-    return ret(makeSym(1, cr.length, cr.map((x) => sN(Math.abs(x - Math.round(x)) < 1e-9 ? Math.round(x) : x))));
+    // Minimal polynomial = least-degree monic p with p(A)=0. Found as the first power A^k that is
+    // linearly dependent on {I, A, …, A^(k-1)} (Krylov / companion-of-the-minimal-polynomial): this
+    // captures Jordan-block sizes exactly, unlike a product over distinct eigenvalues.
+    const A = m(a[0]); const N = A.rows;
+    if (N === 0) return ret(makeSym(1, 1, [sN(1)]));
+    const NN = N * N; const Are = A.data, Aim = A.idata;
+    const timesA = (pre: Float64Array, pim: Float64Array) => {
+      const re = new Float64Array(NN), im = new Float64Array(NN);
+      for (let c = 0; c < N; c++) for (let r = 0; r < N; r++) { let sr = 0, si = 0; for (let k = 0; k < N; k++) { const br = pre[r + k * N], bi = pim[r + k * N], ar = Are[k + c * N], ai = Aim ? Aim[k + c * N] : 0; sr += br * ar - bi * ai; si += br * ai + bi * ar; } re[r + c * N] = sr; im[r + c * N] = si; }
+      return { re, im };
+    };
+    const pr: Float64Array[] = [], pim: Float64Array[] = [];
+    let cre = new Float64Array(NN), cim = new Float64Array(NN);
+    for (let i = 0; i < N; i++) cre[i + i * N] = 1;                 // A^0 = I
+    for (let j = 0; j <= N; j++) { pr.push(cre); pim.push(cim); const nx = timesA(cre, cim); cre = nx.re; cim = nx.im; }
+    // solve complex k×k normal equations Gᴴ·c = b with partial pivoting
+    const solveCx = (Gr: number[][], Gi: number[][], br: number[], bi: number[], k: number) => {
+      const ar = Gr.map((r) => r.slice()), ai = Gi.map((r) => r.slice()), xr = br.slice(), xi = bi.slice();
+      for (let col = 0; col < k; col++) {
+        let p = col, best = Math.hypot(ar[col][col], ai[col][col]);
+        for (let r = col + 1; r < k; r++) { const v = Math.hypot(ar[r][col], ai[r][col]); if (v > best) { best = v; p = r; } }
+        if (best < 1e-12) return null;
+        if (p !== col) { [ar[p], ar[col]] = [ar[col], ar[p]]; [ai[p], ai[col]] = [ai[col], ai[p]]; [xr[p], xr[col]] = [xr[col], xr[p]]; [xi[p], xi[col]] = [xi[col], xi[p]]; }
+        const dr = ar[col][col], di = ai[col][col], dd = dr * dr + di * di;
+        for (let r = col + 1; r < k; r++) { const fr = (ar[r][col] * dr + ai[r][col] * di) / dd, fi = (ai[r][col] * dr - ar[r][col] * di) / dd; for (let c = col; c < k; c++) { ar[r][c] -= fr * ar[col][c] - fi * ai[col][c]; ai[r][c] -= fr * ai[col][c] + fi * ar[col][c]; } xr[r] -= fr * xr[col] - fi * xi[col]; xi[r] -= fr * xi[col] + fi * xr[col]; }
+      }
+      const cr2 = new Array(k).fill(0), ci2 = new Array(k).fill(0);
+      for (let r = k - 1; r >= 0; r--) { let sr = xr[r], si = xi[r]; for (let c = r + 1; c < k; c++) { sr -= ar[r][c] * cr2[c] - ai[r][c] * ci2[c]; si -= ar[r][c] * ci2[c] + ai[r][c] * cr2[c]; } const dr = ar[r][r], di = ai[r][r], dd = dr * dr + di * di; cr2[r] = (sr * dr + si * di) / dd; ci2[r] = (si * dr - sr * di) / dd; }
+      return { re: cr2, im: ci2 };
+    };
+    for (let k = 1; k <= N; k++) {
+      const Gr: number[][] = [], Gi: number[][] = [], bvr: number[] = [], bvi: number[] = [];
+      for (let i = 0; i < k; i++) {
+        Gr[i] = []; Gi[i] = []; let sbr = 0, sbi = 0;
+        for (let t = 0; t < NN; t++) { sbr += pr[i][t] * pr[k][t] + pim[i][t] * pim[k][t]; sbi += pr[i][t] * pim[k][t] - pim[i][t] * pr[k][t]; }
+        bvr[i] = sbr; bvi[i] = sbi;
+        for (let j = 0; j < k; j++) { let sr = 0, si = 0; for (let t = 0; t < NN; t++) { sr += pr[i][t] * pr[j][t] + pim[i][t] * pim[j][t]; si += pr[i][t] * pim[j][t] - pim[i][t] * pr[j][t]; } Gr[i][j] = sr; Gi[i][j] = si; }
+      }
+      const sol = solveCx(Gr, Gi, bvr, bvi, k);
+      if (!sol) continue;
+      let res = 0, nb = 0;
+      for (let t = 0; t < NN; t++) { let er = pr[k][t], ei = pim[k][t]; for (let i = 0; i < k; i++) { er -= sol.re[i] * pr[i][t] - sol.im[i] * pim[i][t]; ei -= sol.re[i] * pim[i][t] + sol.im[i] * pr[i][t]; } res += er * er + ei * ei; nb += pr[k][t] ** 2 + pim[k][t] ** 2; }
+      if (Math.sqrt(res) <= 1e-7 * Math.sqrt(nb) + 1e-10) {
+        const snap = (x: number) => Math.abs(x - Math.round(x)) < 1e-7 ? Math.round(x) : x;
+        const co: { re: number; im: number }[] = [{ re: 1, im: 0 }];
+        for (let i = k - 1; i >= 0; i--) co.push({ re: -sol.re[i], im: -sol.im[i] });
+        return ret(makeSym(1, co.length, co.map((z) => Math.abs(z.im) < 1e-7 ? sN(snap(z.re)) : sFn('complex', sN(snap(z.re)), sN(snap(z.im))))));
+      }
+    }
+    const cc = charpolyC(A); return ret(makeSym(1, cc.length, Array.from(cc, (x) => sN(Math.abs(x - Math.round(x)) < 1e-9 ? Math.round(x) : x))));
   },
   jordan: async (a, n) => {
     const A = m(a[0]); const N = A.rows;
@@ -6408,8 +6451,24 @@ function hyperPFQ(as: number[], bs: number[], z: number): number {
 }
 /** Confluent hypergeometric M(a,b,z) = ₁F₁. */
 const kummerM = (a: number, b: number, z: number): number => hyperPFQ([a], [b], z);
-/** Confluent hypergeometric U(a,b,z) (non-integer b: two-M combination; integer b → limit). */
+/** Confluent hypergeometric U(a,b,z). */
 function kummerUFn(a: number, b: number, z: number): number {
+  // Preferred (a>0, z>0): the Euler integral U = 1/Γ(a)·∫₀^∞ e^{-zt} t^{a-1}(1+t)^{b-a-1} dt.
+  // Substituting t = u/(1-u) then u = w^{1/a} folds [0,∞)→[0,1] AND cancels the t^{a-1} endpoint
+  // singularity, giving a smooth integrand — accurate for ALL b (incl. integers, where the two-M
+  // connection formula below suffers catastrophic cancellation).
+  if (a > 0 && z > 0) {
+    const g = (w: number) => { const u = Math.pow(w, 1 / a), om = 1 - u; if (om <= 1e-300) return 0; const v = Math.exp(-z * u / om) * Math.pow(om, -b); return Number.isFinite(v) ? v : 0; };
+    return simpsonInt(g, 0, 1, 20000) / (gammaFn(a) * a);
+  }
+  // a≤0, z>0: raise a into the integral's domain via the contiguous relation
+  // U(a-1,b,z) = (2a-b+z)U(a,b,z) − a(a-b+1)U(a+1,b,z)  [base: U(0,b,z)=1].
+  if (z > 0 && a <= 0) {
+    if (Math.abs(a) < 1e-12) return 1;
+    const a1 = a + 1;
+    return (2 * a1 - b + z) * kummerUFn(a1, b, z) - a1 * (a1 - b + 1) * kummerUFn(a1 + 1, b, z);
+  }
+  // Fallback (z≤0): two-M connection (exact for non-integer b).
   if (Math.abs(b - Math.round(b)) < 1e-9) b += 1e-7;   // nudge off integer (use the limit)
   return gammaFn(1 - b) / gammaFn(a - b + 1) * kummerM(a, b, z)
     + gammaFn(b - 1) / gammaFn(a) * Math.pow(z, 1 - b) * kummerM(a - b + 1, 2 - b, z);

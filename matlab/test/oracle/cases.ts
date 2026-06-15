@@ -545,6 +545,14 @@ export const CASES: OracleCase[] = [
   { name: 'val-linalg2', src: "S = double(smithForm([2 4; 6 8])); L = full(laplacian(graph([1 2 3], [2 3 1]))); C = corr2cov([1 2], [1 0.5; 0.5 1]); v = [S(:)' L(:)' C(:)'];", vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['smithForm', 'laplacian', 'corr2cov'] },
   { name: 'val-geometry-wrap', src: '[la, lo] = antipode(45, 90); v = [wrapToPi(4) wrapTo180(270) wrapTo360(-90) wrapTo2Pi(7) la lo azimuth(0, 0, 0, 90)];', vars: ['v'], tol: 1e-6, domain: 'geometry', tags: ['wrapToPi', 'wrapTo180', 'wrapTo360', 'wrapTo2Pi', 'antipode', 'azimuth'] },
   { name: 'aero-angle-dcm-quat', src: "q = angle2quat(0.1, 0.2, 0.3); D = angle2dcm(0.1, 0.2, 0.3); [a1, a2, a3] = dcm2angle(D); v = [q a1 a2 a3 norm(D*D' - eye(3), 'fro')];", vars: ['v'], tol: 1e-9, domain: 'geometry', tags: ['angle2quat', 'angle2dcm', 'dcm2angle', 'roundtrip', 'orthogonality-invariant'] },
+  // Bug-fix validations (these functions were present but wrong before this batch):
+  // hermiteForm now computes the row-style HNF (H=U·A, upper-triangular, balanced above-pivot residue).
+  { name: 'val-bugfix-hermiteform', src: 'H1 = hermiteForm([2 4; 6 8]); H2 = hermiteForm([6 1 0; -3 4 2; 9 0 5]); v = [reshape(double(H1), 1, 4) reshape(double(H2), 1, 9)];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['hermiteForm', 'bugfix'] },
+  // minpoly now respects Jordan-block sizes (Krylov dependency), not just distinct eigenvalues.
+  { name: 'val-bugfix-minpoly', src: 'm1 = double(minpoly([2 1 0; 0 2 0; 0 0 3])); m2 = double(minpoly([4 1 0 0; 0 4 1 0; 0 0 4 0; 0 0 0 4])); v = [m1 m2];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['minpoly', 'bugfix'] },
+  // kummerU/whittakerW now use the stable Euler-integral form (+ upward a-recurrence), fixing the
+  // catastrophic cancellation of the two-M connection formula near integer b.
+  { name: 'val-kummer-whittaker', src: 'v = [double(whittakerW(1, 1, 2)) double(whittakerW(2, 0.5, 3)) double(kummerU(0.5, 3, 2)) double(kummerU(1, 2, 1.5)) double(kummerU(2, 2, 1))];', vars: ['v'], tol: 1e-6, domain: 'calculus', tags: ['whittakerW', 'kummerU', 'bugfix'] },
   // Fuzzy membership functions (closed-form, deterministic): triangular/trapezoidal/Gaussian/
   // generalized-bell/sigmoidal evaluated on a shared universe. Restored + registered by allow-list.
   { name: 'fuzzy-membership', src: "x = 0:0.5:4; v = [trimf(x,[1 2 3]) trapmf(x,[0.5 1.5 2.5 3.5]) gaussmf(x,[1 2]) gbellmf(x,[1.5 2 2]) sigmf(x,[3 2])];", vars: ['v'], tol: 1e-12, domain: 'numerical-methods', tags: ['trimf', 'trapmf', 'gaussmf', 'gbellmf', 'sigmf', 'fuzzy'] },

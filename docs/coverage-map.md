@@ -14,7 +14,7 @@ pnpm oracle:audit
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1153 tests green · 1007 MATLAB oracle fixtures ·
+**Status (as of this revision):** 1156 tests green · 1010 MATLAB oracle fixtures ·
 1007/1007 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
