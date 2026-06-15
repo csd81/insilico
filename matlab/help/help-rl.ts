@@ -24,10 +24,7 @@ export const HELP_RL: Record<string, HelpEntry | string> = {
     rlTrainingOptions: {
       summary: 'Create training options for RL agent training',
       syntax:  ['opts = rlTrainingOptions(Name,Value,...)'],
-      description: [
-        'Name-value pairs: MaxEpisodes (500), MaxStepsPerEpisode (200), Verbose (0),',
-        'ScoreAveragingWindowLength (5), StopTrainingValue (Inf), StopTrainingCriteria.',
-      ],
+      description: ['Name-value pairs: MaxEpisodes (500), MaxStepsPerEpisode (200), Verbose (0),'],
       seealso: ['train', 'rlQAgentOptions', 'rlDQNAgentOptions', 'rlPPOAgentOptions'],
     },
     rlQAgentOptions: {

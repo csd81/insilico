@@ -1012,7 +1012,7 @@ export const CASES: OracleCase[] = [
   // rule-of-thumb, so it is pinned). Exact with the bandwidth fixed. ──
   { name: 'stats-ksdensity', src: "[fd, xi] = ksdensity([1 2 2 3 3 3 4], 2, 'Bandwidth', 0.5); v = [fd xi];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['ksdensity', 'kernel-density', 'fixed-bandwidth'] },
 
-  // ══════════ symbolic (65) ══════════
+  // ══════════ symbolic (67) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
   { name: 'sym-diag-matrix', src: 'syms a b c; M = [a 1 2; 3 b 4; 5 6 c]; d = diag(M); D = diag(d); val = double(subs(D, [a b c], [7 8 9])); v = val(:).\x27;', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['diag', 'symbolic-matrix'] },
   { name: 'sym-poly-gcd', src: 'syms x; g = gcd(x^2 - 1, x^2 - 2*x + 1); c = sym2poly(g);', vars: ['c'], tol: 1e-9, domain: 'symbolic', tags: ['gcd', 'polynomial'] },
@@ -1086,8 +1086,12 @@ export const CASES: OracleCase[] = [
   { name: 'sym-piecewise', src: 'syms x; f = piecewise(x<0, -x, x>=0, x^2); v = double([subs(f,x,-2) subs(f,x,3) subs(f,x,0)]);', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['piecewise', 'branch-evaluation'] },
   { name: 'sym-polyreduce', src: 'syms x; r1 = polynomialReduce(x^4, x^2-1, x); r2 = polynomialReduce(x^5, x^2-1, x); v = double([subs(r1,x,3) subs(r2,x,3)]);', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['polynomialReduce', 'normal-form', 'ideal-remainder'] },
   { name: 'sym-poles', src: 'syms x; p = poles(1/((x-1)*(x-2)*(x+3)), x); v = sort(double(p))\x27;', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['poles', 'rational-function'] },
-  { name: 'sym-vpaintegral', src: 'syms x; v = double([vpaintegral(x^2, x, 0, 1) vpaintegral(sin(x), x, 0, pi)]);', vars: ['v'], tol: 1e-6, domain: 'symbolic', tags: ['vpaintegral', 'numeric-symbolic-bridge'] },
+  { name: 'sym-vpaintegral', src: 'syms x; v = double([vpaintegral(x^2, x, 0, 1) vpaintegral(sin(x), x, 0, pi) vpaintegral(exp(-x^2), x, 0, Inf) vpaintegral(exp(-x^2), x, -Inf, Inf)]);', vars: ['v'], tol: 1e-5, domain: 'symbolic', tags: ['vpaintegral', 'improper-integral', 'numeric-symbolic-bridge'] },
   { name: 'sym-vpasum', src: 'syms k; v = double([vpasum(1/k^2, k, 1, 5) vpasum(k, k, 1, 10)]);', vars: ['v'], tol: 1e-6, domain: 'symbolic', tags: ['vpasum', 'numeric-symbolic-bridge'] },
+  // ── Fixed symbolic bugs: isAlways (was inverted — true for 1>2, false for x+1==1+x); quorem now
+  // does symbolic polynomial long division p = q*d + r (was numeric floor-division). ──
+  { name: 'sym-isalways', src: 'syms x; v = double([isAlways(1>2) isAlways(x+1==1+x) isAlways(x^2>=0) isAlways(2>1) isAlways(sin(x)^2+cos(x)^2==1) isAlways(exp(x)>0)]);', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['isAlways', 'symbolic-assertion', 'identity'] },
+  { name: 'sym-quorem', src: 'syms x; [q1, r1] = quorem(x^4, x^2-1, x); [q2, r2] = quorem(x^3+1, x+1, x); p = x^5 + 2*x^2 + 1; d = x^2 + 1; [q3, r3] = quorem(p, d, x); recon = simplify(q3*d + r3 - p); v = double([subs(q1,x,3) subs(r1,x,3) subs(q2,x,2) subs(r2,x,2) subs(recon,x,4)]);', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['quorem', 'polynomial-division', 'reconstruction'] },
 
   // ══════════ topology (6) ══════════
   { name: 'topo-betti-hollow-triangle', src: 'B1 = [-1 0 1; 1 -1 0; 0 1 -1]; r1 = rank(B1); v = [3 - r1; 3 - r1];', vars: ['v'], tol: 1e-9, domain: 'topology', tags: ['betti-numbers', 'simplicial-complex', 'boundary-matrix', 'homology'] },

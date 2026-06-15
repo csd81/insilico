@@ -5,13 +5,8 @@ import type { HelpEntry } from './types';
 export const HELP_DSP: Record<string, HelpEntry | string> = {
     firpm: {
       summary: 'Parks-McClellan optimal equiripple FIR filter design',
-      syntax: ['b = firpm(n,f,a)', 'b = firpm(n,f,a,w)', "b = firpm(n,f,a,'ftype')"],
-      description: [
-        "b = firpm(n,f,a) returns the coefficients of an order n FIR filter with the best approximation to the desired frequency response described by f and a.",
-        'f is a vector of frequency band edges in [0,1] (Nyquist=1). a specifies the desired amplitude at each band edge (piecewise-linear).',
-        'Uses the Parks-McClellan Remez exchange algorithm to find the Chebyshev equiripple solution.',
-        'w optionally specifies per-band weights (default 1). Higher weight → smaller error in that band.',
-      ],
+      syntax: ['b = firpm(n,f,a)', 'b = firpm(n,f,a,w)'],
+      description: ["b = firpm(n,f,a) returns the coefficients of an order n FIR filter with the best approximation to the desired frequency response described by f and a."],
       seealso: ['firls', 'fir1', 'fir2', 'firpmord', 'kaiserord'],
     },
     remez: {
@@ -22,21 +17,13 @@ export const HELP_DSP: Record<string, HelpEntry | string> = {
     firls: {
       summary: 'Least-squares linear-phase FIR filter design',
       syntax: ['b = firls(n,f,a)', 'b = firls(n,f,a,w)'],
-      description: [
-        'b = firls(n,f,a) designs an order n linear-phase FIR filter that minimises the weighted integral of the squared error between the desired and actual frequency responses.',
-        'f and a specify band edges and desired amplitudes in [0,1]. w is per-band weight vector.',
-        'Unlike firpm (equiripple), firls minimises total energy of the error — smoother but potentially larger peak error.',
-      ],
+      description: ['b = firls(n,f,a) designs an order n linear-phase FIR filter that minimises the weighted integral of the squared error between the desired and actual frequency responses.'],
       seealso: ['firpm', 'fir1', 'fir2'],
     },
     grpdelay: {
       summary: 'Group delay of digital filter',
-      syntax: ['[gd,w] = grpdelay(b,a)', '[gd,w] = grpdelay(b,a,n)', '[gd,w] = grpdelay(b,a,n,whole)'],
-      description: [
-        'gd = grpdelay(b,a) returns the n-point (default 512) group delay of the digital filter with transfer function H(z) = B(z)/A(z).',
-        'Group delay is the negative derivative of phase: gd(ω) = -dφ(ω)/dω.',
-        'For a linear-phase FIR filter the group delay is constant (= (n-1)/2).',
-      ],
+      syntax: ['[gd,w] = grpdelay(b,a)', '[gd,w] = grpdelay(b,a,n)'],
+      description: ['gd = grpdelay(b,a) returns the n-point (default 512) group delay of the digital filter with transfer function H(z) = B(z)/A(z).'],
       seealso: ['freqz', 'phasez', 'impz', 'fvtool'],
     },
     impz: {
@@ -54,11 +41,7 @@ export const HELP_DSP: Record<string, HelpEntry | string> = {
     sosfilt: {
       summary: 'Second-order (biquad) IIR filtering',
       syntax: ['y = sosfilt(sos,x)', 'y = sosfilt(sos,x,zi)'],
-      description: [
-        'y = sosfilt(sos,x) filters x using the second-order section matrix sos.',
-        'sos is an L×6 matrix where each row [b0 b1 b2 a0 a1 a2] defines one biquad section.',
-        'More numerically stable than using single [b,a] form for high-order filters.',
-      ],
+      description: ['y = sosfilt(sos,x) filters x using the second-order section matrix sos.'],
       seealso: ['tf2sos', 'zp2sos', 'filter', 'filtfilt'],
     },
     tf2sos: {
@@ -94,40 +77,26 @@ export const HELP_DSP: Record<string, HelpEntry | string> = {
     bilinear: {
       summary: 'Bilinear transformation method of IIR filter design',
       syntax: ['[Bz,Az] = bilinear(B,A,Fs)', '[Zd,Pd,Kd] = bilinear(Z,P,K,Fs)'],
-      description: [
-        '[Bz,Az] = bilinear(B,A,Fs) converts the analog prototype with transfer function B(s)/A(s) to a digital filter using the bilinear transform s = 2*Fs*(z-1)/(z+1).',
-        'Fs is the sampling frequency in Hz. Use prewarped analog prototype for exact cutoff mapping.',
-      ],
+      description: ['[Bz,Az] = bilinear(B,A,Fs) converts the analog prototype with transfer function B(s)/A(s) to a digital filter using the bilinear transform s = 2*Fs*(z-1)/(z+1).'],
       seealso: ['butter', 'cheby1', 'cheby2', 'ellip', 'besself'],
     },
     besself: {
       summary: 'Bessel analog lowpass filter design',
       syntax: ['[b,a] = besself(n,Wo)', "[b,a] = besself(n,Wo,'high')"],
-      description: [
-        '[b,a] = besself(n,Wo) designs an n-th order analog Bessel lowpass filter with cutoff frequency Wo rad/s.',
-        'Bessel filters have maximally flat group delay (linear phase) in the passband. Stopband attenuation is less steep than Butterworth/Chebyshev for the same order.',
-        'Use bilinear() to convert to digital.',
-      ],
+      description: ['[b,a] = besself(n,Wo) designs an n-th order analog Bessel lowpass filter with cutoff frequency Wo rad/s.'],
       seealso: ['butter', 'cheby1', 'ellip', 'bilinear'],
     },
     decimate: {
       summary: 'Decimate signal by integer factor',
       syntax: ['y = decimate(x,r)', 'y = decimate(x,r,n)'],
-      description: [
-        'y = decimate(x,r) reduces the sample rate of x by the integer factor r.',
-        'Applies a 30th-order anti-aliasing FIR lowpass filter with cutoff 1/r (Hamming window) before downsampling.',
-        'n overrides the filter order.',
-      ],
+      description: ['y = decimate(x,r) reduces the sample rate of x by the integer factor r.'],
       seealso: ['interp', 'resample', 'upfirdn', 'downsample'],
     },
     // QUARANTINED: interp (see implementation note above)
     resample: {
       summary: 'Resample signal at new sample rate',
       syntax: ['y = resample(x,p,q)', 'y = resample(x,p,q,n)'],
-      description: [
-        'y = resample(x,p,q) resamples x at p/q times the original sample rate using polyphase filtering.',
-        'Equivalent to upsampling by p, anti-alias filtering, then downsampling by q.',
-      ],
+      description: ['y = resample(x,p,q) resamples x at p/q times the original sample rate using polyphase filtering.'],
       seealso: ['decimate', 'interp', 'upfirdn'],
     },
     chebwin: {
@@ -163,11 +132,7 @@ export const HELP_DSP: Record<string, HelpEntry | string> = {
     step: {
       summary: 'Execute DSP System object algorithm',
       syntax: ['y = step(h,x)', 'step(h,x)'],
-      description: [
-        'y = step(h,x) processes input x through System object h and returns output y.',
-        'Works with: dsp.FIRFilter, dsp.BiquadFilter, dsp.FIRDecimator, dsp.FIRInterpolator.',
-        'System objects maintain internal state between calls.',
-      ],
+      description: ['y = step(h,x) processes input x through System object h and returns output y.'],
       seealso: ['release', 'reset'],
     },
     release: {

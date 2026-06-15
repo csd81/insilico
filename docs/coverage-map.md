@@ -13,8 +13,8 @@ pnpm oracle:base-audit
 pnpm oracle:audit
 ```
 
-**Status (as of this revision):** 1048 tests green · 913 MATLAB oracle fixtures ·
-913/913 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1050 tests green · 915 MATLAB oracle fixtures ·
+915/915 oracle cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial / bounded subset ·
 `n/a` = deliberately not oracle-comparable.
@@ -171,9 +171,10 @@ where MATLAB treats it as element separation.
 | Vector calculus | ✓ | `gradient`, `curl`, `divergence`, vector-calculus identities by numeric substitution. |
 | Symbolic convenience | ✓ | `vpa`, `matlabFunction`, `partfrac`, `pade`, `poly2sym`, `str2sym`, `horner`, `rewrite`, `polynomialDegree`. |
 | Symbolic special functions | ✓ | `ellipticK`/`ellipticE`, `whittakerM`, `kummerU` at numeric points (`whittakerW` excluded — engine value ~0.1% off). |
-| Piecewise / poles / vpa bridge | ✓ | `piecewise` (branch eval), `polynomialReduce` (univariate), `poles` (sorted), `vpaintegral`/`vpasum` at finite bounds. |
+| Piecewise / poles / vpa bridge | ✓ | `piecewise` (branch eval), `polynomialReduce` (univariate), `poles` (sorted), `vpaintegral` (finite **and improper** bounds), `vpasum`. |
+| Symbolic assertions / division | ✓ | `isAlways` (fixed — relational/identity semantics), `quorem` (fixed — symbolic polynomial long division `p=q·d+r`). |
 | Assumptions/display/introspection tail | ~ | Much of `assume*`, `symType`, `latex`, `pretty`, etc. is low-value for computational coverage. |
-| Symbolic-tail bugs (deferred) | ~ | `isAlways` mis-evaluates (`1>2`→true, `x+1==1+x`→false); `quorem`/`combine`/`isolate` error on symbolic input; `vpaintegral` with an infinite bound returns `Inf`. Validated only the correct subset. |
+| Symbolic-tail (still deferred) | ~ | `combine`/`isolate` error on symbolic input (CAS-depth); validated where correct. |
 | Serious CAS completeness | not targeted | Groebner bases, quantifier elimination, full assumption logic, and Risch-style integration are out of scope unless a course workflow demands a MATLAB-present subset. |
 
 See `docs/symbolic-boundary.md` for the precise supported symbolic subset.

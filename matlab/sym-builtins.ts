@@ -52,6 +52,28 @@ function powerSum(j: number, m: SymExpr): SymExpr | null {
 }
 /** Numeric value of a SymExpr if it has no free variables, else null. */
 function constVal(e: SymExpr): number | null { const v = symEval(e, new Map()); return symVars(e).length === 0 && Number.isFinite(v) ? v : null; }
+// isAlways: is the symbolic condition provably true for all values?
+//  - inequalities (gt/lt/ge/le) with no free variables → evaluate directly; with free variables →
+//    false (MATLAB cannot prove e.g. x^2>=0 over its default complex domain).
+//  - an equation a==b is stored as the difference a-b; it is "always true" iff that difference is
+//    identically zero (checked at several fixed sample points — exact for a true algebraic identity).
+function symIsAlwaysTrue(e: SymExpr): boolean {
+  const ineq: Record<string, (a: number, b: number) => boolean> = { gt: (a, b) => a > b, lt: (a, b) => a < b, ge: (a, b) => a >= b, le: (a, b) => a <= b };
+  if (e.t === 'fn' && e.name in ineq) {
+    if (symVars(e).length > 0) return false;
+    const a = symEval(e.args[0], new Map()), b = symEval(e.args[1], new Map());
+    return Number.isFinite(a) && Number.isFinite(b) && ineq[e.name](a, b);
+  }
+  const vars = symVars(e);
+  if (vars.length === 0) { const v = symEval(e, new Map()); return Number.isFinite(v) && Math.abs(v) < 1e-9; }
+  const pts = [0.7321, 1.41421, 2.23607, 0.318309, 1.73205, 2.71828];
+  for (let t = 0; t < pts.length; t++) {
+    const map = new Map(vars.map((vn, k) => [vn, pts[(t + k) % pts.length] + k * 0.137]));
+    const v = symEval(e, map);
+    if (!Number.isFinite(v) || Math.abs(v) > 1e-7) return false;
+  }
+  return true;
+}
 
 /** Apply a function handle to every subexpression of a given symType (for mapSymType). */
 async function mapType(e: SymExpr, type: string, h: Handle, env: Env): Promise<SymExpr> {
@@ -64,7 +86,22 @@ async function mapType(e: SymExpr, type: string, h: Handle, env: Env): Promise<S
 
 export const SYM_BUILTINS: Record<string, Builtin> = {
   polynomialDegree: async (a) => { const s = symArg(a[0]); const v = a.length >= 2 ? (isSym(a[1]) ? symVarsOf(a[1])[0] : asString(a[1])) : (symVarsOf(s)[0] ?? 'x'); const c = polyCoeffs(s.exprs[0], v); let d = 0; for (let i = 0; i < c.length; i++) if (Math.abs(c[i]) > 1e-12) d = i; return ret(scalar(d)); },
-  quorem: async (a, n) => { const A = m(a[0]), B = m(a[1]); const Q = elementwise(A, B, (x, y) => Math.floor(x / y)); const R = elementwise(A, B, (x, y) => x - Math.floor(x / y) * y); return n >= 2 ? [Q, R] : [Q]; },
+  quorem: async (a, n) => {
+    // Symbolic polynomial long division: p = q*d + r with deg(r) < deg(d).
+    if (isSym(a[0]) || isSym(a[1])) {
+      const P = symArg(a[0]), D = symArg(a[1]);
+      const v = a.length >= 3 ? (isSym(a[2]) ? symVarsOf(a[2])[0] : asString(a[2])) : (symVarsOf(P)[0] ?? symVarsOf(D)[0] ?? 'x');
+      const degOf = (c: number[]) => { let d = c.length - 1; while (d > 0 && Math.abs(c[d]) < 1e-12) d--; return d; };
+      const r = polyCoeffs(P.exprs[0], v).slice();      // low→high, mutated into the remainder
+      const dc = polyCoeffs(D.exprs[0], v); const dd = degOf(dc); const pd = degOf(r);
+      const q = new Array(Math.max(pd - dd + 1, 1)).fill(0);
+      for (let i = pd; i >= dd; i--) { const coef = r[i] / dc[dd]; q[i - dd] = coef; for (let j = 0; j <= dd; j++) r[i - dd + j] -= coef * dc[j]; }
+      const fromCoeffs = (c: number[]): SymExpr => { let e: SymExpr = sN(0); for (let i = 0; i < c.length; i++) { if (Math.abs(c[i]) < 1e-12) continue; e = sAdd(e, i === 0 ? sN(c[i]) : sMul(sN(c[i]), i === 1 ? sV(v) : sPow(sV(v), sN(i)))); } return simplifyExpr(e); };
+      const build = (c: number[]) => makeSym(1, 1, [fromCoeffs(c)]);
+      return n >= 2 ? [build(q), build(r.slice(0, dd))] : [build(q)];
+    }
+    const A = m(a[0]), B = m(a[1]); const Q = elementwise(A, B, (x, y) => Math.floor(x / y)); const R = elementwise(A, B, (x, y) => x - Math.floor(x / y) * y); return n >= 2 ? [Q, R] : [Q];
+  },
   sym: async (a) => {
     if (isSym(a[0])) return ret(a[0]);
     if (isStr(a[0]) || (isMat(a[0]) && (a[0] as Mat).isChar)) { const t = asString(a[0]).trim(); const num = Number(t); if (Number.isFinite(num) && /^[-\d.]+$/.test(t)) return ret(makeSym(1, 1, [sN(num)])); try { return ret(parseSym(t)); } catch { return ret(makeSym(1, 1, [sV(t)])); } }
@@ -158,10 +195,17 @@ export const SYM_BUILTINS: Record<string, Builtin> = {
     if (a.length > 1 && (isSym(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar) || isStr(a[1]))) { v = isSym(a[1]) ? (symVarsOf(a[1])[0] ?? v) : asString(a[1]); idx = 2; }
     let lo: number, hi: number;
     if (isMat(a[idx]) && a[idx].kind === 'num' && (a[idx] as Mat).rows * (a[idx] as Mat).cols >= 2) { const r = toArray(a[idx] as Mat); lo = r[0]; hi = r[1]; } else { lo = asScalar(a[idx]); hi = asScalar(a[idx + 1]); }
-    const f = (t: number) => symEval(s.exprs[0], new Map([[v, t]]));   // composite Simpson
-    const N = 2000; const h = (hi - lo) / N; let acc = f(lo) + f(hi);
-    for (let i = 1; i < N; i++) acc += (i % 2 ? 4 : 2) * f(lo + i * h);
-    return ret(scalar(acc * h / 3));
+    const f = (t: number) => symEval(s.exprs[0], new Map([[v, t]]));
+    const simpson = (g: (x: number) => number, A: number, B: number, N: number) => { const h = (B - A) / N; let acc = (Number.isFinite(g(A)) ? g(A) : 0) + (Number.isFinite(g(B)) ? g(B) : 0); for (let i = 1; i < N; i++) { const val = g(A + i * h); acc += (i % 2 ? 4 : 2) * (Number.isFinite(val) ? val : 0); } return acc * h / 3; };
+    const loInf = !Number.isFinite(lo), hiInf = !Number.isFinite(hi);
+    if (!loInf && !hiInf) return ret(scalar(simpson(f, lo, hi, 2000)));
+    // Infinite bound(s): map to s∈(0,1) via a substitution, contributions near the singular
+    // endpoint vanish for an integrable (decaying) integrand and are treated as 0.
+    let g: (sv: number) => number;
+    if (!loInf && hiInf) g = (sv) => { const om = 1 - sv; return f(lo + sv / om) / (om * om); };          // t = lo + s/(1−s)
+    else if (loInf && !hiInf) g = (sv) => { const om = 1 - sv; return f(hi - sv / om) / (om * om); };       // t = hi − s/(1−s)
+    else g = (sv) => { const th = Math.PI * (sv - 0.5); return f(Math.tan(th)) * Math.PI / Math.cos(th) ** 2; };  // t = tan(π(s−½))
+    return ret(scalar(simpson(g, 0, 1, 4000)));
   },
   matlabFunction: async (a, _n, env) => {
     const s = symArg(a[0]); let vars: string[] | null = null;
@@ -190,7 +234,13 @@ export const SYM_BUILTINS: Record<string, Builtin> = {
     return ret(makeSym(1, 1, [padeApprox(s.exprs[0], v, mm, nn, a0)]));
   },
   pretty: async (a, _n, env) => { env.output(symTexLines(symArg(a[0])).join('\n') + '\n'); return []; },
-  isAlways: async (a) => { const s = symArg(a[0]); const o = zeros(s.rows, s.cols); o.isBool = true; s.exprs.forEach((e, i) => { o.data[i] = Math.abs(symEval(e, new Map())) < 1e-12 ? 1 : 0; }); return ret(o); },
+  isAlways: async (a) => {
+    // A non-symbolic argument is an already-evaluated logical/numeric (e.g. isAlways(1>2) → the
+    // comparison folds to 0 before the call): MATLAB returns its truthiness. A symbolic argument is
+    // a condition/identity to analyse (equation difference identically zero, or an inequality).
+    if (!isSym(a[0])) { const M = m(a[0]); const o = zeros(M.rows, M.cols); o.isBool = true; for (let i = 0; i < M.data.length; i++) o.data[i] = M.data[i] !== 0 && !Number.isNaN(M.data[i]) ? 1 : 0; return ret(o); }
+    const s = symArg(a[0]); const o = zeros(s.rows, s.cols); o.isBool = true; s.exprs.forEach((e, i) => { o.data[i] = symIsAlwaysTrue(e) ? 1 : 0; }); return ret(o);
+  },
   potential: async (a) => { const F = symArg(a[0]).exprs; const v = symNames(a[1]); return ret(makeSym(1, 1, [simplifyExpr(integrate(F[0], v[0]))])); },
   coeffs: async (a, n) => { const s = symArg(a[0]); const v = a.length >= 2 && (isStr(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar) || isSym(a[1])) ? (isSym(a[1]) ? symVarsOf(a[1])[0] : asString(a[1])) : (symVarsOf(s)[0] ?? 'x'); const c = polyCoeffs(s.exprs[0], v); const nz = c.map((cc, i) => [cc, i] as [number, number]).filter(([cc]) => Math.abs(cc) > 1e-12); return n >= 2 ? [makeSym(1, nz.length, nz.map(([cc]) => sN(cc))), makeSym(1, nz.length, nz.map(([, i]) => i === 0 ? sN(1) : sPow(sV(v), sN(i))))] : [makeSym(1, nz.length, nz.map(([cc]) => sN(cc)))]; },
   sym2poly: async (a) => { const s = symArg(a[0]); const v = symVarsOf(s)[0] ?? 'x'; return ret(rowVec(polyCoeffs(s.exprs[0], v).slice().reverse())); },

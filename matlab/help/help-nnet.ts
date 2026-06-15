@@ -9,35 +9,19 @@ export const HELP_NNET: Record<string, HelpEntry | string> = {
         'net = trainNetwork(X,Y,layers,options)',
         'net = trainNetwork(imds,layers,options)',
       ],
-      description: [
-        'net = trainNetwork(X,Y,layers,options) trains a network defined by layers on data X with labels Y.',
-        'X is [features × N] (or [N × features]), Y is [classes × N] (one-hot) for classification or [outputs × N] for regression.',
-        'Supports FC layers, ReLU/sigmoid/tanh/GELU/leaky-ReLU, batch normalisation, dropout. Uses Adam by default.',
-        'Returns a trained SeriesNetwork object. Use predict(net,X) or classify(net,X) for inference.',
-      ],
+      description: ['net = trainNetwork(X,Y,layers,options) trains a network defined by layers on data X with labels Y.'],
       seealso: ['trainingOptions', 'predict', 'classify', 'fullyConnectedLayer', 'reluLayer'],
     },
     trainingOptions: {
       summary: 'Options for training deep learning neural network',
-      syntax: [
-        "options = trainingOptions('adam')",
-        "options = trainingOptions('sgdm','MaxEpochs',20,'MiniBatchSize',64)",
-        "options = trainingOptions('rmsprop','InitialLearnRate',1e-3,'Verbose',false)",
-      ],
-      description: [
-        "options = trainingOptions(solver,Name,Value) creates a training options object.",
-        'Solver: "adam" (default), "sgdm", "rmsprop".',
-        'Key options: MaxEpochs (30), MiniBatchSize (128), InitialLearnRate (0.001), Verbose (true), Shuffle.',
-      ],
+      syntax: ["options = trainingOptions('adam')", "options = trainingOptions('sgdm','MaxEpochs',20,'MiniBatchSize',64)"],
+      description: ["options = trainingOptions(solver,Name,Value) creates a training options object."],
       seealso: ['trainNetwork', 'dlnetwork', 'adamupdate'],
     },
     predict: {
       summary: 'Predict responses using trained deep learning network',
       syntax: ['Y = predict(net,X)', 'Y = predict(net,X,MiniBatchSize=n)'],
-      description: [
-        'Y = predict(net,X) runs the forward pass of net on X in inference mode (dropout disabled, batch-norm uses running stats).',
-        'Returns raw network output (pre-softmax for classification; use classify for argmax labels).',
-      ],
+      description: ['Y = predict(net,X) runs the forward pass of net on X in inference mode (dropout disabled, batch-norm uses running stats).'],
       seealso: ['classify', 'trainNetwork', 'activations'],
     },
     classify: {
@@ -51,10 +35,7 @@ export const HELP_NNET: Record<string, HelpEntry | string> = {
     fullyConnectedLayer: {
       summary: 'Fully connected layer',
       syntax: ['layer = fullyConnectedLayer(outputSize)'],
-      description: [
-        'layer = fullyConnectedLayer(n) creates a fully connected layer with n output neurons.',
-        'Implements Z = W*X + b. Weights initialised with Xavier/Glorot uniform.',
-      ],
+      description: ['layer = fullyConnectedLayer(n) creates a fully connected layer with n output neurons.'],
       seealso: ['reluLayer', 'softmaxLayer', 'batchNormalizationLayer', 'trainNetwork'],
     },
     reluLayer: {
@@ -96,10 +77,7 @@ export const HELP_NNET: Record<string, HelpEntry | string> = {
     batchNormalizationLayer: {
       summary: 'Batch normalisation layer',
       syntax: ['layer = batchNormalizationLayer'],
-      description: [
-        'Normalises each feature to zero mean and unit variance over the mini-batch.',
-        'Learns scale (gamma) and offset (beta) parameters. Maintains running mean/variance for inference.',
-      ],
+      description: ['Normalises each feature to zero mean and unit variance over the mini-batch.'],
       seealso: ['reluLayer', 'dropoutLayer', 'fullyConnectedLayer'],
     },
     dropoutLayer: {
@@ -163,19 +141,13 @@ export const HELP_NNET: Record<string, HelpEntry | string> = {
     dlnetwork: {
       summary: 'Deep learning neural network for custom training loops',
       syntax: ['net = dlnetwork(layers)', 'net = dlnetwork(lgraph)'],
-      description: [
-        'net = dlnetwork(layers) creates a network from a layer array for use in custom training loops.',
-        'Use with adamupdate for parameter updates.',
-      ],
+      description: ['net = dlnetwork(layers) creates a network from a layer array for use in custom training loops.'],
       seealso: ['trainNetwork', 'adamupdate', 'dlarray'],
     },
     dlarray: {
       summary: 'Labelled array for deep learning',
-      syntax: ["X = dlarray(data)", "X = dlarray(data,'CB')", "X = dlarray(data,'SSCB')"],
-      description: [
-        "X = dlarray(data,fmt) wraps data with a dimension label string for use with dlarray operations.",
-        "Common formats: 'CB' (channel×batch), 'SSCB' (spatial×spatial×channel×batch).",
-      ],
+      syntax: ["X = dlarray(data)", "X = dlarray(data,'CB')"],
+      description: ["X = dlarray(data,fmt) wraps data with a dimension label string for use with dlarray operations."],
       seealso: ['extractdata', 'fullyconnect', 'relu'],
     },
     extractdata: {
@@ -190,10 +162,7 @@ export const HELP_NNET: Record<string, HelpEntry | string> = {
         '[netUpdated,avgGrad,avgSqGrad] = adamupdate(net,grad,avgGrad,avgSqGrad,iteration)',
         '[p,m,v] = adamupdate(p,grad,m,v,t,lr)',
       ],
-      description: [
-        'Performs one Adam step: m = beta1*m + (1-beta1)*grad; v = beta2*v + (1-beta2)*grad^2;',
-        'p = p - lr * mHat/(sqrt(vHat)+eps).  Default lr=0.001, beta1=0.9, beta2=0.999.',
-      ],
+      description: ['Performs one Adam step: m = beta1*m + (1-beta1)*grad; v = beta2*v + (1-beta2)*grad^2;'],
       seealso: ['dlnetwork', 'trainingOptions'],
     },
     dlgradient: { summary: 'Gradients via automatic differentiation', syntax: ['[g1,…] = dlgradient(loss, x1, …)'], description: ['dlgradient(loss, x1, …) returns the gradients of the scalar dlarray loss with respect to each traced dlarray xi, by reverse-mode automatic differentiation. Build loss from dlarray inputs using the supported ops (+, -, .*, ./, *, .^, sum, mean, exp, log, sqrt, sigmoid, tanh, relu, mse). Typically called inside dlfeval.'], seealso: ['dlfeval', 'dlarray', 'adamupdate'] },
@@ -243,20 +212,13 @@ export const HELP_NNET: Record<string, HelpEntry | string> = {
     lstm: {
       summary: 'Long short-term memory forward pass',
       syntax: ['Y = lstm(X,H0,C0,weights,recurrentWeights,bias)', '[Y,H,C] = lstm(___)'],
-      description: [
-        'lstm(X,H0,C0,W,R,b) applies the LSTM recurrence over the time dimension of X.',
-        'X: [inputSize × seqLen]; W: [4H × inputSize]; R: [4H × H]; b: [4H × 1].',
-        'Returns Y [H × seqLen], final hidden state H [H × 1], cell state C [H × 1].',
-      ],
+      description: ['lstm(X,H0,C0,W,R,b) applies the LSTM recurrence over the time dimension of X.'],
       seealso: ['gru', 'lstmLayer', 'fullyconnect'],
     },
     gru: {
       summary: 'Gated recurrent unit forward pass',
       syntax: ['Y = gru(X,H0,weights,recurrentWeights,bias)', '[Y,H] = gru(___)'],
-      description: [
-        'gru(X,H0,W,R,b) applies the GRU recurrence over the time dimension of X.',
-        'X: [inputSize × seqLen]; W: [3H × inputSize]; R: [3H × H]; b: [3H × 1].',
-      ],
+      description: ['gru(X,H0,W,R,b) applies the GRU recurrence over the time dimension of X.'],
       seealso: ['lstm', 'gruLayer'],
     },
     batchnorm: {
@@ -286,10 +248,7 @@ export const HELP_NNET: Record<string, HelpEntry | string> = {
     onehotdecode: {
       summary: 'Decode probability vectors into class labels',
       syntax: ['A = onehotdecode(B,classes,featureDim)'],
-      description: [
-        'A = onehotdecode(B,classes,1) returns the 1-based index of the maximum probability in each column of B.',
-        'classes is a string array of class names (currently ignored; returns numeric indices).',
-      ],
+      description: ['A = onehotdecode(B,classes,1) returns the 1-based index of the maximum probability in each column of B.'],
       seealso: ['classify', 'softmax', 'crossentropy'],
     },
     layerGraph: {
