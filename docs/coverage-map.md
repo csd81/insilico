@@ -82,6 +82,13 @@ theorem-proving, category theory, logic/model theory, algebraic geometry beyond
 symbolic polynomial examples. These need theorem statements and proof checking,
 not numeric/CAS execution parity.
 
+The qualifier is *as theorem-proving*. The **computational** face of these fields
+is in scope and is covered: e.g. the `topology` domain computes homology
+numerically (Betti numbers via boundary-matrix rank, connected components across a
+filtration) — that is "run a script, compare output," not proving homeomorphisms.
+Likewise `number-theory` and `coding` cover algorithmic/finite-field computation,
+not abstract-algebra theorem-proving.
+
 **Scope statement:** *100% coverage of declared graduate computational-math
 workflows — not 100% of all graduate mathematics.*
 
