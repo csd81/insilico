@@ -246,6 +246,32 @@ const normcdfL = (z: number) => 0.5 * erfc(-z / Math.SQRT2);
 function tcdfL(x: number, v: number): number { const ib = betainc(v / (v + x * x), v / 2, 0.5); return x >= 0 ? 1 - 0.5 * ib : 0.5 * ib; }
 function tinvL(p: number, v: number): number { if (p <= 0) return -Infinity; if (p >= 1) return Infinity; return invCdf(p, (x) => tcdfL(x, v), -1e6, 1e6); }
 const sd_ = (c: number[]) => Math.sqrt(var_(c));
+/** Exact one-sample two-sided KS CDF P(D_n < d) via Marsaglia–Tsang–Wang (2003).
+ *  This is the method MATLAB's `kstest` uses (not the Stephens asymptotic). */
+function ksExactCDF(n: number, d: number): number {
+  if (d <= 0) return 0; if (d >= 1) return 1;
+  const k = Math.ceil(n * d), mm = 2 * k - 1, h = k - n * d;
+  let H: number[][] = Array.from({ length: mm }, () => new Array<number>(mm).fill(0));
+  for (let i = 0; i < mm; i++) for (let j = 0; j < mm; j++) H[i][j] = (i - j + 1 < 0) ? 0 : 1;
+  for (let i = 0; i < mm; i++) { H[i][0] -= Math.pow(h, i + 1); H[mm - 1][i] -= Math.pow(h, mm - i); }
+  H[mm - 1][0] += (2 * h - 1 > 0 ? Math.pow(2 * h - 1, mm) : 0);
+  for (let i = 0; i < mm; i++) for (let j = 0; j < mm; j++) if (i - j + 1 > 0) for (let g = 1; g <= i - j + 1; g++) H[i][j] /= g;
+  // H^n with periodic rescaling to avoid overflow (track the exponent in eQ).
+  const mul = (A: number[][], B: number[][]): number[][] => { const C = Array.from({ length: mm }, () => new Array<number>(mm).fill(0)); for (let i = 0; i < mm; i++) for (let l = 0; l < mm; l++) { const a = A[i][l]; if (a === 0) continue; for (let j = 0; j < mm; j++) C[i][j] += a * B[l][j]; } return C; };
+  let P: number[][] | null = null, base = H, eQ = 0, e = n;
+  while (e > 0) { if (e & 1) { P = P ? mul(P, base) : base.map((r) => r.slice()); if (P[k - 1][k - 1] > 1e140) { P = P.map((r) => r.map((v) => v * 1e-140)); eQ += 140; } } e >>= 1; if (e > 0) { base = mul(base, base); if (base[k - 1][k - 1] > 1e140) { base = base.map((r) => r.map((v) => v * 1e-140)); eQ *= 2; } } }
+  let s = P![k - 1][k - 1];
+  for (let i = 1; i <= n; i++) { s = s * i / n; if (s < 1e-140) { s *= 1e140; eQ -= 140; } }
+  return s * Math.pow(10, eQ);
+}
+/** Exact one-sided KS tail P(D_n^+ ≥ d) (Birnbaum–Tingey closed form). */
+function ksOneSidedSF(n: number, d: number): number {
+  if (d <= 0) return 1; if (d >= 1) return 0;
+  const logC = (nn: number, kk: number) => { let s = 0; for (let i = 0; i < kk; i++) s += Math.log(nn - i) - Math.log(i + 1); return s; };
+  let sum = 0; const jmax = Math.floor(n * (1 - d));
+  for (let j = 0; j <= jmax; j++) { const t1 = (d + j / n), t2 = (1 - d - j / n); sum += Math.exp(logC(n, j) + (j - 1) * Math.log(t1) + (n - j) * Math.log(t2)); }
+  return Math.min(1, Math.max(0, d * sum));
+}
 /** Build a 1×1 struct from [name, value] pairs (drops undefined entries). */
 function mkStruct(pairs: [string, Value | undefined][]): Value {
   const fields = new Map<string, Value[]>(); for (const [k, v] of pairs) if (v !== undefined) fields.set(k, [v]);
@@ -982,6 +1008,56 @@ export const STATS: ToolboxModule = {
       else { p = 0; for (let j = 1; j <= 101; j++) p += (j % 2 ? 1 : -1) * Math.exp(-2 * lambda * lambda * j * j); p = Math.min(Math.max(2 * p, 0), 1); }
       const h = alpha >= p ? 1 : 0;
       return Promise.resolve([scalar(h), scalar(p), scalar(ks)].slice(0, Math.max(1, nargout)));
+    },
+    /** [h,p,ksstat,cv]=kstest(x[,'CDF',F][,'Alpha',a][,'Tail',t]) — one-sample KS test.
+     *  Default hypothesized CDF is the standard normal. p-value is the exact KS
+     *  distribution (Marsaglia–Tsang–Wang for two-sided; Birnbaum–Tingey one-sided). */
+    kstest: (a, nargout) => {
+      const x = toArray(m(a[0])).filter((v) => !Number.isNaN(v)).slice().sort((p, q) => p - q);
+      const n = x.length;
+      let alpha = 0.05, tail = 0; let cdfTab: [number[], number[]] | null = null;
+      // kstest uses 'unequal'(0)/'larger'(+1, D+)/'smaller'(−1, D−) — not left/right.
+      const ksTail = (v: Value): number => { if (isMat(v) && !(v as Mat).isChar) { const t = asScalar(v); return t === 1 || t === -1 ? t : 0; } const s = asString(v).toLowerCase(); return s.startsWith('la') ? 1 : s.startsWith('sm') ? -1 : 0; };
+      const opts = a.slice(1);
+      for (let i = 0; i < opts.length; i++) {
+        const s = isMat(opts[i]) && (opts[i] as Mat).isChar ? asString(opts[i]).toLowerCase() : '';
+        if (s === 'alpha') alpha = asScalar(opts[++i]);
+        else if (s === 'tail') tail = ksTail(opts[++i]);
+        else if (s === 'cdf') { const M = matRows(m(opts[++i])); cdfTab = [M.map((r) => r[0]), M.map((r) => r[1])]; }
+      }
+      // Theoretical CDF at the sorted data: standard normal by default, else interp the supplied [x F] table.
+      const F = (v: number): number => {
+        if (!cdfTab) return normcdfL(v);
+        const [xs, fs] = cdfTab; if (v <= xs[0]) return fs[0]; if (v >= xs[xs.length - 1]) return fs[fs.length - 1];
+        let k = 0; while (k < xs.length - 1 && xs[k + 1] < v) k++;
+        const t = (v - xs[k]) / (xs[k + 1] - xs[k]); return fs[k] + t * (fs[k + 1] - fs[k]);
+      };
+      let dPlus = 0, dMinus = 0; // D+ = max(i/n − F), D− = max(F − (i−1)/n)
+      for (let i = 0; i < n; i++) { const fi = F(x[i]); dPlus = Math.max(dPlus, (i + 1) / n - fi); dMinus = Math.max(dMinus, fi - i / n); }
+      const ks = tail === 0 ? Math.max(dPlus, dMinus) : tail === 1 ? dPlus : dMinus;
+      const p = Math.min(1, Math.max(0, tail === 0 ? 1 - ksExactCDF(n, ks) : ksOneSidedSF(n, ks)));
+      const h = p <= alpha ? 1 : 0;
+      // Critical value: invert the exact CDF at 1−alpha.
+      const cv = tail === 0 ? invCdf(1 - alpha, (d) => ksExactCDF(n, d), 0, 1) : invCdf(1 - alpha, (d) => 1 - ksOneSidedSF(n, d), 0, 1);
+      return Promise.resolve([scalar(h), scalar(p), scalar(ks), scalar(cv)].slice(0, Math.max(1, nargout)));
+    },
+    /** [h,p,ci,stats]=vartest(x,v) — chi-square test that x is normal with variance v. */
+    vartest: (a, nargout) => {
+      const x = toArray(m(a[0])).filter((v) => !Number.isNaN(v)); const v0 = asScalar(m(a[1]));
+      let alpha = 0.05, tail = 0; const opts = a.slice(2);
+      for (let i = 0; i < opts.length; i++) { const s = isMat(opts[i]) && (opts[i] as Mat).isChar ? asString(opts[i]).toLowerCase() : ''; if (s === 'alpha') alpha = asScalar(opts[++i]); else if (s === 'tail') tail = tailCode(opts[++i]); }
+      const n = x.length, df = n - 1, s2 = var_(x), chi = df * s2 / v0, cdf = gammainc(chi / 2, df / 2);
+      let p: number;
+      if (tail === 0) p = 2 * Math.min(cdf, 1 - cdf); else if (tail === 1) p = 1 - cdf; else p = cdf;
+      p = Math.min(1, Math.max(0, p));
+      const h = p <= alpha ? 1 : 0;
+      const chiInv = (pp: number) => invCdf(pp, (t) => gammainc(t / 2, df / 2), 0, Infinity);
+      let ci: [number, number];
+      if (tail === 0) ci = [df * s2 / chiInv(1 - alpha / 2), df * s2 / chiInv(alpha / 2)];
+      else if (tail === 1) ci = [df * s2 / chiInv(1 - alpha), Infinity];
+      else ci = [0, df * s2 / chiInv(alpha)];
+      const stats = mkStruct([['chisqstat', scalar(chi)], ['df', scalar(df)]]);
+      return Promise.resolve([scalar(h), scalar(p), rowVec(ci), stats].slice(0, Math.max(1, nargout)));
     },
     /** [p,h,stats]=signtest(x[,y][,'Alpha',a][,'Tail',t][,'Method',m]) — sign test. */
     signtest: (a, nargout) => {
@@ -1777,6 +1853,23 @@ export const STATS: ToolboxModule = {
       for (let i = 0; i < M.length; i++) for (let j = i + 1; j < M.length; j++) out.push(M[i][j]);
       return ret(rowVec(out));
     },
+    /** [idx,d]=knnsearch(X,Y[,'K',k][,'Distance',metric][,'P',p]) — k nearest neighbours
+     *  in X for each query row of Y (Euclidean by default; ties broken by lowest index). */
+    knnsearch: (a, nargout) => {
+      const X = matRows(m(a[0])); const Y = matRows(m(a[1]));
+      let K = 1, metric = 'euclidean', pexp = 2; const opts = a.slice(2);
+      for (let i = 0; i < opts.length; i++) { const s = isMat(opts[i]) && (opts[i] as Mat).isChar ? asString(opts[i]).toLowerCase() : ''; if (s === 'k') K = Math.round(asScalar(opts[++i])); else if (s === 'distance') metric = asString(opts[++i]).toLowerCase(); else if (s === 'p') pexp = asScalar(opts[++i]); }
+      const f = METRICS[metric] ?? METRICS.euclidean;
+      const idxRows: number[][] = [], dRows: number[][] = [];
+      for (const q of Y) {
+        const ds = X.map((row, i) => [f(q, row, pexp), i] as [number, number]).sort((u, v) => u[0] - v[0] || u[1] - v[1]);
+        idxRows.push(ds.slice(0, K).map(([, i]) => i + 1));
+        dRows.push(ds.slice(0, K).map(([d]) => d));
+      }
+      const idxMat = idxRows.length ? fromRows(idxRows) : zeros(0, K);
+      if (nargout < 2) return ret(idxMat);
+      return Promise.resolve([idxMat, dRows.length ? fromRows(dRows) : zeros(0, K)]);
+    },
     /** linkage(Y[,method]) → (m-1)×3 agglomerative linkage matrix (single/complete/average). */
     linkage: (a) => {
       const A = m(a[0]); let n: number, D: number[][];
@@ -2032,6 +2125,53 @@ export const STATS: ToolboxModule = {
       const stats = mkStruct([['gnames', str('')], ['n', rowVec(groups.map((g) => g.length))], ['source', str('anova1')],
         ['means', rowVec(meansArr)], ['df', scalar(dfW)], ['s', scalar(Math.sqrt(MSW))]]);
       return Promise.resolve([scalar(p), tbl, stats]);
+    },
+    /** [h,p,stats]=chi2gof(x,...) — chi-square goodness-of-fit test.
+     *  Fully supports the controlled form ('Ctrs'/'Edges'+'Frequency'+'Expected'+'NParams'):
+     *  chi2 = Σ(O−E)²/E over bins (low-expected tail bins pooled at 'Emin', default 5),
+     *  df = nbins−1−NParams. The raw-data default (auto-bin + fit normal) is best-effort. */
+    chi2gof: (a, nargout) => {
+      let freq: number[] | null = null, expected: number[] | null = null;
+      let ctrs: number[] | null = null, edges: number[] | null = null;
+      let nparams: number | null = null, emin = 5, nbins = 10, alpha = 0.05;
+      const opts = a.slice(1);
+      for (let i = 0; i < opts.length; i++) {
+        const s = isMat(opts[i]) && (opts[i] as Mat).isChar ? asString(opts[i]).toLowerCase() : '';
+        if (s === 'frequency') freq = toArray(m(opts[++i]));
+        else if (s === 'expected') expected = toArray(m(opts[++i]));
+        else if (s === 'ctrs') ctrs = toArray(m(opts[++i]));
+        else if (s === 'edges') edges = toArray(m(opts[++i]));
+        else if (s === 'nparams') nparams = Math.round(asScalar(opts[++i]));
+        else if (s === 'emin') emin = asScalar(opts[++i]);
+        else if (s === 'nbins') nbins = Math.round(asScalar(opts[++i]));
+        else if (s === 'alpha') alpha = asScalar(opts[++i]);
+      }
+      const ctrsToEdges = (c: number[]): number[] => { const e = [c[0] - (c[1] - c[0]) / 2]; for (let i = 0; i < c.length - 1; i++) e.push((c[i] + c[i + 1]) / 2); e.push(c[c.length - 1] + (c[c.length - 1] - c[c.length - 2]) / 2); return e; };
+      let O: number[]; let ed: number[] | null = edges ? edges.slice() : (ctrs ? ctrsToEdges(ctrs) : null);
+      const rawX = toArray(m(a[0])).filter((v) => !Number.isNaN(v));
+      if (freq) O = freq.slice();
+      else {
+        if (!ed) { const lo = Math.min(...rawX), hi = Math.max(...rawX); ed = []; for (let i = 0; i <= nbins; i++) ed.push(lo + (hi - lo) * i / nbins); }
+        O = new Array(ed.length - 1).fill(0);
+        for (const v of rawX) { let b = 0; while (b < ed.length - 2 && v >= ed[b + 1]) b++; O[b]++; }
+      }
+      let E: number[]; let np: number;
+      if (expected) { E = expected.slice(); np = nparams ?? 0; }
+      else {
+        const N = rawX.length, mu = mean_(rawX), sg = sd_(rawX); E = [];
+        const eUse = ed ?? ctrsToEdges(O.map((_, i) => i + 1));
+        for (let i = 0; i < O.length; i++) { const lo = i === 0 ? -Infinity : eUse[i], hi = i === O.length - 1 ? Infinity : eUse[i + 1]; E.push(N * (normcdfL((hi - mu) / sg) - normcdfL((lo - mu) / sg))); }
+        np = nparams ?? 2;
+      }
+      O = O.slice(); E = E.slice();   // pool low-expected bins inward from both tails
+      while (E.length > 1 && E[0] < emin) { E[1] += E[0]; O[1] += O[0]; E.shift(); O.shift(); }
+      while (E.length > 1 && E[E.length - 1] < emin) { E[E.length - 2] += E[E.length - 1]; O[O.length - 2] += O[O.length - 1]; E.pop(); O.pop(); }
+      const chi2 = O.reduce((s, o, i) => s + (E[i] > 0 ? (o - E[i]) ** 2 / E[i] : 0), 0);
+      const df = Math.max(0, O.length - 1 - np);
+      const p = df > 0 ? Math.min(1, Math.max(0, 1 - gammainc(chi2 / 2, df / 2))) : NaN;
+      const h = df > 0 ? (p <= alpha ? 1 : 0) : 0;
+      const stats = mkStruct([['chi2stat', scalar(chi2)], ['df', scalar(df)], ['edges', ed ? rowVec(ed) : undefined], ['O', rowVec(O)], ['E', rowVec(E)]]);
+      return Promise.resolve([scalar(h), scalar(p), stats].slice(0, Math.max(1, nargout)));
     },
     // ── distribution objects (exercise the generic ClassV object type) ──
     /** makedist('Normal','mu',0,'sigma',1) → a prob.<Name>Distribution object. */

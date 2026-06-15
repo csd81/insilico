@@ -4061,6 +4061,57 @@
       ]
     }
   },
+  "ml_kmeans_builtin": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1.25,
+        3.9,
+        8.524999999999999
+      ]
+    }
+  },
+  "ml_knnsearch": {
+    "idx": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2,
+        1
+      ]
+    },
+    "d": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.14142135623730948,
+        1.2727922061357855
+      ]
+    }
+  },
+  "ml_pca_latent": {
+    "latent": {
+      "class": "double",
+      "size": [
+        2,
+        1
+      ],
+      "real": [
+        9.598324054109494,
+        0.3183426125571711
+      ]
+    }
+  },
   "ml_rbf_kernel": {
     "v": {
       "class": "double",
@@ -7642,6 +7693,134 @@
       "real": [
         0,
         0.07098765432098772
+      ]
+    }
+  },
+  "stat_kstest_normal": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0,
+        0.360111854742864,
+        0.3820885778110474
+      ]
+    }
+  },
+  "stat_kstest_onesided": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0,
+        0.3234995251326007,
+        0.3085375387259869
+      ]
+    }
+  },
+  "stat_kstest2": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        0.9996217060535836
+      ]
+    }
+  },
+  "stat_vartest": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0,
+        0.08085536398902571
+      ]
+    }
+  },
+  "stat_chi2gof_expected": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        0,
+        0.6268231239782289,
+        2.6,
+        4
+      ]
+    }
+  },
+  "stat_chi2gof_pooled": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        0,
+        0.6268231239782289,
+        2.6,
+        4
+      ]
+    }
+  },
+  "stat_anova1": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.125
+    }
+  },
+  "stat_signrank": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.375
+    }
+  },
+  "stat_ranksum": {
+    "p": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0.1
+    }
+  },
+  "stat_pdist_euclidean": {
+    "d": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        3,
+        4,
+        5
       ]
     }
   },

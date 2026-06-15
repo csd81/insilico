@@ -9,8 +9,8 @@ tagged oracle cases (`matlab/test/oracle/cases.ts`); run the report with:
 pnpm oracle:coverage
 ```
 
-**Status (as of this revision):** 780 tests green · 645 MATLAB oracle fixtures ·
-645/645 cases classified across 22 domains.
+**Status (as of this revision):** 793 tests green · 658 MATLAB oracle fixtures ·
+658/658 cases classified across 22 domains.
 
 `✓` = oracle-verified against real MATLAB · `~` = partial · (blank) = not yet.
 
@@ -129,11 +129,19 @@ Functions with non-unique outputs are validated by invariants rather than raw
 value equality (e.g. `linprog` objective value, `residue` sorted poles, `eig`
 reconstruction residual, `svd`/`qr` sign conventions, graph path length).
 
+### Inferential statistics / unsupervised ML (implemented + oracle-validated)
+Hypothesis tests: `ttest`/`ttest2`, `kstest` (one-sample, exact Marsaglia–Tsang–Wang
++ Birnbaum–Tingey one-sided), `kstest2`, `vartest`, `chi2gof` (controlled
+`Ctrs`/`Edges`+`Frequency`+`Expected`+`NParams` form; auto-binning default is
+best-effort), `anova1`, `signrank`, `ranksum`. Clustering / projection:
+`kmeans` (deterministic via `'Start'`), `pca` (validated on `latent`), `knnsearch`,
+`pdist`. `chi2gof`'s raw-data auto-binning is **not** locked (MATLAB's default
+binning is version-sensitive).
+
 ### Deferred (real, but only if course-driven)
 Large model-object families (`fitlm`/`fitglm`/`fitcsvm`/`fitctree`/`fitrgp`),
 full table/timetable ecosystem (`retime`/`synchronize`/`stack`/`unstack`),
-hypothesis tests (`kstest`/`chi2gof`/`anova`), `pca`/`kmeans`/`knnsearch`,
-missing sparse helpers (`pcg`/`ldl`/`ilu`/`cgs`).
+`anova2`/`kruskalwallis`/`multcompare`.
 
 ### Out of scope (clone ambitions — explicitly not requirements)
 - Language runtime: `classdef`, `arguments`, real `global`/`persistent`,

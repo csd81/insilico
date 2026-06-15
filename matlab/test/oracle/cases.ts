@@ -353,8 +353,11 @@ export const CASES: OracleCase[] = [
   { name: 'la-mat-rotation', src: "th = 0.5; R = [cos(th) -sin(th); sin(th) cos(th)]; v = [norm(R'*R - eye(2)) det(R)];", vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['rotation-matrix', 'special-orthogonal'] },
   { name: 'la-mat-gram-psd', src: "A = [1 2; 3 4]; G = A'*A; v = double(all(eig(G) >= -1e-9));", vars: ['v'], tol: 1e-9, domain: 'linear-algebra', tags: ['gram-matrix', 'positive-semidefinite'] },
 
-  // ══════════ machine-learning (4) ══════════
+  // ══════════ machine-learning (7) ══════════
   { name: 'ml-kmeans-lloyd', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; C = [1 1; 5 7]; for it = 1:10, d1 = sum((X - C(1,:)).^2, 2); d2 = sum((X - C(2,:)).^2, 2); a = d2 < d1; C(1,:) = mean(X(~a,:)); C(2,:) = mean(X(a,:)); end; v = sort(C(:,1));", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['k-means', 'lloyd', 'clustering', 'fixed-init'] },
+  { name: 'ml-kmeans-builtin', src: "X = [1 1; 1.5 2; 3 4; 5 7; 3.5 5; 4.5 5; 3.5 4.5]; [idx, C, sumd] = kmeans(X, 2, 'Start', [1 1; 5 7]); v = [sort(C(:,1)).' sum(sumd)];", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['kmeans', 'clustering', 'deterministic-start'] },
+  { name: 'ml-knnsearch', src: "[idx, d] = knnsearch([0 0; 1 1; 2 2; 3 3], [0.9 0.9], 'K', 2);", vars: ['idx', 'd'], tol: 1e-6, domain: 'machine-learning', tags: ['knnsearch', 'nearest-neighbor', 'euclidean'] },
+  { name: 'ml-pca-latent', src: 'X = [1 2; 3 4; 5 7; 2 1]; [coeff, score, latent] = pca(X);', vars: ['latent'], tol: 1e-5, domain: 'machine-learning', tags: ['pca', 'principal-components', 'eigenvalues'] },
   { name: 'ml-rbf-kernel', src: "X = [0; 1; 2]; g = 0.5; D = (X - X').^2; K = exp(-g*D); v = K(:,2);", vars: ['v'], tol: 1e-7, domain: 'machine-learning', tags: ['rbf-kernel', 'gaussian-kernel', 'kernel-matrix'] },
   { name: 'ml-kernel-ridge', src: "X = [0; 1; 2; 3]; y = [0; 1; 4; 9]; g = 0.5; D = (X - X').^2; K = exp(-g*D); lam = 0.1; al = (K + lam*eye(4))\\y; v = norm(K*al - y);", vars: ['v'], tol: 1e-6, domain: 'machine-learning', tags: ['kernel-ridge-regression', 'regularization'] },
   { name: 'ml-nn-forward', src: 'x = [1; 2]; W1 = [0.1 0.2; 0.3 0.4]; b1 = [0.1; 0.1]; h = max(W1*x + b1, 0); W2 = [0.5 0.6]; b2 = 0.2; v = W2*h + b2;', vars: ['v'], tol: 1e-9, domain: 'machine-learning', tags: ['neural-network', 'forward-pass', 'relu'] },
@@ -628,7 +631,7 @@ export const CASES: OracleCase[] = [
   { name: 'opt-fgoalattain', src: 'x = fgoalattain(@(z) [z(1)^2 + z(2)^2; (z(1)-2)^2 + z(2)^2], [1; 1], [1; 1], [1; 1]); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fgoalattain', 'multiobjective', 'goal-attainment'] },
   { name: 'opt-fminimax', src: 'x = fminimax(@(z) [z^2; (z-2)^2], 1); v = x;', vars: ['v'], tol: 1e-2, domain: 'optimization', tags: ['fminimax', 'minimax'] },
 
-  // ══════════ statistics (24) ══════════
+  // ══════════ statistics (34) ══════════
   { name: 'stat-markov-p10', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; r = [1 0 0]; r10 = r * P^10;', vars: ['r10'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-markov-eig', src: 'P = [0.8 0.2 0; 0.1 0.7 0.2; 0 0.3 0.7]; ev = sort(real(eig(P)));', vars: ['ev'], tol: 1e-6, domain: 'statistics' },
   { name: 'stat-ridge', src: "A = [1 1; 1 2; 1 3]; b = [1; 2; 2]; lam = 0.1; x = (A'*A + lam*eye(2)) \\ (A'*b);", vars: ['x'], tol: 1e-9, domain: 'statistics', tags: ['regularization', 'ridge', 'inverse-problems'] },
@@ -646,6 +649,16 @@ export const CASES: OracleCase[] = [
   { name: 'stat-pca-svd', src: "X = [2 0; 0 1; -2 0; 0 -1]; Xc = X - mean(X); [U, S, V] = svd(Xc, 0); n = size(X, 1); v = [S(1,1)^2/(n-1); S(2,2)^2/(n-1)];", vars: ['v'], tol: 1e-6, domain: 'statistics', tags: ['pca', 'svd', 'explained-variance'] },
   { name: 'stat-ttest-onesample', src: '[h, pv] = ttest([5.1 4.9 5.2 5.0 4.8], 5); v = [h pv];', vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['hypothesis-test', 'ttest', 't-test'] },
   { name: 'stat-ttest2-twosample', src: '[h, pv] = ttest2([1 2 3 4], [3 4 5 6]); v = [h pv];', vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['hypothesis-test', 'ttest2', 'two-sample'] },
+  { name: 'stat-kstest-normal', src: '[h, pv, ks] = kstest([0.1 0.2 -0.3 0.5 -0.1]); v = [h pv ks];', vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['hypothesis-test', 'kstest', 'kolmogorov-smirnov', 'exact'] },
+  { name: 'stat-kstest-onesided', src: "[h, pv, ks] = kstest([0.1 0.2 -0.3 0.5 -0.1], 'Tail', 'larger'); v = [h pv ks];", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['hypothesis-test', 'kstest', 'one-sided', 'birnbaum-tingey'] },
+  { name: 'stat-kstest2', src: '[h, pv] = kstest2([1 2 3 4 5], [2 3 4 5 6]); v = [h pv];', vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['hypothesis-test', 'kstest2', 'two-sample'] },
+  { name: 'stat-vartest', src: '[h, pv] = vartest([1 2 3 4 5], 1); v = [h pv];', vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['hypothesis-test', 'vartest', 'chi-square-variance'] },
+  { name: 'stat-chi2gof-expected', src: "ct = [1 2 3 4 5]; O = [6 12 12 11 9]; E = [10 10 10 10 10]; [h, pv, st] = chi2gof(ct, 'Ctrs', ct, 'Frequency', O, 'Expected', E, 'NParams', 0); v = [h pv st.chi2stat st.df];", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['hypothesis-test', 'chi2gof', 'goodness-of-fit'] },
+  { name: 'stat-chi2gof-pooled', src: "ct = [1 2 3 4 5 6]; O = [6 12 12 11 8 1]; E = [10 10 10 10 9 1]; [h, pv, st] = chi2gof(ct, 'Ctrs', ct, 'Frequency', O, 'Expected', E, 'NParams', 0, 'Emin', 5); v = [h pv st.chi2stat st.df];", vars: ['v'], tol: 1e-4, domain: 'statistics', tags: ['hypothesis-test', 'chi2gof', 'bin-pooling'] },
+  { name: 'stat-anova1', src: "p = anova1([1 2 3; 2 3 4; 3 4 5], [], 'off');", vars: ['p'], tol: 1e-4, domain: 'statistics', tags: ['anova1', 'one-way-anova', 'f-test'] },
+  { name: 'stat-signrank', src: 'p = signrank([1 2 3 4 5], 2);', vars: ['p'], tol: 1e-4, domain: 'statistics', tags: ['signrank', 'wilcoxon-signed-rank', 'exact'] },
+  { name: 'stat-ranksum', src: 'p = ranksum([1 2 3], [4 5 6]);', vars: ['p'], tol: 1e-4, domain: 'statistics', tags: ['ranksum', 'wilcoxon-rank-sum', 'mann-whitney'] },
+  { name: 'stat-pdist-euclidean', src: 'd = pdist([0 0; 3 0; 0 4]);', vars: ['d'], tol: 1e-9, domain: 'statistics', tags: ['pdist', 'euclidean', 'pairwise-distance'] },
   { name: 'stat-bootstrap-fixed', src: "x = [2 4 6 8 10]; idx = [1 2 2 3; 3 4 5 5; 1 1 5 5]'; v = mean(x(idx))';", vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['bootstrap', 'resampling', 'deterministic-indices'] },
   { name: 'stat-movmean-movmedian', src: 'mm = movmean([1 2 3 4 5], 3); md = movmedian([1 5 2 8 3], 3);', vars: ['mm', 'md'], tol: 1e-9, domain: 'statistics', tags: ['movmean', 'movmedian', 'moving-window'] },
   { name: 'stat-cov-matrix', src: 'X = [1 2; 3 5; 4 6]; C = cov(X); v = C(1,2);', vars: ['v'], tol: 1e-9, domain: 'statistics', tags: ['covariance', 'cov'] },
