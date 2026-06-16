@@ -1309,6 +1309,12 @@ export const CASES: OracleCase[] = [
   { name: 'sym-err-colspace', src: 'colspace()', vars: [], expectError: true, domain: 'symbolic', fn: 'colspace', aspect: 'error-input' },
   { name: 'sym-err-jordan', src: 'jordan()', vars: [], expectError: true, domain: 'symbolic', fn: 'jordan', aspect: 'error-input' },
 
+  // ── graph theory: registered-but-unvalidated cluster (structural projections; one case attributes many fns via tags) ──
+  { name: 'graph-undirected-structure', src: "G = graph([1 1 2 3 3], [2 3 3 4 5]); I = full(incidence(G)); v = [numnodes(G) numedges(G) degree(G)' I(:)' findedge(G,1,3) edgecount(G,1,3) double(ismultigraph(G)) biconncomp(G) nearest(G,3,1)'];", vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['graph', 'numnodes', 'numedges', 'degree', 'incidence', 'findedge', 'edgecount', 'ismultigraph', 'biconncomp', 'nearest', 'graph-structure'] },
+  { name: 'graph-digraph-structure', src: "D = digraph([1 1 2 3 4], [2 3 3 4 1]); v = [numnodes(D) indegree(D)' outdegree(D)' predecessors(D,3)' outedges(D,3)' inedges(D,3)' numnodes(condensation(D)) numedges(flipedge(D))];", vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['digraph', 'indegree', 'outdegree', 'predecessors', 'outedges', 'inedges', 'condensation', 'flipedge', 'digraph-structure'] },
+  { name: 'graph-modify', src: "G = graph([1 1 2 3 3], [2 3 3 4 5]); v = [numedges(addedge(G,4,5)) numnodes(addnode(G,2)) numedges(rmedge(G,1,2)) numnodes(rmnode(G,5)) degree(reordernodes(G,[5 4 3 2 1]))'];", vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['addedge', 'addnode', 'rmedge', 'rmnode', 'reordernodes', 'graph-modify'] },
+  { name: 'graph-isomorphism', src: 'G = graph([1 1 2 3 3], [2 3 3 4 5]); v = isomorphism(G, G);', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['isomorphism', 'graph-iso'] },
+
   // ══════════ symbolic (67) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
   { name: 'sym-char', src: 'syms x; v = char(x^2 + 1);', vars: ['v'], domain: 'symbolic', tags: ['char', 'sym2str'] },
