@@ -21,11 +21,20 @@ export const REQUIRED_ASPECTS: Record<string, string[]> = {
   qr: ['reconstruction-invariant', 'rank-deficient'],
   chol: ['symmetric'],
   expm: ['matrix-functions'],
+  lu: ['reconstruction-invariant', 'sparse'],
+  schur: ['reconstruction-invariant', 'complex'],
+  pinv: ['rank-deficient', 'least-squares'],
+  mldivide: ['square', 'least-squares'],
   // rectangular HNF is intentionally NOT required: MATLAB's residue convention for non-pivot
   // columns of a wide/tall matrix diverges from ours (documented divergence) — validated claim is
   // square only.
   hermiteForm: ['square'],
   minpoly: ['diagonalizable', 'defective'],
+
+  // ── transforms / interpolation / ODE ──
+  fft: ['roundtrip-invariant', 'n-point'],
+  interp1: ['linear', 'spline-method', 'extrapolation'],
+  ode45: ['scalar-ode', 'system-ode'],
 
   // ── special functions (the regime that broke them historically) ──
   kummerU: ['integer-b', 'noninteger-b'],

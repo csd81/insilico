@@ -1540,7 +1540,7 @@ export const BUILTINS: Record<string, Builtin> = {
     return ret(x);
   },
   mrdivide: async (a) => ret(ctransposeFn(mldivide(ctransposeFn(m(a[1])), ctransposeFn(m(a[0]))))),
-  pinv: async (a) => ret(pinvFn(m(a[0]), a.length >= 2 ? asScalar(a[1]) : undefined)),
+  pinv: async (a) => { const A = m(a[0]); if (A.nd && A.nd.length > 2) throw new MatError('pinv: input must be 2-dimensional.'); return ret(pinvFn(A, a.length >= 2 ? asScalar(a[1]) : undefined)); },
   rank: async (a) => { if (isSym(a[0])) return ret(scalar(symRankGeneric(a[0] as Sym))); return ret(scalar(rankOf(m(a[0]), a.length >= 2 ? asScalar(a[1]) : undefined))); },
   rref: async (a) => ret(rrefFn(m(a[0]))),
   cond: async (a) => {
@@ -1615,6 +1615,7 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   lu: async (a, n) => {
     const A = m(a[0]);
+    if (A.nd && A.nd.length > 2) throw new MatError('lu: input must be 2-dimensional.');
     const wantVector = a.slice(1).some((x) => (isStr(x) || (isMat(x) && (x as Mat).isChar)) && asString(x).toLowerCase() === 'vector');
     const { L, U, P, piv, packed } = luGeneral(A);
     if (n >= 4) {
@@ -1831,6 +1832,8 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   schur: async (a, n) => {
     const A = m(a[0]);
+    if (A.nd && A.nd.length > 2) throw new MatError('schur: input must be 2-dimensional.');
+    if (A.rows !== A.cols) throw new MatError('schur: input matrix must be square.');
     // Complex input ⇒ complex Schur regardless of flags ('real' form does not exist for complex A).
     if (isComplex(A)) { const { T, Q } = cSchurFn(A); return n >= 2 ? [Q, T] : [T]; }
     const wantComplex = a.length >= 2 && isMat(a[1]) && (a[1] as Mat).isChar && asString(a[1]).toLowerCase().startsWith('c');
@@ -3778,6 +3781,8 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   interp1: async (a) => {
     const x = toArray(m(a[0])); const Vm = m(a[1]); const xq = m(a[2]); const L = x.length - 1; const x0 = x[0], xL = x[L];
+    const vlen = (Vm.rows === 1 || Vm.cols === 1) ? numel(Vm) : Vm.rows;
+    if (vlen !== x.length) throw new MatError('interp1: V and X must be of the same length.');
     // Extrapolation: 'extrap' → use the method; a numeric value → that value outside the domain.
     let method = 'linear';
     let extrap: 'default' | 'extrap' | number = 'default';
@@ -5114,7 +5119,7 @@ export const BUILTINS: Record<string, Builtin> = {
   intmax: async (a) => { const ty = a.length ? asString(a[0]).toLowerCase() : 'int32'; return ret(applyClass(scalar(INT_LIMITS[ty]?.[1] ?? 2147483647), ty)); },
   intmin: async (a) => { const ty = a.length ? asString(a[0]).toLowerCase() : 'int32'; return ret(applyClass(scalar(INT_LIMITS[ty]?.[0] ?? -2147483648), ty)); },
   // ── transforms ──
-  fft: async (a) => { const n = a.length >= 2 && isMat(a[1]) && numel(a[1]) >= 1 ? Math.round(asScalar(a[1])) : null; const dim = a.length >= 3 && isMat(a[2]) && numel(a[2]) >= 1 ? Math.round(asScalar(a[2])) : null; return ret(fftWithN(m(a[0]), n, dim, -1)); },
+  fft: async (a) => { const n = a.length >= 2 && isMat(a[1]) && numel(a[1]) >= 1 ? Math.round(asScalar(a[1])) : null; if (n !== null && n < 0) throw new MatError('fft: requested length must be a nonnegative integer.'); const dim = a.length >= 3 && isMat(a[2]) && numel(a[2]) >= 1 ? Math.round(asScalar(a[2])) : null; return ret(fftWithN(m(a[0]), n, dim, -1)); },
   ifft: async (a) => { const n = a.length >= 2 && isMat(a[1]) && numel(a[1]) >= 1 ? Math.round(asScalar(a[1])) : null; const dim = a.length >= 3 && isMat(a[2]) && numel(a[2]) >= 1 ? Math.round(asScalar(a[2])) : null; return ret(fftWithN(m(a[0]), n, dim, 1)); },
   fft2: async (a) => ret(transpose(fftApply(transpose(fftApply(m(a[0]), -1)), -1))),
   ifft2: async (a) => ret(transpose(fftApply(transpose(fftApply(m(a[0]), 1)), 1))),
@@ -8994,6 +8999,7 @@ function odeOpts(opt: Value | undefined): { relTol: number; absTol: number; h0: 
  * Returns [t, y] (or just y) — y is one row per output time.
  */
 async function odeSolve(a: Value[], nargout: number, env: Env): Promise<Value[]> {
+  if (a.length < 3) throw new MatError('ode45: not enough input arguments (need odefun, tspan, y0).');
   const f = handle(a[0], 'ode45'); const tspan = toArray(m(a[1])); const y0 = toArray(m(a[2])); const neq = y0.length;
   const { relTol, absTol, h0, hMax } = odeOpts(a[3]);
   // Optional event detection (odeset('Events', @(t,y) [value,isterminal,direction])).

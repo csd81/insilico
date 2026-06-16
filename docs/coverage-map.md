@@ -15,8 +15,8 @@ pnpm oracle:functions  # per-function index: cases + aspects + full/partial/unte
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1168 tests green · 1021 MATLAB oracle fixtures ·
-1021/1021 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1180 tests green · 1033 MATLAB oracle fixtures ·
+1033/1033 oracle cases classified across 22 domains.
 
 ### Two-layer test model
 
