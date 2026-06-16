@@ -337,6 +337,73 @@ Base/core builtins are judged by `pnpm oracle:base-audit`, not by raw reference
 percentage. Many core primitives are exercised indirectly and rarely appear as
 named tokens.
 
+## Graduate-Math Coverage Estimate And Field Gaps
+
+There is no clean denominator for "all graduate math" — most of it is proof-based and an
+explicit non-goal. Against the **executable / computational** slice (what MATLAB is for),
+the project covers **~65%** and has MATLAB-validated **~52%**. Registry figures are exact
+(`pnpm oracle:audit`); the per-field percentages are **calibrated estimates** of each area's
+full function set, not measurements.
+
+| Area | Covered | Validated | Main missing parts (in-scope, oracle-able) |
+|---|---|---|---|
+| Numerical linear algebra | ~85% | ~70% | `normest1`; depth: large-scale `eigs`/`svds` options, `polyeig`/`qz`/`ordqz` validation |
+| Special functions | ~80% | ~65% | complex-argument branches (`besselh`/`airy`), extreme-arg accuracy, multi-output forms |
+| Approximation / interp / quadrature / roots | ~80% | ~65% | `spapi`, `spap2`; depth: N-D interp methods, `quadgk` waypoints/vector integrands |
+| Fourier / signal / spectral | ~70% | ~60% | `dct2`, `goertzel`, `sgolayfilt`, `fwht`; filter-design families, multirate |
+| ODE / DAE | ~70% | ~55% | depth: `Events`, mass-matrix/DAE index, multipoint BVP, `odextend`, sensitivities |
+| Number theory / coding | ~65% | ~55% | `rsenc`/`rsdec`, CRC; Galois-field breadth, BCH/convolutional decode depth |
+| Optimization | ~60% | ~50% | nonlinear-constraint validation, KKT/multiplier outputs, multiobjective, sparse large-scale |
+| Statistics / probability / ML | ~60% | ~45% | `mvnpdf`, `kmeans`/`linkage`/`cluster`, `fitlm`/`glmfit` coefficients, `mle`, `ksdensity` |
+| Symbolic / CAS | ~55% | ~45% | `rsolve`; `dsolve` systems/PDE, `solve` of systems, assumptions/domains, series/asymptotics |
+| Graph / geometry / topology / mesh | ~55% | ~45% | `bwlabel`; `alphaShape`/`polyshape` set ops, robust predicates, mesh quality, network-flow variants |
+| PDE / FEM | ~40% | ~35% | **PDE-Toolbox object/mesh API declined**; addable: more FD stencils, spectral methods, higher-order FEM |
+| Stochastic / Monte Carlo / SDE | ~25% | ~10% | **RNG/SDE objects are non-goals**; addable: `sobolset`/`haltonset`, deterministic MC estimators |
+
+The uncovered fraction is **~15% genuinely-absent functions** (a chunk of which is declined by
+design — PDE objects, SDE/RNG), **~50% registered-but-unvalidated** (no oracle fixture — the
+dominant gap, listed below), and **~35% missing depth** (options, multi-output, complex/extreme
+arguments, edge cases of functions that exist). Highest-yield work is *validating the registered
+surface and deepening regimes*, not adding breadth; the clearest addable breadth gaps are
+multivariate stats / clustering / model-fitting and the signal transforms above.
+
+## Registered But Unvalidated (no oracle fixture)
+
+Toolbox layer: **160 of 472** registered toolbox functions have no oracle reference (the meaningful
+curation gap; the 668 unreferenced base/core names are mostly primitives exercised indirectly and
+are triaged by `pnpm oracle:base-audit`, not listed here). Regenerate with `pnpm oracle:audit`.
+
+- **map / geodesy (61)** — coordinate/unit transforms, deterministic and oracle-able but peripheral:
+  `rad2km` `deg2km` `km2deg` `deg2nm` `nm2km` `km2nm` `nm2sm` `sm2nm` `sm2km` `deg2sm` `sm2deg`
+  `rad2nm` `nm2rad` `rad2sm` `sm2rad` `ingeoquad` `changem` `toDegrees` `fromDegrees` `meanm`
+  `reckon` `departure` `wgs84Ellipsoid` `earthRadius` `ecc2flat` `flat2ecc` `ecc2n` `n2ecc`
+  `majaxis` `minaxis` `geocentricLatitude` `parametricLatitude` `meridianarc` `geodetic2ecef`
+  `ecef2geodetic` `ecef2enu` `enu2ecef` `ecef2ned` `ned2ecef` `ecef2enuv` `enu2ecefv` `ecef2nedv`
+  `ned2ecefv` `geodetic2enu` `enu2geodetic` `geodetic2ned` `ned2geodetic` `aer2enu` `enu2aer`
+  `aer2ned` `ned2aer` `geodetic2aer` `aer2geodetic` `ecef2aer` `aer2ecef` `degrees2dms` `degrees2dm`
+  `dms2degrees` `dm2degrees` `interpm` `angl2str`
+- **finance (54)** — financial math, oracle-able but outside core grad math:
+  `npv` `pvvar` `fvvar` `irr` `pvfix` `payper` `annuity` `blsprice` `blsdelta` `days360` `daysdif`
+  `busdate` `busdays` `datewrkdy` `days252bus` `eomdate` `calendar` `daysact` `leapyear` `depstln`
+  `deprdv` `taxedrr` `depsoyd` `portror` `todecimal` `toquoted` `thirtytwo2dec` `yearfrac` `prmat`
+  `yldmat` `prtbill` `yldtbill` `beytbill` `prdisc` `fvdisc` `discrate` `days365` `yeardays`
+  `thirdwednesday` `juliandate` `weeknum` `payadv` `tbillyield2disc` `acrubond` `prcroc` `bndprice`
+  `bndyield` `bnddury` `bnddurp` `bndconvy` `bndconvp` `ts2func` `abs2active` `active2abs`
+- **symbolic display / introspection (39)** — mostly defer/unregister candidates (display, transforms,
+  assumptions), not numeric math:
+  `latex` `texlabel` `cell2sym` `sym2cell` `series` `symfun` `odeToVectorField` `symtrue` `symfalse`
+  `functionalDerivative` `eliminate` `pretty` `potential` `iztrans` `ifourier` `combine` `children`
+  `has` `symType` `isSymType` `hasSymType` `findSymType` `argnames` `formula` `mapSymType` `htrans`
+  `ihtrans` `isolate` `assumeAlso` `assumptions` `sympref` `digits` `bernstein` `subexpr`
+  `isVariable` `isCondition` `isDistinctVariable` `symFunType` `charToFunction`
+- **control (4)** — `bodemag` `lsiminfo` (plot/info), `h2norm` `hinfnorm` (computational, addable)
+- **optim (1)** — `fseminf` (semi-infinite programming)
+- **stats (1)** — `random` (RNG dispatcher; invariant/smoke only)
+
+The core applied-math toolboxes (`signal`, `dsp`, `comm`, `wavelet`, `fixedpoint`, `econ`, `aero`,
+`curvefit`, `audio`, `rf`, `fusion`, `nav`, `pde`, `radar`, `robotics`, `images`, `fuzzy`) are
+**fully referenced** — every registered function there has at least one oracle case.
+
 ## Remaining Backlog By Category
 
 This is a demand-driven triage pool, not a promise to implement all MATLAB
