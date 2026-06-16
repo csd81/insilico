@@ -617,7 +617,17 @@ function asStrArr(v: Value): { rows: number; cols: number; items: string[] } {
   if (isMat(v)) return { rows: v.rows, cols: v.cols, items: Array.from(v.data, (x) => String(x)) };
   return { rows: 1, cols: 1, items: [asString(v)] };
 }
-const mapStrArr = (v: Value, f: (s: string) => string): Str => { const s = asStrArr(v); return makeStrArr(s.rows, s.cols, s.items.map(f)); };
+// Preserve MATLAB's char-in → char-out contract for string-editing functions: a `char` argument
+// yields a `char` result; a `string` argument yields a `string` array. (Previously these always
+// returned the string type, so e.g. `extractAfter('hello','ll')` was a string, not a char.)
+const strLike = (src: Value, rows: number, cols: number, items: string[]): Value => {
+  if (isStr(src)) return makeStrArr(rows, cols, items);
+  if (items.length <= 1) return str(items[0] ?? '');
+  const w = Math.max(1, ...items.map((s) => s.length)); const M = zeros(items.length, w); M.isChar = true;
+  items.forEach((s, r) => { for (let c = 0; c < w; c++) M.data[r + c * items.length] = c < s.length ? s.charCodeAt(c) : 32; });
+  return M;
+};
+const mapStrArr = (v: Value, f: (s: string) => string): Value => { const s = asStrArr(v); return strLike(v, s.rows, s.cols, s.items.map(f)); };
 const prodA = (a: number[]): number => a.reduce((p, x) => p * x, 1);
 /** Concatenate N-D arrays along `dim` (1-based). */
 function catND(dim: number, parts: Mat[]): Mat {
@@ -3137,11 +3147,11 @@ export const BUILTINS: Record<string, Builtin> = {
   },
   extractBefore: async (a) => {
     const A = asStrArr(a[0]); const numeric = isMat(a[1]) && !(a[1] as Mat).isChar; const pos = numeric ? toArray(m(a[1])) : null; const B = numeric ? null : asStrArr(a[1]);
-    return ret(makeStrArr(A.rows, A.cols, A.items.map((x, i) => { if (pos) { const p = Math.round(pos.length === 1 ? pos[0] : pos[i]); return x.slice(0, Math.max(0, p - 1)); } const b = B!.items.length === 1 ? B!.items[0] : B!.items[i]; const k = x.indexOf(b); return k < 0 ? '' : x.slice(0, k); })));
+    return ret(strLike(a[0], A.rows, A.cols, A.items.map((x, i) => { if (pos) { const p = Math.round(pos.length === 1 ? pos[0] : pos[i]); return x.slice(0, Math.max(0, p - 1)); } const b = B!.items.length === 1 ? B!.items[0] : B!.items[i]; const k = x.indexOf(b); return k < 0 ? '' : x.slice(0, k); })));
   },
   extractAfter: async (a) => {
     const A = asStrArr(a[0]); const numeric = isMat(a[1]) && !(a[1] as Mat).isChar; const pos = numeric ? toArray(m(a[1])) : null; const B = numeric ? null : asStrArr(a[1]);
-    return ret(makeStrArr(A.rows, A.cols, A.items.map((x, i) => { if (pos) { const p = Math.round(pos.length === 1 ? pos[0] : pos[i]); return x.slice(p); } const b = B!.items.length === 1 ? B!.items[0] : B!.items[i]; const k = x.indexOf(b); return k < 0 ? '' : x.slice(k + b.length); })));
+    return ret(strLike(a[0], A.rows, A.cols, A.items.map((x, i) => { if (pos) { const p = Math.round(pos.length === 1 ? pos[0] : pos[i]); return x.slice(p); } const b = B!.items.length === 1 ? B!.items[0] : B!.items[i]; const k = x.indexOf(b); return k < 0 ? '' : x.slice(k + b.length); })));
   },
   extractBetween: async (a) => {
     const A = asStrArr(a[0]); const numeric = isMat(a[1]) && !(a[1] as Mat).isChar && isMat(a[2]) && !(a[2] as Mat).isChar;

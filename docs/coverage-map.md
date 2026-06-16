@@ -15,8 +15,8 @@ pnpm oracle:functions  # per-function index: cases + aspects + full/partial/unte
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1270 tests green · 1112 MATLAB oracle fixtures ·
-1112/1112 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1276 tests green · 1118 MATLAB oracle fixtures ·
+1118/1118 oracle cases classified across 22 domains.
 
 ### Two-layer test model
 
@@ -450,6 +450,23 @@ the six Jacobi-elliptic `jacobiCS/DC/DS/ND/NS/SD`, `cplxpair`, `unwrap`, `rat`, 
 match MATLAB (no bugs; these mostly already executed but were never the *named* owner). Declined:
 `ldexp`/`scalbn` (not MATLAB double functions), `cbrt`/`frac`/`degree` (`exist`=0 / graph-only),
 `smoothdata2` (default smoothing-window heuristic diverges from MATLAB — not cleanly oracle-able).
+
+**String / text cluster (now attributed, ~55 fns):** predicates (`count`/`endsWith`/`startsWith`/
+`strcmp`/`strncmp`/`matches`/`iskeyword`/`isvarname`/`isletter`/`isspace`/`isstrprop`/`str2double`/
+`strfind`/`str2num`/`regexp`/`regexpi`), transforms (`lower`/`upper`/`deblank`/`strtrim`/`strrep`/
+`strcat`/`strtok`/`strip`/`pad`/`blanks`/`strjust`), edits (`extractAfter`/`extractBefore`/`erase`/
+`insertAfter`/`insertBefore`/`regexprep`/`regexptranslate`/`int2str`/`num2str`/`mat2str`), split/join
+(`join`/`strjoin`/`split`/`replace`/`extractBetween`/`eraseBetween`/`replaceBetween`/`splitlines`/
+`cellstr`/`strvcat`), conversions (`append`/`convertCharsToStrings`/`convertStringsToChars`/
+`unicode2native`/`native2unicode`/`str2func`/`strings`/`extract`). Two engine bugs were found and
+fixed in the process:
+- **Lexer**: `[f(x) 'ab']` (a `'` after `)`/`]`/`}` preceded by a space, inside a matrix) was parsed
+  as a transpose operator and failed; MATLAB's rule is space-sensitive (`A(:)'` = transpose, but
+  `[upper('abc') '|']` = char element). Fixed in `lexer.ts` (regression: `lang-bracket-char-concat`).
+- **char/string type contract**: `extractAfter`/`extractBefore`/`insertAfter`/`insertBefore`/`pad`/
+  `erase`/`replace`/`strip` returned the `string` type even for `char` input; MATLAB preserves
+  char-in → char-out. Fixed by making the shared `mapStrArr`/`strLike` helper type-preserving.
+Declined: `insert` (`exist`=0 — not a public function; use `insertAfter`/`insertBefore`).
 
 ## Remaining Backlog By Category
 

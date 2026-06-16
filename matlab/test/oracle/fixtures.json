@@ -15666,5 +15666,86 @@
       ],
       "value": "ABC|xy|42|hi"
     }
+  },
+  "str_predicates": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        30
+      ],
+      "real": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        3.14,
+        2,
+        5,
+        2,
+        5,
+        1,
+        2,
+        3,
+        2,
+        4,
+        1,
+        3
+      ]
+    }
+  },
+  "str_transform": {
+    "v": {
+      "class": "char",
+      "size": [
+        1,
+        41
+      ],
+      "value": "abc|ABC|hi|x|heLLo|abcd|a|hi|ab   |  |a  "
+    }
+  },
+  "str_edit": {
+    "v": {
+      "class": "char",
+      "size": [
+        1,
+        43
+      ],
+      "value": "o|he|heo|aXb|aYb|aXbX|a\\.b|4|3.14|[1 2;3 4]"
+    }
+  },
+  "str_split_join": {
+    "v": {
+      "class": "char",
+      "size": [
+        1,
+        48
+      ],
+      "value": "a b c|x-y|p+q|heLLo|x|a[]b|a[Y]b|m/n|ab,cd|xy.zw"
+    }
+  },
+  "str_convert": {
+    "v": {
+      "class": "char",
+      "size": [
+        1,
+        22
+      ],
+      "value": "ab|hi|yo|65|B|0|12|3|1"
+    }
   }
 }
