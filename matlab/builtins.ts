@@ -1359,6 +1359,7 @@ export const BUILTINS: Record<string, Builtin> = {
     const cc = charpolyC(A); return ret(makeSym(1, cc.length, Array.from(cc, (x) => sN(Math.abs(x - Math.round(x)) < 1e-9 ? Math.round(x) : x))));
   },
   jordan: async (a, n) => {
+    if (a[0] === undefined) throw new MatError('Not enough input arguments.');
     const A = m(a[0]); const N = A.rows;
     // Cluster eigenvalues into distinct values with algebraic multiplicity. A repeated
     // real root splits into a near-conjugate cluster (spread ~eps^(1/m)), so snap each
@@ -1401,6 +1402,7 @@ export const BUILTINS: Record<string, Builtin> = {
     return ret(J);
   },
   colspace: async (a) => {
+    if (a[0] === undefined) throw new MatError('Not enough input arguments.');
     const A = isSym(a[0]) ? mat((a[0] as Sym).rows, (a[0] as Sym).cols, Float64Array.from((a[0] as Sym).exprs, (e) => symEval(e, new Map()))) : m(a[0]);
     const R = rrefFn(A); const piv: number[] = []; let pr = 0;
     for (let i = 0; i < R.rows && pr < R.cols; i++) { let c = -1; for (let j = pr; j < R.cols; j++) if (Math.abs(R.data[i + j * R.rows]) > 1e-9) { c = j; break; } if (c >= 0) { piv.push(c); pr = c + 1; } }

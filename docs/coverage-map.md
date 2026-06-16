@@ -15,8 +15,8 @@ pnpm oracle:functions  # per-function index: cases + aspects + full/partial/unte
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1232 tests green · 1073 MATLAB oracle fixtures ·
-1073/1073 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1255 tests green · 1096 MATLAB oracle fixtures ·
+1096/1096 oracle cases classified across 22 domains.
 
 ### Two-layer test model
 
@@ -408,6 +408,34 @@ are triaged by `pnpm oracle:base-audit`, not listed here). Regenerate with `pnpm
 The core applied-math toolboxes (`signal`, `dsp`, `comm`, `wavelet`, `fixedpoint`, `econ`, `aero`,
 `curvefit`, `audio`, `rf`, `fusion`, `nav`, `pde`, `radar`, `robotics`, `images`, `fuzzy`) are
 **fully referenced** — every registered function there has at least one oracle case.
+
+### Base-layer (`base`) triage
+
+The ~930 unreferenced **base** names are *not* mostly genuinely-untested: many (`sin`, `exp`, `sum`,
+`sort`, `eye`, `+`, …) execute in hundreds of cases but are never the *named* owner a scan credits.
+By category the base surface is ~38% deliberate **non-goal** (graphics/plot, host I/O, RNG-stream),
+~45% cleanly **oracle-able** (string, elementary/special math, graph, table, sym-calculus), and the
+rest peripheral (date, geodesy, finance, ODE-config).
+
+**Symbolic-calculus core batch (now validated):** `int` (indefinite+definite), `subs`, `series`,
+`combine`, `iztrans`, `sym2poly`, `potential`, `lhs`/`rhs`, `eliminate`, `colspace`, `jordan` — by
+`double(subs(...))` / canonical-form projections + input-rejection. **Fixed:** `potential` silently
+dropped every vector component after the first (returned `∫F₁dv₁`, not the true potential; now does
+successive integration + returns `NaN` on non-conservative fields like MATLAB); ~11 sym functions
+JS-crashed on too-few-args (clean `MatError` via a `symArg` guard).
+
+**Declined / deferred from that batch (documented divergences):**
+- `htrans` / `ihtrans` — not public R2026a functions (`exist` = 0); engine-only stubs.
+- `jacobiSymbol` / `kroneckerDelta` — MATLAB requires **sym** inputs, the engine requires **numeric**;
+  no single source is valid in both, so not cleanly oracle-able (values are correct on each side).
+- `ifourier` — inverse-transform table too incomplete (returns unevaluated / `NaN` on Gaussians and
+  on `fourier(exp(-|x|))` roundtrips); not reliably oracle-able yet.
+- `functionalDerivative` — mathematically correct but its textual form differs from MATLAB and there
+  is no clean numeric projection (symfun substitution); deferred.
+- `odeToVectorField` — result structure is right but the engine's `char` rendering is malformed vs
+  MATLAB (`Y(2- 1 ) * Y 1`); deferred pending a sym-formatter fix.
+- `lhs`/`rhs` convention: the engine normalises `L == R` to `L − R == 0`, so `lhs` is that expression
+  and `rhs` is identically 0 — validated only through the convention-independent `lhs − rhs`.
 
 ## Remaining Backlog By Category
 

@@ -1282,6 +1282,33 @@ export const CASES: OracleCase[] = [
   { name: 'radar-grnd2slant', src: 'v = [grnd2slantrange(1000, 30) grnd2slantrange(2000, 45)];', vars: ['v'], tol: 1e-6, domain: 'geometry', fn: 'grnd2slantrange', aspect: 'value', tags: ['grnd2slantrange', 'slant-range'] },
   { name: 'radar-err-grnd2slant', src: 'grnd2slantrange(1000, 95)', vars: [], expectError: true, domain: 'geometry', fn: 'grnd2slantrange', aspect: 'error-input', tags: ['grazing-angle-domain'] },
 
+  // ── symbolic calculus / solve core: registered-but-unvalidated batch (double(subs)/invariant + input-rejection) ──
+  // Non-unique or convention-divergent outputs are locked through a deterministic projection, never raw text.
+  { name: 'sym-int-core', src: 'syms x; v = [double(subs(int(x^2, x), x, 2)) double(int(sin(x), x, 0, pi))];', vars: ['v'], tol: 1e-9, domain: 'calculus', fn: 'int', aspect: ['indefinite', 'definite'], tags: ['int', 'integration'] },
+  { name: 'sym-subs-core', src: 'syms x y; v = double(subs(x^2 + y, [x y], [2 3]));', vars: ['v'], tol: 1e-12, domain: 'symbolic', fn: 'subs', aspect: 'value', tags: ['subs', 'substitution'] },
+  { name: 'sym-series-core', src: "syms x; v = double(subs(series(1/(1-x), x, 0, 'Order', 5), x, 1/3));", vars: ['v'], tol: 1e-9, domain: 'calculus', fn: 'series', aspect: 'value', tags: ['series', 'power-series'] },
+  { name: 'sym-combine-core', src: "syms p q positive; v = double(subs(combine(log(p) + log(q), 'log'), [p q], [2 3]));", vars: ['v'], tol: 1e-9, domain: 'symbolic', fn: 'combine', aspect: 'value', tags: ['combine', 'logarithm'] },
+  { name: 'sym-iztrans-core', src: 'syms z n; v = double(subs(iztrans(z/(z-2), z, n), n, 3));', vars: ['v'], tol: 1e-9, domain: 'symbolic', fn: 'iztrans', aspect: 'value', tags: ['iztrans', 'inverse-z-transform'] },
+  { name: 'sym-sym2poly-core', src: 'syms x; v = sym2poly(x^3 + 2*x + 3);', vars: ['v'], tol: 1e-12, domain: 'symbolic', fn: 'sym2poly', aspect: 'value', tags: ['sym2poly', 'polynomial-coefficients'] },
+  { name: 'sym-potential-core', src: 'syms x y; v = [double(subs(potential([2*x; 2*y], [x y]), [x y], [1 2])) double(subs(potential([y; x], [x y]), [x y], [2 3]))];', vars: ['v'], tol: 1e-9, domain: 'calculus', fn: 'potential', aspect: ['value', 'multivariable'], tags: ['potential', 'gradient-field'] },
+  { name: 'sym-lhs-core', src: 'syms x; e = (x^2 == 4); v = double(subs(lhs(e) - rhs(e), x, 3));', vars: ['v'], tol: 1e-12, domain: 'symbolic', fn: 'lhs', aspect: 'value', tags: ['lhs', 'equation-side'] },
+  { name: 'sym-rhs-core', src: 'syms x; e = (x^2 == 4); v = double(subs(lhs(e) - rhs(e), x, 3));', vars: ['v'], tol: 1e-12, domain: 'symbolic', fn: 'rhs', aspect: 'value', tags: ['rhs', 'equation-side'] },
+  { name: 'sym-eliminate-core', src: 'syms x y; el = eliminate([x + y == 3, x - y == 1], y); v = double(subs(el, x, 2));', vars: ['v'], tol: 1e-9, domain: 'symbolic', fn: 'eliminate', aspect: 'value', tags: ['eliminate', 'variable-elimination'] },
+  { name: 'sym-colspace-core', src: "v = double(colspace(sym([1 2; 2 4]))).';", vars: ['v'], tol: 1e-9, domain: 'linear-algebra', fn: 'colspace', aspect: 'value', tags: ['colspace', 'column-space'] },
+  { name: 'sym-jordan-core', src: "A = [2 1 0; 0 2 0; 0 0 3]; Jn = double(jordan(A)); v = Jn(:)';", vars: ['v'], tol: 1e-9, domain: 'linear-algebra', fn: 'jordan', aspect: 'value', tags: ['jordan', 'jordan-canonical-form'] },
+  // input rejection: each symbolic-core fn must error (not JS-crash) on too-few arguments
+  { name: 'sym-err-int', src: 'int()', vars: [], expectError: true, domain: 'symbolic', fn: 'int', aspect: 'error-input' },
+  { name: 'sym-err-subs', src: 'subs()', vars: [], expectError: true, domain: 'symbolic', fn: 'subs', aspect: 'error-input' },
+  { name: 'sym-err-series', src: 'series()', vars: [], expectError: true, domain: 'symbolic', fn: 'series', aspect: 'error-input' },
+  { name: 'sym-err-iztrans', src: 'iztrans()', vars: [], expectError: true, domain: 'symbolic', fn: 'iztrans', aspect: 'error-input' },
+  { name: 'sym-err-sym2poly', src: 'sym2poly()', vars: [], expectError: true, domain: 'symbolic', fn: 'sym2poly', aspect: 'error-input' },
+  { name: 'sym-err-potential', src: 'potential()', vars: [], expectError: true, domain: 'symbolic', fn: 'potential', aspect: 'error-input' },
+  { name: 'sym-err-lhs', src: 'lhs()', vars: [], expectError: true, domain: 'symbolic', fn: 'lhs', aspect: 'error-input' },
+  { name: 'sym-err-rhs', src: 'rhs()', vars: [], expectError: true, domain: 'symbolic', fn: 'rhs', aspect: 'error-input' },
+  { name: 'sym-err-eliminate', src: 'eliminate()', vars: [], expectError: true, domain: 'symbolic', fn: 'eliminate', aspect: 'error-input' },
+  { name: 'sym-err-colspace', src: 'colspace()', vars: [], expectError: true, domain: 'symbolic', fn: 'colspace', aspect: 'error-input' },
+  { name: 'sym-err-jordan', src: 'jordan()', vars: [], expectError: true, domain: 'symbolic', fn: 'jordan', aspect: 'error-input' },
+
   // ══════════ symbolic (67) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
   { name: 'sym-char', src: 'syms x; v = char(x^2 + 1);', vars: ['v'], domain: 'symbolic', tags: ['char', 'sym2str'] },

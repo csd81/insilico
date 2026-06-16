@@ -15077,5 +15077,182 @@
   },
   "radar_err_grnd2slant": {
     "error": "Expected GRAZANG to be a scalar with value < 90."
+  },
+  "sym_int_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2.6666666666666665,
+        2
+      ]
+    }
+  },
+  "sym_subs_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 7
+    }
+  },
+  "sym_series_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.4938271604938271
+    }
+  },
+  "sym_combine_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 1.791759469228055
+    }
+  },
+  "sym_iztrans_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 8
+    }
+  },
+  "sym_sym2poly_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        0,
+        2,
+        3
+      ]
+    }
+  },
+  "sym_potential_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        5,
+        6
+      ]
+    }
+  },
+  "sym_lhs_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "sym_rhs_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 5
+    }
+  },
+  "sym_eliminate_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        1
+      ],
+      "real": 0
+    }
+  },
+  "sym_colspace_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1,
+        2
+      ]
+    }
+  },
+  "sym_jordan_core": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        9
+      ],
+      "real": [
+        2,
+        0,
+        0,
+        1,
+        2,
+        0,
+        0,
+        0,
+        3
+      ]
+    }
+  },
+  "sym_err_int": {
+    "error": "Unrecognized function or variable 'int'."
+  },
+  "sym_err_subs": {
+    "error": "Not enough input arguments."
+  },
+  "sym_err_series": {
+    "error": "Wrong number of input arguments for obsolete matrix-based syntax."
+  },
+  "sym_err_iztrans": {
+    "error": "Unrecognized function or variable 'iztrans'."
+  },
+  "sym_err_sym2poly": {
+    "error": "Unrecognized function or variable 'sym2poly'."
+  },
+  "sym_err_potential": {
+    "error": "Unrecognized function or variable 'potential'."
+  },
+  "sym_err_lhs": {
+    "error": "Unrecognized function or variable 'lhs'."
+  },
+  "sym_err_rhs": {
+    "error": "Unrecognized function or variable 'rhs'."
+  },
+  "sym_err_eliminate": {
+    "error": "Unrecognized function or variable 'eliminate'."
+  },
+  "sym_err_colspace": {
+    "error": "Unrecognized function or variable 'colspace'."
+  },
+  "sym_err_jordan": {
+    "error": "Unrecognized function or variable 'jordan'."
   }
 }

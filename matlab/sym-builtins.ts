@@ -241,7 +241,22 @@ export const SYM_BUILTINS: Record<string, Builtin> = {
     if (!isSym(a[0])) { const M = m(a[0]); const o = zeros(M.rows, M.cols); o.isBool = true; for (let i = 0; i < M.data.length; i++) o.data[i] = M.data[i] !== 0 && !Number.isNaN(M.data[i]) ? 1 : 0; return ret(o); }
     const s = symArg(a[0]); const o = zeros(s.rows, s.cols); o.isBool = true; s.exprs.forEach((e, i) => { o.data[i] = symIsAlwaysTrue(e) ? 1 : 0; }); return ret(o);
   },
-  potential: async (a) => { const F = symArg(a[0]).exprs; const v = symNames(a[1]); return ret(makeSym(1, 1, [simplifyExpr(integrate(F[0], v[0]))])); },
+  potential: async (a) => {
+    // Scalar potential P with ∇P = F, via successive integration:
+    //   P = ∫F₁ dv₁ + ∫(F₂ − ∂P/∂v₂) dv₂ + ∫(F₃ − ∂P/∂v₃) dv₃ + …
+    // (the previous version integrated only F₁, silently dropping every other component).
+    const F = symArg(a[0]).exprs; const v = symNames(a[1]);
+    let P: SymExpr = sN(0);
+    for (let i = 0; i < v.length; i++) {
+      const resid = simplifyExpr(sAdd(F[i], sMul(sN(-1), diffExpr(P, v[i]))));
+      P = simplifyExpr(sAdd(P, integrate(resid, v[i])));
+    }
+    // MATLAB returns NaN when the field is not a gradient field (∇P ≠ F): verify rather than
+    // return a plausible-but-wrong "potential".
+    const isZero = (e: SymExpr) => e.t === 'n' && Math.abs(e.v) < 1e-9;
+    for (let i = 0; i < v.length; i++) if (!isZero(simplifyExpr(sAdd(diffExpr(P, v[i]), sMul(sN(-1), F[i]))))) return ret(makeSym(1, 1, [sN(NaN)]));
+    return ret(makeSym(1, 1, [simplifyExpr(P)]));
+  },
   coeffs: async (a, n) => { const s = symArg(a[0]); const v = a.length >= 2 && (isStr(a[1]) || (isMat(a[1]) && (a[1] as Mat).isChar) || isSym(a[1])) ? (isSym(a[1]) ? symVarsOf(a[1])[0] : asString(a[1])) : (symVarsOf(s)[0] ?? 'x'); const c = polyCoeffs(s.exprs[0], v); const nz = c.map((cc, i) => [cc, i] as [number, number]).filter(([cc]) => Math.abs(cc) > 1e-12); return n >= 2 ? [makeSym(1, nz.length, nz.map(([cc]) => sN(cc))), makeSym(1, nz.length, nz.map(([, i]) => i === 0 ? sN(1) : sPow(sV(v), sN(i))))] : [makeSym(1, nz.length, nz.map(([cc]) => sN(cc)))]; },
   sym2poly: async (a) => { const s = symArg(a[0]); const v = symVarsOf(s)[0] ?? 'x'; return ret(rowVec(polyCoeffs(s.exprs[0], v).slice().reverse())); },
   poly2sym: async (a) => { const c = toArray(m(a[0])); const v = a.length >= 2 ? (isSym(a[1]) ? symVarsOf(a[1])[0] : asString(a[1])) : 'x'; let e: SymExpr = sN(0); const d = c.length - 1; c.forEach((ci, i) => { e = sAdd(e, sMul(sN(ci), sPow(sV(v), sN(d - i)))); }); return ret(makeSym(1, 1, [simplifyExpr(e)])); },
@@ -258,7 +273,10 @@ export const SYM_BUILTINS: Record<string, Builtin> = {
   horner: async (a) => ret(symArg(a[0])),
   children: async (a) => { const e = symArg(a[0]).exprs[0]; const kids = e.t === 'add' || e.t === 'mul' || e.t === 'fn' ? e.args : e.t === 'pow' ? [e.base, e.exp] : [e]; return ret(makeCell(1, kids.length, kids.map((k) => makeSym(1, 1, [k])))); },
   lhs: async (a) => ret(symArg(a[0])),
-  rhs: async () => ret(makeSym(1, 1, [sN(0)])),
+  // The engine normalises an equation `L == R` to the expression `L − R == 0`, so lhs is that
+  // expression and rhs is identically 0 (a documented convention divergence from MATLAB, which keeps
+  // both sides). Validate lhs/rhs only through the convention-independent combination lhs − rhs.
+  rhs: async (a) => { symArg(a[0]); return ret(makeSym(1, 1, [sN(0)])); },
   // ── introspection ──
   has: async (a) => ret(bool(hasSub(symArg(a[0]).exprs[0], symToExpr(a[1])))),
   symType: async (a) => ret(str(symTypeName(symArg(a[0]).exprs[0]))),

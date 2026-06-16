@@ -63,6 +63,19 @@ export const REQUIRED_ASPECTS: Record<string, string[]> = {
   gfminpol: ['value'],
   poly2trellis: ['value'],
   grnd2slantrange: ['value'],
+
+  // ── symbolic calculus / solve core (registered-but-unvalidated batch; 'error-input' auto-required) ──
+  int: ['indefinite', 'definite'],
+  subs: ['value'],
+  series: ['value'],
+  iztrans: ['value'],
+  sym2poly: ['value'],
+  potential: ['value', 'multivariable'],
+  lhs: ['value'],
+  rhs: ['value'],
+  eliminate: ['value'],
+  colspace: ['value'],
+  jordan: ['value'],
 };
 
 /** Aspect inference for cases lacking an explicit `aspect`: which technique tags are treated as
@@ -75,4 +88,5 @@ export const ASPECT_VOCAB = new Set<string>([
   'least-squares', 'defective', 'diagonalizable', 'square', 'rectangular', 'matrix-functions',
   'integer-b', 'noninteger-b', 'positive-a', 'nonpositive-a', 'edge-empty', 'edge-scalar',
   'value', 'default-scale', 'normalization', 'distribution-name', 'moments',
+  'indefinite', 'definite', 'multivariable',
 ]);

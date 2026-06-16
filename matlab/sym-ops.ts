@@ -314,7 +314,7 @@ export function symEig(s: Sym): SymExpr[] {
   }
   throw new MatError('eig: symbolic eigenvalues are supported only for 2x2 or triangular matrices');
 }
-export function symArg(v: Value): Sym { if (isSym(v)) return v; const M = m(v); return makeSym(M.rows, M.cols, Array.from(M.data, (x) => sN(x))); }
+export function symArg(v: Value): Sym { if (v === undefined) throw new MatError('Not enough input arguments.'); if (isSym(v)) return v; const M = m(v); return makeSym(M.rows, M.cols, Array.from(M.data, (x) => sN(x))); }
 export function symToExpr(v: Value): SymExpr { if (isSym(v)) return v.exprs[0]; if (isStr(v) || (isMat(v) && (v as Mat).isChar)) { const t = asString(v).trim(); const num = Number(t); return Number.isFinite(num) && /^[-\d.]+$/.test(t) ? sN(num) : sV(t); } return sN(asScalar(v)); }
 export function symVarsOf(s: Sym): string[] { const set = new Set<string>(); for (const e of s.exprs) symVars(e).forEach((x) => set.add(x)); return [...set].sort(); }
 /** Resolve (independent, transform) variables for an integral-transform call.
