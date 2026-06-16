@@ -113,6 +113,61 @@ describe('fuzz: decomposition reconstruction invariants (MATLAB-free)', () => {
     }
     assert.equal(bad.length, 0, `eig failures:\n  ${bad.join('\n  ')}`);
   });
+
+  it('schur: ‖U·T·Uᵀ − A‖ ≈ 0 and Uᵀ·U = I over random / symmetric matrices', async () => {
+    const r = rng(0x6666); const bad: string[] = [];
+    for (let i = 0; i < 50; i++) {
+      const n = 2 + (i % 5);
+      const sym = i % 3 === 0;
+      const A = sym ? gSym(r)(n) : gRand(r)(n, n);
+      const { r: res, error } = await residual(`A = ${lit(A)}; [U,T] = schur(A); r = norm(U*T*U' - A,'fro')/max(1,norm(A,'fro')) + norm(U'*U - eye(${n}),'fro');`);
+      if (error) bad.push(`schur ${sym ? 'sym' : 'gen'} ${n}: ${error}`); else if (!(res < TOL)) bad.push(`schur ${sym ? 'sym' : 'gen'} ${n}: residual=${res}`);
+    }
+    assert.equal(bad.length, 0, `schur failures:\n  ${bad.join('\n  ')}`);
+  });
+
+  it('pinv: the four Moore–Penrose conditions hold over random / rank-deficient', async () => {
+    const r = rng(0x7777); const bad: string[] = [];
+    for (let i = 0; i < 60; i++) {
+      const m = 1 + (i % 6), n = 1 + ((i * 3 + 2) % 6);
+      const A = i % 3 === 0 ? gRankDef(r)(m, n, Math.max(1, Math.min(m, n) - 1)) : gRand(r)(m, n);
+      // X=A⁺ ⇔  A·X·A=A,  X·A·X=X,  (A·X)ᵀ=A·X,  (X·A)ᵀ=X·A
+      const { r: res, error } = await residual(`A = ${lit(A)}; X = pinv(A); s = max(1,norm(A,'fro')); r = (norm(A*X*A - A,'fro') + norm(X*A*X - X,'fro')*s + norm((A*X)'-A*X,'fro') + norm((X*A)'-X*A,'fro'))/s;`);
+      if (error) bad.push(`pinv ${m}x${n}: ${error}`); else if (!(res < TOL)) bad.push(`pinv ${m}x${n}: residual=${res}`);
+    }
+    assert.equal(bad.length, 0, `pinv failures:\n  ${bad.join('\n  ')}`);
+  });
+
+  it('mldivide: square ‖A·x−b‖≈0, overdetermined ‖Aᵀ(A·x−b)‖≈0 (normal eqs)', async () => {
+    const r = rng(0x8888); const bad: string[] = [];
+    for (let i = 0; i < 60; i++) {
+      const square = i % 2 === 0;
+      const n = 2 + (i % 5), m = square ? n : n + 1 + (i % 4);
+      const A = gRand(r)(m, n);
+      const b = gen(m, 1, () => randn(r));
+      const inv = square
+        ? `norm(A*x - b,'fro')/max(1,norm(b,'fro'))`                       // consistent square system
+        : `norm(A'*(A*x - b),'fro')/max(1,norm(A,'fro')*norm(b,'fro'))`;   // least-squares ⇒ residual ⟂ range(A)
+      const { r: res, error } = await residual(`A = ${lit(A)}; b = ${lit(b)}; x = A\\b; r = ${inv};`);
+      if (error) bad.push(`mldivide ${square ? 'sq' : 'ls'} ${m}x${n}: ${error}`); else if (!(res < TOL)) bad.push(`mldivide ${square ? 'sq' : 'ls'} ${m}x${n}: residual=${res}`);
+    }
+    assert.equal(bad.length, 0, `mldivide failures:\n  ${bad.join('\n  ')}`);
+  });
+
+  it('expm: expm(A)·expm(−A) = I; symmetric eig(expm A)=exp(eig A)', async () => {
+    const r = rng(0x9999); const bad: string[] = [];
+    for (let i = 0; i < 50; i++) {
+      const n = 2 + (i % 5);
+      const sym = i % 2 === 0;
+      // scale down so the scaling-and-squaring stays well-conditioned (large ‖A‖ ⇒ catastrophic cancellation in the identity)
+      const raw = sym ? gSym(r)(n) : gRand(r)(n, n);
+      const A = raw.map((row) => row.map((x) => x * 0.4));
+      const extra = sym ? ` + norm(sort(eig(expm(A))) - sort(exp(eig(A))),'fro')/max(1,norm(expm(A),'fro'))` : '';
+      const { r: res, error } = await residual(`A = ${lit(A)}; E = expm(A); r = norm(E*expm(-A) - eye(${n}),'fro')${extra};`);
+      if (error) bad.push(`expm ${sym ? 'sym' : 'gen'} ${n}: ${error}`); else if (!(res < 1e-6)) bad.push(`expm ${sym ? 'sym' : 'gen'} ${n}: residual=${res}`);
+    }
+    assert.equal(bad.length, 0, `expm failures:\n  ${bad.join('\n  ')}`);
+  });
 });
 
 // ── adversarial structural battery: inputs MATLAB handles must not crash the engine ──
