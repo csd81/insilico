@@ -14673,5 +14673,24 @@
   },
   "err_ode45_fewargs": {
     "error": "When the first argument to ode45 is a function handle, the tspan and y0 arguments must be supplied."
+  },
+  "nla_eig_complex_4x4": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        8
+      ],
+      "real": [
+        -1.2147463042534867,
+        0.872287589330845,
+        0.872287589330845,
+        1.4701711255917946,
+        -0.9353028919079073,
+        0,
+        0,
+        0.9353028919079073
+      ]
+    }
   }
 }

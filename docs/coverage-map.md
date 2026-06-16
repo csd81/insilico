@@ -15,8 +15,8 @@ pnpm oracle:functions  # per-function index: cases + aspects + full/partial/unte
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1180 tests green · 1033 MATLAB oracle fixtures ·
-1033/1033 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1189 tests green · 1034 MATLAB oracle fixtures ·
+1034/1034 oracle cases classified across 22 domains.
 
 ### Two-layer test model
 
@@ -41,6 +41,12 @@ Oracle cases are validated at two complementary granularities:
    share one set of numeric kernels (`registerNumericFns`) so they cannot drift. `oracle:functions`
    reports the both-ways count (currently 60/60). This caught 16 special functions that returned NaN
    through the symbolic path, and is what makes adding a symbolic overload safe.
+5. **Property-based fuzz** — `fuzz-decomp.test.ts` (MATLAB-free) asserts backward-stable
+   reconstruction invariants (‖P·A−L·U‖, ‖Q·R−A‖, ‖U·S·Vᵀ−A‖, ‖Rᵀ·R−A‖, ‖A·V−V·D‖) over a
+   fixed-seed battery of random + adversarial matrices. It tests engine self-consistency (not MATLAB
+   parity) — a robustness net for the paths curated cases miss. It immediately caught a silently-wrong
+   nonsymmetric-eig bug (Schur QR left an unconverged sub-subdiagonal entry on matrices with complex
+   spectra → wrong real eigenvalues; fixed with exceptional shifts + per-step Hessenberg restoration).
 
 Ownership is explicit (`fn` on a case) or inferred (`tags` ∩ registry); migrating a case to explicit
 `fn`/`aspect` moves it from the "unattributed" backlog into the precise per-function index.

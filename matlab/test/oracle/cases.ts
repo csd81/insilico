@@ -894,6 +894,9 @@ export const CASES: OracleCase[] = [
   { name: 'err-fft-negative-n', src: 'fft([1 2 3], -2);', vars: [], expectError: true, domain: 'fourier', fn: 'fft', tags: ['fft', 'error'] },
   { name: 'err-interp1-length', src: 'interp1([1 2 3], [1 2], 1.5);', vars: [], expectError: true, domain: 'approximation', fn: 'interp1', tags: ['interp1', 'error'] },
   { name: 'err-ode45-fewargs', src: 'ode45(@(t, y) y, [0 1]);', vars: [], expectError: true, domain: 'numerical-ode', fn: 'ode45', tags: ['ode45', 'error'] },
+  // Regression lock: a 4×4 with a complex conjugate eigenpair the fuzzer caught the nonsymmetric
+  // Schur QR mis-solving (it left an unconverged sub-subdiagonal entry → wrong real eigenvalues).
+  { name: 'nla-eig-complex-4x4', src: "A = [-1.17 -0.68 -2.95 -0.14; 0.30 2.41 -0.96 0.36; 0.10 1.06 0.91 0.70; 0.09 -1.70 -0.24 -0.15]; e = eig(A); v = [sort(real(e))' sort(imag(e))'];", vars: ['v'], tol: 1e-6, domain: 'numerical-linear-algebra', fn: 'eig', aspect: 'complex', tags: ['eig', 'complex-eigenvalues', 'schur-convergence', 'regression'] },
   { name: 'nla-wilkinson-matrix', src: 'W = wilkinson(5); v = [trace(W) W(3,3)];', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['wilkinson-matrix', 'eigenvalue-test'] },
   { name: 'nla-diagonally-dominant', src: 'A = [4 1; 1 3]; v = double(all(2*abs(diag(A)) > sum(abs(A), 2)));', vars: ['v'], tol: 1e-9, domain: 'numerical-linear-algebra', tags: ['diagonally-dominant', 'convergence-criterion'] },
   { name: 'nla-jordan-eigenvalues', src: 'A = [4 1 1; 0 4 0; 0 0 5]; v = sort(diag(double(jordan(A))));', vars: ['v'], tol: 1e-6, domain: 'numerical-linear-algebra', tags: ['jordan-form', 'eigenvalues'] },

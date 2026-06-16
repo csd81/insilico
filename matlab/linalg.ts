@@ -1247,17 +1247,22 @@ export function schur(A: Mat): { U: Mat; T: Mat } {
   let U = mat(n, n, Float64Array.from(P.data));
   if (n <= 1) return { U, T };
   const g = (i: number, j: number) => T.data[i + j * n];
-  let hi = n - 1, guard = 0;
+  let hi = n - 1, guard = 0, its = 0, prevHi = -1;
   while (hi > 0) {
-    if (guard++ > 120 * n) break;
+    if (guard++ > 200 * n) break;
+    if (hi !== prevHi) { its = 0; prevHi = hi; }   // reset per-block iteration counter on deflation
     // Find top `l` of the trailing unreduced block, zeroing negligible subdiagonals.
     let l = hi;
     while (l > 0) { const s = Math.abs(g(l - 1, l - 1)) + Math.abs(g(l, l)); if (Math.abs(g(l, l - 1)) <= 1e-14 * (s || 1)) { T.data[l + (l - 1) * n] = 0; break; } l--; }
     if (l === hi) { hi -= 1; continue; }          // 1×1 block converged
     if (l === hi - 1) { hi -= 2; continue; }       // 2×2 block converged (kept for now)
-    // Explicit double shift from the trailing 2×2 of the active window [0..hi].
+    its++;
+    // Double shift from the trailing 2×2 of the active window [0..hi].
     const a = g(hi - 1, hi - 1), b = g(hi - 1, hi), c = g(hi, hi - 1), d = g(hi, hi);
-    const s = a + d, det = a * d - b * c;          // trace & determinant → shifts
+    let s = a + d, det = a * d - b * c;            // trace & determinant → shifts
+    // Exceptional shift every 10 iterations to break stagnation (Wilkinson/EISPACK): without it the
+    // explicit double shift can cycle forever on some matrices and bail out unconverged.
+    if (its % 10 === 0) { const sc = Math.abs(g(hi, hi - 1)) + (hi >= 2 ? Math.abs(g(hi - 1, hi - 2)) : 0); s = 1.5 * sc; det = sc * sc; }
     const mwin = hi + 1;
     const Tw = mat(mwin, mwin, new Float64Array(mwin * mwin));
     for (let j = 0; j < mwin; j++) for (let i = 0; i < mwin; i++) Tw.data[i + j * mwin] = g(i, j);
@@ -1268,8 +1273,12 @@ export function schur(A: Mat): { U: Mat; T: Mat } {
     const Qf = eye(n);
     for (let j = 0; j < mwin; j++) for (let i = 0; i < mwin; i++) Qf.data[i + j * n] = Q.data[i + j * mwin];
     const Tn = matmul(matmul(transpose(Qf), T), Qf);
-    T.data.set(Tn.data);
-    U = matmul(U, Qf);
+    // QR of the full shift polynomial M does NOT preserve Hessenberg form, so re-reduce: without
+    // this the iterate accumulates entries below the first subdiagonal that the deflation test never
+    // inspects, and the "converged" T is not quasi-triangular (schurEig then reads wrong eigenvalues).
+    const reH = hess(mat(n, n, Float64Array.from(Tn.data)));
+    T.data.set(reH.H.data);
+    U = matmul(matmul(U, Qf), reH.P);
   }
   // Standardize: triangularize any 2×2 block that actually has real eigenvalues.
   for (let i = 0; i < n - 1; i++) {
