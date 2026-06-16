@@ -15,8 +15,8 @@ pnpm oracle:functions  # per-function index: cases + aspects + full/partial/unte
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1255 tests green · 1096 MATLAB oracle fixtures ·
-1096/1096 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1270 tests green · 1112 MATLAB oracle fixtures ·
+1112/1112 oracle cases classified across 22 domains.
 
 ### Two-layer test model
 
@@ -436,6 +436,20 @@ JS-crashed on too-few-args (clean `MatError` via a `symArg` guard).
   MATLAB (`Y(2- 1 ) * Y 1`); deferred pending a sym-formatter fix.
 - `lhs`/`rhs` convention: the engine normalises `L == R` to `L − R == 0`, so `lhs` is that expression
   and `rhs` is identically 0 — validated only through the convention-independent `lhs − rhs`.
+
+**Graph-theory cluster (now attributed, 24 fns):** `graph`/`digraph` constructors + `numnodes`,
+`numedges`, `degree`, `indegree`, `outdegree`, `incidence`, `findedge`, `edgecount`, `ismultigraph`,
+`biconncomp`, `condensation`, `isomorphism`, `predecessors`, `inedges`, `outedges`, `nearest`,
+`addedge`, `addnode`, `rmedge`, `rmnode`, `flipedge`, `reordernodes` — validated by structural
+projections against MATLAB. Declined: `isConnected` (not a graph method in R2026a — use
+`all(conncomp==1)`), `bctree`/`nearestvertex`/`edgeAttachments` (`exist`=0), `treelayout` (plotting).
+
+**Elementary / special-math cluster (now attributed, ~58 fns):** trig/`exp`/`log`/reductions/array
+ops/special matrices (`magic`/`pascal`/`hilb`/`vander`/`compan`) + `erfcinv`, `fresnelc`/`fresnels`,
+the six Jacobi-elliptic `jacobiCS/DC/DS/ND/NS/SD`, `cplxpair`, `unwrap`, `rat`, `hess`, `lyap` — all
+match MATLAB (no bugs; these mostly already executed but were never the *named* owner). Declined:
+`ldexp`/`scalbn` (not MATLAB double functions), `cbrt`/`frac`/`degree` (`exist`=0 / graph-only),
+`smoothdata2` (default smoothing-window heuristic diverges from MATLAB — not cleanly oracle-able).
 
 ## Remaining Backlog By Category
 
