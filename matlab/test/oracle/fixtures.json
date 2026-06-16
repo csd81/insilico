@@ -15656,5 +15656,15 @@
         10
       ]
     }
+  },
+  "lang_bracket_char_concat": {
+    "v": {
+      "class": "char",
+      "size": [
+        1,
+        12
+      ],
+      "value": "ABC|xy|42|hi"
+    }
   }
 }

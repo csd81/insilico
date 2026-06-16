@@ -50,7 +50,9 @@ export function tokenize(src: string): Token[] {
     if (!p) return false;
     if (p.kind === 'str') return !spaceBefore; // `'a' 'b'` (space) ⇒ second is a new string, not transpose
     if (p.kind === 'num' || p.kind === 'ident') return !spaceBefore; // `A'` transpose, but `disp 'hi'` / `[3 'ab']` (space) ⇒ string
-    if (p.kind === 'punct' && (p.value === ')' || p.value === ']' || p.value === '}')) return true;
+    // `A(:)'`/`x{1}'`/`M]'` (no space) ⇒ transpose; but `[f(x) 'ab']` / `[c{1} 'ab']` (space inside a
+    // matrix/cell) ⇒ the `'` opens a new char element, exactly as for the num/ident/str cases above.
+    if (p.kind === 'punct' && (p.value === ')' || p.value === ']' || p.value === '}')) return !spaceBefore;
     if (p.kind === 'op' && (p.value === "'" || p.value === ".'")) return true;
     return false;
   };

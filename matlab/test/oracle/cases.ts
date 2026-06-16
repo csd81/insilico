@@ -1315,6 +1315,9 @@ export const CASES: OracleCase[] = [
   { name: 'graph-modify', src: "G = graph([1 1 2 3 3], [2 3 3 4 5]); v = [numedges(addedge(G,4,5)) numnodes(addnode(G,2)) numedges(rmedge(G,1,2)) numnodes(rmnode(G,5)) degree(reordernodes(G,[5 4 3 2 1]))'];", vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['addedge', 'addnode', 'rmedge', 'rmnode', 'reordernodes', 'graph-modify'] },
   { name: 'graph-isomorphism', src: 'G = graph([1 1 2 3 3], [2 3 3 4 5]); v = isomorphism(G, G);', vars: ['v'], tol: 1e-9, domain: 'graph', tags: ['isomorphism', 'graph-iso'] },
 
+  // ── lexer: `'` after `)`/`]`/`}` + space inside a matrix is a char element, not transpose (regression) ──
+  { name: 'lang-bracket-char-concat', src: "v = [upper('abc') '|' lower('XY') '|' num2str(42) '|' strtrim('  hi  ')];", vars: ['v'], domain: 'core-language', tags: ['upper', 'lower', 'num2str', 'strtrim', 'bracket-string-concat', 'lexer-transpose-disambiguation'] },
+
   // ── elementary / special math: registered-but-unvalidated cluster (grouped value/invariant attribution) ──
   { name: 'elem-trig', src: 'v = [sin(1) cos(1) tan(1) asin(0.5) acos(0.5) atan(1) atan2(1,2) sind(30) cosd(60) atand(1) acosd(0.5) sinh(1) cosh(1)];', vars: ['v'], tol: 1e-12, domain: 'complex-arithmetic', tags: ['sin', 'cos', 'tan', 'asin', 'acos', 'atan', 'atan2', 'sind', 'cosd', 'atand', 'acosd', 'sinh', 'cosh', 'trig-values'] },
   { name: 'elem-explog', src: 'v = [exp(1) log(exp(2)) log2(8) expm1(0.5) power(2,3)];', vars: ['v'], tol: 1e-12, domain: 'complex-arithmetic', tags: ['exp', 'log', 'log2', 'expm1', 'power', 'exp-log-values'] },
