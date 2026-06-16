@@ -15,8 +15,8 @@ pnpm oracle:functions  # per-function index: cases + aspects + full/partial/unte
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1189 tests green · 1034 MATLAB oracle fixtures ·
-1034/1034 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1212 tests green · 1053 MATLAB oracle fixtures ·
+1053/1053 oracle cases classified across 22 domains.
 
 ### Two-layer test model
 
@@ -398,7 +398,11 @@ are triaged by `pnpm oracle:base-audit`, not listed here). Regenerate with `pnpm
   `isVariable` `isCondition` `isDistinctVariable` `symFunType` `charToFunction`
 - **control (4)** — `bodemag` `lsiminfo` (plot/info), `h2norm` `hinfnorm` (computational, addable)
 - **optim (1)** — `fseminf` (semi-infinite programming)
-- **stats (1)** — `random` (RNG dispatcher; invariant/smoke only)
+- **stats (1)** — `random` (RNG dispatcher; invariant/smoke only). The distribution batch
+  `gamcdf`/`gaminv`/`betacdf`/`betainv`/`binopdf`/`binocdf`/`poisspdf`/`poisscdf`/`chi2stat`/`icdf`
+  is now oracle-validated (value + roundtrip-invariant + input-rejection; fixed silent
+  too-few-parameter acceptance + an `icdf` JS-crash). `net` is declined: not a public R2026a stats
+  function (`which('net')` empty); `random` stays declined (RNG-stream parity is a non-goal).
 
 The core applied-math toolboxes (`signal`, `dsp`, `comm`, `wavelet`, `fixedpoint`, `econ`, `aero`,
 `curvefit`, `audio`, `rf`, `fusion`, `nav`, `pde`, `radar`, `robotics`, `images`, `fuzzy`) are

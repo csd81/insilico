@@ -39,6 +39,18 @@ export const REQUIRED_ASPECTS: Record<string, string[]> = {
   // ── special functions (the regime that broke them historically) ──
   kummerU: ['integer-b', 'noninteger-b'],
   whittakerW: ['positive-a', 'nonpositive-a'],
+
+  // ── statistics distributions (the registered-but-unvalidated batch; 'error-input' auto-required) ──
+  gamcdf: ['value', 'default-scale'],
+  gaminv: ['value', 'roundtrip-invariant'],
+  betacdf: ['value'],
+  betainv: ['value', 'roundtrip-invariant'],
+  binopdf: ['value'],
+  binocdf: ['value'],
+  poisspdf: ['value'],
+  poisscdf: ['value'],
+  chi2stat: ['value'],
+  icdf: ['value', 'distribution-name'],
 };
 
 /** Aspect inference for cases lacking an explicit `aspect`: which technique tags are treated as
@@ -50,4 +62,5 @@ export const ASPECT_VOCAB = new Set<string>([
   'residual-invariant', 'roundtrip-invariant', 'rank-deficient', 'sparse', 'pagewise', 'n-d',
   'least-squares', 'defective', 'diagonalizable', 'square', 'rectangular', 'matrix-functions',
   'integer-b', 'noninteger-b', 'positive-a', 'nonpositive-a', 'edge-empty', 'edge-scalar',
+  'value', 'default-scale', 'normalization', 'distribution-name', 'moments',
 ]);

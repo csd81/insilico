@@ -14692,5 +14692,154 @@
         0.9353028919079073
       ]
     }
+  },
+  "stat_gamcdf": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        0.8008517265285442,
+        0.8008517265285442,
+        0.6771398333767734
+      ]
+    }
+  },
+  "stat_gaminv": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        2.994308347002123,
+        -1.1102230246251565e-16
+      ]
+    }
+  },
+  "stat_betacdf": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.5248000000000003,
+        0.3333333333333333
+      ]
+    }
+  },
+  "stat_betainv": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.44450000208376744,
+        -5.551115123125783e-17
+      ]
+    }
+  },
+  "stat_binocdf": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.3822806016000001,
+        1
+      ]
+    }
+  },
+  "stat_poisscdf": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.4231900811268435,
+        0.9160820579686966
+      ]
+    }
+  },
+  "stat_chi2stat": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        5,
+        10
+      ]
+    }
+  },
+  "stat_icdf": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1.959963984540054,
+        2.994308347002123,
+        3
+      ]
+    }
+  },
+  "stat_err_gamcdf": {
+    "error": "Requires at least two input arguments."
+  },
+  "stat_err_gaminv": {
+    "error": "Requires at least two input arguments."
+  },
+  "stat_err_betacdf": {
+    "error": "Requires three input arguments."
+  },
+  "stat_err_betainv": {
+    "error": "Requires at least three input arguments."
+  },
+  "stat_err_binopdf": {
+    "error": "Requires three input arguments"
+  },
+  "stat_err_binocdf": {
+    "error": "Requires three input arguments."
+  },
+  "stat_err_poisspdf": {
+    "error": "Requires two input arguments."
+  },
+  "stat_err_poisscdf": {
+    "error": "Requires two input arguments."
+  },
+  "stat_err_icdf": {
+    "error": "Not enough input arguments"
+  },
+  "stat_err_chi2stat": {
+    "error": "Requires one input argument."
+  },
+  "stat_binopdf_norm": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        0.21499084799999998,
+        1
+      ]
+    }
   }
 }

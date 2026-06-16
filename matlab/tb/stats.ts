@@ -144,9 +144,15 @@ function invCdf(target: number, cdf: (x: number) => number, lo: number, hi: numb
  *  (with defaults filled in when omitted). Covers the common `fn(X)` / `fn(X,p1,p2)` forms. */
 /** Return [M] or [M,V] for a distribution *stat function depending on nargout. */
 function statRet(n: number, mean: number, variance: number): Promise<Value[]> { return n >= 2 ? Promise.resolve([scalar(mean), scalar(variance)]) : Promise.resolve([scalar(mean)]); }
-function dist(a: Value[], defs: number[], f: (x: number, ...p: number[]) => number): Promise<Value[]> {
+// A `null` default marks a REQUIRED distribution parameter (MATLAB errors TooFewInputs when it is
+// missing — e.g. gamcdf/betacdf/binopdf/poisspdf have no parameter defaults, unlike normcdf/unifcdf).
+function dist(a: Value[], defs: (number | null)[], f: (x: number, ...p: number[]) => number): Promise<Value[]> {
   const X = m(a[0]);
-  const p = defs.map((dft, i) => (a.length > i + 1 && isMat(a[i + 1]) && numel(m(a[i + 1])) > 0 ? asScalar(a[i + 1]) : dft));
+  const p = defs.map((dft, i) => {
+    const given = a.length > i + 1 && isMat(a[i + 1]) && numel(m(a[i + 1])) > 0;
+    if (!given) { if (dft === null) throw new MatError('Not enough input arguments.'); return dft; }
+    return asScalar(a[i + 1]);
+  });
   return ret(map(X, (x) => f(x, ...p)));
 }
 
@@ -1492,17 +1498,17 @@ export const STATS: ToolboxModule = {
     chi2cdf: (a) => dist(a, [1], (x, k) => gammainc(x / 2, k / 2)),
     chi2inv: (a) => dist(a, [1], (p, k) => invCdf(p, (x) => gammainc(x / 2, k / 2), 0, Infinity)),
     // ── Gamma (shape a, scale b) ──
-    gampdf: (a) => dist(a, [1, 1], (x, k, th) => k > 0 && th > 0 ? (x < 0 ? 0 : Math.exp((k - 1) * Math.log(x) - x / th - k * Math.log(th) - logGamma(k))) : NaN),
-    gamcdf: (a) => dist(a, [1, 1], (x, k, th) => k > 0 && th > 0 ? gammainc(x / th, k) : NaN),
-    gaminv: (a) => dist(a, [1, 1], (p, k, th) => k > 0 && th > 0 ? invCdf(p, (x) => gammainc(x / th, k), 0, Infinity) : NaN),
+    gampdf: (a) => dist(a, [null, 1], (x, k, th) => k > 0 && th > 0 ? (x < 0 ? 0 : Math.exp((k - 1) * Math.log(x) - x / th - k * Math.log(th) - logGamma(k))) : NaN),
+    gamcdf: (a) => dist(a, [null, 1], (x, k, th) => k > 0 && th > 0 ? gammainc(x / th, k) : NaN),
+    gaminv: (a) => dist(a, [null, 1], (p, k, th) => k > 0 && th > 0 ? invCdf(p, (x) => gammainc(x / th, k), 0, Infinity) : NaN),
     // ── Exponential (mean mu) ──
     exppdf: (a) => dist(a, [1], (x, mu) => mu > 0 ? (x < 0 ? 0 : Math.exp(-x / mu) / mu) : NaN),
     expcdf: (a) => dist(a, [1], (x, mu) => mu > 0 ? (x < 0 ? 0 : 1 - Math.exp(-x / mu)) : NaN),
     expinv: (a) => dist(a, [1], (p, mu) => mu > 0 ? -mu * Math.log(1 - p) : NaN),
     // ── Beta ──
-    betapdf: (a) => dist(a, [1, 1], (x, p, q) => x < 0 || x > 1 ? 0 : Math.exp((p - 1) * Math.log(x) + (q - 1) * Math.log(1 - x) - (logGamma(p) + logGamma(q) - logGamma(p + q)))),
-    betacdf: (a) => dist(a, [1, 1], (x, p, q) => betainc(x, p, q)),
-    betainv: (a) => dist(a, [1, 1], (pr, p, q) => invCdf(pr, (x) => betainc(x, p, q), 0, 1)),
+    betapdf: (a) => dist(a, [null, null], (x, p, q) => x < 0 || x > 1 ? 0 : Math.exp((p - 1) * Math.log(x) + (q - 1) * Math.log(1 - x) - (logGamma(p) + logGamma(q) - logGamma(p + q)))),
+    betacdf: (a) => dist(a, [null, null], (x, p, q) => betainc(x, p, q)),
+    betainv: (a) => dist(a, [null, null], (pr, p, q) => invCdf(pr, (x) => betainc(x, p, q), 0, 1)),
     // ── F ──
     fpdf: (a) => dist(a, [1, 1], (x, d1, d2) => x < 0 ? 0 : x === 0 ? (d1 < 2 ? Infinity : d1 === 2 ? 1 : 0) : x === Infinity ? 0 : Math.exp(0.5 * (d1 * Math.log(d1 * x) + d2 * Math.log(d2) - (d1 + d2) * Math.log(d1 * x + d2)) - Math.log(x) - (logGamma(d1 / 2) + logGamma(d2 / 2) - logGamma((d1 + d2) / 2)))),
     fcdf: (a) => dist(a, [1, 1], (x, d1, d2) => x <= 0 ? 0 : x === Infinity ? 1 : betainc(d1 * x / (d1 * x + d2), d1 / 2, d2 / 2)),
@@ -1516,13 +1522,13 @@ export const STATS: ToolboxModule = {
     logncdf: (a) => dist(a, [0, 1], (x, mu, s) => s > 0 ? (x <= 0 ? 0 : 0.5 * erfc(-(Math.log(x) - mu) / (s * Math.SQRT2))) : NaN),
     logninv: (a) => dist(a, [0, 1], (p, mu, s) => s > 0 ? Math.exp(mu + s * norminvStd(p)) : NaN),
     // ── Binomial ──
-    binopdf: (a) => dist(a, [1, 0.5], (k, n, p) => { if (k !== Math.round(k) || k < 0 || k > n) return 0; return nCk(n, k) * p ** k * (1 - p) ** (n - k); }),
-    binocdf: (a) => dist(a, [1, 0.5], (k, n, p) => { k = Math.floor(k); if (k < 0) return 0; if (k >= n) return 1; return 1 - betainc(p, k + 1, n - k); }),
-    binoinv: (a) => dist(a, [1, 0.5], (pr, n, p) => { let c = 0; for (let k = 0; k <= n; k++) { c += nCk(n, k) * p ** k * (1 - p) ** (n - k); if (c >= pr - 1e-12) return k; } return n; }),
+    binopdf: (a) => dist(a, [null, null], (k, n, p) => { if (k !== Math.round(k) || k < 0 || k > n) return 0; return nCk(n, k) * p ** k * (1 - p) ** (n - k); }),
+    binocdf: (a) => dist(a, [null, null], (k, n, p) => { k = Math.floor(k); if (k < 0) return 0; if (k >= n) return 1; return 1 - betainc(p, k + 1, n - k); }),
+    binoinv: (a) => dist(a, [null, null], (pr, n, p) => { let c = 0; for (let k = 0; k <= n; k++) { c += nCk(n, k) * p ** k * (1 - p) ** (n - k); if (c >= pr - 1e-12) return k; } return n; }),
     // ── Poisson ──
-    poisspdf: (a) => dist(a, [1], (k, lam) => { if (k !== Math.round(k) || k < 0) return 0; return Math.exp(k * Math.log(lam) - lam - logGamma(k + 1)); }),
-    poisscdf: (a) => dist(a, [1], (k, lam) => { k = Math.floor(k); return k < 0 ? 0 : k === Infinity ? 1 : 1 - gammainc(lam, k + 1); }),
-    poissinv: (a) => dist(a, [1], (pr, lam) => { if (!(lam >= 0) || pr < 0 || pr > 1) return NaN; if (pr === 1) return Infinity; let c = 0, k = 0; for (; k < 1e6; k++) { c += Math.exp(k * Math.log(lam) - lam - logGamma(k + 1)); if (c >= pr - 1e-12) return k; } return k; }),
+    poisspdf: (a) => dist(a, [null], (k, lam) => { if (k !== Math.round(k) || k < 0) return 0; return Math.exp(k * Math.log(lam) - lam - logGamma(k + 1)); }),
+    poisscdf: (a) => dist(a, [null], (k, lam) => { k = Math.floor(k); return k < 0 ? 0 : k === Infinity ? 1 : 1 - gammainc(lam, k + 1); }),
+    poissinv: (a) => dist(a, [null], (pr, lam) => { if (!(lam >= 0) || pr < 0 || pr > 1) return NaN; if (pr === 1) return Infinity; let c = 0, k = 0; for (; k < 1e6; k++) { c += Math.exp(k * Math.log(lam) - lam - logGamma(k + 1)); if (c >= pr - 1e-12) return k; } return k; }),
     // ── Exponential negative log-likelihood: nlogL + inverse-observed-information avar ──
     explike: (a, nargout) => {
       const mu = asScalar(a[0]); const x = toArray(m(a[1])); const n = x.length;
@@ -2242,11 +2248,11 @@ export const STATS: ToolboxModule = {
       return ret(out);
     },
     /** pdf(pd,x) or pdf('Name',x,p1,p2) — probability density. */
-    pdf: (a) => { const { spec, vals, rest } = resolveDist(a); return ret(map(m(rest[0]), (x) => spec.pdf(x, ...vals))); },
+    pdf: (a) => { const { spec, vals, rest } = resolveDist(a); if (rest[0] === undefined) throw new MatError('Not enough input arguments.'); return ret(map(m(rest[0]), (x) => spec.pdf(x, ...vals))); },
     /** cdf(pd,x) or cdf('Name',x,p1,p2) — cumulative probability. */
-    cdf: (a) => { const { spec, vals, rest } = resolveDist(a); return ret(map(m(rest[0]), (x) => spec.cdf(x, ...vals))); },
+    cdf: (a) => { const { spec, vals, rest } = resolveDist(a); if (rest[0] === undefined) throw new MatError('Not enough input arguments.'); return ret(map(m(rest[0]), (x) => spec.cdf(x, ...vals))); },
     /** icdf(pd,p) or icdf('Name',p,p1,p2) — inverse cumulative (quantile). */
-    icdf: (a) => { const { spec, vals, rest } = resolveDist(a); return ret(map(m(rest[0]), (p) => spec.inv(p, ...vals))); },
+    icdf: (a) => { const { spec, vals, rest } = resolveDist(a); if (rest[0] === undefined) throw new MatError('Not enough input arguments.'); return ret(map(m(rest[0]), (p) => spec.inv(p, ...vals))); },
 
     /** [C,order]=confusionmat(g,ghat[,'Order',order]) — confusion matrix (rows=true, cols=predicted).
      *  Classes appear in sorted order of the unique labels of [g;ghat] (grp2idx convention). */
