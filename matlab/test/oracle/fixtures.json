@@ -14841,5 +14841,241 @@
         1
       ]
     }
+  },
+  "ctrl_ctrb": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        0,
+        1,
+        3
+      ]
+    }
+  },
+  "ctrl_obsv": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        0,
+        2
+      ]
+    }
+  },
+  "ctrl_lsiminfo": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        7
+      ],
+      "real": [
+        4.6000000000000005,
+        4.6000000000000005,
+        1,
+        5,
+        0,
+        1,
+        5
+      ]
+    }
+  },
+  "ctrl_err_ctrb": {
+    "error": "Not enough input arguments."
+  },
+  "ctrl_err_obsv": {
+    "error": "Not enough input arguments."
+  },
+  "ctrl_err_lsiminfo": {
+    "error": "The \"lsiminfo\" command requires one or more input arguments. Type \"help lsiminfo\" for more information."
+  },
+  "dsp_dftmtx": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        3
+      ],
+      "real": [
+        1.2560739669470201e-15,
+        0,
+        -1
+      ]
+    }
+  },
+  "dsp_err_dftmtx": {
+    "error": "Not enough input arguments."
+  },
+  "comm_hammgen": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        30
+      ],
+      "real": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        7,
+        4
+      ]
+    }
+  },
+  "comm_cyclgen": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        21
+      ],
+      "real": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "comm_primpoly": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        11,
+        19
+      ]
+    }
+  },
+  "comm_gfminpol": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        4
+      ],
+      "real": [
+        1,
+        1,
+        0,
+        1
+      ]
+    }
+  },
+  "comm_poly2trellis": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        19
+      ],
+      "real": [
+        0,
+        3,
+        2,
+        1,
+        3,
+        0,
+        1,
+        2,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        2,
+        4
+      ]
+    }
+  },
+  "comm_err_hammgen": {
+    "error": "Not enough input arguments."
+  },
+  "comm_err_cyclgen": {
+    "error": "Not enough input arguments."
+  },
+  "comm_err_primpoly": {
+    "error": "Not enough input arguments."
+  },
+  "comm_err_gfminpol": {
+    "error": "Not enough input arguments."
+  },
+  "comm_err_poly2trellis": {
+    "error": "Invalid number of input arguments. poly2trellis expects two or three input arguments."
+  },
+  "radar_grnd2slant": {
+    "v": {
+      "class": "double",
+      "size": [
+        1,
+        2
+      ],
+      "real": [
+        1154.7005383792516,
+        2828.4271247461897
+      ]
+    }
+  },
+  "radar_err_grnd2slant": {
+    "error": "Expected GRAZANG to be a scalar with value < 90."
   }
 }

@@ -1260,6 +1260,28 @@ export const CASES: OracleCase[] = [
   { name: 'stat-err-icdf', src: "icdf('Normal')", vars: [], expectError: true, domain: 'statistics', fn: 'icdf', aspect: 'error-input' },
   { name: 'stat-err-chi2stat', src: 'chi2stat()', vars: [], expectError: true, domain: 'statistics', fn: 'chi2stat', aspect: 'error-input' },
 
+  // ── control / coding / transforms / radar: registered-but-unvalidated batch (value + input-rejection) ──
+  { name: 'ctrl-ctrb', src: "Co = ctrb([1 2; 3 4], [1;0]); v = Co(:).';", vars: ['v'], tol: 1e-10, domain: 'control', fn: 'ctrb', aspect: 'value', tags: ['ctrb', 'controllability'] },
+  { name: 'ctrl-obsv', src: "Ob = obsv([1 2; 3 4], [1 0]); v = Ob(:).';", vars: ['v'], tol: 1e-10, domain: 'control', fn: 'obsv', aspect: 'value', tags: ['obsv', 'observability'] },
+  { name: 'ctrl-lsiminfo', src: 's = lsiminfo([0 0.2 0.5 0.8 0.95 1 1 1], 0:7); v = [s.SettlingTime s.TransientTime s.Peak s.PeakTime s.Min s.Max s.MaxTime];', vars: ['v'], tol: 1e-6, domain: 'control', fn: 'lsiminfo', aspect: 'value', tags: ['lsiminfo', 'step-response-info'] },
+  { name: 'ctrl-err-ctrb', src: 'ctrb([1 2;3 4])', vars: [], expectError: true, domain: 'control', fn: 'ctrb', aspect: 'error-input' },
+  { name: 'ctrl-err-obsv', src: 'obsv([1 2;3 4])', vars: [], expectError: true, domain: 'control', fn: 'obsv', aspect: 'error-input' },
+  { name: 'ctrl-err-lsiminfo', src: 'lsiminfo()', vars: [], expectError: true, domain: 'control', fn: 'lsiminfo', aspect: 'error-input' },
+  { name: 'dsp-dftmtx', src: "n = 6; x = (1:n).'; D4 = dftmtx(4); v = [norm(dftmtx(n)*x - fft(x)) real(D4(2,2)) imag(D4(2,2))];", vars: ['v'], tol: 1e-9, domain: 'fourier', fn: 'dftmtx', aspect: 'residual-invariant', tags: ['dftmtx', 'dft-matrix', 'roundtrip-invariant'] },
+  { name: 'dsp-err-dftmtx', src: 'dftmtx()', vars: [], expectError: true, domain: 'fourier', fn: 'dftmtx', aspect: 'error-input' },
+  { name: 'comm-hammgen', src: "[h, g, n, k] = hammgen(3); v = [g(:).' n k];", vars: ['v'], tol: 1e-10, domain: 'coding', fn: 'hammgen', aspect: 'value', tags: ['hammgen', 'hamming-code', 'generator-matrix'] },
+  { name: 'comm-cyclgen', src: "C = cyclgen(7, [1 0 1 1]); v = C(:).';", vars: ['v'], tol: 1e-10, domain: 'coding', fn: 'cyclgen', aspect: 'value', tags: ['cyclgen', 'cyclic-code', 'generator-matrix'] },
+  { name: 'comm-primpoly', src: 'v = [primpoly(3) primpoly(4)];', vars: ['v'], tol: 1e-10, domain: 'coding', fn: 'primpoly', aspect: 'value', tags: ['primpoly', 'primitive-polynomial', 'galois-field'] },
+  { name: 'comm-gfminpol', src: 'v = gfminpol(1, 3);', vars: ['v'], tol: 1e-10, domain: 'coding', fn: 'gfminpol', aspect: 'value', tags: ['gfminpol', 'minimal-polynomial', 'galois-field'] },
+  { name: 'comm-poly2trellis', src: "t = poly2trellis(3, [7 5]); v = [t.outputs(:).' t.nextStates(:).' t.numStates t.numInputSymbols t.numOutputSymbols];", vars: ['v'], tol: 1e-10, domain: 'coding', fn: 'poly2trellis', aspect: 'value', tags: ['poly2trellis', 'convolutional-code', 'trellis'] },
+  { name: 'comm-err-hammgen', src: 'hammgen()', vars: [], expectError: true, domain: 'coding', fn: 'hammgen', aspect: 'error-input' },
+  { name: 'comm-err-cyclgen', src: 'cyclgen(7)', vars: [], expectError: true, domain: 'coding', fn: 'cyclgen', aspect: 'error-input' },
+  { name: 'comm-err-primpoly', src: 'primpoly()', vars: [], expectError: true, domain: 'coding', fn: 'primpoly', aspect: 'error-input' },
+  { name: 'comm-err-gfminpol', src: 'gfminpol(1)', vars: [], expectError: true, domain: 'coding', fn: 'gfminpol', aspect: 'error-input' },
+  { name: 'comm-err-poly2trellis', src: 'poly2trellis(3)', vars: [], expectError: true, domain: 'coding', fn: 'poly2trellis', aspect: 'error-input' },
+  { name: 'radar-grnd2slant', src: 'v = [grnd2slantrange(1000, 30) grnd2slantrange(2000, 45)];', vars: ['v'], tol: 1e-6, domain: 'geometry', fn: 'grnd2slantrange', aspect: 'value', tags: ['grnd2slantrange', 'slant-range'] },
+  { name: 'radar-err-grnd2slant', src: 'grnd2slantrange(1000, 95)', vars: [], expectError: true, domain: 'geometry', fn: 'grnd2slantrange', aspect: 'error-input', tags: ['grazing-angle-domain'] },
+
   // ══════════ symbolic (67) ══════════
   { name: 'sym-jacobian', src: 'syms x y; J = jacobian([x^2*y; x + y], [x y]); v = double(subs(J, [x y], [2 3]));', vars: ['v'], tol: 1e-9, domain: 'symbolic', tags: ['jacobian'] },
   { name: 'sym-char', src: 'syms x; v = char(x^2 + 1);', vars: ['v'], domain: 'symbolic', tags: ['char', 'sym2str'] },

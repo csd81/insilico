@@ -15,8 +15,8 @@ pnpm oracle:functions  # per-function index: cases + aspects + full/partial/unte
 pnpm registry:audit    # cross-layer (base vs toolbox) duplicate audit
 ```
 
-**Status (as of this revision):** 1212 tests green · 1053 MATLAB oracle fixtures ·
-1053/1053 oracle cases classified across 22 domains.
+**Status (as of this revision):** 1232 tests green · 1073 MATLAB oracle fixtures ·
+1073/1073 oracle cases classified across 22 domains.
 
 ### Two-layer test model
 
@@ -396,7 +396,8 @@ are triaged by `pnpm oracle:base-audit`, not listed here). Regenerate with `pnpm
   `has` `symType` `isSymType` `hasSymType` `findSymType` `argnames` `formula` `mapSymType` `htrans`
   `ihtrans` `isolate` `assumeAlso` `assumptions` `sympref` `digits` `bernstein` `subexpr`
   `isVariable` `isCondition` `isDistinctVariable` `symFunType` `charToFunction`
-- **control (4)** — `bodemag` `lsiminfo` (plot/info), `h2norm` `hinfnorm` (computational, addable)
+- **control (3)** — `bodemag` (magnitude-plot, declined), `h2norm` `hinfnorm` (computational, addable).
+  `ctrb`/`obsv`/`lsiminfo` are now oracle-validated (value + input-rejection).
 - **optim (1)** — `fseminf` (semi-infinite programming)
 - **stats (1)** — `random` (RNG dispatcher; invariant/smoke only). The distribution batch
   `gamcdf`/`gaminv`/`betacdf`/`betainv`/`binopdf`/`binocdf`/`poisspdf`/`poisscdf`/`chi2stat`/`icdf`

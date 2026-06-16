@@ -3,7 +3,7 @@
 // the live Control System Toolbox. See plan §1 (ClassV) / §7.
 import type { Builtin } from '../builtins';
 import {
-  type Value, type Mat, type StructV, type Cell, type ClassV, isObject, isCell, makeObject, makeCell, scalar, bool, colVec, rowVec, toArray, asScalar, asString, toMat as m, makeStr, matRows, fromRows,
+  type Value, type Mat, type StructV, type Cell, type ClassV, isObject, isCell, makeObject, makeCell, scalar, bool, colVec, rowVec, toArray, asScalar, asString, toMat as m, makeStr, matRows, fromRows, MatError,
 } from '../values';
 import { schur, schurEig, expm, svdC } from '../linalg';   // shared robust LA core (Francis QR / scaling-squaring), not a local reimpl
 import type { ToolboxModule } from './types';
@@ -1283,9 +1283,9 @@ export const CONTROL: ToolboxModule = {
       return n >= 2 ? Promise.resolve([colVec(order.map((i) => wn[i])), colVec(order.map((i) => zeta[i]))]) : ret(colVec(order.map((i) => wn[i])));
     },
     /** ctrb(A,B) — controllability matrix [B AB A²B …]. */
-    ctrb: (a) => { const A = matRows(m(a[0])), B = matRows(m(a[1])); const N = A.length; const cols: number[][] = B.map((r) => r.slice()); let cur = B; for (let i = 1; i < N; i++) { cur = mmul(A, cur); for (let r = 0; r < N; r++) cols[r].push(...cur[r]); } return ret(fromRows(cols)); },
+    ctrb: (a) => { if (a.length < 2) throw new MatError('Not enough input arguments.'); const A = matRows(m(a[0])), B = matRows(m(a[1])); const N = A.length; const cols: number[][] = B.map((r) => r.slice()); let cur = B; for (let i = 1; i < N; i++) { cur = mmul(A, cur); for (let r = 0; r < N; r++) cols[r].push(...cur[r]); } return ret(fromRows(cols)); },
     /** obsv(A,C) — observability matrix [C; CA; CA²; …]. */
-    obsv: (a) => { const A = matRows(m(a[0])), C = matRows(m(a[1])); const N = A.length; const rows: number[][] = C.map((r) => r.slice()); let cur = C; for (let i = 1; i < N; i++) { cur = mmul(cur, A); rows.push(...cur.map((r) => r.slice())); } return ret(fromRows(rows)); },
+    obsv: (a) => { if (a.length < 2) throw new MatError('Not enough input arguments.'); const A = matRows(m(a[0])), C = matRows(m(a[1])); const N = A.length; const rows: number[][] = C.map((r) => r.slice()); let cur = C; for (let i = 1; i < N; i++) { cur = mmul(cur, A); rows.push(...cur.map((r) => r.slice())); } return ret(fromRows(rows)); },
     /** dsort(p) — sort discrete-time poles by descending magnitude. */
     dsort: (a) => ret(colVec(toArray(m(a[0])).slice().sort((x, y) => Math.abs(y) - Math.abs(x)))),
     /** esort(p) — sort continuous-time poles by descending real part. */
@@ -1581,6 +1581,7 @@ export const CONTROL: ToolboxModule = {
     },
     /** S = lsiminfo(y,t[,yfinal[,yinit]]) returns linear-response characteristics. */
     lsiminfo: (a) => {
+      if (a.length < 1) throw new MatError('Not enough input arguments.');
       const y = toArray(m(a[0]));
       const t = a.length >= 2 && isMatLike(a[1]) ? toArray(m(a[1])) : y.map((_, i) => i + 1);
       const yf = a.length >= 3 ? asScalar(a[2]) : y[y.length - 1];

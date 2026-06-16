@@ -4,7 +4,7 @@
 // match without the toolbox. See plan §7.
 import type { Builtin } from '../builtins';
 import {
-  type Value, type Mat, type StructV, type ClassV, isMat, isObject, makeObject, scalar, colVec, rowVec, zeros, toArray, asScalar, asString, toMat as m, map, mat,
+  type Value, type Mat, type StructV, type ClassV, isMat, isObject, makeObject, scalar, colVec, rowVec, zeros, toArray, asScalar, asString, toMat as m, map, mat, MatError,
 } from '../values';
 import { erf, erfc, erfinv } from '../specfun';
 import type { ToolboxModule } from './types';
@@ -371,6 +371,7 @@ export const COMM: ToolboxModule = {
     gfrank: (a) => ret(scalar(gf2rank(m(a[0])))),
     // ── cyclgen(n,p): systematic [H,G,k] for a cyclic code from generator polynomial p ──
     cyclgen: (a, nargout) => {
+      if (a.length < 2) throw new MatError('Not enough input arguments.');
       if (a.length > 2 && asString(a[2]).toLowerCase().includes('no')) throw new Error('comm:cyclgen: only systematic mode supported');
       const { h, g, k } = cyclgenImpl(Math.round(asScalar(a[0])), toArray(m(a[1])));
       return Promise.resolve([h, g, scalar(k)].slice(0, Math.max(1, nargout)));
@@ -540,6 +541,7 @@ export const COMM: ToolboxModule = {
     // ── convolutional codes ──
     /** poly2trellis(K, codeGen) — convert constraint length + octal generators to a trellis struct. */
     poly2trellis: (a) => {
+      if (a.length < 2) throw new MatError('Not enough input arguments.');
       const K = Math.round(asScalar(a[0])); const codeGen = toArray(m(a[1]));
       const t = buildTrellis(K, codeGen);
       const fields = new Map<string, Value[]>([
@@ -581,6 +583,7 @@ export const COMM: ToolboxModule = {
     },
     /** [H,G,n,k] = hammgen(m) — parity-check and generator matrices of a Hamming code over GF(2). */
     hammgen: (a, nargout) => {
+      if (a.length < 1) throw new MatError('Not enough input arguments.');
       const mm = Math.round(asScalar(a[0])); const { H, G, n, k } = hammHG(mm);
       const HM = intMat(H), GM = intMat(G);
       if (nargout >= 4) return Promise.resolve([HM, GM, scalar(n), scalar(k)]);
@@ -592,6 +595,7 @@ export const COMM: ToolboxModule = {
     // ── Galois-field utilities ──
     /** primpoly(m[,opt][,'nodisplay']) — primitive polynomial(s) for GF(2^m), as decimal column vector. */
     primpoly: (a) => {
+      if (a.length < 1) throw new MatError('Not enough input arguments.');
       const mm = Math.round(asScalar(a[0]));
       // parse opt: 'min'|'max'|'all'|'one'|number L  (ignore 'nodisplay')
       let opt: string | number = 'one';
@@ -610,6 +614,7 @@ export const COMM: ToolboxModule = {
     },
     /** gfminpol(k,m[,p]) — minimal polynomial(s) over GF(2^m) for exponents k (ascending coeffs, GF(2)). */
     gfminpol: (a) => {
+      if (a.length < 2) throw new MatError('Not enough input arguments.');
       const K = toArray(m(a[0])).map((v) => Math.round(v));
       // second arg is m (scalar) or a prim_poly vector; we read m = round(scalar) or (len-1) of a vector.
       const arg2 = m(a[1]); const mm = arg2.data.length > 1 ? arg2.data.length - 1 : Math.round(asScalar(a[1]));

@@ -26,7 +26,7 @@
 // defaults (RCS=1, Ts=290 K, Gain=20 dB, Loss=0, CustomFactor=0, AtmosphericLoss=0,
 // PropagationFactor=0) since those are the only ones we can validate exactly closed-form.
 
-import { type Value, type Mat, scalar, asScalar, asString, isObject, makeObject, str, toMat as m } from '../values';
+import { type Value, type Mat, scalar, asScalar, asString, isObject, makeObject, str, toMat as m, MatError } from '../values';
 import { LIGHTSPEED } from '../physconst';
 import type { ToolboxModule } from './types';
 import { HELP_RADAR } from '../help';
@@ -221,7 +221,9 @@ const aperture2gain = (a: Value[]) => {
 
 // grnd2slantrange(grndrng,grazang) = grndrng./cosd(grazang)  (grazang scalar deg, in [0,90)).
 const grnd2slantrange = (a: Value[]) => {
+  if (a.length < 2) throw new MatError('Not enough input arguments.');
   const grazDeg = num(a[1], 'GRAZANG');
+  if (!(grazDeg < 90)) throw new MatError('Expected GRAZANG to be a scalar with value < 90.');
   const cg = Math.cos((grazDeg * Math.PI) / 180);
   return ret(elementwise(a[0], (g) => g / cg));
 };

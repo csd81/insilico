@@ -4,7 +4,7 @@
 import type { Builtin } from '../builtins';
 import {
   type Value, type Mat, type Cell, isMat, isStr, isCell, scalar, colVec, rowVec, toArray, map, zeros, mat,
-  asString, asScalar, toMat as m, applyClass,
+  asString, asScalar, toMat as m, applyClass, MatError,
 } from '../values';
 import type { ToolboxModule } from './types';
 import { HELP_SIGNAL } from '../help';
@@ -1421,6 +1421,7 @@ export const SIGNAL: ToolboxModule = {
     },
     // ── DFT matrix: dftmtx(n)[j][k] = exp(-2πi·jk/n) ──
     dftmtx: (a) => {
+      if (a.length < 1) throw new MatError('Not enough input arguments.');
       const n = Math.round(asScalar(a[0])), re = new Float64Array(n * n), im = new Float64Array(n * n);
       for (let j = 0; j < n; j++) for (let k = 0; k < n; k++) { const ang = -2 * Math.PI * j * k / n; re[j + k * n] = Math.cos(ang); im[j + k * n] = Math.sin(ang); }
       return ret({ kind: 'num', rows: n, cols: n, data: re, idata: im } as Mat);

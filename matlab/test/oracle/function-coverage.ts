@@ -51,6 +51,18 @@ export const REQUIRED_ASPECTS: Record<string, string[]> = {
   poisscdf: ['value'],
   chi2stat: ['value'],
   icdf: ['value', 'distribution-name'],
+
+  // ── control / coding / transforms / radar (registered-but-unvalidated batch; 'error-input' auto-required) ──
+  ctrb: ['value'],
+  obsv: ['value'],
+  lsiminfo: ['value'],
+  dftmtx: ['residual-invariant'],
+  hammgen: ['value'],
+  cyclgen: ['value'],
+  primpoly: ['value'],
+  gfminpol: ['value'],
+  poly2trellis: ['value'],
+  grnd2slantrange: ['value'],
 };
 
 /** Aspect inference for cases lacking an explicit `aspect`: which technique tags are treated as
