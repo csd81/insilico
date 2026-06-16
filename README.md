@@ -29,6 +29,63 @@ specific workflow needs a function, not to chase a percentage. See
 [docs/validation-strategy.md](docs/validation-strategy.md) for how cases are chosen and
 [docs/coverage-map.md](docs/coverage-map.md) for the authoritative per-area status.
 
+## How much of graduate math does this cover?
+
+The answer depends entirely on what "graduate math" means, and it's worth separating
+**covered** (implemented and runs) from **validated** (oracle-verified against real MATLAB).
+
+> **Measured vs estimated.** The registry figures below are *exact* (from `pnpm oracle:audit`).
+> The per-area percentages are *informed judgment* — they estimate each area's full function set,
+> which is inherently fuzzy. Treat them as calibrated estimates, not measurements.
+
+**Two denominators:**
+
+- **All of graduate mathematics** (incl. proof-based: real/functional analysis, abstract algebra,
+  topology, measure theory): covered **~20–30%**, validated **~20%**. Most of graduate math is
+  *theorem-proving*, an explicit non-goal — you cannot oracle-check a proof against MATLAB.
+- **Graduate *computational / applied* math** (the executable part — what MATLAB is for): covered
+  **~60–70%**, validated **~50–55%**. This is the fair framing for this project.
+
+**Per-area estimate (executable graduate applied math):**
+
+| Area | Covered | Validated |
+|---|---|---|
+| Numerical linear algebra | ~85% | ~70% ← the strong core |
+| Special functions | ~80% | ~65% |
+| Approximation / interpolation / quadrature / root-finding | ~80% | ~65% |
+| Fourier / signal / spectral | ~70% | ~60% |
+| ODE / DAE | ~70% | ~55% |
+| Number theory / coding / information theory | ~65% | ~55% |
+| Optimization (LP/QP/NLP/convex/discrete) | ~60% | ~50% |
+| Statistics / probability / ML math | ~60% | ~45% |
+| Symbolic / CAS (calculus, solve, simplify) | ~55% | ~45% |
+| Graph / geometry / topology / mesh | ~55% | ~45% |
+| PDE / FEM | ~40% | ~35% ← deliberately partial |
+| Stochastic / Monte Carlo / SDE | ~25% | ~10% ← RNG-stream parity is a non-goal |
+
+**Weighted aggregate: ~65% covered, ~52% validated** of executable graduate applied math.
+
+**Exact registry numbers (measured):** 1796 functions are registered (callable); **968 (53.9%)** are
+exercised by at least one MATLAB oracle fixture — **66.1%** of the curated toolbox (applied-math)
+layer, the meaningful metric, vs an undercounted 49.5% for base/core primitives (which run in nearly
+every case but are rarely the *named* token a scan can see).
+
+**Three honest caveats:**
+
+1. **"Validated" here means "≥1 oracle fixture exists" — thin.** The *rigorous* bar (every regime
+   tested **and** rejects bad input) is **16 functions**, ~1%. A single fixture is not depth:
+   `eig` counted as validated yet was silently wrong on complex spectra until a fuzz test caught it.
+2. **These are breadth %s, not depth.** "60% covered" means most headline functions exist, not that
+   every option and edge case works.
+3. **Everything outside the declared scope is *declined*, not failed** — full PDE-solver object
+   machinery, `classdef`, exact RNG-stream parity, proof-based pure math. A credible validated core
+   beats breadth; see [docs/coverage-map.md](docs/coverage-map.md) for the authoritative per-area
+   status and every documented decline.
+
+*One sentence:* of the executable, MATLAB-able slice of graduate applied math, the project covers
+~two-thirds and has MATLAB-validated about half — but of all graduate mathematics (mostly
+proof-based), it addresses well under a third, by deliberate design.
+
 ## Goals
 
 The aim is a browser-only MATLAB-language interpreter that **mechanically proves**
